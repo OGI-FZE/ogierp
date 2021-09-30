@@ -1,0 +1,18 @@
+include MANIFEST.in
+include requirements.txt
+include *.json
+include *.md
+include *.py
+include *.txt
+recursive-include oil_and_gas_international *.css
+recursive-include oil_and_gas_international *.csv
+recursive-include oil_and_gas_international *.html
+recursive-include oil_and_gas_international *.ico
+recursive-include oil_and_gas_international *.js
+recursive-include oil_and_gas_international *.json
+recursive-include oil_and_gas_international *.md
+recursive-include oil_and_gas_international *.png
+recursive-include oil_and_gas_international *.py
+recursive-include oil_and_gas_international *.svg
+recursive-include oil_and_gas_international *.txt
+recursive-exclude oil_and_gas_international *.pyc
