@@ -31,6 +31,11 @@ app_license = "MIT"
 # page_js = {"page" : "public/js/file.js"}
 
 # include js in doctype views
+doctype_js = {
+    "Opportunity": "public/js/opportunity.js",
+	"Material Request": "public/js/material_request.js",
+	"Purchase Order": "public/js/purchase_order.js",
+}
 # doctype_js = {"doctype" : "public/js/doctype.js"}
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
@@ -173,3 +178,20 @@ user_data_fields = [
 # 	"oil_and_gas_international.auth.validate"
 # ]
 
+fixtures = [
+    {
+        "dt": "Custom Field",
+        "filters": [
+            ["name", "in", [
+                # Item
+               'Item-item_type',
+			   'Item-other_item_type',
+			   #Assets
+			   'Asset-rental_status',
+			   #Opportunity
+			   'Opportunity-item_type', 
+			]]
+        ]
+    },
+
+]
