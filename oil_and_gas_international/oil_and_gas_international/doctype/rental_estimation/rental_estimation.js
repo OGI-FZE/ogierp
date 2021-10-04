@@ -15,6 +15,9 @@ frappe.ui.form.on('Rental Estimation', {
 		if(frm.doc.docstatus==0){
 			custom_buttom(frm)
 		}
+		else if(frm.doc.docstatus==1){
+			create_custom_buttom(frm)
+		}
 	}
 });
 
@@ -51,5 +54,37 @@ const custom_buttom=(frm)=>{
     frm.add_custom_button('Opportunity', () => {
         
     }, 'Get Items From');
+    
+}
+const create_custom_buttom=(frm)=>{
+    frm.add_custom_button('Rental Quotation', () => {
+        const doc = frm.doc;
+		frappe.run_serially([
+		() => frappe.new_doc('Rental Quotation'),
+		() => {
+			cur_frm.doc.customer = doc.customer;
+			cur_frm.doc.date = doc.date;
+			cur_frm.doc.valid_till = doc.valid_till;
+			cur_frm.doc.rate_type = doc.rate_type;
+			cur_frm.doc.rental_estimation = doc.name;
+			cur_frm.doc.items = []
+			for(let row of doc.items){
+				let new_row = cur_frm.add_child('items', {
+					'quantity': row.quantity,
+					'estimate_rate':row.estimate_rate,
+					'asset_location':row.asset_location
+				})
+				const cdt = new_row.doctype;
+				const cdn = new_row.name;
+				frappe.model.set_value(cdt, cdn, "item_code", row.item_code);
+				frappe.model.set_value(cdt, cdn, "item_name", row.item_name);
+				frappe.model.set_value(cdt, cdn, "rental_estimation", doc.name);
+				frappe.model.set_value(cdt, cdn, "rate", doc.budget);
+			}
+			
+			cur_frm.refresh()
+		}
+		])
+    }, 'Create');
     
 }

@@ -1,6 +1,7 @@
 {
  "actions": [],
- "creation": "2021-10-01 13:35:18.904963",
+ "autoname": "format:OGI-RQ-{MM}-{YYYY}-{#####}",
+ "creation": "2021-10-04 18:23:00.503472",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
@@ -8,9 +9,9 @@
   "customer",
   "customer_name",
   "column_break_4",
-  "rate_type",
   "date",
   "valid_till",
+  "rate_type",
   "section_break_7",
   "items",
   "total",
@@ -40,14 +41,6 @@
    "read_only": 1
   },
   {
-   "fieldname": "rate_type",
-   "fieldtype": "Select",
-   "in_list_view": 1,
-   "label": "Rate Type",
-   "options": "\nPer Hour\nPer Day\nPer Month",
-   "reqd": 1
-  },
-  {
    "fieldname": "column_break_4",
    "fieldtype": "Column Break"
   },
@@ -63,6 +56,14 @@
    "fieldtype": "Date",
    "in_list_view": 1,
    "label": "Valid Till",
+   "reqd": 1
+  },
+  {
+   "fieldname": "rate_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Rate Type",
+   "options": "\nPer Hour\nPer Day\nPer Month",
    "reqd": 1
   },
   {
@@ -110,6 +111,13 @@
    "label": "More Information"
   },
   {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Draft\nOpen\nOrdered\nLost Cancelled\nExpired",
+   "read_only": 1
+  },
+  {
    "fieldname": "rental_estimation",
    "fieldtype": "Link",
    "label": "Rental Estimation",
@@ -121,25 +129,18 @@
    "fieldtype": "Link",
    "label": "Amended From",
    "no_copy": 1,
-   "options": "Renatal Quotation",
+   "options": "Rental Quotation",
    "print_hide": 1,
-   "read_only": 1
-  },
-  {
-   "fieldname": "status",
-   "fieldtype": "Select",
-   "label": "Status",
-   "options": "Draft\nOpen\nOrdered\nLost Cancelled\nExpired",
    "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2021-10-01 13:41:10.833441",
+ "modified": "2021-10-04 18:23:00.503472",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
- "name": "Renatal Quotation",
+ "name": "Rental Quotation",
  "owner": "Administrator",
  "permissions": [
   {

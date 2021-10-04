@@ -4,5 +4,5 @@
 # import frappe
 import unittest
 
-class TestRenatalQuotation(unittest.TestCase):
+class TestRentalQuotation(unittest.TestCase):
 	pass
