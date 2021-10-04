@@ -1,12 +1,12 @@
-frappe.ui.form.on("Opportunity", {
-    setup(frm){
-        console.log('working');
-        frm.set_query('item_code', 'items', () => {
-            return {
-                filters: {
-                    item_group: 'Products'
-                }
+frappe.ui.form.on("Opportunity Item", {
+    item_type(frm,cdt,cdn){
+        let row=locals[cdt][cdn]
+        frm.fields_dict['items'].grid.get_field('item_code').get_query = function(doc, cdt, cdn) {
+            return {    
+                filters:[
+                    ['item_type', '=', row.item_type]
+                ]
             }
-        })
+        }
     }
 })
