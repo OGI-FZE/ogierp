@@ -45,7 +45,8 @@
    "fetch_from": "customer.customer_name",
    "fieldname": "customer_name",
    "fieldtype": "Data",
-   "label": "Customer Name"
+   "label": "Customer Name",
+   "read_only": 1
   },
   {
    "fieldname": "column_break_3",
@@ -185,7 +186,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2021-10-01 15:01:49.373960",
+ "modified": "2021-10-06 14:04:14.528597",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Rental Order",
