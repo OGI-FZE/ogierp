@@ -15,4 +15,8 @@ def get_opportunity_items(docname=None):
         return {}
 
     doc = frappe.get_doc("Opportunity", docname)
-    return doc
+    return {
+        "name": doc.name,
+        "party_name": doc.party_name,
+        "opportunity_items": doc.items
+    }

@@ -80,7 +80,7 @@ const add_opportunity = () => {
 						cur_frm.doc.opportunity = data.name
 						cur_frm.doc.items = []
 
-						for (const row of data.items) {
+						for (const row of data.opportunity_items) {
 							const new_row = cur_frm.add_child("items", {
 								qty: row.qty
 							})
