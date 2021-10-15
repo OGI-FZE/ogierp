@@ -45,6 +45,7 @@
    "fieldtype": "Column Break"
   },
   {
+   "default": "Today",
    "fieldname": "date",
    "fieldtype": "Date",
    "in_list_view": 1,
@@ -137,7 +138,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2021-10-04 18:23:00.503472",
+ "modified": "2021-10-15 16:39:42.785537",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Rental Quotation",

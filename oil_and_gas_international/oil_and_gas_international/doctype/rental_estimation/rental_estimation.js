@@ -41,49 +41,55 @@ const create_custom_buttons = () => {
 
 	if (status == 0) {
 		add_opportunity()
-	} else if (status = 1) {
+	} else if (status == 1) {
 		add_rental_quotation()
 	}
 }
 
 const add_opportunity = () => {
-	cur_frm.add_custom_button('Opportunity', () => {
+	const doctype = "Opportunity"
+	cur_frm.add_custom_button(doctype, () => {
 		new frappe.ui.form.MultiSelectDialog({
-			doctype: "Opportunity",
+			doctype: doctype,
 			target: this.cur_frm,
 			setters: {
-				status: null,
+				party_name: cur_frm.doc.customer,
 			},
 			date_field: "transaction_date",
 			get_query() {
 				return {
-					filters: {}
+					filters: {
+						opportunity_from: "Customer",
+					}
 				}
 			},
 			action(selections) {
 				if (selections.length > 1) {
-					frappe.msgprint("Please select only single Opportunity for importing items.")
+					frappe.msgprint(`Please select only single ${doctype} for importing items.`)
 					return
 				}
-				frappe.call({
-					method: "oil_and_gas_international.events.rental_estimation.get_opportunity_items",
+				cur_frm.call({
+					method: "get_opportunity_items",
 					args: {
 						docname: selections[0]
 					},
 					async: false,
 					callback(res) {
 						const data = res.message
+						cur_frm.doc.customer = data.party_name
+						cur_frm.doc.opportunity = data.name
 						cur_frm.doc.items = []
-						for (const row of data) {
-							const new_row = cur_frm.add_child("items")
+
+						for (const row of data.items) {
+							const new_row = cur_frm.add_child("items", {
+								qty: row.qty
+							})
 							const cdt = new_row.doctype
 							const cdn = new_row.name
 							frappe.model.set_value(cdt, cdn, "item_code", row.item_code)
-
-							new_row.qty = row.qty
 						}
-						cur_frm.doc.opportunity = selections[0]
-						cur_frm.refresh_fields(["items", "opportunity"])
+
+						cur_frm.refresh()
 						cur_dialog.hide();
 					}
 				})
@@ -109,16 +115,13 @@ const add_rental_quotation = () => {
 				cur_doc.items = []
 				for (const row of doc.items) {
 					const new_row = cur_frm.add_child('items', {
-						'quantity': row.quantity,
+						'qty': row.qty,
 						'estimate_rate': row.estimate_rate,
 						'asset_location': row.asset_location
 					})
 					const cdt = new_row.doctype
 					const cdn = new_row.name
 					frappe.model.set_value(cdt, cdn, "item_code", row.item_code)
-					frappe.model.set_value(cdt, cdn, "item_name", row.item_name)
-					frappe.model.set_value(cdt, cdn, "rental_estimation", doc.name)
-					frappe.model.set_value(cdt, cdn, "rate", doc.budget)
 				}
 
 				cur_frm.refresh()
