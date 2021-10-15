@@ -117,7 +117,9 @@ const add_rental_quotation = () => {
 					const new_row = cur_frm.add_child('items', {
 						'qty': row.qty,
 						'estimate_rate': row.estimate_rate,
-						'asset_location': row.asset_location
+						'asset_location': row.asset_location,
+						'rental_estimate': doc.name,
+						'rental_estimate_item': row.name,
 					})
 					const cdt = new_row.doctype
 					const cdn = new_row.name

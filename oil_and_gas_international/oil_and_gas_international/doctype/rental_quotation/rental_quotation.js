@@ -102,16 +102,16 @@ const add_rental_order = () => {
 				const cur_doc = cur_frm.doc
 				cur_doc.customer = doc.customer
 				cur_doc.date = doc.date
-				cur_doc.valid_till = doc.valid_till
-				cur_doc.rate_type = doc.rate_type
-				cur_doc.rental_estimation = doc.name
+				cur_doc.rental_quotation = doc.name
 
 				cur_doc.items = []
 				for (const row of doc.items) {
 					const new_row = cur_frm.add_child('items', {
 						'qty': row.qty,
-						'estimate_rate': row.estimate_rate,
-						'asset_location': row.asset_location
+						'rate': row.rate,
+						'location': row.asset_location,
+						'rental_estimate': doc.name,
+						'rental_estimate_item': row.name,
 					})
 					const cdt = new_row.doctype
 					const cdn = new_row.name
