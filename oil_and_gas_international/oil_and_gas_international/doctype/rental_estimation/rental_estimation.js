@@ -97,7 +97,7 @@ const calc_total_amount = (frm) => {
 
 // Rental Estimation Item
 const calc_amount = (frm, cdt, cdn) => {
-	let row = locals[cdt][cdn]
-	frappe.model.set_value(cdt, cdn, 'amount', row.quantity * row.estimate_rate)
-	calc_total_amount(frm)
+	const row = locals[cdt][cdn]
+	if (row.quantity && row.estimate_rate)
+		frappe.model.set_value(cdt, cdn, 'amount', row.quantity * row.estimate_rate)
 }
