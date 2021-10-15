@@ -21,6 +21,7 @@
   "print_heading",
   "more_information_section",
   "status",
+  "column_break_16",
   "rental_estimation",
   "amended_from"
  ],
@@ -133,12 +134,16 @@
    "options": "Rental Quotation",
    "print_hide": 1,
    "read_only": 1
+  },
+  {
+   "fieldname": "column_break_16",
+   "fieldtype": "Column Break"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2021-10-15 16:39:42.785537",
+ "modified": "2021-10-15 17:09:22.909537",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Rental Quotation",

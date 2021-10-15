@@ -65,19 +65,26 @@ const add_rental_estimation = () => {
 					async: false,
 					callback(res) {
 						const data = res.message
-						cur_frm.doc.items = []
-						for (const row of data) {
-							const new_row = cur_frm.add_child("items")
+						const cur_doc = cur_frm.doc
+						cur_doc.customer = data.customer
+						cur_doc.date = data.date
+						cur_doc.valid_till = data.valid_till
+						cur_doc.rate_type = data.rate_type
+						cur_doc.rental_estimation = data.name
+
+						cur_doc.items = []
+						for (const row of data.re_items) {
+							const new_row = cur_frm.add_child('items', {
+								'qty': row.qty,
+								'estimate_rate': row.estimate_rate,
+								'asset_location': row.asset_location
+							})
 							const cdt = new_row.doctype
 							const cdn = new_row.name
 							frappe.model.set_value(cdt, cdn, "item_code", row.item_code)
-
-							new_row.qty = row.qty
-							new_row.estimate_rate = row.estimate_rate
 						}
-						cur_frm.doc.rental_estimation = selections[0]
-						cur_frm.refresh_fields(["items", "rental_estimation"])
-						cur_dialog.hide();
+
+						cur_frm.refresh()
 					}
 				})
 

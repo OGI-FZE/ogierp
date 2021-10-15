@@ -15,4 +15,13 @@ def get_rental_estimation_items(docname=None):
         return {}
 
     doc = frappe.get_doc("Rental Estimation", docname)
-    return doc
+    response = {
+        "name": doc.name,
+        "customer":	doc.customer,
+        "date":	doc.date,
+        "valid_till":	doc.valid_till,
+        "rate_type":	doc.rate_type,
+        "re_items":	doc.items,
+    }
+
+    return response
