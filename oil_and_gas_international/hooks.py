@@ -33,8 +33,8 @@ app_license = "MIT"
 # include js in doctype views
 doctype_js = {
     "Opportunity": "public/js/opportunity.js",
-	"Material Request": "public/js/material_request.js",
-	"Purchase Order": "public/js/purchase_order.js",
+    "Material Request": "public/js/material_request.js",
+    "Purchase Order": "public/js/purchase_order.js",
 }
 # doctype_js = {"doctype" : "public/js/doctype.js"}
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
@@ -104,24 +104,13 @@ doctype_js = {
 
 # Scheduled Tasks
 # ---------------
-
-# scheduler_events = {
-# 	"all": [
-# 		"oil_and_gas_international.tasks.all"
-# 	],
-# 	"daily": [
-# 		"oil_and_gas_international.tasks.daily"
-# 	],
-# 	"hourly": [
-# 		"oil_and_gas_international.tasks.hourly"
-# 	],
-# 	"weekly": [
-# 		"oil_and_gas_international.tasks.weekly"
-# 	]
-# 	"monthly": [
-# 		"oil_and_gas_international.tasks.monthly"
-# 	]
-# }
+scheduler_events = {
+    "cron": {
+        "daily": [
+            "oil_and_gas_international.tasks.daily"
+        ],
+    }
+}
 
 # Testing
 # -------
@@ -151,24 +140,24 @@ doctype_js = {
 # --------------------
 
 user_data_fields = [
-	{
-		"doctype": "{doctype_1}",
-		"filter_by": "{filter_by}",
-		"redact_fields": ["{field_1}", "{field_2}"],
-		"partial": 1,
-	},
-	{
-		"doctype": "{doctype_2}",
-		"filter_by": "{filter_by}",
-		"partial": 1,
-	},
-	{
-		"doctype": "{doctype_3}",
-		"strict": False,
-	},
-	{
-		"doctype": "{doctype_4}"
-	}
+    {
+        "doctype": "{doctype_1}",
+        "filter_by": "{filter_by}",
+        "redact_fields": ["{field_1}", "{field_2}"],
+        "partial": 1,
+    },
+    {
+        "doctype": "{doctype_2}",
+        "filter_by": "{filter_by}",
+        "partial": 1,
+    },
+    {
+        "doctype": "{doctype_3}",
+        "strict": False,
+    },
+    {
+        "doctype": "{doctype_4}"
+    }
 ]
 
 # Authentication and authorization
@@ -184,37 +173,37 @@ fixtures = [
         "filters": [
             ["name", "in", [
                 # Item
-               'Item-item_type',
-			   'Item-other_item_type',
-			   #Assets
-			   'Asset-rental_status',
-			   'Asset-rental_order',
-			   
-			   #Opportunity
-			   'Opportunity-item_type',
-			   'Opportunity-references',
-			   'Opportunity-rental_estimation',
-			   #Opportunity Item
-			   'Opportunity Item-item_type',
+                'Item-item_type',
+                'Item-other_item_type',
+                # Assets
+                'Asset-rental_status',
+                'Asset-rental_order',
 
-			   #Material Request Item
-			   'Material Request Item-rental_order',
-				#Materi Request
-				'Material Request-rental_order',
-				
-				#Purchase Order
-				'Purchase Order-rental_order',
-				#Purchase Order Item
-				'Purchase Order Item-rental_order',
+                # Opportunity
+                'Opportunity-item_type',
+                'Opportunity-references',
+                'Opportunity-rental_estimation',
+                # Opportunity Item
+                'Opportunity Item-item_type',
 
-				#Purcahse Invoice
-				'Purchase Invoice-rental_order',
-				#purchase Invoice Item
-				'Purchase Invoice Item-rental_order',
-				'Purchase Invoice Item-rental_order_item',		   
-			   
+                # Material Request Item
+                'Material Request Item-rental_order',
+                # Materi Request
+                'Material Request-rental_order',
 
-			]]
+                # Purchase Order
+                'Purchase Order-rental_order',
+                # Purchase Order Item
+                'Purchase Order Item-rental_order',
+
+                # Purcahse Invoice
+                'Purchase Invoice-rental_order',
+                # purchase Invoice Item
+                'Purchase Invoice Item-rental_order',
+                'Purchase Invoice Item-rental_order_item',
+
+
+            ]]
         ]
     },
 
