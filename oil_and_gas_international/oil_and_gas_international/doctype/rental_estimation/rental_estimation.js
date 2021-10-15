@@ -48,7 +48,48 @@ const create_custom_buttons = () => {
 
 const add_opportunity = () => {
 	cur_frm.add_custom_button('Opportunity', () => {
+		new frappe.ui.form.MultiSelectDialog({
+			doctype: "Opportunity",
+			target: this.cur_frm,
+			setters: {
+				status: null,
+			},
+			date_field: "transaction_date",
+			get_query() {
+				return {
+					filters: {}
+				}
+			},
+			action(selections) {
+				if (selections.length > 1) {
+					frappe.msgprint("Please select only single Opportunity for importing items.")
+					return
+				}
+				frappe.call({
+					method: "oil_and_gas_international.events.rental_estimation.get_opportunity_items",
+					args: {
+						docname: selections[0]
+					},
+					async: false,
+					callback(res) {
+						const data = res.message
+						cur_frm.doc.items = []
+						for (const row of data) {
+							const new_row = cur_frm.add_child("items")
+							const cdt = new_row.doctype
+							const cdn = new_row.name
+							frappe.model.set_value(cdt, cdn, "item_code", row.item_code)
 
+							new_row.qty = row.qty
+						}
+						cur_frm.doc.opportunity = selections[0]
+						cur_frm.refresh_fields(["items", "opportunity"])
+						cur_dialog.hide();
+					}
+				})
+
+			}
+		});
 	}, 'Get Items From')
 }
 
@@ -98,6 +139,6 @@ const calc_total_amount = (frm) => {
 // Rental Estimation Item
 const calc_amount = (frm, cdt, cdn) => {
 	const row = locals[cdt][cdn]
-	if (row.quantity && row.estimate_rate)
-		frappe.model.set_value(cdt, cdn, 'amount', row.quantity * row.estimate_rate)
+	if (row.qty && row.estimate_rate)
+		frappe.model.set_value(cdt, cdn, 'amount', row.qty * row.estimate_rate)
 }
