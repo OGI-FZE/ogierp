@@ -1,0 +1,98 @@
+{
+ "actions": [],
+ "creation": "2021-10-16 15:56:49.684866",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "item_code",
+  "column_break_2",
+  "item_name",
+  "quantity_and_rate_section",
+  "qty",
+  "column_break_9",
+  "asset_location",
+  "assets",
+  "get_assets",
+  "section_break_10",
+  "rental_order_item"
+ ],
+ "fields": [
+  {
+   "fieldname": "item_code",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Item Code",
+   "options": "Item",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "item_code.item_name",
+   "fieldname": "item_name",
+   "fieldtype": "Data",
+   "label": "Item Name"
+  },
+  {
+   "fieldname": "quantity_and_rate_section",
+   "fieldtype": "Section Break",
+   "label": "Quantity and Rate"
+  },
+  {
+   "fieldname": "qty",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Qty",
+   "non_negative": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_9",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "asset_location",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Asset Location",
+   "options": "Location",
+   "reqd": 1
+  },
+  {
+   "fieldname": "assets",
+   "fieldtype": "Small Text",
+   "label": "Assets"
+  },
+  {
+   "fieldname": "get_assets",
+   "fieldtype": "Button",
+   "label": "Get Assets"
+  },
+  {
+   "fieldname": "section_break_10",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "rental_order_item",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Rental Order Item",
+   "options": "Rental Order Item"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2021-10-16 15:57:40.352884",
+ "modified_by": "Administrator",
+ "module": "Oil And Gas International",
+ "name": "Rental Issue Note Item",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

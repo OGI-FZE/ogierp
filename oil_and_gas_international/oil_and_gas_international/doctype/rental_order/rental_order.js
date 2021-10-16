@@ -45,7 +45,7 @@ const create_custom_buttons = () => {
 	if (status == 0) {
 		get_items_from_rental_quotation()
 	} else if (status == 1) {
-		add_rental_order()
+		add_rental_issue_note()
 	}
 }
 
@@ -101,11 +101,11 @@ const get_items_from_rental_quotation = () => {
 	}, 'Get Items From')
 }
 
-const add_rental_order = () => {
-	cur_frm.add_custom_button('Rental Order', () => {
+const add_rental_issue_note = () => {
+	cur_frm.add_custom_button('Rental Issue Note', () => {
 		const doc = cur_frm.doc
 		frappe.run_serially([
-			() => frappe.new_doc('Rental Order'),
+			() => frappe.new_doc('Rental Issue Note'),
 			() => {
 				const cur_doc = cur_frm.doc
 				cur_doc.customer = doc.customer
@@ -117,10 +117,10 @@ const add_rental_order = () => {
 					const new_row = cur_frm.add_child('items', {
 						'qty': row.qty,
 						'rate': row.rate,
-						'location': row.asset_location,
-						'rental_estimate': doc.name,
-						'rental_estimate_item': row.name,
+						'asset_location': row.asset_location,
+						'rental_order_item': row.name,
 					})
+					
 					const cdt = new_row.doctype
 					const cdn = new_row.name
 					frappe.model.set_value(cdt, cdn, "item_code", row.item_code)
