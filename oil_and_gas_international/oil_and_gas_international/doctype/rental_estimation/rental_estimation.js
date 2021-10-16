@@ -11,7 +11,7 @@ frappe.ui.form.on('Rental Estimation', {
 })
 
 frappe.ui.form.on('Rental Estimation Item', {
-	quantity(frm, cdt, cdn) {
+	qty(frm, cdt, cdn) {
 		calc_amount(frm, cdt, cdn)
 	},
 
@@ -40,13 +40,13 @@ const create_custom_buttons = () => {
 	const status = doc.docstatus
 
 	if (status == 0) {
-		add_opportunity()
+		get_items_from_opportunity()
 	} else if (status == 1) {
 		add_rental_quotation()
 	}
 }
 
-const add_opportunity = () => {
+const get_items_from_opportunity = () => {
 	const doctype = "Opportunity"
 	cur_frm.add_custom_button(doctype, () => {
 		new frappe.ui.form.MultiSelectDialog({
@@ -90,7 +90,7 @@ const add_opportunity = () => {
 						}
 
 						cur_frm.refresh()
-						cur_dialog.hide();
+						cur_dialog.hide()
 					}
 				})
 

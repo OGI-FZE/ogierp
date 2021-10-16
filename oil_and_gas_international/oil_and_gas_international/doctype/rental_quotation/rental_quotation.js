@@ -12,7 +12,7 @@ frappe.ui.form.on('Rental Quotation', {
 
 // Rental Quotation Item
 frappe.ui.form.on('Rental Quotation Item', {
-	quantity(frm, cdt, cdn) {
+	qty(frm, cdt, cdn) {
 		calc_amount(frm, cdt, cdn)
 	},
 
@@ -31,20 +31,22 @@ const create_custom_buttons = () => {
 	const status = doc.docstatus
 
 	if (status == 0) {
-		add_rental_estimation()
+		get_items_from_rental_estimation()
 	} else if (status == 1) {
 		add_rental_order()
 	}
 }
 
 
-const add_rental_estimation = () => {
-	cur_frm.add_custom_button('Rental Estimation', () => {
+const get_items_from_rental_estimation = () => {
+	const doctype = "Rental Estimation"
+	cur_frm.add_custom_button(doctype, () => {
 		new frappe.ui.form.MultiSelectDialog({
-			doctype: "Rental Estimation",
+			doctype: doctype,
 			target: this.cur_frm,
 			setters: {
 				status: ["in", ["Draft", "Pending Estimation"]],
+				customer: cur_frm.doc.customer,
 			},
 			date_field: "date",
 			get_query() {
@@ -54,7 +56,7 @@ const add_rental_estimation = () => {
 			},
 			action(selections) {
 				if (selections.length > 1) {
-					frappe.msgprint("Please select only single Rental Estimation for importing items.")
+					frappe.msgprint(`Please select only single ${doctype} for importing items.`)
 					return
 				}
 				cur_frm.call({
@@ -85,6 +87,7 @@ const add_rental_estimation = () => {
 						}
 
 						cur_frm.refresh()
+						cur_dialog.hide()
 					}
 				})
 
@@ -101,21 +104,18 @@ const add_rental_order = () => {
 			() => {
 				const cur_doc = cur_frm.doc
 				cur_doc.customer = doc.customer
-				cur_doc.date = doc.date
 				cur_doc.rental_quotation = doc.name
 
 				cur_doc.items = []
 				for (const row of doc.items) {
 					const new_row = cur_frm.add_child('items', {
-						'qty': row.qty,
 						'rate': row.rate,
-						'location': row.asset_location,
-						'rental_estimate': doc.name,
-						'rental_estimate_item': row.name,
+						'asset_location': row.asset_location
 					})
 					const cdt = new_row.doctype
 					const cdn = new_row.name
 					frappe.model.set_value(cdt, cdn, "item_code", row.item_code)
+					frappe.model.set_value(cdt, cdn, "qty", row.qty)
 				}
 
 				cur_frm.refresh()
