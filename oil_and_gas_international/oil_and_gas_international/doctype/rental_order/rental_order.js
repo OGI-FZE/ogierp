@@ -46,6 +46,7 @@ const create_custom_buttons = () => {
 		get_items_from_rental_quotation()
 	} else if (status == 1) {
 		add_rental_issue_note()
+		add_rental_receipt()
 	}
 }
 
@@ -109,22 +110,23 @@ const add_rental_issue_note = () => {
 			() => {
 				const cur_doc = cur_frm.doc
 				cur_doc.customer = doc.customer
-				cur_doc.date = doc.date
-				cur_doc.rental_order = doc.name
+				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "rental_order", doc.name)
 
-				cur_doc.items = []
-				for (const row of doc.items) {
-					const new_row = cur_frm.add_child('items', {
-						'qty': row.qty,
-						'rate': row.rate,
-						'asset_location': row.asset_location,
-						'rental_order_item': row.name,
-					})
-					
-					const cdt = new_row.doctype
-					const cdn = new_row.name
-					frappe.model.set_value(cdt, cdn, "item_code", row.item_code)
-				}
+				cur_frm.refresh()
+			}
+		])
+	}, 'Create')
+}
+
+const add_rental_receipt = () => {
+	cur_frm.add_custom_button('Rental Receipt', () => {
+		const doc = cur_frm.doc
+		frappe.run_serially([
+			() => frappe.new_doc('Rental Receipt'),
+			() => {
+				const cur_doc = cur_frm.doc
+				cur_doc.customer = doc.customer
+				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "rental_order", doc.name)
 
 				cur_frm.refresh()
 			}

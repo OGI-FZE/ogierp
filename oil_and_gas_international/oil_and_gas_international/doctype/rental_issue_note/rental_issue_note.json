@@ -1,12 +1,13 @@
 {
  "actions": [],
- "autoname": "format:OGI-RO-{MM}-{YYYY}-{####}",
+ "autoname": "format:OGI-RIN-{MM}-{YYYY}-{####}",
  "creation": "2021-10-16 15:53:33.358595",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
   "customer",
+  "customer_name",
   "rental_order",
   "column_break_3",
   "company",
@@ -66,14 +67,20 @@
    "fieldname": "rental_order",
    "fieldtype": "Link",
    "label": "Rental Order",
-   "options": "Rental Order",
+   "options": "Rental Order"
+  },
+  {
+   "fetch_from": "customer.customer_name",
+   "fieldname": "customer_name",
+   "fieldtype": "Data",
+   "label": "Customer Name",
    "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2021-10-16 15:57:57.364078",
+ "modified": "2021-10-16 16:47:03.661525",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Rental Issue Note",
