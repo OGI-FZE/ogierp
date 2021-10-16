@@ -2,46 +2,140 @@
 // For license information, please see license.txt
 
 frappe.ui.form.on('Rental Quotation', {
-	before_submit:function(frm){
-		console.log('submit');
-		frappe.model.set_value('Rental Quotation',frm.doc.name,'status','Open')
+	before_submit: function (frm, cdt, cdn) {
+		frappe.model.set_value(cdt, cdn, 'status', 'Open')
 	},
-	refresh(frm){
-		if(frm.doc.docstatus==0){
-			custom_buttom(frm)
-		}
+	refresh(frm) {
+		create_custom_buttons(frm)
 	}
 });
+
+// Rental Quotation Item
 frappe.ui.form.on('Rental Quotation Item', {
-	quantity: function(frm,cdt,cdn) {
-		calc_amount(frm,cdt,cdn)
-		calc_total_amount(frm)
+	qty(frm, cdt, cdn) {
+		calc_amount(frm, cdt, cdn)
 	},
-	rate:function(frm,cdt,cdn){
-		calc_amount(frm,cdt,cdn)
-		calc_total_amount(frm)
+
+	rate(frm, cdt, cdn) {
+		calc_amount(frm, cdt, cdn)
 	},
-	total: function(frm,cdt,cdn) {
+
+	amount(frm) {
 		calc_total_amount(frm)
 	},
 });
-const calc_amount=(frm,cdt,cdn)=>{
-	console.log('working');
-	let row= locals[cdt][cdn]
-	frappe.model.set_value(cdt,cdn,'amount',row.quantity*row.rate)
-}
-const calc_total_amount=(frm)=>{
-	let total=0
-	for(let row of frm.doc.items){
-		if(row.amount){
-			total+=row.amount
-		}
+
+// Rental Quotation
+const create_custom_buttons = () => {
+	const doc = cur_frm.doc
+	const status = doc.docstatus
+
+	if (status == 0) {
+		get_items_from_rental_estimation()
+	} else if (status == 1) {
+		add_rental_order()
 	}
-	frappe.model.set_value('Rental Quotation',frm.doc.name,'total',total)
 }
-const custom_buttom=(frm)=>{
-    frm.add_custom_button('Rental Estimation', () => {
-        
-    }, 'Get Items From');
-    
+
+
+const get_items_from_rental_estimation = () => {
+	const doctype = "Rental Estimation"
+	cur_frm.add_custom_button(doctype, () => {
+		new frappe.ui.form.MultiSelectDialog({
+			doctype: doctype,
+			target: this.cur_frm,
+			setters: {
+				status: ["in", ["Draft", "Pending Estimation"]],
+				customer: cur_frm.doc.customer,
+			},
+			date_field: "date",
+			get_query() {
+				return {
+					filters: {}
+				}
+			},
+			action(selections) {
+				if (selections.length > 1) {
+					frappe.msgprint(`Please select only single ${doctype} for importing items.`)
+					return
+				}
+				cur_frm.call({
+					method: "get_rental_estimation_items",
+					args: {
+						docname: selections[0]
+					},
+					async: false,
+					callback(res) {
+						const data = res.message
+						const cur_doc = cur_frm.doc
+						cur_doc.customer = data.customer
+						cur_doc.date = data.date
+						cur_doc.valid_till = data.valid_till
+						cur_doc.rate_type = data.rate_type
+						cur_doc.rental_estimation = data.name
+
+						cur_doc.items = []
+						for (const row of data.re_items) {
+							const new_row = cur_frm.add_child('items', {
+								'qty': row.qty,
+								'estimate_rate': row.estimate_rate,
+								'asset_location': row.asset_location
+							})
+							const cdt = new_row.doctype
+							const cdn = new_row.name
+							frappe.model.set_value(cdt, cdn, "item_code", row.item_code)
+						}
+
+						cur_frm.refresh()
+						cur_dialog.hide()
+					}
+				})
+
+			}
+		});
+	}, 'Get Items From')
+}
+
+const add_rental_order = () => {
+	cur_frm.add_custom_button('Rental Order', () => {
+		const doc = cur_frm.doc
+		frappe.run_serially([
+			() => frappe.new_doc('Rental Order'),
+			() => {
+				const cur_doc = cur_frm.doc
+				cur_doc.customer = doc.customer
+				cur_doc.rental_quotation = doc.name
+
+				cur_doc.items = []
+				for (const row of doc.items) {
+					const new_row = cur_frm.add_child('items', {
+						'rate': row.rate,
+						'asset_location': row.asset_location
+					})
+					const cdt = new_row.doctype
+					const cdn = new_row.name
+					frappe.model.set_value(cdt, cdn, "item_code", row.item_code)
+					frappe.model.set_value(cdt, cdn, "qty", row.qty)
+				}
+
+				cur_frm.refresh()
+			}
+		])
+	}, 'Create')
+}
+
+const calc_total_amount = (frm) => {
+	let total = 0
+	frm.doc.items.map(row => {
+		if (row.amount) total += row.amount
+	})
+
+	frappe.model.set_value(frm.doc.doctype, frm.doc.name, 'total', total)
+}
+
+// Rental Quotation Item
+const calc_amount = (frm, cdt, cdn) => {
+	const row = locals[cdt][cdn]
+	if (row.qty && row.rate)
+		frappe.model.set_value(cdt, cdn, 'amount', row.qty * row.rate)
 }

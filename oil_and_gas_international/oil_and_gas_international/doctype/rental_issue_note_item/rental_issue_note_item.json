@@ -1,23 +1,21 @@
 {
  "actions": [],
- "creation": "2021-10-01 14:18:37.905225",
+ "creation": "2021-10-16 15:56:49.684866",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
   "item_code",
-  "from_date",
   "column_break_2",
   "item_name",
-  "to_date",
-  "description_section",
-  "description",
   "quantity_and_rate_section",
   "qty",
-  "rate",
   "column_break_9",
-  "amount",
-  "asset_location"
+  "asset_location",
+  "assets",
+  "get_assets",
+  "section_break_10",
+  "rental_order_item"
  ],
  "fields": [
   {
@@ -39,33 +37,9 @@
    "label": "Item Name"
   },
   {
-   "collapsible": 1,
-   "fieldname": "description_section",
-   "fieldtype": "Section Break",
-   "label": "Description"
-  },
-  {
-   "fetch_from": "item_code.description",
-   "fieldname": "description",
-   "fieldtype": "Text Editor",
-   "label": "Description"
-  },
-  {
    "fieldname": "quantity_and_rate_section",
    "fieldtype": "Section Break",
    "label": "Quantity and Rate"
-  },
-  {
-   "fieldname": "rate",
-   "fieldtype": "Currency",
-   "in_list_view": 1,
-   "label": "Rate",
-   "options": "Currency",
-   "reqd": 1
-  },
-  {
-   "fieldname": "column_break_9",
-   "fieldtype": "Column Break"
   },
   {
    "fieldname": "qty",
@@ -76,10 +50,8 @@
    "reqd": 1
   },
   {
-   "fieldname": "amount",
-   "fieldtype": "Currency",
-   "label": "Amount",
-   "read_only": 1
+   "fieldname": "column_break_9",
+   "fieldtype": "Column Break"
   },
   {
    "fieldname": "asset_location",
@@ -90,25 +62,35 @@
    "reqd": 1
   },
   {
-   "fieldname": "from_date",
-   "fieldtype": "Date",
-   "label": "From Date",
+   "fieldname": "assets",
+   "fieldtype": "Small Text",
+   "label": "Assets",
    "reqd": 1
   },
   {
-   "fieldname": "to_date",
-   "fieldtype": "Date",
-   "label": "To Date",
-   "reqd": 1
+   "fieldname": "get_assets",
+   "fieldtype": "Button",
+   "label": "Get Assets"
+  },
+  {
+   "fieldname": "section_break_10",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "rental_order_item",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Rental Order Item",
+   "options": "Rental Order Item"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2021-10-16 15:07:39.644818",
+ "modified": "2021-10-16 16:47:42.896536",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
- "name": "Rental Order Item",
+ "name": "Rental Issue Note Item",
  "owner": "Administrator",
  "permissions": [],
  "sort_field": "modified",

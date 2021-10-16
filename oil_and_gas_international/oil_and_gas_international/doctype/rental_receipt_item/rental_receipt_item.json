@@ -11,7 +11,7 @@
   "section_break_4",
   "qty",
   "column_break_6",
-  "location",
+  "asset_location",
   "assets",
   "get_assets",
   "section_break_10",
@@ -54,14 +54,6 @@
    "fieldtype": "Column Break"
   },
   {
-   "fieldname": "location",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "Location",
-   "options": "Location",
-   "reqd": 1
-  },
-  {
    "fieldname": "assets",
    "fieldtype": "Small Text",
    "label": "Assets",
@@ -81,12 +73,20 @@
    "fieldtype": "Read Only",
    "hidden": 1,
    "label": "Rental Order Item"
+  },
+  {
+   "fieldname": "asset_location",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Asset Location",
+   "options": "Location",
+   "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2021-10-04 14:48:37.118184",
+ "modified": "2021-10-16 16:34:44.914628",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Rental Receipt Item",

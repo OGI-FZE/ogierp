@@ -1,5 +1,6 @@
 {
  "actions": [],
+ "autoname": "format:RTL-EMN-{YYYY}-{####}",
  "creation": "2021-10-01 11:55:32.277586",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -20,6 +21,7 @@
   "print_heading",
   "more_information_section",
   "status",
+  "column_break_16",
   "opportunity",
   "amended_from"
  ],
@@ -55,6 +57,7 @@
    "options": "\nPer Hour\nPer Day\nPer Month"
   },
   {
+   "default": "Today",
    "fieldname": "date",
    "fieldtype": "Date",
    "label": "Date",
@@ -125,14 +128,17 @@
    "fieldname": "status",
    "fieldtype": "Select",
    "label": "Status",
-   "options": "Draft\nPending Estimation\nTo Quotation\nLost\nDo not Contact\nExpired",
-   "read_only": 1
+   "options": "Draft\nPending Estimation\nTo Quotation\nLost\nDo not Contact\nExpired"
+  },
+  {
+   "fieldname": "column_break_16",
+   "fieldtype": "Column Break"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2021-10-01 13:40:57.404909",
+ "modified": "2021-10-15 16:39:26.141325",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Rental Estimation",

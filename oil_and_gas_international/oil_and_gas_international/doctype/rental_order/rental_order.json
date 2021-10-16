@@ -1,5 +1,6 @@
 {
  "actions": [],
+ "autoname": "format:OGI-RO-{MM}-{YYYY}-{####}",
  "creation": "2021-10-01 14:03:22.663361",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -11,7 +12,7 @@
   "company",
   "date",
   "section_break_6",
-  "item",
+  "items",
   "section_break_8",
   "total_qty",
   "column_break_10",
@@ -30,6 +31,7 @@
   "column_break_23",
   "total_timesheets",
   "timesheets_billed",
+  "references_section",
   "amended_from"
  ],
  "fields": [
@@ -45,7 +47,8 @@
    "fetch_from": "customer.customer_name",
    "fieldname": "customer_name",
    "fieldtype": "Data",
-   "label": "Customer Name"
+   "label": "Customer Name",
+   "read_only": 1
   },
   {
    "fieldname": "column_break_3",
@@ -58,6 +61,7 @@
    "options": "Company"
   },
   {
+   "default": "Today",
    "fieldname": "date",
    "fieldtype": "Date",
    "in_list_view": 1,
@@ -67,13 +71,6 @@
   {
    "fieldname": "section_break_6",
    "fieldtype": "Section Break"
-  },
-  {
-   "fieldname": "item",
-   "fieldtype": "Table",
-   "label": "Item",
-   "options": "Rental Order Item",
-   "reqd": 1
   },
   {
    "fieldname": "section_break_8",
@@ -128,6 +125,7 @@
    "options": "Terms and Conditions"
   },
   {
+   "fetch_from": "terms.terms",
    "fieldname": "terms_and_conditions_details",
    "fieldtype": "Text Editor",
    "label": "Terms and Conditions Details"
@@ -180,12 +178,24 @@
    "fieldtype": "Int",
    "label": "Timesheets Billed",
    "read_only": 1
+  },
+  {
+   "fieldname": "items",
+   "fieldtype": "Table",
+   "label": "Items",
+   "options": "Rental Order Item",
+   "reqd": 1
+  },
+  {
+   "fieldname": "references_section",
+   "fieldtype": "Section Break",
+   "label": "References"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2021-10-01 15:01:49.373960",
+ "modified": "2021-10-16 15:28:25.745527",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Rental Order",

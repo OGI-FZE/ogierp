@@ -1,7 +1,7 @@
 // Copyright (c) 2021, Havenir Solutions and contributors
 // For license information, please see license.txt
 
-frappe.ui.form.on('Rental Receipt', {
+frappe.ui.form.on('Rental Issue Note', {
 	rental_order(frm, cdt, cdn) {
 		get_items_from_rental_order(frm, cdt, cdn)
 	}
