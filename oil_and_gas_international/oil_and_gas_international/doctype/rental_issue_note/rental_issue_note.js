@@ -34,3 +34,10 @@ const get_items_from_rental_order = (frm, cdt, cdn) => {
 		}
 	})
 }
+
+
+frappe.ui.form.on('Rental Issue Note Item', {
+	get_assets(frm, cdt, cdn) {
+		get_items_from_rental_order(frm, cdt, cdn)
+	}
+});
