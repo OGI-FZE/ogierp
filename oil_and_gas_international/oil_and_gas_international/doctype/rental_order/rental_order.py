@@ -7,9 +7,10 @@ from frappe.model.document import Document
 
 class RentalOrder(Document):
     def on_submit(self):
-        self.status = "Open"
-        frappe.set_value("Rental Quotation",
-                         self.rental_quotation, "status", "Ordered")
+        if self.rental_quotation:
+            self.status = "Open"
+            frappe.set_value("Rental Quotation",
+                             self.rental_quotation, "status", "Ordered")
         frappe.db.commit()
 
 
