@@ -6,7 +6,11 @@ from frappe.model.document import Document
 
 
 class RentalOrder(Document):
-    pass
+    def on_submit(self):
+        self.status = "Open"
+        frappe.set_value("Rental Quotation",
+                         self.rental_quotation, "status", "Ordered")
+        frappe.db.commit()
 
 
 @frappe.whitelist()

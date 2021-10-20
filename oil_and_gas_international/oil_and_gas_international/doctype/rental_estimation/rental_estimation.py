@@ -10,11 +10,15 @@ class RentalEstimation(Document):
     pass
 
 
-def check_validity(doc):
-    if(doc.date < today):
-        doc.status == "Expired"
-        doc.save()
-        doc.notify_update()
+def check_validity():
+    doctype = "Rental Estimation"
+    re_docs = frappe.get_list(doctype, {
+        "status": ["!=", "Expired"],
+        "date": ["<", today()]
+    })
+    for row in re_docs:
+        frappe.set_value(doctype, row.name, "status", "Expired")
+    frappe.db.commit()
 
 
 @frappe.whitelist()

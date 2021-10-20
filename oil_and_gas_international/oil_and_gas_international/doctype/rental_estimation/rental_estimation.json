@@ -130,8 +130,7 @@
    "fieldtype": "Select",
    "label": "Status",
    "options": "Draft\nPending Estimation\nTo Quotation\nLost\nDo not Contact\nExpired",
-   "read_only": 1,
-   "read_only_depends_on": "eval:(doc.status == \"To Quotation\" || doc.status == \"Expired\")"
+   "read_only": 1
   },
   {
    "fieldname": "column_break_16",
@@ -141,7 +140,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2021-10-20 22:35:52.245795",
+ "modified": "2021-10-20 22:50:32.902011",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Rental Estimation",

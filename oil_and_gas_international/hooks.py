@@ -107,7 +107,7 @@ doctype_js = {
 scheduler_events = {
     "cron": {
         "daily": [
-            "oil_and_gas_international.oil_and_gas_international.doctype.rental_estimation.rental_estimation.check_validity"
+            "oil_and_gas_international.tasks.daily"
         ],
     }
 }
