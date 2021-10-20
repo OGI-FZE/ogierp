@@ -6,7 +6,10 @@ from frappe.model.document import Document
 
 
 class RentalQuotation(Document):
-    pass
+    def on_submit(self):
+        frappe.set_value("Rental Estimation",
+                         self.rental_estimation, "status", "To Quotation")
+        frappe.db.commit()
 
 
 @frappe.whitelist()
