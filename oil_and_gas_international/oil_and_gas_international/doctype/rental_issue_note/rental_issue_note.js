@@ -7,6 +7,13 @@ frappe.ui.form.on('Rental Issue Note', {
 	}
 });
 
+frappe.ui.form.on('Rental Issue Note Item', {
+	get_assets(frm, cdt, cdn) {
+		get_assets_to_issue(frm, cdt, cdn)
+	}
+});
+
+
 const get_items_from_rental_order = (frm, cdt, cdn) => {
 	const rental_order = frm.doc.rental_order
 	frm.call({
@@ -35,9 +42,31 @@ const get_items_from_rental_order = (frm, cdt, cdn) => {
 	})
 }
 
+const get_assets_to_issue = (frm, cdt, cdn) => {
+	const doctype = "Asset"
+	new frappe.ui.form.MultiSelectDialog({
+		doctype: doctype,
+		target: this.cur_frm,
+		setters: {},
+		date_field: "transaction_date",
+		get_query() {
+			return {
+				filters: {
+					rental_status: "Available For Rent",
+				}
+			}
+		},
+		action(selections) {
+			const cur_row = locals[cdt][cdn]
+			let serial_nos = ""
+			for (const row of selections) {
+				serial_nos += row + "\n"
+			}
 
-frappe.ui.form.on('Rental Issue Note Item', {
-	get_assets(frm, cdt, cdn) {
-		get_items_from_rental_order(frm, cdt, cdn)
-	}
-});
+			cur_row.assets = serial_nos
+			cur_frm.refresh()
+			cur_dialog.hide()
+		}
+	});
+}
+

@@ -13,6 +13,9 @@ class RentalOrder(Document):
                              self.rental_quotation, "status", "Ordered")
         frappe.db.commit()
 
+    def on_update(self):
+        pass
+
 
 @frappe.whitelist()
 def get_rental_quotation_items(docname=None):
