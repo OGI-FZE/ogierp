@@ -41,15 +41,15 @@ class RentalReceipt(Document):
                         cdn = row.rental_order_item
                         qty = frappe.get_value(cdt, cdn, "qty")
                         delivered_qty = frappe.get_value(cdt, cdn, "delivered_qty")
-                        recieved_qty = frappe.get_value(cdt, cdn, "recieved_qty")
-                        if not recieved_qty:
-                            recieved_qty = 0
+                        received_qty = frappe.get_value(cdt, cdn, "received_qty")
+                        if not received_qty:
+                            received_qty = 0
 
-                        if recieved_qty > delivered_qty:
-                            frappe.throw(f"Can not receive more than remaining delivered qty in Rental Order Item({delivered_qty-recieved_qty})")
+                        if received_qty > delivered_qty:
+                            frappe.throw(f"Can not receive more than remaining delivered qty in Rental Order Item({delivered_qty-received_qty})")
                         
-                        frappe.set_value(cdt, cdn, "recieved_qty", int(recieved_qty) + int(row.qty))
-                        if recieved_qty == qty:
+                        frappe.set_value(cdt, cdn, "received_qty", int(received_qty) + int(row.qty))
+                        if received_qty == qty:
                             frappe.set_value(cdt, cdn, "status", "Returned")
 
                   

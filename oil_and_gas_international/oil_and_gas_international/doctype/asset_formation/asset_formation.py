@@ -27,8 +27,6 @@ class AssetFormation(Document):
 			asset_doc.available_for_use_date = row.creation_date
 			asset_doc.is_existing_asset = 1
 			asset_doc.against_asset_formation = self.name
-			asset_doc.customer = row.customer
-			asset_doc.project = row.project
 
 			# getting valuation rate for the item
 			value = frappe.get_value('Bin', 

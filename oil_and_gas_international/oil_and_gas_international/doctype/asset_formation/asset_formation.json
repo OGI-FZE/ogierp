@@ -18,8 +18,7 @@
   "section_break_8",
   "asset_item_code",
   "section_break_7",
-  "items",
-  "total_qty"
+  "items"
  ],
  "fields": [
   {
@@ -79,13 +78,6 @@
    "reqd": 1
   },
   {
-   "default": "0",
-   "fieldname": "total_qty",
-   "fieldtype": "Float",
-   "label": "Total Qty",
-   "read_only": 1
-  },
-  {
    "fieldname": "fetch_serial_no",
    "fieldtype": "Button",
    "label": "Fetch Serial No"
@@ -120,7 +112,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2021-10-24 18:48:08.710069",
+ "modified": "2021-10-24 23:13:33.165607",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Asset Formation",

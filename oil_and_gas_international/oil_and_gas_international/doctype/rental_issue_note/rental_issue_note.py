@@ -45,11 +45,11 @@ class RentalIssueNote(Document):
                         if not delivered_qty:
                             delivered_qty = 0
 
-                        if delivered_qty > qty:
+                        if (delivered_qty + row.qty) > qty:
                             frappe.throw(f"Can not deliver asset(s) more than remaining qty in Rental Order Item({qty-delivered_qty})")
                         
                         frappe.set_value(cdt, cdn, "delivered_qty", int(delivered_qty) + int(row.qty))
-                        if delivered_qty == qty:
+                        if (delivered_qty + row.qty) == qty:
                             frappe.set_value(cdt, cdn, "status", "Delivered")
 
                   
