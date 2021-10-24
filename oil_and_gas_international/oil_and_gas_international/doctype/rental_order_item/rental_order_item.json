@@ -17,7 +17,8 @@
   "rate",
   "column_break_9",
   "amount",
-  "asset_location"
+  "asset_location",
+  "delivered_qty"
  ],
  "fields": [
   {
@@ -100,12 +101,17 @@
    "fieldtype": "Date",
    "label": "To Date",
    "reqd": 1
+  },
+  {
+   "fieldname": "delivered_qty",
+   "fieldtype": "Data",
+   "label": "Delivered Qty"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2021-10-16 15:07:39.644818",
+ "modified": "2021-10-20 23:45:22.334501",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Rental Order Item",

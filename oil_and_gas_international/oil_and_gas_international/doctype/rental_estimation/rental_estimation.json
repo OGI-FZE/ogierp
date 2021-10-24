@@ -125,10 +125,12 @@
    "fieldtype": "Column Break"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "status",
    "fieldtype": "Select",
    "label": "Status",
-   "options": "Draft\nPending Estimation\nTo Quotation\nLost\nDo not Contact\nExpired"
+   "options": "Draft\nPending Estimation\nTo Quotation\nLost\nDo not Contact\nExpired",
+   "read_only": 1
   },
   {
    "fieldname": "column_break_16",
@@ -138,7 +140,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2021-10-15 16:39:26.141325",
+ "modified": "2021-10-20 22:50:32.902011",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Rental Estimation",

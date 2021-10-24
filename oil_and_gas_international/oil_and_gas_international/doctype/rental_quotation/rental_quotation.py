@@ -3,10 +3,30 @@
 
 import frappe
 from frappe.model.document import Document
+from frappe.utils import today
 
 
 class RentalQuotation(Document):
-    pass
+    def on_submit(self):
+        if self.rental_estimation:
+            self.status = "Open"
+            frappe.set_value("Rental Estimation",
+                             self.rental_estimation, "status", "To Quotation")
+            frappe.db.commit()
+
+    def on_cancel(self):
+        self.status = "Canceled"
+
+
+def check_validity():
+    doctype = "Rental Quotation"
+    re_docs = frappe.get_list(doctype, {
+        "status": ["!=", "Expired"],
+        "date": ["<", today()]
+    })
+    for row in re_docs:
+        frappe.set_value(doctype, row.name, "status", "Expired")
+    frappe.db.commit()
 
 
 @frappe.whitelist()

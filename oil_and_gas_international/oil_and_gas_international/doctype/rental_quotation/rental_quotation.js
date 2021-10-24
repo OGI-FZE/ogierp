@@ -2,9 +2,6 @@
 // For license information, please see license.txt
 
 frappe.ui.form.on('Rental Quotation', {
-	before_submit: function (frm, cdt, cdn) {
-		frappe.model.set_value(cdt, cdn, 'status', 'Open')
-	},
 	refresh(frm) {
 		create_custom_buttons(frm)
 	}
@@ -79,7 +76,9 @@ const get_items_from_rental_estimation = () => {
 							const new_row = cur_frm.add_child('items', {
 								'qty': row.qty,
 								'estimate_rate': row.estimate_rate,
-								'asset_location': row.asset_location
+								'asset_location': row.asset_location,
+								'rental_estimate': data.name,
+								'rental_estimate_item': row.name,
 							})
 							const cdt = new_row.doctype
 							const cdn = new_row.name

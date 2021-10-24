@@ -32,6 +32,7 @@
   "total_timesheets",
   "timesheets_billed",
   "references_section",
+  "rental_quotation",
   "amended_from"
  ],
  "fields": [
@@ -180,6 +181,7 @@
    "read_only": 1
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "items",
    "fieldtype": "Table",
    "label": "Items",
@@ -190,12 +192,18 @@
    "fieldname": "references_section",
    "fieldtype": "Section Break",
    "label": "References"
+  },
+  {
+   "fieldname": "rental_quotation",
+   "fieldtype": "Link",
+   "label": "Rental Quotation",
+   "options": "Rental Quotation"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2021-10-16 15:28:25.745527",
+ "modified": "2021-10-21 01:01:52.710653",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Rental Order",
