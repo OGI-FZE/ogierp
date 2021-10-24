@@ -94,13 +94,11 @@ doctype_js = {
 # ---------------
 # Hook on document methods and events
 
-# doc_events = {
-# 	"*": {
-# 		"on_update": "method",
-# 		"on_cancel": "method",
-# 		"on_trash": "method"
-#	}
-# }
+doc_events = {
+	"Asset": {
+		"on_submit": "esmart.events.asset.create_se_for_asset_conversion"
+	},
+}
 
 # Scheduled Tasks
 # ---------------
@@ -175,9 +173,11 @@ fixtures = [
                 # Item
                 'Item-item_type',
                 'Item-other_item_type',
+                
                 # Assets
                 'Asset-rental_status',
                 'Asset-rental_order',
+                'Asset-against_asset_formation',
 
                 # Opportunity
                 'Opportunity-item_type',
@@ -201,8 +201,6 @@ fixtures = [
                 # purchase Invoice Item
                 'Purchase Invoice Item-rental_order',
                 'Purchase Invoice Item-rental_order_item',
-
-
             ]]
         ]
     },

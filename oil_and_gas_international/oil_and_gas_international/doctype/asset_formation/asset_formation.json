@@ -1,5 +1,6 @@
 {
- "autoname": "format:AF{MM}{YYYY}{#####}",
+ "actions": [],
+ "autoname": "format:OGI-AF-{MM}{YYYY}{#####}",
  "creation": "2020-10-21 14:55:30.886749",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -118,12 +119,29 @@
   }
  ],
  "is_submittable": 1,
- "modified": "2020-10-22 18:48:34.392834",
+ "links": [],
+ "modified": "2021-10-24 18:31:49.944586",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Asset Formation",
  "owner": "Administrator",
  "permissions": [
+  {
+   "amend": 1,
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Administrator",
+   "select": 1,
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
   {
    "create": 1,
    "delete": 1,

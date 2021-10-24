@@ -10,6 +10,7 @@ class AssetFormation(Document):
 	def on_submit (self):
 		self.db_set('status', 'Submitted')
 	
+	@frappe.whitelist()
 	def create_assets (self):
 		'''
 		`(doc) --> None`
@@ -23,6 +24,7 @@ class AssetFormation(Document):
 			asset_doc.location = row.location
 			asset_doc.asset_owner = 'Company'
 			asset_doc.purchase_date = row.creation_date
+			asset_doc.available_for_use_date = row.creation_date
 			asset_doc.is_existing_asset = 1
 			asset_doc.against_asset_formation = self.name
 			asset_doc.customer = row.customer
