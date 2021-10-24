@@ -2,16 +2,14 @@ import frappe
 
 def create_stock_entry_for_asset_conversion (doc, method):
     '''
-    Creates a JV to remove the value from Stock in Hand to Asset Account if linked with Asset Formation
+    Creates a Stock Entry to remove the value from Stock in Hand to Asset Account if linked with Asset Formation
     '''    
     if doc.against_asset_formation:
-        fixed_asset_account = frappe.get_value(
-            'Asset Category Account', 
-                {
+        # getting asset account
+        fixed_asset_account = frappe.get_value('Asset Category Account', {
                 'company_name' : doc.company, 
                 'parent': doc.asset_category
-                }, 
-                ['fixed_asset_account'])
+                }, ['fixed_asset_account'])
         
         # Creating new Stock Entry
         stock_entry = frappe.get_doc({
@@ -48,8 +46,6 @@ def create_stock_entry_for_asset_conversion (doc, method):
                 serial_no.status = 'Converted To Asset'
                 serial_no.customer = row.customer
                 serial_no.save()
-                
-
             else:
                 if not row.for_asset:
                     all_assets_created = False

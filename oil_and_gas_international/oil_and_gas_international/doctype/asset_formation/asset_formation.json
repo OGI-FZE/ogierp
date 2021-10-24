@@ -1,6 +1,6 @@
 {
  "actions": [],
- "autoname": "format:OGI-AF-{MM}{YYYY}{#####}",
+ "autoname": "format:OGI-AF-{MM}-{YYYY}-{####}",
  "creation": "2020-10-21 14:55:30.886749",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -120,7 +120,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2021-10-24 18:31:49.944586",
+ "modified": "2021-10-24 18:48:08.710069",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Asset Formation",

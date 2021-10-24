@@ -96,7 +96,7 @@ doctype_js = {
 
 doc_events = {
 	"Asset": {
-		"on_submit": "esmart.events.asset.create_se_for_asset_conversion"
+		"on_submit": "oil_and_gas_international.events.asset.create_stock_entry_for_asset_conversion"
 	},
 }
 
