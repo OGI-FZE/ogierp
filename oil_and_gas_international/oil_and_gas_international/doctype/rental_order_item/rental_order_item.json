@@ -19,6 +19,7 @@
   "amount",
   "asset_location",
   "delivered_qty",
+  "received_qty",
   "status"
  ],
  "fields": [
@@ -106,7 +107,7 @@
   {
    "allow_on_submit": 1,
    "fieldname": "delivered_qty",
-   "fieldtype": "Data",
+   "fieldtype": "Float",
    "hidden": 1,
    "label": "Delivered Qty"
   },
@@ -116,14 +117,20 @@
    "fieldname": "status",
    "fieldtype": "Select",
    "label": "Status",
-   "options": "To Delivery\nDelivered",
+   "options": "To Delivery\nDelivered\nReturned",
    "read_only": 1
+  },
+  {
+   "fieldname": "received_qty",
+   "fieldtype": "Float",
+   "hidden": 1,
+   "label": "Received Qty"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2021-10-24 22:40:52.523855",
+ "modified": "2021-10-24 22:53:44.655149",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Rental Order Item",

@@ -70,7 +70,7 @@
   },
   {
    "fieldname": "rental_order_item",
-   "fieldtype": "Read Only",
+   "fieldtype": "Data",
    "hidden": 1,
    "label": "Rental Order Item"
   },
@@ -86,7 +86,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2021-10-16 16:34:44.914628",
+ "modified": "2021-10-24 22:44:58.307302",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Rental Receipt Item",

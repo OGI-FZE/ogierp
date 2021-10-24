@@ -34,3 +34,40 @@ const get_items_from_rental_order = (frm, cdt, cdn) => {
 		}
 	})
 }
+
+frappe.ui.form.on('Rental Receipt Item', {
+	get_assets(frm, cdt, cdn) {
+		get_assets_to_issue(frm, cdt, cdn)
+	}
+});
+
+const get_assets_to_issue = (frm, cdt, cdn) => {
+	const doctype = "Asset"
+	new frappe.ui.form.MultiSelectDialog({
+		doctype: doctype,
+		target: this.cur_frm,
+		setters: {
+			asset_name: null
+		},
+		date_field: "transaction_date",
+		get_query() {
+			return {
+				filters: {
+					rental_status: "In Use",
+				}
+			}
+		},
+		action(selections) {
+			const cur_row = locals[cdt][cdn]
+			let serial_nos = ""
+			for (const row of selections) {
+				serial_nos += row + "\n"
+			}
+
+			cur_row.assets = serial_nos
+			cur_frm.refresh()
+			cur_dialog.hide()
+		}
+	});
+}
+
