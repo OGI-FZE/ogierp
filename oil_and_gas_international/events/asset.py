@@ -44,7 +44,6 @@ def create_stock_entry_for_asset_conversion (doc, method):
                 # Updating Serial Number Status
                 serial_no = frappe.get_doc('Serial No', doc.asset_name)
                 serial_no.status = 'Converted To Asset'
-                serial_no.customer = row.customer
                 serial_no.save()
             else:
                 if not row.for_asset:
