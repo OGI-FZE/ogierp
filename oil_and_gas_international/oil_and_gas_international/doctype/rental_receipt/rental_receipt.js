@@ -37,23 +37,24 @@ const get_items_from_rental_order = (frm, cdt, cdn) => {
 
 frappe.ui.form.on('Rental Receipt Item', {
 	get_assets(frm, cdt, cdn) {
-		get_assets_to_issue(frm, cdt, cdn)
+		get_assets_to_receive(frm, cdt, cdn)
 	}
 });
 
-const get_assets_to_issue = (frm, cdt, cdn) => {
+const get_assets_to_receive = (frm, cdt, cdn) => {
 	const doctype = "Asset"
 	new frappe.ui.form.MultiSelectDialog({
 		doctype: doctype,
 		target: this.cur_frm,
 		setters: {
-			asset_name: null
+			asset_name: null,
 		},
 		date_field: "transaction_date",
 		get_query() {
 			return {
 				filters: {
 					rental_status: "In Use",
+					rental_order: frm.doc.rental_order
 				}
 			}
 		},
