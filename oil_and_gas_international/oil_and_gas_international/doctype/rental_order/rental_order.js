@@ -47,6 +47,8 @@ const create_custom_buttons = () => {
 	} else if (status == 1) {
 		add_rental_issue_note()
 		add_rental_receipt()
+		add_purchase_order()
+		add_asset_formation()
 	}
 }
 
@@ -130,6 +132,40 @@ const add_rental_receipt = () => {
 
 				cur_frm.refresh()
 			}
+		])
+	}, 'Create')
+}
+
+const add_purchase_order = () => {
+	cur_frm.add_custom_button('Purchase Order', () => {
+		const doc = cur_frm.doc
+		frappe.run_serially([
+			() => frappe.new_doc('Purchase Order'),
+			() => {
+				const cur_doc = cur_frm.doc
+				cur_doc.rental_order = data.name
+				cur_doc.items = []
+
+				for (const row of cur_doc.items) {
+					const new_row = cur_frm.add_child("items", {
+						qty: row.qty
+					})
+					const cdt = new_row.doctype
+					const cdn = new_row.name
+					frappe.model.set_value(cdt, cdn, "item_code", row.item_code)
+				}
+
+				cur_frm.refresh()
+			}
+		])
+	}, 'Create')
+}
+
+const add_asset_formation = () => {
+	cur_frm.add_custom_button('Asset Formation', () => {
+		const doc = cur_frm.doc
+		frappe.run_serially([
+			() => frappe.new_doc('Asset Formation'),
 		])
 	}, 'Create')
 }
