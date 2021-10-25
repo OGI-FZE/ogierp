@@ -47,7 +47,9 @@ const get_assets_to_issue = (frm, cdt, cdn) => {
 	new frappe.ui.form.MultiSelectDialog({
 		doctype: doctype,
 		target: this.cur_frm,
-		setters: {},
+		setters: {
+			asset_name: null
+		},
 		date_field: "transaction_date",
 		get_query() {
 			return {

@@ -33,31 +33,43 @@ class RentalIssueNote(Document):
             assets = assets.split("\n")
             for asset in assets:
                 if asset:
-                    frappe.db.set_value(
-                        "Asset", asset, "rental_status", "In Use")
+                    # updating asset status
+                    frappe.db.set_value("Asset", asset, "rental_status", "In Use")
+                    frappe.db.set_value("Asset", asset, "rental_order", self.rental_order)
+                    
+                    # updating rental order item status
                     if row.rental_order_item:
                         cdt = "Rental Order Item"
                         cdn = row.rental_order_item
+                        qty = frappe.get_value(cdt, cdn, "qty")
                         delivered_qty = frappe.get_value(cdt, cdn, "delivered_qty")
                         if not delivered_qty:
                             delivered_qty = 0
 
+                        if (delivered_qty + row.qty) > qty:
+                            frappe.throw(f"Can not deliver asset(s) more than remaining qty in Rental Order Item({qty-delivered_qty})")
+                        
                         frappe.set_value(cdt, cdn, "delivered_qty", int(delivered_qty) + int(row.qty))
+                        if (delivered_qty + row.qty) == qty:
+                            frappe.set_value(cdt, cdn, "status", "Delivered")
+
+                  
+                    # asset movement
+                    asset_location = frappe.get_value("Asset", asset, "location")
+                    if asset_location != row.asset_location:
+                        asset_movement_doc = frappe.get_doc({
+                            "doctype": "Asset Movement",
+                            "transaction_date": today(),
+                            "purpose": "Transfer"
+                        })
+                        asset_movement_doc.append("assets", {
+                            "asset": asset,
+                            "target_location": row.asset_location
+                        })
+                        asset_movement_doc.save()
+                        asset_movement_doc.submit()
 
                     frappe.db.commit()
-
-                    # asset movement
-                    asset_movement_doc = frappe.get_doc({
-                        "doctype": "Asset Movement",
-                        "transaction_date": today(),
-                        "purpose": "Issue"
-                    })
-                    asset_movement_doc.append("assets", {
-                        "asset": asset,
-                        "target_location": row.asset_location
-                    })
-                    asset_movement_doc.set_missing_values()
-                    asset_movement_doc.save()
 
 
 @frappe.whitelist()
