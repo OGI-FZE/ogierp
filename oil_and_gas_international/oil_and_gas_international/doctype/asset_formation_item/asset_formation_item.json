@@ -9,8 +9,6 @@
   "creation_date",
   "column_break_3",
   "location",
-  "longitude",
-  "latitude",
   "for_asset"
  ],
  "fields": [
@@ -52,27 +50,11 @@
    "fieldtype": "Date",
    "label": "Creation Date",
    "read_only": 1
-  },
-  {
-   "columns": 2,
-   "fetch_from": "location.longitude",
-   "fieldname": "longitude",
-   "fieldtype": "Data",
-   "in_list_view": 1,
-   "label": "Longitude"
-  },
-  {
-   "columns": 2,
-   "fetch_from": "location.latitude",
-   "fieldname": "latitude",
-   "fieldtype": "Data",
-   "in_list_view": 1,
-   "label": "Latitude"
   }
  ],
  "istable": 1,
  "links": [],
- "modified": "2021-10-24 23:07:40.507512",
+ "modified": "2021-10-25 10:46:25.976689",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Asset Formation Item",

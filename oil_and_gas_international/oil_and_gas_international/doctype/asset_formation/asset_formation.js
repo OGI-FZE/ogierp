@@ -2,22 +2,22 @@
 // For license information, please see license.txt
 
 frappe.ui.form.on('Asset Formation', {
-	setup: function(frm){
+	setup: function (frm) {
 		frm.events.set_item_queries(frm);
 	},
 
-	refresh: function (frm){
+	refresh: function (frm) {
 		frappe.breadcrumbs.add('Assets', 'Asset Formation')
 		frm.events.set_item_queries(frm);
 		frm.events.show_create_asset_button(frm);
 	},
 
-	item_code: function(frm) {
+	item_code: function (frm) {
 		frm.doc.items = []
 		frm.refresh_field('items');
 	},
 
-	warehouse: function(frm) {
+	warehouse: function (frm) {
 		frm.doc.items = []
 		frm.refresh_field('items');
 	},
@@ -27,22 +27,22 @@ frappe.ui.form.on('Asset Formation', {
 	},
 
 	show_create_asset_button: function (frm) {
-		if (frm.doc.docstatus == 1 && frm.doc.status == 'Submitted'){
+		if (frm.doc.docstatus == 1 && frm.doc.status == 'Submitted') {
 			frm.add_custom_button('Convert to Assets', () => {
 				frm.call('create_assets')
-				.then(r => {
-					frm.reload_doc();
-					frappe.msgprint('Asset Created in Draft Mode')
-				})
+					.then(r => {
+						frm.reload_doc();
+						frappe.msgprint('Asset Created in Draft Mode')
+					})
 			})
 		}
 	},
 
-	set_item_queries: function(frm){
+	set_item_queries: function (frm) {
 		// Stock Item Query
 		frm.set_query('item_code', () => {
 			return {
-				filters : {
+				filters: {
 					is_fixed_asset: 0,
 					is_stock_item: 1,
 					has_serial_no: 1
@@ -53,7 +53,7 @@ frappe.ui.form.on('Asset Formation', {
 		// Asset Item Query
 		frm.set_query('asset_item_code', () => {
 			return {
-				filters : {
+				filters: {
 					is_fixed_asset: 1
 				}
 			}
@@ -61,7 +61,7 @@ frappe.ui.form.on('Asset Formation', {
 	},
 
 	show_serial_dialog: function (frm) {
-		if (frm.doc.item_code && frm.doc.warehouse){
+		if (frm.doc.item_code && frm.doc.warehouse) {
 			new frappe.ui.form.MultiSelectDialog({
 				doctype: "Serial No",
 				target: frm,
@@ -71,7 +71,7 @@ frappe.ui.form.on('Asset Formation', {
 				date_field: "purchase_date",
 				get_query() {
 					return {
-						filters: { 
+						filters: {
 							docstatus: ['!=', 2],
 							status: 'Active',
 							company: frm.doc.company,
@@ -91,8 +91,16 @@ frappe.ui.form.on('Asset Formation', {
 					cur_dialog.hide();
 				}
 			});
-		}else{
+		} else {
 			frappe.msgprint('Select Item and Warehouse');
 		}
+	},
+	default_location(frm) {
+		for (const row of frm.doc.items) {
+			if (!row.location) {
+				row.location = frm.doc.default_location
+			}
+		}
+		frm.refresh()
 	}
 });

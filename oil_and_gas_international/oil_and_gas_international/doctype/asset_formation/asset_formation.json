@@ -17,6 +17,8 @@
   "amended_from",
   "section_break_8",
   "asset_item_code",
+  "column_break_12",
+  "default_location",
   "section_break_7",
   "items"
  ],
@@ -108,11 +110,21 @@
    "options": "Draft\nSubmitted\nAssets in Draft Mode\nAssets Created",
    "read_only": 1,
    "reqd": 1
+  },
+  {
+   "fieldname": "column_break_12",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "default_location",
+   "fieldtype": "Link",
+   "label": "Default Location",
+   "options": "Location"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2021-10-24 23:13:33.165607",
+ "modified": "2021-10-25 10:47:13.082606",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Asset Formation",
