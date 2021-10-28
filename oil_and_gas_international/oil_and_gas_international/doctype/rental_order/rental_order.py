@@ -27,6 +27,7 @@ def get_rental_quotation_items(docname=None):
         "name": doc.name,
         "customer":	doc.customer,
         "date":	doc.date,
+        "rate_type": doc.rate_type,
         "rq_items":	doc.items,
     }
 

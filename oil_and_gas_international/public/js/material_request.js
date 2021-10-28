@@ -54,7 +54,6 @@ const get_items_from_rental_order = (frm) => {
                         cur_dialog.hide()
                     }
                 })
-
             }
         });
     }, 'Get Items From');

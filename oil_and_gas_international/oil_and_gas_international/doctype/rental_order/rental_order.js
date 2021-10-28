@@ -13,12 +13,24 @@ frappe.ui.form.on('Rental Order', {
 
 // Rental Order Item
 frappe.ui.form.on('Rental Order Item', {
+	from_date(frm, cdt, cdn) {
+		calc_days_of_rent(frm, cdt, cdn)
+	},
+
+	to_date(frm, cdt, cdn) {
+		calc_days_of_rent(frm, cdt, cdn)
+	},
+
 	qty(frm, cdt, cdn) {
 		calc_amount(frm, cdt, cdn)
 		calc_total_qty(frm, cdt, cdn)
 	},
 
 	rate(frm, cdt, cdn) {
+		calc_amount(frm, cdt, cdn)
+	},
+
+	days_of_rent(frm, cdt, cdn) {
 		calc_amount(frm, cdt, cdn)
 	},
 
@@ -85,8 +97,13 @@ const get_items_from_rental_quotation = () => {
 
 						cur_doc.items = []
 						for (const row of data.rq_items) {
+							let rate = row.rate
+							if (data.rate_type == "Per Month") {
+								rate = rate / 30
+							}
+
 							const new_row = cur_frm.add_child('items', {
-								'rate': row.rate,
+								'rate': rate,
 								'asset_location': row.asset_location
 							})
 							const cdt = new_row.doctype
@@ -191,6 +208,22 @@ const calc_total_amount = (frm) => {
 // Rental Order Item
 const calc_amount = (frm, cdt, cdn) => {
 	const row = locals[cdt][cdn]
-	if (row.qty && row.rate)
-		frappe.model.set_value(cdt, cdn, 'amount', row.qty * row.rate)
+	if (row.qty && row.rate && row.days_of_rent)
+		frappe.model.set_value(cdt, cdn, 'amount', row.qty * row.rate * row.days_of_rent)
+}
+
+const calc_days_of_rent = (frm, cdt, cdn) => {
+	const row = locals[cdt][cdn]
+	if (row.from_date && row.to_date) {
+		const to_date = new Date(row.to_date)
+		const from_date = new Date(row.from_date)
+		const difference = Math.floor((to_date - from_date) / (1000 * 60 * 60 * 24) + 1)
+
+		if (difference < 1) {
+			frappe.msgprint("To Date can't be before From date!")
+			frappe.model.set_value(cdt, cdn, 'days_of_rent', 0)
+			return
+		}
+		frappe.model.set_value(cdt, cdn, 'days_of_rent', difference)
+	}
 }

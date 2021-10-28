@@ -107,8 +107,13 @@ const add_rental_order = () => {
 
 				cur_doc.items = []
 				for (const row of doc.items) {
+					let rate = row.rate
+					if (doc.rate_type == "Per Month") {
+						rate = rate / 30
+					}
+
 					const new_row = cur_frm.add_child('items', {
-						'rate': row.rate,
+						'rate': rate,
 						'asset_location': row.asset_location
 					})
 					const cdt = new_row.doctype

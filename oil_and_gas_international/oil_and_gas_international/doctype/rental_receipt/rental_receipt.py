@@ -33,7 +33,7 @@ class RentalReceipt(Document):
             for asset in assets:
                 if asset:
                     # updating asset status
-                    frappe.db.set_value("Asset", asset, "rental_status", "Available for Rent")
+                    frappe.db.set_value("Asset", asset, "rental_status", "On hold for Inspection")
                     frappe.db.set_value("Asset", asset, "rental_order", "")
                     
                     # updating rental order item status

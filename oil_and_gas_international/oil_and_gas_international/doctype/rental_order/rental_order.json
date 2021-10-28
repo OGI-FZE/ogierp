@@ -88,6 +88,7 @@
    "fieldtype": "Column Break"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "total",
    "fieldtype": "Currency",
    "label": "Total",
@@ -138,10 +139,11 @@
    "label": "Billing and Delivery Status"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "status",
    "fieldtype": "Select",
    "label": "Status",
-   "options": "Draft\nOn Hold\nTo Issue and Bill\nTo Return and Bill\nTo Bill\nCompleted\nCancelled\nClosed"
+   "options": "Draft\nOpen\nOn Hold\nTo Issue and Bill\nTo Return and Bill\nTo Bill\nCompleted\nCancelled\nClosed"
   },
   {
    "fieldname": "amended_from",
@@ -203,7 +205,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2021-10-21 01:01:52.710653",
+ "modified": "2021-10-28 15:26:17.888882",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Rental Order",

@@ -35,6 +35,7 @@ doctype_js = {
     "Opportunity": "public/js/opportunity.js",
     "Material Request": "public/js/material_request.js",
     "Purchase Order": "public/js/purchase_order.js",
+    "Asset": "public/js/asset.js",
 }
 # doctype_js = {"doctype" : "public/js/doctype.js"}
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
@@ -95,9 +96,9 @@ doctype_js = {
 # Hook on document methods and events
 
 doc_events = {
-	"Asset": {
-		"on_submit": "oil_and_gas_international.events.asset.create_stock_entry_for_asset_conversion"
-	},
+    "Asset": {
+        "on_submit": "oil_and_gas_international.events.asset.create_stock_entry_for_asset_conversion"
+    },
 }
 
 # Scheduled Tasks
@@ -173,7 +174,7 @@ fixtures = [
                 # Item
                 'Item-item_type',
                 'Item-other_item_type',
-                
+
                 # Assets
                 'Asset-rental_status',
                 'Asset-rental_order',
