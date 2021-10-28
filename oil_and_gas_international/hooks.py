@@ -174,6 +174,39 @@ fixtures = [
                 # Item
                 'Item-item_type',
                 'Item-other_item_type',
+                #Custom Section
+                'Item-specifications',
+                'Item-make',
+                'Item-model',
+                'Item-size',
+                'Item-type',
+                'Item-part_number',
+                'Item-material',
+                'Item-pressure_rating',
+                'Item-ppf',
+                'Item-specifications_col_break_1',
+                'Item-pin_box',
+                'Item-pin_connection',
+                'Item-pin_connection',
+                'Item-box_connection',
+                'Item-range',
+                'Item-oal',
+                'Item-od',
+                'Item-id',
+                'Item-mandrel_od',
+                'Item-specifications_col_break_2',
+                'Item-stroke',
+                'Item-wrap_angle',
+                'Item-hard_facing',
+                'Item-capacity',
+                'Item-degree',
+                'Item-psi',
+                'Item-torque_guage',
+                'Item-lift_cylinders',
+                'Item-tool_joint_od',
+
+
+
 
                 # Assets
                 'Asset-rental_status',
