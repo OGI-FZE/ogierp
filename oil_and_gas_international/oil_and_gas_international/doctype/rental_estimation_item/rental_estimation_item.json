@@ -16,6 +16,8 @@
   "qty",
   "estimate_rate",
   "amount",
+  "lih_price",
+  "dbr_price",
   "column_break_12",
   "asset_location",
   "opportunity"
@@ -113,12 +115,22 @@
    "fieldtype": "Link",
    "label": "Opportunity",
    "options": "Opportunity"
+  },
+  {
+   "fieldname": "lih_price",
+   "fieldtype": "Currency",
+   "label": "LIH Price"
+  },
+  {
+   "fieldname": "dbr_price",
+   "fieldtype": "Currency",
+   "label": "DBR Price"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2021-10-29 12:12:07.441327",
+ "modified": "2021-10-31 01:56:14.824783",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Rental Estimation Item",

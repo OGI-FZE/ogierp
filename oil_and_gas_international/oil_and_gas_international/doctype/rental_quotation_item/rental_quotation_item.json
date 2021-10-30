@@ -16,6 +16,8 @@
   "qty",
   "rate",
   "amount",
+  "lih_price",
+  "dbr_price",
   "column_break_12",
   "estimate_rate",
   "asset_location",
@@ -129,12 +131,22 @@
    "label": "Qty",
    "non_negative": 1,
    "reqd": 1
+  },
+  {
+   "fieldname": "lih_price",
+   "fieldtype": "Currency",
+   "label": "LIH Price"
+  },
+  {
+   "fieldname": "dbr_price",
+   "fieldtype": "Currency",
+   "label": "DBR Price"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2021-10-29 12:31:49.930270",
+ "modified": "2021-10-31 01:55:36.994700",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Rental Quotation Item",

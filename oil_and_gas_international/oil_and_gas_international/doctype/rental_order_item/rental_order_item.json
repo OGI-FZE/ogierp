@@ -16,6 +16,8 @@
   "qty",
   "rate",
   "days_of_rent",
+  "lih_price",
+  "dbr_price",
   "column_break_9",
   "amount",
   "asset_location",
@@ -165,12 +167,22 @@
    "hidden": 1,
    "label": "Rental Quotation",
    "options": "Rental Quotation"
+  },
+  {
+   "fieldname": "lih_price",
+   "fieldtype": "Currency",
+   "label": "LIH Price"
+  },
+  {
+   "fieldname": "dbr_price",
+   "fieldtype": "Currency",
+   "label": "DBR Price"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2021-10-30 21:07:22.841798",
+ "modified": "2021-10-31 01:53:50.429282",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Rental Order Item",
