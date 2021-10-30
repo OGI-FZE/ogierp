@@ -7,6 +7,15 @@ frappe.ui.form.on("Opportunity", {
 })
 
 frappe.ui.form.on("Opportunity Item", {
+    item_code(frm, cdt, cdn) {
+        const row = locals[cdt][cdn]
+        const item_code = row.item_code
+        frappe.db.get_value("Item", item_code, "item_type").then(r => {
+            row.item_type = r.message.item_type
+            frm.refresh()
+        })
+    },
+    
     item_type(frm) {
         frm.fields_dict['items'].grid.get_field('item_code').get_query = function (doc, cdt, cdn) {
             return {
