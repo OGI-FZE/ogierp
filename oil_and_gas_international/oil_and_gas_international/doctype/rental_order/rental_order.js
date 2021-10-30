@@ -59,6 +59,8 @@ const create_custom_buttons = () => {
 	} else if (status == 1) {
 		add_rental_issue_note()
 		add_rental_receipt()
+
+		add_material_request()
 		add_purchase_order()
 		add_asset_formation()
 	}
@@ -147,6 +149,24 @@ const add_rental_receipt = () => {
 				cur_doc.customer = doc.customer
 				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "rental_order", doc.name)
 
+				cur_frm.refresh()
+			}
+		])
+	}, 'Create')
+}
+
+const add_material_request = () => {
+	const doctype = "Material Request"
+	cur_frm.add_custom_button(doctype, () => {
+		const doc = cur_frm.doc
+		frappe.run_serially([
+			() => frappe.new_doc(doctype),
+			() => {
+				const cur_doc = cur_frm.doc
+				const cdt = cur_doc.doctype
+				const cdn = cur_doc.name
+
+				frappe.model.set_value(cdt, cdn, "rental_order", doc.name)
 				cur_frm.refresh()
 			}
 		])

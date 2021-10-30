@@ -36,6 +36,7 @@ doctype_js = {
     "Material Request": "public/js/material_request.js",
     "Purchase Order": "public/js/purchase_order.js",
     "Asset": "public/js/asset.js",
+    "Item": "public/js/item.js",
 }
 # doctype_js = {"doctype" : "public/js/doctype.js"}
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
@@ -174,7 +175,9 @@ fixtures = [
                 # Item
                 'Item-item_type',
                 'Item-other_item_type',
-                #Custom Section
+                'Item-relevant_item',
+
+                # Custom Section
                 'Item-specifications',
                 'Item-make',
                 'Item-model',
