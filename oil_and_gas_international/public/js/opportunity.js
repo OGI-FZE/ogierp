@@ -40,7 +40,8 @@ const create_rental_estimation = (frm) => {
                             'qty': row.qty,
                             'item_code': row.item_code,
                             'item_name': row.item_name,
-                            'description': row.description
+                            'description': row.description,
+                            'opportunity': doc.name,
                         })
                     }
 

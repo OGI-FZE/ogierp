@@ -15,7 +15,8 @@
   "assets",
   "get_assets",
   "section_break_10",
-  "rental_order_item"
+  "rental_order_item",
+  "rental_order"
  ],
  "fields": [
   {
@@ -82,12 +83,19 @@
    "hidden": 1,
    "label": "Rental Order Item",
    "options": "Rental Order Item"
+  },
+  {
+   "fieldname": "rental_order",
+   "fieldtype": "Link",
+   "label": "Rental Order",
+   "options": "Rental Order",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2021-10-16 16:47:42.896536",
+ "modified": "2021-10-29 12:33:49.963798",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Rental Issue Note Item",
