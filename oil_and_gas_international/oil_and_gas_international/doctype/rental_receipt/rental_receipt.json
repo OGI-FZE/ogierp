@@ -12,6 +12,7 @@
   "column_break_4",
   "date",
   "comapny",
+  "rental_issue_note",
   "section_break_7",
   "items",
   "amended_from"
@@ -79,12 +80,19 @@
    "options": "Rental Receipt",
    "print_hide": 1,
    "read_only": 1
+  },
+  {
+   "fieldname": "rental_issue_note",
+   "fieldtype": "Link",
+   "label": "Rental Issue Note",
+   "options": "Rental Issue Note",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2021-10-16 16:53:42.828551",
+ "modified": "2021-10-31 01:21:39.625288",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Rental Receipt",

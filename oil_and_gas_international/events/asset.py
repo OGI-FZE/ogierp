@@ -18,7 +18,8 @@ def create_stock_entry_for_asset_conversion (doc, method):
             'posting_date': doc.purchase_date,
             'asset': doc.name,
             'company': doc.company,
-            'remarks': f'Asset Convertion against Asset#{doc.name}'
+            'remarks': f'Asset Convertion against Asset#{doc.name}',
+            'against_asset_formation': doc.against_asset_formation
             })
 
         # Entry for Stock Item

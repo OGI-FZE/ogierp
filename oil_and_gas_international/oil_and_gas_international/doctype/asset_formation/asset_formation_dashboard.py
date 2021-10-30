@@ -5,14 +5,11 @@ from frappe import _
 
 def get_data():
     return {
-        "fieldname": "rental_issue_note",
-        "internal_links": {
-            "Rental Order": ["items", 'rental_order']
-        },
+        "fieldname": "against_asset_formation",
         "transactions": [
             {
                 'label': _('References'),
-                'items': ['Rental Order', "Rental Receipt"]
+                'items': ['Asset', "Stock Entry"]
             },
         ]
     }

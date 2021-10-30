@@ -15,7 +15,9 @@
   "assets",
   "get_assets",
   "section_break_10",
-  "rental_order_item"
+  "rental_order",
+  "rental_order_item",
+  "rental_issue_note"
  ],
  "fields": [
   {
@@ -81,12 +83,26 @@
    "label": "Asset Location",
    "options": "Location",
    "reqd": 1
+  },
+  {
+   "fieldname": "rental_order",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Rental Order",
+   "options": "Rental Order"
+  },
+  {
+   "fieldname": "rental_issue_note",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Rental Issue Note",
+   "options": "Rental Issue Note"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2021-10-24 22:44:58.307302",
+ "modified": "2021-10-31 01:32:31.394986",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Rental Receipt Item",

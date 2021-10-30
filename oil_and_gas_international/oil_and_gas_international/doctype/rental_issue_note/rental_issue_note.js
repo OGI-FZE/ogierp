@@ -2,6 +2,9 @@
 // For license information, please see license.txt
 
 frappe.ui.form.on('Rental Issue Note', {
+	refresh() {
+		create_custom_buttons()
+	},
 	rental_order(frm, cdt, cdn) {
 		get_items_from_rental_order(frm, cdt, cdn)
 	}
@@ -12,6 +15,34 @@ frappe.ui.form.on('Rental Issue Note Item', {
 		get_assets_to_issue(frm, cdt, cdn)
 	}
 });
+
+
+const create_custom_buttons = () => {
+	const doc = cur_frm.doc
+	const status = doc.docstatus
+
+	if (status == 1) {
+		add_rental_receipt()
+	}
+}
+
+
+const add_rental_receipt = () => {
+	cur_frm.add_custom_button('Rental Receipt', () => {
+		const doc = cur_frm.doc
+		frappe.run_serially([
+			() => frappe.new_doc('Rental Receipt'),
+			() => {
+				const cur_doc = cur_frm.doc
+				cur_doc.customer = doc.customer
+				cur_doc.rental_issue_note = doc.name
+				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "rental_order", doc.rental_order)
+
+				cur_frm.refresh()
+			}
+		])
+	}, 'Create')
+}
 
 
 const get_items_from_rental_order = (frm, cdt, cdn) => {
@@ -25,7 +56,7 @@ const get_items_from_rental_order = (frm, cdt, cdn) => {
 			if (!data) return
 			frm.doc.items = []
 			for (const row of data) {
-				
+
 				const new_row = frm.add_child('items', {
 					'qty': row.qty,
 					'rate': row.rate,

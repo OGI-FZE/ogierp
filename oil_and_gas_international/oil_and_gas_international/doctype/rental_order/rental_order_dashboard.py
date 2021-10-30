@@ -13,7 +13,7 @@ def get_data():
         "transactions": [
             {
                 'label': _('Transactions'),
-                'items': ['Rental Quotation', "Rental Estimation", "Rental Issue Note", "Sales Invoice"]
+                'items': ['Rental Quotation', "Rental Estimation", "Rental Issue Note", "Rental Receipt", "Sales Invoice"]
             },
             {
                 'label': _('References'),

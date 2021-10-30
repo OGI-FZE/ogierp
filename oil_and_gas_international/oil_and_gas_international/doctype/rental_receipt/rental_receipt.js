@@ -22,7 +22,9 @@ const get_items_from_rental_order = (frm, cdt, cdn) => {
 					'qty': row.qty,
 					'rate': row.rate,
 					'asset_location': row.asset_location,
+					'rental_order': rental_order,
 					'rental_order_item': row.name,
+					'rental_issue_note': frm.doc.rental_issue_note || '',
 				})
 
 				const cdt = new_row.doctype
