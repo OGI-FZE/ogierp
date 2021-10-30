@@ -220,24 +220,31 @@ fixtures = [
                 'Opportunity-item_type',
                 'Opportunity-references',
                 'Opportunity-rental_estimation',
+
                 # Opportunity Item
                 'Opportunity Item-item_type',
 
                 # Material Request Item
                 'Material Request Item-rental_order',
+
                 # Materi Request
                 'Material Request-rental_order',
 
                 # Purchase Order
                 'Purchase Order-rental_order',
+
                 # Purchase Order Item
                 'Purchase Order Item-rental_order',
 
                 # Purcahse Invoice
                 'Purchase Invoice-rental_order',
+
                 # purchase Invoice Item
                 'Purchase Invoice Item-rental_order',
                 'Purchase Invoice Item-rental_order_item',
+
+                # Sales Invoice
+                "Sales Invoice-rental_order"
             ]]
         ]
     },

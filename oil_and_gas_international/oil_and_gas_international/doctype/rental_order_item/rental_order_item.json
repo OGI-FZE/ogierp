@@ -23,7 +23,9 @@
   "received_qty",
   "status",
   "section_break_18",
-  "on_hold"
+  "on_hold",
+  "rental_estimation",
+  "rental_quotation"
  ],
  "fields": [
   {
@@ -149,12 +151,26 @@
    "fieldname": "on_hold",
    "fieldtype": "Check",
    "label": "On Hold"
+  },
+  {
+   "fieldname": "rental_estimation",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Rental Estimation",
+   "options": "Rental Estimation"
+  },
+  {
+   "fieldname": "rental_quotation",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Rental Quotation",
+   "options": "Rental Quotation"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2021-10-28 15:09:03.762997",
+ "modified": "2021-10-30 21:07:22.841798",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Rental Order Item",

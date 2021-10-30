@@ -114,7 +114,9 @@ const add_rental_order = () => {
 
 					const new_row = cur_frm.add_child('items', {
 						'rate': rate,
-						'asset_location': row.asset_location
+						'asset_location': row.asset_location,
+						'rental_quotation': doc.name,
+						'rental_estimation': row.rental_estimate,
 					})
 					const cdt = new_row.doctype
 					const cdn = new_row.name

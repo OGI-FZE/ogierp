@@ -61,8 +61,8 @@ const create_custom_buttons = () => {
 		add_rental_receipt()
 
 		add_material_request()
-		add_purchase_order()
 		add_asset_formation()
+		add_purchase_order()
 	}
 }
 
@@ -106,7 +106,9 @@ const get_items_from_rental_quotation = () => {
 
 							const new_row = cur_frm.add_child('items', {
 								'rate': rate,
-								'asset_location': row.asset_location
+								'asset_location': row.asset_location,
+								'rental_estimation': row.rental_estimate,
+								'rental_quotation': data.name,
 							})
 							const cdt = new_row.doctype
 							const cdn = new_row.name
@@ -173,6 +175,28 @@ const add_material_request = () => {
 	}, 'Create')
 }
 
+
+const add_asset_formation = () => {
+	cur_frm.add_custom_button('Asset Formation', () => {
+		const doc = cur_frm.doc
+		frappe.run_serially([
+			() => frappe.new_doc('Asset Formation'),
+			() => {
+				const cur_doc = cur_frm.doc
+				const cdt = cur_doc.doctype
+				const cdn = cur_doc.name
+
+				cur_doc.rental_order = doc.name
+				if (doc.items.length == 1)
+					frappe.model.set_value(cdt, cdn, "asset_item_code", doc.items[0].item_code)
+
+
+				cur_frm.refresh()
+			}
+		])
+	}, 'Create')
+}
+
 const add_purchase_order = () => {
 	cur_frm.add_custom_button('Purchase Order', () => {
 		const doc = cur_frm.doc
@@ -198,14 +222,6 @@ const add_purchase_order = () => {
 	}, 'Create')
 }
 
-const add_asset_formation = () => {
-	cur_frm.add_custom_button('Asset Formation', () => {
-		const doc = cur_frm.doc
-		frappe.run_serially([
-			() => frappe.new_doc('Asset Formation'),
-		])
-	}, 'Create')
-}
 
 const calc_total_qty = (frm) => {
 	let total = 0

@@ -8,6 +8,7 @@
  "field_order": [
   "asset_item_code",
   "status",
+  "rental_order",
   "column_break_3",
   "company",
   "posting_date",
@@ -112,11 +113,17 @@
   {
    "fieldname": "column_break_9",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "rental_order",
+   "fieldtype": "Link",
+   "label": "Rental Order",
+   "options": "Rental Order"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2021-10-30 19:54:20.828916",
+ "modified": "2021-10-31 00:46:23.306641",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Asset Formation",
