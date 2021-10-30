@@ -13,6 +13,10 @@ frappe.ui.form.on('Rental Order', {
 
 // Rental Order Item
 frappe.ui.form.on('Rental Order Item', {
+	item_code(frm, cdt, cdn) {
+		calculate_lost_and_damage_price(frm, cdt, cdn)
+	},
+
 	from_date(frm, cdt, cdn) {
 		calc_days_of_rent(frm, cdt, cdn)
 	},
@@ -268,6 +272,26 @@ const calc_total_amount = (frm) => {
 }
 
 // Rental Order Item
+
+const calculate_lost_and_damage_price = (frm, cdt, cdn) => {
+	const row = locals[cdt][cdn]
+	const item_code = row.item_code
+
+	frappe.call({
+		method: "oil_and_gas_international.events.shared.get_lost_and_damage_prices",
+		args: {
+			item_code
+		},
+		callback(r) {
+			const data = r.message
+			row.lih_price = data[0]
+			row.dbr_price = data[1]
+			frm.refresh()
+		}
+	})
+}
+
+
 const calc_amount = (frm, cdt, cdn) => {
 	const row = locals[cdt][cdn]
 	if (row.qty && row.rate && row.days_of_rent)

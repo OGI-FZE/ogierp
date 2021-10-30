@@ -11,6 +11,10 @@ frappe.ui.form.on('Rental Issue Note', {
 });
 
 frappe.ui.form.on('Rental Issue Note Item', {
+	item_code(frm, cdt, cdn) {
+		calculate_lost_and_damage_price(frm, cdt, cdn)
+	},
+
 	get_assets(frm, cdt, cdn) {
 		get_assets_to_issue(frm, cdt, cdn)
 	}
@@ -105,3 +109,20 @@ const get_assets_to_issue = (frm, cdt, cdn) => {
 	});
 }
 
+const calculate_lost_and_damage_price = (frm, cdt, cdn) => {
+	const row = locals[cdt][cdn]
+	const item_code = row.item_code
+
+	frappe.call({
+		method: "oil_and_gas_international.events.shared.get_lost_and_damage_prices",
+		args: {
+			item_code
+		},
+		callback(r) {
+			const data = r.message
+			row.lih_price = data[0]
+			row.dbr_price = data[1]
+			frm.refresh()
+		}
+	})
+}
