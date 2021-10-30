@@ -63,6 +63,7 @@ const create_custom_buttons = () => {
 		add_material_request()
 		add_asset_formation()
 		add_purchase_order()
+		add_purchase_invoice()
 	}
 }
 
@@ -204,10 +205,35 @@ const add_purchase_order = () => {
 			() => frappe.new_doc('Purchase Order'),
 			() => {
 				const cur_doc = cur_frm.doc
-				cur_doc.rental_order = data.name
+				cur_doc.rental_order = doc.name
 				cur_doc.items = []
 
-				for (const row of cur_doc.items) {
+				for (const row of doc.items) {
+					const new_row = cur_frm.add_child("items", {
+						qty: row.qty
+					})
+					const cdt = new_row.doctype
+					const cdn = new_row.name
+					frappe.model.set_value(cdt, cdn, "item_code", row.item_code)
+				}
+
+				cur_frm.refresh()
+			}
+		])
+	}, 'Create')
+}
+
+const add_purchase_invoice = () => {
+	cur_frm.add_custom_button('Purchase Invoice', () => {
+		const doc = cur_frm.doc
+		frappe.run_serially([
+			() => frappe.new_doc('Purchase Invoice'),
+			() => {
+				const cur_doc = cur_frm.doc
+				cur_doc.rental_order = doc.name
+				cur_doc.items = []
+
+				for (const row of doc.items) {
 					const new_row = cur_frm.add_child("items", {
 						qty: row.qty
 					})
