@@ -244,7 +244,9 @@ fixtures = [
                 'Purchase Invoice Item-rental_order_item',
 
                 # Sales Invoice
-                "Sales Invoice-rental_order"
+                "Sales Invoice-rental_order",
+                
+                # Stock Entry
                 "Stock Entry-against_asset_formation"
             ]]
         ]
