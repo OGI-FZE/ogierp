@@ -23,6 +23,7 @@ const get_items_from_rental_order = (frm, cdt, cdn) => {
 						'qty': row.qty,
 						'rate': row.rate,
 						'asset_location': row.asset_location,
+						'rental_order': rental_order,
 						'rental_order_item': row.name,
 					})
 
