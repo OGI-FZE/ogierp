@@ -11,7 +11,7 @@
   "rental_order",
   "column_break_4",
   "date",
-  "comapny",
+  "company",
   "section_break_7",
   "items",
   "amended_from"
@@ -53,14 +53,6 @@
    "reqd": 1
   },
   {
-   "fieldname": "comapny",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "Comapny",
-   "options": "Company",
-   "reqd": 1
-  },
-  {
    "fieldname": "section_break_7",
    "fieldtype": "Section Break"
   },
@@ -88,12 +80,20 @@
    "options": "Rental Timesheet",
    "print_hide": 1,
    "read_only": 1
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Company",
+   "options": "Company",
+   "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2021-10-28 14:49:22.031456",
+ "modified": "2021-11-07 16:08:10.199190",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Rental Timesheet",
