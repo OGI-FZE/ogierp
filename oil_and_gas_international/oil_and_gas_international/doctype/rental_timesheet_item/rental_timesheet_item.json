@@ -15,7 +15,8 @@
   "asset_location",
   "section_break_10",
   "rental_order",
-  "rental_order_item"
+  "rental_order_item",
+  "is_billed"
  ],
  "fields": [
   {
@@ -81,12 +82,18 @@
    "fieldtype": "Link",
    "label": "Rental Order",
    "options": "Rental Order"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_billed",
+   "fieldtype": "Check",
+   "label": "Is Billed"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2021-11-07 00:30:14.621422",
+ "modified": "2021-11-09 16:32:00.281380",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Rental Timesheet Item",
