@@ -80,6 +80,8 @@ const get_items_from_rental_order = (frm, cdt, cdn) => {
 }
 
 const get_assets_to_issue = (frm, cdt, cdn) => {
+	const row = locals[cdt][cdn]
+
 	const doctype = "Asset"
 	new frappe.ui.form.MultiSelectDialog({
 		doctype: doctype,
@@ -92,6 +94,7 @@ const get_assets_to_issue = (frm, cdt, cdn) => {
 			return {
 				filters: {
 					rental_status: "Available For Rent",
+					item_code: row.item_code
 				}
 			}
 		},
