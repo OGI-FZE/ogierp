@@ -49,7 +49,6 @@ def make_rental_timesheet():
                         assets = row.assets
                         assets = assets.split("\n")
                         for asset in assets:
-                            print(asset)
                             if asset:
                                 rental_status = frappe.get_value(
                                     "Asset", asset, "rental_status")
