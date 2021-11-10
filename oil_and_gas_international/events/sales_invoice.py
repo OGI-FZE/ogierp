@@ -20,3 +20,17 @@ def get_timesheet(rental_orders=None):
                                  }, ["*"])
 
     return timesheets
+
+
+def validate(doc, method=None):
+    for row in doc.items:
+        if row.rental_timesheet_item:
+            row.rate = frappe.db.get_value(
+                "Rental Timesheet Item", row.rental_timesheet_item, "rate")
+
+
+def on_submit(doc, method=None):
+    for row in doc.items:
+        if row.rental_timesheet_item:
+            row.rate = frappe.db.set_value(
+                "Rental Timesheet Item", row.rental_timesheet_item, "is_billed", 1)

@@ -32,17 +32,23 @@ const create_custom_buttons = (frm) => {
                         rental_orders: selections
                     },
                     callback(r) {
+                        frm.doc.items = []
                         const data = r.message
-                        for (const row in data) {
-                            frm.add_child("items", {
-                                item_code: row.item_code,
-                                qty: row.qty,
-                                rate: row.rate,
-                                rental_order: row.rental_order,
-                                rental_order_item: row.rental_order_item,
-                                rental_timesheet: row.parent,
-                                rental_timesheet_item: row.name
+                        for (const row of data) {
+                            const new_row = frm.add_child("items", {
+                                "rental_order": row.rental_order,
+                                "rental_order_item": row.rental_order_item,
+                                "rental_timesheet": row.parent,
+                                "rental_timesheet_item": row.name,
                             })
+
+                            const cdt = new_row.doctype
+                            const cdn = new_row.name
+                            frappe.model.set_value(cdt, cdn, "item_code", row.item_code)
+                            frappe.model.set_value(cdt, cdn, "qty", row.qty)
+                            setTimeout(() => {
+                                frappe.model.set_value(cdt, cdn, "rate", row.rate)
+                            }, 1000);
                         }
 
                         frm.refresh_field("items")
