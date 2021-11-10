@@ -18,11 +18,11 @@ def make_rental_timesheet():
         "to_date": [">=", today()]
     }, ["parent"])
 
-    rental_orders = []
+    rental_orders = set()
     for row in rental_order_items:
-        rental_orders.append(row.parent)
+        rental_orders.add(row.parent)
 
-    rental_orders = Counter(rental_orders)
+    rental_orders = list(rental_orders)
 
     for row in rental_orders:
         rental_order = frappe.get_doc("Rental Order", row)
