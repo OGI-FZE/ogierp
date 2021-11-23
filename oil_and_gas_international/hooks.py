@@ -101,10 +101,10 @@ doc_events = {
     "Asset": {
         "on_submit": "oil_and_gas_international.events.asset.create_stock_entry_for_asset_conversion"
     },
-    "Sales Invoice": {
-        "validate": "oil_and_gas_international.events.sales_invoice.validate",
-        "on_submit": "oil_and_gas_international.events.sales_invoice.on_submit"
-    },
+    # "Sales Invoice": {
+    #     "validate": "oil_and_gas_international.events.sales_invoice.validate",
+    #     "on_submit": "oil_and_gas_international.events.sales_invoice.on_submit"
+    # },
 }
 
 # Scheduled Tasks

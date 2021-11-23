@@ -24,6 +24,7 @@
   "delivered_qty",
   "received_qty",
   "status",
+  "rental_status",
   "section_break_18",
   "on_hold",
   "rental_estimation",
@@ -179,12 +180,18 @@
    "fieldname": "dbr_price",
    "fieldtype": "Currency",
    "label": "DBR Price"
+  },
+  {
+   "fieldname": "rental_status",
+   "fieldtype": "Link",
+   "label": "Rental Status",
+   "options": "Rental Order Item Status"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2021-11-08 11:49:21.429356",
+ "modified": "2021-11-23 14:30:10.058319",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Rental Order Item",
