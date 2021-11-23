@@ -9,11 +9,29 @@ def daily():
     # check_re_validity()
     # check_rq_validity()
     make_rental_timesheet()
+    calc_rental_order_item_amount()
+
+
+def calc_rental_order_item_amount():
+    rental_orders = frappe.get_list("Rental Order", {
+        "status": "Open"
+    }, ["name"])
+
+    for ro in rental_orders:
+        rental_order = frappe.get_doc("Rental Order", ro.name)
+        for item in rental_order.items:
+            price_list = frappe.get_value("Rental Order Item Status",
+                                          item.item_status, "price_list")
+            status_price = frappe.get_value("Price List", {
+                "item_code": item.item_code,
+                "price_list": price_list
+            }, "price_list_rate")
+
+            item.total_amount = item.total_amount + status_price
 
 
 def make_rental_timesheet():
     rental_order_items = frappe.get_list("Rental Order Item", {
-        "on_hold": 0,
         "from_date": ["<=", today()],
         "to_date": [">=", today()]
     }, ["parent"])
@@ -43,7 +61,8 @@ def make_rental_timesheet():
             has_items = False
             for item in rental_order.items:
                 rental_assets = frappe.get_list("Rental Issue Note Item", {
-                                                "rental_order_item": item.name}, ["assets"])
+                                                "rental_order_item": item.name
+                                                }, ["assets"])
 
                 qty = 0
                 for row in rental_assets:
