@@ -20,14 +20,16 @@ def calc_rental_order_item_amount():
     for ro in rental_orders:
         rental_order = frappe.get_doc("Rental Order", ro.name)
         for item in rental_order.items:
-            price_list = frappe.get_value("Rental Order Item Status",
-                                          item.item_status, "price_list")
-            status_price = frappe.get_value("Price List", {
-                "item_code": item.item_code,
-                "price_list": price_list
-            }, "price_list_rate")
+            if item.item_status:
+                price_list = frappe.get_value("Rental Order Item Status",
+                                              item.item_status, "price_list")
 
-            item.total_amount = item.total_amount + status_price
+                status_price = frappe.get_value("Price List", {
+                    "item_code": item.item_code,
+                    "price_list": price_list
+                }, "price_list_rate")
+
+                item.total_amount = item.total_amount + status_price
 
 
 def make_rental_timesheet():
