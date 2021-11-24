@@ -8,7 +8,7 @@ from collections import Counter
 def daily():
     # check_re_validity()
     # check_rq_validity()
-    make_rental_timesheet()
+    # make_rental_timesheet()
     calc_rental_order_item_amount()
 
 
@@ -20,16 +20,24 @@ def calc_rental_order_item_amount():
     for ro in rental_orders:
         rental_order = frappe.get_doc("Rental Order", ro.name)
         for item in rental_order.items:
-            if item.item_status:
+            if item.rental_status:
                 price_list = frappe.get_value("Rental Order Item Status",
-                                              item.item_status, "price_list")
+                                              item.rental_status, "price_list")
 
-                status_price = frappe.get_value("Price List", {
+                status_price = frappe.get_value("Item Price", {
                     "item_code": item.item_code,
                     "price_list": price_list
                 }, "price_list_rate")
-
+                print(status_price)
+                if not status_price:
+                    status_price = 0
                 item.total_amount = item.total_amount + status_price
+
+                print(item.total_amount)
+
+        rental_order.save()
+
+    frappe.db.commit()
 
 
 def make_rental_timesheet():

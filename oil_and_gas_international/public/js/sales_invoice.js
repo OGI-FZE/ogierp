@@ -1,12 +1,30 @@
 frappe.ui.form.on("Sales Invoice", {
     refresh(frm) {
         create_custom_buttons(frm)
+        
+    },
+    validate:function(frm){
+        if(frm.doc.rental_order){
+            frappe.db.get_doc('Rental Order',frm.doc.rental_order )
+            .then(doc => {
+                for(let row of doc.items){
+                    for(let item of frm.doc.items){
+                        if(row.item_code==item.asset_item){
+                            const cdt=item.doctype;
+                            const cdn=item.name;
+                            frappe.model.set_value(cdt,cdn,'rate',row.total_amount)
+                        }
+                    }   
+                }
+            })
+        }
     }
 })
 
 
+
 const create_custom_buttons = (frm) => {
-    frm.add_custom_button("Fetch Rental Timesheet", () => {
+    frm.add_custom_button("Fetch Rental Order", () => {
         if (!frm.doc.customer) {
             frappe.throw("Please select customer!")
         }
@@ -27,7 +45,7 @@ const create_custom_buttons = (frm) => {
             },
             action(selections) {
                 frappe.call({
-                    method: "oil_and_gas_international.events.sales_invoice.get_timesheet",
+                    method: "oil_and_gas_international.events.sales_invoice.get_rental_order_items",
                     args: {
                         rental_orders: selections
                     },

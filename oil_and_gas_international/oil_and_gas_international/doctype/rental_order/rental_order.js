@@ -68,6 +68,7 @@ const create_custom_buttons = () => {
 		add_asset_formation()
 		add_purchase_order()
 		add_purchase_invoice()
+		add_sales_invoice()
 	}
 }
 
@@ -229,6 +230,7 @@ const add_purchase_order = () => {
 
 const add_purchase_invoice = () => {
 	cur_frm.add_custom_button('Purchase Invoice', () => {
+		const rate=[]
 		const doc = cur_frm.doc
 		frappe.run_serially([
 			() => frappe.new_doc('Purchase Invoice'),
@@ -241,9 +243,45 @@ const add_purchase_invoice = () => {
 					const new_row = cur_frm.add_child("items", {
 						qty: row.qty
 					})
+					rate.push(row.total_amount)
 					const cdt = new_row.doctype
 					const cdn = new_row.name
 					frappe.model.set_value(cdt, cdn, "item_code", row.item_code)
+				}
+
+				cur_frm.refresh()
+				for(let row of cur_doc.items ){
+					const cdt = row.doctype
+					const cdn = row.name
+					frappe.model.set_value(cdt, cdn, "rate", row.total_amount)
+				}
+			}
+		])
+	}, 'Create')
+}
+const add_sales_invoice = () => {
+	cur_frm.add_custom_button('Sales Invoice', () => {
+		const doc = cur_frm.doc
+		frappe.run_serially([
+			() => frappe.new_doc('Sales Invoice'),
+			() => {
+				const cur_doc = cur_frm.doc
+				cur_doc.customer = doc.customer
+				cur_doc.rental_order = doc.name
+				cur_doc.items = []
+
+				for (const row of doc.items) {
+					const new_row = cur_frm.add_child("items", {
+						qty: 1,
+						asset_item:row.item_code,
+						
+					})
+					const cdt = new_row.doctype
+					const cdn = new_row.name
+					setTimeout(function(){
+						frappe.model.set_value(cdt, cdn, "item_code", 'Asset Rent Item')
+						frappe.model.set_value(cdt, cdn, "price_list_rate",row.total_amount )
+					}, 500);
 				}
 
 				cur_frm.refresh()

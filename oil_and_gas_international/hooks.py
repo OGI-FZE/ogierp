@@ -254,6 +254,9 @@ fixtures = [
                 "Sales Invoice-rental_order_item",
                 "Sales Invoice-rental_timesheet",
                 "Sales Invoice-rental_timesheet_item",
+                "Sales Invoice-rental_order",
+                #Sales Invoie Item
+                'Sales Invoice Item-asset_item',
 
                 # Stock Entry
                 "Stock Entry-against_asset_formation"
