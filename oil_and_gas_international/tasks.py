@@ -28,12 +28,14 @@ def calc_rental_order_item_amount():
                     "item_code": item.item_code,
                     "price_list": price_list
                 }, "price_list_rate")
-                print(status_price)
+               
                 if not status_price:
                     status_price = 0
-                item.total_amount = item.total_amount + status_price
+                slug=item.rental_status
+                slug=slug.replace(" ","_").lower()
+                item[slug] = item[slug] + status_price
 
-                print(item.total_amount)
+                item.total_amount = item.total_amount + status_price
 
         rental_order.save()
 
