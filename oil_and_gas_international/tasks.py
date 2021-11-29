@@ -33,7 +33,7 @@ def calc_rental_order_item_amount():
                     status_price = 0
                 slug=item.rental_status
                 slug=slug.replace(" ","_").lower()
-                item[slug] = item[slug] + status_price
+                # item[slug] = item[slug] + status_price
 
                 item.total_amount = item.total_amount + status_price
 
