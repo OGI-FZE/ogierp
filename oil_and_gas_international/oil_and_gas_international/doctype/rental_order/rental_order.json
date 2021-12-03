@@ -199,13 +199,14 @@
    "fieldname": "rental_quotation",
    "fieldtype": "Link",
    "label": "Rental Quotation",
-   "options": "Rental Quotation"
+   "options": "Rental Quotation",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2021-10-28 15:26:17.888882",
+ "modified": "2021-12-03 16:55:12.521873",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Rental Order",

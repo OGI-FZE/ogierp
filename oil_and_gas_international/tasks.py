@@ -1,7 +1,7 @@
 import frappe
 # from oil_and_gas_international.events.rental_estimation import check_validity as check_re_validity
 # from oil_and_gas_international.events.rental_quotation import check_validity as check_rq_validity
-from frappe.utils import today
+from frappe.utils import cstr, getdate, split_emails, add_days, today, get_last_day, get_first_day, month_diff
 from collections import Counter
 
 
@@ -9,6 +9,8 @@ def daily():
     # check_re_validity()
     # check_rq_validity()
     # make_rental_timesheet()
+    rental_estimation_validation()
+    rental_quotation_validation()
     calc_rental_order_item_amount()
 
 
@@ -99,3 +101,25 @@ def make_rental_timesheet():
                 rental_timesheet.save()
                 rental_timesheet.submit()
                 frappe.db.commit()
+
+def rental_estimation_validation():
+    rental_list=frappe.db.get_list('Rental Estimation',filters={'docstatus':1},fields=['name'])
+    today_date = getdate()
+    for row in rental_list:
+        doc = frappe.get_doc('Rental Estimation',row.name)
+        if today_date > doc.valid_till :
+            print('true')
+            doc.set('status','Expired')
+        doc.save()
+    frappe.db.commit()
+
+def rental_quotation_validation():
+    rental_list=frappe.db.get_list('Rental Quotation',filters={'docstatus':1},fields=['name'])
+    today_date = getdate()
+    for row in rental_list:
+        doc = frappe.get_doc('Rental Quotation',row.name)
+        if today_date > doc.valid_till :
+            print('true')
+            doc.set('status','Expired')
+        doc.save()
+    frappe.db.commit()

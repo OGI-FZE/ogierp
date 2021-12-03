@@ -26,6 +26,9 @@ class RentalReceipt(Document):
                 frappe.throw(
                     f"Serial no's count({serial_qty}) not matched with the Qty({row.qty}) of the asset!")
 
+    def on_cancel(self):
+        self.set('status','Cancelled')
+
     def on_submit(self):
         for row in self.items:
             assets = row.assets
@@ -70,7 +73,7 @@ class RentalReceipt(Document):
                         asset_movement_doc.submit()
 
                     frappe.db.commit()
-
+        self.set('status','Submitted')
 
 
 

@@ -3,6 +3,9 @@
 
 frappe.ui.form.on('Rental Issue Note', {
 	refresh() {
+		if(frm.is_new()){
+			frappe.model.set_value('Rental Issue Note',frm.doc.name,'status','Draft')
+		}
 		create_custom_buttons()
 	},
 	rental_order(frm, cdt, cdn) {

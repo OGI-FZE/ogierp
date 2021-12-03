@@ -9,6 +9,7 @@
   "customer",
   "customer_name",
   "rental_order",
+  "status",
   "column_break_4",
   "date",
   "company",
@@ -88,12 +89,20 @@
    "label": "Company",
    "options": "Company",
    "reqd": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Draft\nTo Bill\nCompleted",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2021-11-07 16:08:10.199190",
+ "modified": "2021-12-03 17:06:05.412228",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Rental Timesheet",
