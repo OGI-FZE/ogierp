@@ -53,11 +53,6 @@ def execute(filters=None):
             'fieldtype': 'Data',
             'width':100,
         })
-    columns.append({
-            "label": "Get From Item Category",
-            "fieldname": "get_from_item_category",
-            "fieldtype": "Data",
-    })
     data = get_data(filters, columns,item_list)
     return columns, data
 
@@ -180,9 +175,9 @@ def fieldnames(item_list):
             if 'torque_guage' not in field_list:
                 field_list['torque_guage']='Torque Guage'
             
-        if row.list_cylinders:
-            if 'list_cylinders' not in field_list:
-                field_list['list_cylinders']='List Cylinders'
+        if row.lift_cylinders:
+            if 'lift_cylinders' not in field_list:
+                field_list['lift_cylinders']='Lift Cylinders'
 
     return field_list
 
@@ -282,7 +277,7 @@ def fieldnames_values(row):
         if 'torque_guage' not in field_list:
             field_list['torque_guage']=row.torque_guage
         
-    if row.list_cylinders:
-        if 'list_cylinders' not in field_list:
-            field_list['list_cylinders']=row.list_cylinders
+    if row.lift_cylinders:
+        if 'lift_cylinders' not in field_list:
+            field_list['lift_cylinders']=row.lift_cylinders
     return field_list

@@ -37,7 +37,7 @@ def execute(filters=None):
             "options":'Item',
         },
         {
-            "label": "Asset Status",
+            "label": "Total Assets",
             "fieldname": "asset_status",
             "fieldtype": "Data",
         },
@@ -56,11 +56,11 @@ def execute(filters=None):
             "fieldname": "under_inspection",
             "fieldtype": "Data",
         },
-        {
-            "label": "Out of Order",
-            "fieldname": "out_of_order",
-            "fieldtype": "Data",
-        }
+        # {
+        #     "label": "Out of Order",
+        #     "fieldname": "out_of_order",
+        #     "fieldtype": "Data",
+        # }
         
     ]
     itm_filter = {
@@ -82,11 +82,6 @@ def execute(filters=None):
             'fieldtype': 'Data',
             'width':100,
         })
-    columns.append({
-            "label": "Get From Item Category",
-            "fieldname": "get_from_item_category",
-            "fieldtype": "Data",
-    })
     data = get_data(filters, columns,item_list)
     return columns, data
 
@@ -97,9 +92,11 @@ def get_data(filters, columns,items):
     data = []
     
     for row in items:
+        status=frappe.db.count('Asset',{'item_code':row.item_code,'docstatus':1})
         available = frappe.db.count('Asset',{'item_code':row.item_code,'rental_status':'Available for Rent','docstatus':1})
         use = frappe.db.count('Asset',{'item_code':row.item_code,'rental_status':'In Use','docstatus':1})
         hold = frappe.db.count('Asset',{'item_code':row.item_code,'rental_status':'On hold for Inspection','docstatus':1})
+        out_of_order = frappe.db.count('Asset',{'item_code':row.item_code,'status':'Out of Order','docstatus':1})
         fields=fieldnames_values(row)
         
         item_data ={
@@ -107,9 +104,11 @@ def get_data(filters, columns,items):
             'item_group':row.item_group,
             'sub_group':row.sub_item_group,
             'child_group':row.child_group,
+            'asset_status':status,
             'available':available,
             'rented':use,
             'under_inspection':hold,
+            # 'out_of_order':out_of_order,
         }
         for item in fields:
             item_data.update({
@@ -215,9 +214,9 @@ def fieldnames(item_list):
             if 'torque_guage' not in field_list:
                 field_list['torque_guage']='Torque Guage'
             
-        if row.list_cylinders:
-            if 'list_cylinders' not in field_list:
-                field_list['list_cylinders']='List Cylinders'
+        if row.lift_cylinders:
+            if 'lift_cylinders' not in field_list:
+                field_list['lift_cylinders']='Lift Cylinders'
 
     return field_list
 
@@ -317,7 +316,7 @@ def fieldnames_values(row):
         if 'torque_guage' not in field_list:
             field_list['torque_guage']=row.torque_guage
         
-    if row.list_cylinders:
-        if 'list_cylinders' not in field_list:
-            field_list['list_cylinders']=row.list_cylinders
+    if row.lift_cylinders:
+        if 'lift_cylinders' not in field_list:
+            field_list['lift_cylinders']=row.lift_cylinders
     return field_list
