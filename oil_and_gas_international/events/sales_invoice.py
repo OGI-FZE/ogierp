@@ -14,14 +14,37 @@ def get_rental_order_items(rental_orders=None):
 
     return items
 
+@frappe.whitelist()
+def get_retal_order_rate(si_items):
+    items = json.loads(si_items)
+    values=[]
+    for row in items:
+        if row['rental_order_item']:
+            total,billed = frappe.db.get_value(
+                "Rental Order Item", row['rental_order_item'], ['total_amount','billed_amount'])
+            values.append({
+                'total':total,
+                'billed':billed,
+                })
+    return values
 
-def validate(doc, method=None):
+def addbilledamount(doc, method=None):
     for row in doc.items:
-        if row.rental_timesheet_item:
-            row.rate = frappe.db.get_value(
-                "Rental Timesheet Item", row.rental_timesheet_item, "rate")
+        if row.rental_order_item:
+            new_doc = frappe.get_doc("Rental Order Item", row.rental_order_item)
+            new_doc.db_set('billed_amount',new_doc.billed_amount+row.rate )
 
+    # for row in doc.items:
+    #     if row.rental_timesheet_item:
+    #         row.rate = frappe.db.get_value(
+    #             "Rental Timesheet Item", row.rental_timesheet_item, "rate")
 
+def removebilledamount(doc,method=None):
+    for row in doc.items:
+        if row.rental_order_item:
+            new_doc = frappe.get_doc("Rental Order Item", row.rental_order_item)
+            new_doc.db_set('billed_amount',new_doc.billed_amount-row.rate )
+            
 def on_submit(doc, method=None):
     for row in doc.items:
         if row.rental_timesheet_item:
