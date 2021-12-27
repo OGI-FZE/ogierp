@@ -12,7 +12,7 @@ def daily():
     rental_estimation_validation()
     rental_quotation_validation()
     calc_rental_order_item_amount()
-
+    
 
 def calc_rental_order_item_amount():
     rental_orders = frappe.get_list("Rental Order", {
