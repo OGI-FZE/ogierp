@@ -4,6 +4,11 @@
 frappe.ui.form.on('Rental Receipt', {
 	rental_order(frm, cdt, cdn) {
 		get_items_from_rental_order(frm, cdt, cdn)
+	},
+	refresh:function(frm){
+		if(frm.is_new()){
+			frappe.model.set_value('Rental Receipt',frm.doc.name,'status','Draft')
+		}
 	}
 });
 

@@ -12,6 +12,7 @@
   "column_break_3",
   "company",
   "date",
+  "status",
   "section_break_6",
   "items",
   "amended_from"
@@ -75,12 +76,19 @@
    "fieldtype": "Data",
    "label": "Customer Name",
    "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Draft\nSubmitted\nCancelled\nClosed"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2021-10-16 16:47:03.661525",
+ "modified": "2021-12-03 17:48:12.480880",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Rental Issue Note",

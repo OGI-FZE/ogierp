@@ -6,7 +6,8 @@ from frappe.model.document import Document
 from frappe.utils import today
 
 class RentalTimesheet(Document):
-	pass
+    def on_submit(self):
+        self.set('status','To Bill')
 
 
 
