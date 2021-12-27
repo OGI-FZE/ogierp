@@ -1,13 +1,9 @@
 frappe.ui.form.on("Sales Invoice", {
     refresh(frm,cdt,cdn) {
-        create_custom_buttons(frm)
-            let btn = document.createElement('a');
-            btn.innerText = 'Fetch Rates';
-            btn.className = 'grid-upload btn btn-xs btn-default';
-            frm.fields_dict.items.grid.wrapper.find('.grid-upload').removeClass('hide').parent().append(btn);
-            btn.addEventListener("click", function(){
+        frm.fields_dict["items"].grid.add_custom_button(__('Fetch Rental Rates'),()=> {
             rate_calc(frm);
-        });
+        },
+        );
         
     },
     onload: function (frm, cdt, cdn) {
