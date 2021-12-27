@@ -19,13 +19,14 @@ def get_retal_order_rate(si_items):
     items = json.loads(si_items)
     values=[]
     for row in items:
-        if row['rental_order_item']:
-            total,billed = frappe.db.get_value(
-                "Rental Order Item", row['rental_order_item'], ['total_amount','billed_amount'])
-            values.append({
-                'total':total,
-                'billed':billed,
-                })
+        if 'rental_order_item' not in row:
+            frappe.throw('Sales invoice is not linked with any rental order')
+        total,billed = frappe.db.get_value(
+            "Rental Order Item", row['rental_order_item'], ['total_amount','billed_amount'])
+        values.append({
+            'total':total,
+            'billed':billed,
+            })
     return values
 
 def addbilledamount(doc, method=None):

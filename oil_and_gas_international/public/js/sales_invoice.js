@@ -1,33 +1,18 @@
 frappe.ui.form.on("Sales Invoice", {
-    refresh(frm) {
+    refresh(frm,cdt,cdn) {
         create_custom_buttons(frm)
+            let btn = document.createElement('a');
+            btn.innerText = 'Fetch Rates';
+            btn.className = 'grid-upload btn btn-xs btn-default';
+            frm.fields_dict.items.grid.wrapper.find('.grid-upload').removeClass('hide').parent().append(btn);
+            btn.addEventListener("click", function(){
+            rate_calc(frm);
+        });
         
     },
     onload: function (frm, cdt, cdn) {
-        let btn = document.createElement('a');
-        btn.innerText = 'Fetch Rates';
-        btn.className = 'grid-upload btn btn-xs btn-default';
-        frm.fields_dict.items.grid.wrapper.find('.grid-upload').removeClass('hide').parent().append(btn);
-        btn.addEventListener("click", function(){
-            rate_calc(frm);
-        });
+        
     },	
-    validate:function(frm){
-        if(frm.doc.rental_order){
-            frappe.db.get_doc('Rental Order',frm.doc.rental_order )
-            .then(doc => {
-                for(let row of doc.items){
-                    for(let item of frm.doc.items){
-                        if(row.item_code==item.asset_item){
-                            const cdt=item.doctype;
-                            const cdn=item.name;
-                            frappe.model.set_value(cdt,cdn,'rate',row.total_amount)
-                        }
-                    }   
-                }
-            })
-        }
-    }
 })
 
 
