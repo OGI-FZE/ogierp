@@ -72,7 +72,8 @@ const create_custom_buttons = (frm) => {
 
                             const cdt = new_row.doctype
                             const cdn = new_row.name
-                            frappe.model.set_value(cdt, cdn, "item_code", row.item_code)
+                            frappe.model.set_value(cdt, cdn, "item_code", 'Asset Rent Item')
+                            frappe.model.set_value(cdt, cdn, "asset_item", row.item_code)
                             frappe.model.set_value(cdt, cdn, "qty", 1)
                             frappe.model.set_value(cdt, cdn, "rental order_item", row.name)
                             setTimeout(() => {
