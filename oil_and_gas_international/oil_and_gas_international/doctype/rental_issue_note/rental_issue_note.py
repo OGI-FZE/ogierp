@@ -27,7 +27,11 @@ class RentalIssueNote(Document):
                 frappe.throw(
                     f"Serial no's count({serial_qty}) not matched with the Qty({row.qty}) of the asset!")
 
+    def on_cancel(self):
+        self.set('status','Cancelled')
+
     def on_submit(self):
+        self.set('status','Submitted')
         for row in self.items:
             assets = row.assets
             assets = assets.split("\n")

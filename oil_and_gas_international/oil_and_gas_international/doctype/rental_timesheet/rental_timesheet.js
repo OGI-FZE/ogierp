@@ -4,6 +4,11 @@
 frappe.ui.form.on('Rental Timesheet', {
 	rental_order(frm, cdt, cdn) {
 		get_items_from_rental_order(frm, cdt, cdn)
+	},
+	refresh:function(frm){
+		if(frm.is_new()){
+			frappe.model.set_value('Rental Timesheet',frm.doc.name,'status','Draft')
+		}
 	}
 });
 
