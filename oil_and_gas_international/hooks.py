@@ -212,9 +212,8 @@ fixtures = [
                 'Item-torque_guage',
                 'Item-lift_cylinders',
                 'Item-tool_joint_od',
-
-
-
+                'Item-sub_item_group',
+                'Item-child_group',
 
                 # Assets
                 'Asset-rental_status',
