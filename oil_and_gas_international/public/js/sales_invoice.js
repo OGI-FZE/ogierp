@@ -3,6 +3,15 @@ frappe.ui.form.on("Sales Invoice", {
         create_custom_buttons(frm)
         
     },
+    onload: function (frm, cdt, cdn) {
+        let btn = document.createElement('a');
+        btn.innerText = 'Fetch Rates';
+        btn.className = 'grid-upload btn btn-xs btn-default';
+        frm.fields_dict.items.grid.wrapper.find('.grid-upload').removeClass('hide').parent().append(btn);
+        btn.addEventListener("click", function(){
+            rate_calc(frm);
+        });
+    },	
     validate:function(frm){
         if(frm.doc.rental_order){
             frappe.db.get_doc('Rental Order',frm.doc.rental_order )
@@ -46,6 +55,7 @@ const create_custom_buttons = (frm) => {
             action(selections) {
                 frappe.call({
                     method: "oil_and_gas_international.events.sales_invoice.get_rental_order_items",
+                    async:false,
                     args: {
                         rental_orders: selections
                     },
@@ -54,8 +64,8 @@ const create_custom_buttons = (frm) => {
                         const data = r.message
                         for (const row of data) {
                             const new_row = frm.add_child("items", {
-                                "rental_order": row.rental_order,
-                                "rental_order_item": row.rental_order_item,
+                                "rental_order": row.parent,
+                                "rental_order_item": row.name,
                                 "rental_timesheet": row.parent,
                                 "rental_timesheet_item": row.name,
                             })
@@ -63,10 +73,15 @@ const create_custom_buttons = (frm) => {
                             const cdt = new_row.doctype
                             const cdn = new_row.name
                             frappe.model.set_value(cdt, cdn, "item_code", row.item_code)
-                            frappe.model.set_value(cdt, cdn, "qty", row.qty)
+                            frappe.model.set_value(cdt, cdn, "qty", 1)
+                            frappe.model.set_value(cdt, cdn, "rental order_item", row.name)
                             setTimeout(() => {
-                                frappe.model.set_value(cdt, cdn, "rate", row.rate)
-                            }, 1000);
+                                if(!row.billed_amount){
+                                    frappe.model.set_value(cdt, cdn, "rate", row.total_amount)
+                                }else{
+                                    frappe.model.set_value(cdt, cdn, "rate", row.total_amount-row.billed_amount)
+                                }
+                            }, 5000);
                         }
 
                         frm.refresh_field("items")
@@ -76,4 +91,35 @@ const create_custom_buttons = (frm) => {
             }
         });
     })
+    
 }
+const rate_calc=(frm)=>{
+    frappe.call({
+        method: "oil_and_gas_international.events.sales_invoice.get_retal_order_rate",
+        async:false,
+        args: {
+            si_items: frm.doc.items
+        },
+        callback(r) {
+            for(let row of zip(frm.doc.items,r.message)){ 
+                let cdt=row[0].doctype
+                let cdn=row[0].name
+                ;
+
+                if(row[0].rental_order_item){
+                    setTimeout(() => {
+                        if(!row[1].billed){
+                            frappe.model.set_value(cdt, cdn, "price_list_rate", row[1].total)
+                        }else{
+                            frappe.model.set_value(cdt, cdn, "price_list_rate", row[1].total-row[1].billed)
+                        }
+                    }, 1000);
+                }
+                
+            }
+            
+        }
+    })
+    
+}
+const zip = (a, b) => a.map((k, i) => [k, b[i]]);

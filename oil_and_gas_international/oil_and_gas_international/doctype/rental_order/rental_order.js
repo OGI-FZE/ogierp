@@ -274,14 +274,21 @@ const add_sales_invoice = () => {
 					const new_row = cur_frm.add_child("items", {
 						qty: 1,
 						asset_item:row.item_code,
-						
+						rental_order:row.parent,
+						rental_order_item:row.name,
 					})
 					const cdt = new_row.doctype
 					const cdn = new_row.name
+					frappe.model.set_value(cdt, cdn, "item_code",'Asset Rent Item')
 					setTimeout(function(){
-						frappe.model.set_value(cdt, cdn, "item_code", 'Asset Rent Item')
-						frappe.model.set_value(cdt, cdn, "price_list_rate",row.total_amount )
-					}, 500);
+						if(!row.billed_amount){
+							frappe.model.set_value(cdt, cdn, "price_list_rate",row.total_amount )
+						}
+						else{
+							frappe.model.set_value(cdt, cdn, "price_list_rate",row.total_amount-row.billed_amount)
+						}
+						console.log(row.billed_amount,row.total_amount-row.billed_amount);
+					}, 1000);
 				}
 
 				cur_frm.refresh()

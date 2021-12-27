@@ -7,6 +7,11 @@ from frappe.utils import today
 
 
 class RentalEstimation(Document):
+    def validate(self):
+        for row in self.items:
+            if not row.estimate_rate:
+                self.set('status','Pending Estimation')
+                break
     pass
 
 
@@ -32,3 +37,4 @@ def get_opportunity_items(docname=None):
         "party_name": doc.party_name,
         "opportunity_items": doc.items
     }
+

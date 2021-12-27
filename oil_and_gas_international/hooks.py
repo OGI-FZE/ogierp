@@ -101,10 +101,11 @@ doc_events = {
     "Asset": {
         "on_submit": "oil_and_gas_international.events.asset.create_stock_entry_for_asset_conversion"
     },
-    # "Sales Invoice": {
-    #     "validate": "oil_and_gas_international.events.sales_invoice.validate",
+    "Sales Invoice": {
+        "on_submit": "oil_and_gas_international.events.sales_invoice.addbilledamount",
+        "on_cancel": "oil_and_gas_international.events.sales_invoice.removebilledamount",
     #     "on_submit": "oil_and_gas_international.events.sales_invoice.on_submit"
-    # },
+    },
 }
 
 # Scheduled Tasks
@@ -181,8 +182,7 @@ fixtures = [
                 'Item-item_type',
                 'Item-other_item_type',
                 'Item-relevant_item',
-
-                # Custom Section
+                #Custom Section
                 'Item-specifications',
                 'Item-make',
                 'Item-model',
@@ -256,9 +256,11 @@ fixtures = [
                 "Sales Invoice-rental_order",
                 #Sales Invoie Item
                 'Sales Invoice Item-asset_item',
+                'Sales Invoice Item-rental_order_item',
+                'Sales Invoice Item-rental_order',
 
                 # Stock Entry
-                "Stock Entry-against_asset_formation"
+                "Stock Entry-against_asset_formation",
             ]]
         ]
     },
