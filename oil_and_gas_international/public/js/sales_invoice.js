@@ -1,13 +1,19 @@
 frappe.ui.form.on("Sales Invoice", {
     refresh(frm,cdt,cdn) {
-        create_custom_buttons(frm)
-            let btn = document.createElement('a');
-            btn.innerText = 'Fetch Rates';
-            btn.className = 'grid-upload btn btn-xs btn-default';
-            frm.fields_dict.items.grid.wrapper.find('.grid-upload').removeClass('hide').parent().append(btn);
-            btn.addEventListener("click", function(){
-            rate_calc(frm);
+        frm.fields_dict["items"].grid.add_custom_button(__('Fetch Rental Rates'), 
+			function() {
+				rate_calc(frm);
         });
+        frm.fields_dict["items"].grid.grid_buttons.find('.btn-custom').removeClass('btn-default').addClass('btn-primary');
+
+        // create_custom_buttons(frm)
+        //     let btn = document.createElement('a');
+        //     btn.innerText = 'Fetch Rates';
+        //     btn.className = 'grid-upload btn btn-xs btn-default';
+        //     frm.fields_dict.items.grid.wrapper.find('.grid-upload').removeClass('hide').parent().append(btn);
+        //     btn.addEventListener("click", function(){
+        //     rate_calc(frm);
+        // });
         
     },
     onload: function (frm, cdt, cdn) {
@@ -67,7 +73,7 @@ const create_custom_buttons = (frm) => {
                                 }else{
                                     frappe.model.set_value(cdt, cdn, "rate", row.total_amount-row.billed_amount)
                                 }
-                            }, 5000);
+                            }, 500);
                         }
 
                         frm.refresh_field("items")
@@ -94,10 +100,13 @@ const rate_calc=(frm)=>{
 
                 if(row[0].rental_order_item){
                     setTimeout(() => {
+                        console.log(row);
                         if(!row[1].billed){
                             frappe.model.set_value(cdt, cdn, "price_list_rate", row[1].total)
+                            frappe.model.set_value(cdt, cdn, "rate", row[1].total)
                         }else{
                             frappe.model.set_value(cdt, cdn, "price_list_rate", row[1].total-row[1].billed)
+                            frappe.model.set_value(cdt, cdn, "rate", row[1].total-row[1].billed)
                         }
                     }, 1000);
                 }
