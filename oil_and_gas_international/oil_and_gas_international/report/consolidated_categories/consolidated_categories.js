@@ -11,5 +11,12 @@ frappe.query_reports["Consolidated Categories"] = {
 			"options":"Item",
 			"width": 100,
 		},
+		{
+			"fieldname":"item_group",
+			"label": __("Item Group"),
+			"fieldtype": "Link",
+			"options":'Item Group',
+			"width": "80",
+		},
 	]
 };

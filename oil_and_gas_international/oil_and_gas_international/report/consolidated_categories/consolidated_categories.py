@@ -44,6 +44,8 @@ def execute(filters=None):
 
     if filters.get("item_code"):
         itm_filter["item_code"] = filters.get("item_code")
+    if filters.get("item_group"):
+        itm_filter["item_group"] = filters.get("item_group")
     item_list=frappe.db.get_list('Item',itm_filter,['*'])
     fields=fieldnames(item_list)
     for field_name in fields:
@@ -63,7 +65,7 @@ def get_data(filters, columns,items):
     data = []
     
     for row in items:
-        fields=fieldnames_values(row)
+        fields=fieldnames_values(row) 
         
         item_data ={
             'asset_item_name':row.item_code,
