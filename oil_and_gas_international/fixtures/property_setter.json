@@ -1,0 +1,19 @@
+[
+ {
+  "default_value": null,
+  "doc_type": "Item",
+  "docstatus": 0,
+  "doctype": "Property Setter",
+  "doctype_or_field": "DocField",
+  "field_name": "item_group",
+  "modified": "2021-12-30 14:54:10.348200",
+  "name": "Item-item_group-label",
+  "parent": null,
+  "parentfield": null,
+  "parenttype": null,
+  "property": "label",
+  "property_type": "Data",
+  "row_name": null,
+  "value": "Child Group"
+ }
+]
