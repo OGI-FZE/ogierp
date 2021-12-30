@@ -182,6 +182,8 @@ fixtures = [
                 'Item-item_type',
                 'Item-other_item_type',
                 'Item-relevant_item',
+                'Item-grand_parent_group',
+                'Item-parent_group',
                 #Custom Section
                 'Item-specifications',
                 'Item-make',
@@ -212,8 +214,6 @@ fixtures = [
                 'Item-torque_guage',
                 'Item-lift_cylinders',
                 'Item-tool_joint_od',
-                'Item-sub_item_group',
-                'Item-child_group',
 
                 # Assets
                 'Asset-rental_status',
@@ -261,6 +261,15 @@ fixtures = [
 
                 # Stock Entry
                 "Stock Entry-against_asset_formation",
+            ]]
+        ]
+    },
+    {
+        "dt": "Property Setter",
+        "filters": [
+            ["name", "in", [
+                # Item
+                'Item-item_group-label',
             ]]
         ]
     },

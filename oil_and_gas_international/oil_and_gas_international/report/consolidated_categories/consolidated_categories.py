@@ -19,14 +19,14 @@ def execute(filters=None):
             "width": 100
         },
         {
-            "label": "Item Group",
-            "fieldname": "item_group",
+            "label": "Grand Parent Group",
+            "fieldname": "grand_parent_group",
             "fieldtype": "Link",
             "options":'Item',
         },
         {
-            "label": "Sub Group",
-            "fieldname": "sub_group",
+            "label": "Parent Group",
+            "fieldname": "parent_group",
             "fieldtype": "Link",
             "options":'Item',
         },
@@ -44,8 +44,8 @@ def execute(filters=None):
 
     if filters.get("item_code"):
         itm_filter["item_code"] = filters.get("item_code")
-    if filters.get("item_group"):
-        itm_filter["item_group"] = filters.get("item_group")
+    if filters.get("child_group"):
+        itm_filter["item_group"] = filters.get("child_group")
     item_list=frappe.db.get_list('Item',itm_filter,['*'])
     fields=fieldnames(item_list)
     for field_name in fields:
@@ -69,9 +69,9 @@ def get_data(filters, columns,items):
         
         item_data ={
             'asset_item_name':row.item_code,
-            'item_group':row.item_group,
-            'sub_group':row.sub_item_group,
-            'child_group':row.child_group,
+            'child_group':row.item_group,
+            'parent_group':row.parent_group,
+            'grand_parent_group':row.grand_parent_group,
         }
         for item in fields:
             item_data.update({
