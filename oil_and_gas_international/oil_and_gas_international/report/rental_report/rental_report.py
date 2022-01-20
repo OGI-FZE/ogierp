@@ -22,19 +22,19 @@ def execute(filters=None):
             "label": "Grand Parent Group",
             "fieldname": "grand_parent_group",
             "fieldtype": "Link",
-            "options":'Item',
+            "options":'Item Group',
         },
         {
             "label": "Parent Group",
             "fieldname": "parent_group",
             "fieldtype": "Link",
-            "options":'Item',
+            "options":'Item Group',
         },
         {
             "label": "Child Group",
             "fieldname": "child_group",
             "fieldtype": "Link",
-            "options":'Item',
+            "options":'Item Group',
         },
         {
             "label": "Total Assets",

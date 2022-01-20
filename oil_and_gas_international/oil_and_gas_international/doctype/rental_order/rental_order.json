@@ -88,13 +88,6 @@
    "fieldtype": "Column Break"
   },
   {
-   "allow_on_submit": 1,
-   "fieldname": "total",
-   "fieldtype": "Currency",
-   "label": "Total",
-   "read_only": 1
-  },
-  {
    "fieldname": "taxes_and_charges_section",
    "fieldtype": "Section Break",
    "label": "Taxes and Charges"
@@ -201,13 +194,17 @@
    "label": "Rental Quotation",
    "options": "Rental Quotation",
    "read_only": 1
+  },
+  {
+   "fieldname": "total",
+   "fieldtype": "Float",
+   "label": "Total"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2021-12-03 16:55:12.521873",
- "modified": "2021-12-22 16:36:45.267996",
+ "modified": "2022-01-20 14:45:21.063393",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Rental Order",
