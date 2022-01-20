@@ -24,3 +24,16 @@ def get_rental_order_items(docname=None):
     }, ["*"])
 
     return re_items
+
+@frappe.whitelist()
+def check_issue_note(docname=None,itm=None):
+    if not docname:
+        return {}
+    rt=frappe.get_doc("Rental Issue Note", {"rental_order": docname})
+
+    rti = frappe.get_list("Rental Issue Note Item", {
+        "parent": rt.name,
+        "item_code":itm,
+        "docstatus":1
+    }, ["*"])
+    return len(rti)
