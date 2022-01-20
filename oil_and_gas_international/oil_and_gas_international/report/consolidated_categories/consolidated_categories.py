@@ -66,12 +66,18 @@ def get_data(filters, columns,items):
     
     for row in items:
         fields=fieldnames_values(row) 
-        
+        parent_group = frappe.db.get_value('Item Group',row.item_group,['parent_item_group'])
+        g_parent=''
+        if frappe.db.exists({
+                'doctype': 'Item Group',
+                'name': parent_group,
+            }):
+            g_parent=frappe.db.get_value('Item Group',parent_group,['parent_item_group'])
         item_data ={
             'asset_item_name':row.item_code,
             'child_group':row.item_group,
-            'parent_group':row.parent_group,
-            'grand_parent_group':row.grand_parent_group,
+            'parent_group':parent_group,
+            'grand_parent_group':g_parent,
         }
         for item in fields:
             item_data.update({

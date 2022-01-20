@@ -55,6 +55,7 @@ const create_custom_buttons = () => {
 		add_asset_formation()
 		add_purchase_order()
 		add_purchase_invoice()
+		add_rental_timesheet()
 	}
 }
 
@@ -148,6 +149,22 @@ const add_rental_receipt = () => {
 		])
 	}, 'Create')
 }
+const add_rental_timesheet = () => {
+	cur_frm.add_custom_button('Rental Timesheet', () => {
+		const doc = cur_frm.doc
+		frappe.run_serially([
+			() => frappe.new_doc('Rental Timesheet'),
+			() => {
+				const cur_doc = cur_frm.doc
+				cur_doc.customer = doc.customer
+				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "rental_order", doc.name)
+
+				cur_frm.refresh()
+			}
+		])
+	}, 'Create')
+}
+
 
 const add_material_request = () => {
 	const doctype = "Material Request"

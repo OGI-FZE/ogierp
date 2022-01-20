@@ -110,13 +110,13 @@ doc_events = {
 
 # Scheduled Tasks
 # ---------------
-scheduler_events = {
-    "cron": {
-        "daily": [
-            "oil_and_gas_international.tasks.daily"
-        ],
-    }
-}
+# scheduler_events = {
+#     "cron": {
+#         "daily": [
+#             "oil_and_gas_international.tasks.daily"
+#         ],
+#     }
+# }
 
 # Testing
 # -------
@@ -182,8 +182,6 @@ fixtures = [
                 'Item-item_type',
                 'Item-other_item_type',
                 'Item-relevant_item',
-                'Item-grand_parent_group',
-                'Item-parent_group',
                 #Custom Section
                 'Item-specifications',
                 'Item-make',

@@ -5,6 +5,13 @@
 frappe.query_reports["Rental Report"] = {
 	"filters": [
 		{
+			"fieldname":"item_code",
+			"label": __("Item Code"),
+			"fieldtype": "Link",
+			"options":"Item",
+			"width": 100,
+		},
+		{
 			"fieldname":"grand_parent_group",
 			"label": __("Grand Parent Group"),
 			"fieldtype": "Link",

@@ -62,14 +62,55 @@ def execute(filters=None):
         'is_fixed_asset': 1,
     }
 
+    if filters.get("item_code"):
+        itm_filter["item_code"] = filters.get("item_code")
     if filters.get("child_group"):
         itm_filter["item_group"] = filters.get("child_group")
+        
+    item_list=frappe.db.get_list('Item',itm_filter,['*'])
     if filters.get("parent_group"):
         itm_filter["parent_group"] = filters.get("parent_group")
     if filters.get("grand_parent_group"):
         itm_filter["grand_parent_group"] = filters.get("grand_parent_group")
-    item_list=frappe.db.get_list('Item',itm_filter,['*'])
-    fields=fieldnames(item_list)
+
+    filtered_list=[]
+    if not filters.get("grand_parent_group") and not filters.get("parent_group"):
+        filtered_list=item_list
+    if filters.get("grand_parent_group") and filters.get("parent_group"):
+        for row in item_list:
+            parent_group = frappe.db.get_value('Item Group',row.item_group,['parent_item_group'])
+            if frappe.db.exists({
+                    'doctype': 'Item Group',
+                    'name': parent_group,
+                }):
+                g_parent=frappe.db.get_value('Item Group',parent_group,['parent_item_group'])
+                if g_parent==itm_filter["grand_parent_group"] and itm_filter["parent_group"]==parent_group:
+                    filtered_list.append(row)
+
+    if filters.get("grand_parent_group") and not filters.get("parent_group"):
+        for row in item_list:
+            parent_group = frappe.db.get_value('Item Group',row.item_group,['parent_item_group'])
+            if frappe.db.exists({
+                    'doctype': 'Item Group',
+                    'name': parent_group,
+                }):
+                g_parent=frappe.db.get_value('Item Group',parent_group,['parent_item_group'])
+                if g_parent==itm_filter["grand_parent_group"]:
+                    filtered_list.append(row)
+    
+    if filters.get("parent_group") and not filters.get("grand_parent_group"):
+        for row in item_list:
+            parent_group = frappe.db.get_value('Item Group',row.item_group,['parent_item_group'])
+            if frappe.db.exists({
+                    'doctype': 'Item Group',
+                    'name': parent_group,
+                }):
+                g_parent=frappe.db.get_value('Item Group',parent_group,['parent_item_group'])
+                if parent_group==itm_filter["parent_group"]:
+                    filtered_list.append(row)
+    
+
+    fields=fieldnames(filtered_list)
     for field_name in fields:
         columns.append({
             'label': fields[field_name],
@@ -77,33 +118,39 @@ def execute(filters=None):
             'fieldtype': 'Data',
             'width':100,
         })
-    data = get_data(filters, columns,item_list)
+    data = get_data(filtered_list)
     return columns, data
 
 
 
 
-def get_data(filters, columns,items):
+def get_data(filtered_list):
     data = []
     
-    for row in items:
+    for row in filtered_list:
         status=frappe.db.count('Asset',{'item_code':row.item_code,'docstatus':1})
         available = frappe.db.count('Asset',{'item_code':row.item_code,'rental_status':'Available for Rent','docstatus':1})
         use = frappe.db.count('Asset',{'item_code':row.item_code,'rental_status':'In Use','docstatus':1})
         hold = frappe.db.count('Asset',{'item_code':row.item_code,'rental_status':'On hold for Inspection','docstatus':1})
-        out_of_order = frappe.db.count('Asset',{'item_code':row.item_code,'status':'Out of Order','docstatus':1})
         fields=fieldnames_values(row)
+        
+        parent_group = frappe.db.get_value('Item Group',row.item_group,['parent_item_group'])
+        g_parent=''
+        if frappe.db.exists({
+                'doctype': 'Item Group',
+                'name': parent_group,
+            }):
+            g_parent=frappe.db.get_value('Item Group',parent_group,['parent_item_group'])
         
         item_data ={
             'asset_item_name':row.item_code,
             'child_group':row.item_group,
-            'parent_group':row.parent_group,
-            'grand_parent_group':row.grand_parent_group,
+            'parent_group':parent_group,
+            'grand_parent_group':g_parent,
             'asset_status':status,
             'available':available,
             'rented':use,
             'under_inspection':hold,
-            # 'out_of_order':out_of_order,
         }
         for item in fields:
             item_data.update({

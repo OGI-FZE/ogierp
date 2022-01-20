@@ -27,21 +27,30 @@ const get_items_from_rental_order = (frm, cdt, cdn) => {
 			frm.doc.items = []
 			for (const row of data) {
 				if (!row.on_hold) {
-					const new_row = frm.add_child('items', {
-						'qty': row.qty,
-						'asset_location': row.asset_location,
-						'rental_order': rental_order,
-						'rental_order_item': row.name,
-						'operational_running':row.operational_running,
-						'standby':row.standby,
-						'lihdbr':row.lihdbr,
-						'redress':row.redress,
-						'straight':row.straight,
+					frm.call({
+						method: "check_issue_note",
+						args: { docname: rental_order,itm: row.item_code },
+						async: false,
+						callback(rti) {
+							const issuenote=rti.message
+							if (issuenote){
+								const new_row = frm.add_child('items', {
+									'qty': row.qty,
+									'asset_location': row.asset_location,
+									'rental_order': rental_order,
+									'rental_order_item': row.name,
+									'operational_running':row.operational_running,
+									'standby':row.standby,
+									'lihdbr':row.lihdbr,
+									'redress':row.redress,
+									'straight':row.straight,
+								})
+								const cdt = new_row.doctype
+								const cdn = new_row.name
+								frappe.model.set_value(cdt, cdn, "item_code", row.item_code)
+							}
+						}
 					})
-
-					const cdt = new_row.doctype
-					const cdn = new_row.name
-					frappe.model.set_value(cdt, cdn, "item_code", row.item_code)
 				}
 			}
 
@@ -53,6 +62,12 @@ const get_items_from_rental_order = (frm, cdt, cdn) => {
 frappe.ui.form.on('Rental Timesheet Item', {
 	get_assets(frm, cdt, cdn) {
 		get_assets_to_receive(frm, cdt, cdn)
+	},
+	qty(frm,cdt,cdn){
+		let row=locals[cdt][cdn]
+		if(row.qty){
+			calculate_amount(frm,cdt,cdn)
+		}
 	},
 	operational_running_days(frm,cdt,cdn){
 		let row=locals[cdt][cdn]
@@ -140,7 +155,7 @@ const calculate_amount=(frm,cdt,cdn)=>{
 		total = total+ ( row.straight_days*row.straight)
 		console.log(total);
 	}
-	frappe.model.set_value(cdt,cdn,'amount',total)
+	frappe.model.set_value(cdt,cdn,'amount',total*row.qty)
 
 }
 
