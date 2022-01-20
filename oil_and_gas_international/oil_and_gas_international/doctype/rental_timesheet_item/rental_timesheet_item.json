@@ -13,6 +13,19 @@
   "rate",
   "column_break_6",
   "asset_location",
+  "section_break_9",
+  "operational_running_days",
+  "standby_days",
+  "redress_days",
+  "lihdbr_days",
+  "straight_days",
+  "amount",
+  "column_break_13",
+  "operational_running",
+  "standby",
+  "redress",
+  "lihdbr",
+  "straight",
   "section_break_10",
   "rental_order",
   "rental_order_item",
@@ -88,12 +101,75 @@
    "fieldname": "is_billed",
    "fieldtype": "Check",
    "label": "Is Billed"
+  },
+  {
+   "fieldname": "section_break_9",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "operational_running_days",
+   "fieldtype": "Int",
+   "label": "Operational/Running Days"
+  },
+  {
+   "fieldname": "standby_days",
+   "fieldtype": "Int",
+   "label": "Standby Days"
+  },
+  {
+   "fieldname": "lihdbr_days",
+   "fieldtype": "Int",
+   "label": "LIH/DBR Days"
+  },
+  {
+   "fieldname": "column_break_13",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "redress_days",
+   "fieldtype": "Int",
+   "label": "Redress Days"
+  },
+  {
+   "fieldname": "straight_days",
+   "fieldtype": "Int",
+   "label": "Straight Days"
+  },
+  {
+   "fieldname": "amount",
+   "fieldtype": "Float",
+   "label": "Amount"
+  },
+  {
+   "fieldname": "operational_running",
+   "fieldtype": "Data",
+   "label": "Operational/Running"
+  },
+  {
+   "fieldname": "standby",
+   "fieldtype": "Data",
+   "label": "Standby"
+  },
+  {
+   "fieldname": "redress",
+   "fieldtype": "Data",
+   "label": "Redress"
+  },
+  {
+   "fieldname": "lihdbr",
+   "fieldtype": "Data",
+   "label": "LIH/DBR"
+  },
+  {
+   "fieldname": "straight",
+   "fieldtype": "Data",
+   "label": "Straight"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2021-11-09 16:32:00.281380",
+ "modified": "2022-01-20 09:58:31.415687",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Rental Timesheet Item",

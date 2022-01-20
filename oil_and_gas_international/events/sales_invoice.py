@@ -1,6 +1,18 @@
 import frappe
 import json
+from frappe.utils import today
 
+
+@frappe.whitelist()
+def get_rental_timesheet_items(docname=None):
+    if not docname:
+        return {}
+    
+    re_items = frappe.get_list("Rental Timesheet Item", {
+        "parent": docname
+    }, ["*"])
+
+    return re_items
 
 @frappe.whitelist()
 def get_rental_order_items(rental_orders=None):
@@ -15,18 +27,17 @@ def get_rental_order_items(rental_orders=None):
     return items
 
 @frappe.whitelist()
-def get_retal_order_rate(si_items):
+def get_retal_order_rate(si_items,timesheet):
     items = json.loads(si_items)
     values=[]
+    re_items = frappe.get_list("Rental Timesheet Item", {
+        "parent": timesheet
+    }, ["*"])
     for row in items:
-        if 'rental_order_item' not in row:
-            frappe.throw('Sales invoice is not linked with any rental order')
-        total,billed = frappe.db.get_value(
-            "Rental Order Item", row['rental_order_item'], ['total_amount','billed_amount'])
-        values.append({
-            'total':total,
-            'billed':billed,
-            })
+        for itm in re_items:
+            if row['asset_item'] and row['asset_item']==itm.item_code :
+                values.append({'amount':itm.amount})
+
     return values
 
 def addbilledamount(doc, method=None):

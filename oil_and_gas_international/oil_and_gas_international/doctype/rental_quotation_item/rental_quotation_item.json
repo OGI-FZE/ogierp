@@ -16,11 +16,14 @@
   "qty",
   "rate",
   "amount",
-  "lih_price",
-  "dbr_price",
+  "operational_running",
+  "lihdbr",
   "column_break_12",
   "estimate_rate",
   "asset_location",
+  "standby",
+  "redress",
+  "straight",
   "references_section",
   "rental_estimate",
   "rental_estimate_item"
@@ -133,20 +136,35 @@
    "reqd": 1
   },
   {
-   "fieldname": "lih_price",
+   "fieldname": "operational_running",
    "fieldtype": "Currency",
-   "label": "LIH Price"
+   "label": "Operational/Running"
   },
   {
-   "fieldname": "dbr_price",
+   "fieldname": "standby",
    "fieldtype": "Currency",
-   "label": "DBR Price"
+   "label": "Standby"
+  },
+  {
+   "fieldname": "redress",
+   "fieldtype": "Currency",
+   "label": "Redress"
+  },
+  {
+   "fieldname": "straight",
+   "fieldtype": "Currency",
+   "label": "Straight"
+  },
+  {
+   "fieldname": "lihdbr",
+   "fieldtype": "Currency",
+   "label": "LIH/DBR "
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2021-10-31 01:55:36.994700",
+ "modified": "2022-01-19 23:49:29.378925",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Rental Quotation Item",

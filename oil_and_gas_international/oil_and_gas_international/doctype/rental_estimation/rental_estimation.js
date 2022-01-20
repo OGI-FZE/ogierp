@@ -158,8 +158,11 @@ const calculate_lost_and_damage_price = (frm, cdt, cdn) => {
 		},
 		callback(r) {
 			const data = r.message
-			row.lih_price = data[0]
-			row.dbr_price = data[1]
+			row.operational_running = data[0]
+			row.standby = data[1]
+			row.lihdbr = data[2]
+			row.redress = data[3]
+			row.straight = data[4]
 			frm.refresh()
 		}
 	})
