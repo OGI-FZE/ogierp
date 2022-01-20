@@ -2,7 +2,7 @@
 // For license information, please see license.txt
 
 frappe.ui.form.on('Rental Issue Note', {
-	refresh() {
+	refresh(frm) {
 		if(frm.is_new()){
 			frappe.model.set_value('Rental Issue Note',frm.doc.name,'status','Draft')
 		}

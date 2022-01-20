@@ -14,7 +14,6 @@
   "rate_type",
   "section_break_7",
   "items",
-  "total",
   "print_settings_section",
   "letter_head",
   "column_break_12",
@@ -81,12 +80,6 @@
    "reqd": 1
   },
   {
-   "fieldname": "total",
-   "fieldtype": "Currency",
-   "label": "Total",
-   "read_only": 1
-  },
-  {
    "fieldname": "print_settings_section",
    "fieldtype": "Section Break",
    "label": "Print Settings"
@@ -139,7 +132,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2021-12-03 15:04:19.059944",
+ "modified": "2022-01-20 14:41:19.723954",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Rental Estimation",

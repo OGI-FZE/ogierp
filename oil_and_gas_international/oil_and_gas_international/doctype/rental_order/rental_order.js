@@ -26,20 +26,7 @@ frappe.ui.form.on('Rental Order Item', {
 	},
 
 	qty(frm, cdt, cdn) {
-		calc_amount(frm, cdt, cdn)
 		calc_total_qty(frm, cdt, cdn)
-	},
-
-	rate(frm, cdt, cdn) {
-		calc_amount(frm, cdt, cdn)
-	},
-
-	days_of_rent(frm, cdt, cdn) {
-		calc_amount(frm, cdt, cdn)
-	},
-
-	amount(frm) {
-		calc_total_amount(frm)
 	},
 });
 
@@ -68,7 +55,6 @@ const create_custom_buttons = () => {
 		add_asset_formation()
 		add_purchase_order()
 		add_purchase_invoice()
-		add_sales_invoice()
 	}
 }
 
@@ -259,44 +245,6 @@ const add_purchase_invoice = () => {
 		])
 	}, 'Create')
 }
-const add_sales_invoice = () => {
-	cur_frm.add_custom_button('Sales Invoice', () => {
-		const doc = cur_frm.doc
-		frappe.run_serially([
-			() => frappe.new_doc('Sales Invoice'),
-			() => {
-				const cur_doc = cur_frm.doc
-				cur_doc.customer = doc.customer
-				cur_doc.rental_order = doc.name
-				cur_doc.items = []
-
-				for (const row of doc.items) {
-					const new_row = cur_frm.add_child("items", {
-						qty: 1,
-						asset_item:row.item_code,
-						rental_order:row.parent,
-						rental_order_item:row.name,
-					})
-					const cdt = new_row.doctype
-					const cdn = new_row.name
-					frappe.model.set_value(cdt, cdn, "item_code",'Asset Rent Item')
-					setTimeout(function(){
-						if(!row.billed_amount){
-							frappe.model.set_value(cdt, cdn, "price_list_rate",row.total_amount )
-						}
-						else{
-							frappe.model.set_value(cdt, cdn, "price_list_rate",row.total_amount-row.billed_amount)
-						}
-						console.log(row.billed_amount,row.total_amount-row.billed_amount);
-					}, 1000);
-				}
-
-				cur_frm.refresh()
-			}
-		])
-	}, 'Create')
-}
-
 
 const calc_total_qty = (frm) => {
 	let total = 0
@@ -307,14 +255,6 @@ const calc_total_qty = (frm) => {
 	frappe.model.set_value(frm.doc.doctype, frm.doc.name, 'total_qty', total)
 }
 
-const calc_total_amount = (frm) => {
-	let total = 0
-	frm.doc.items.map(row => {
-		if (row.amount) total += row.amount
-	})
-
-	frappe.model.set_value(frm.doc.doctype, frm.doc.name, 'total', total)
-}
 
 // Rental Order Item
 
@@ -340,11 +280,7 @@ const calculate_lost_and_damage_price = (frm, cdt, cdn) => {
 }
 
 
-const calc_amount = (frm, cdt, cdn) => {
-	const row = locals[cdt][cdn]
-	if (row.qty && row.rate && row.days_of_rent)
-		frappe.model.set_value(cdt, cdn, 'amount', row.qty * row.rate * row.days_of_rent)
-}
+
 
 const calc_days_of_rent = (frm, cdt, cdn) => {
 	const row = locals[cdt][cdn]

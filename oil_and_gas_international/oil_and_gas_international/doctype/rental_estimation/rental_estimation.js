@@ -14,17 +14,6 @@ frappe.ui.form.on('Rental Estimation Item', {
 	item_code(frm, cdt, cdn) {
 		calculate_lost_and_damage_price(frm, cdt, cdn)
 	},
-	qty(frm, cdt, cdn) {
-		calc_amount(frm, cdt, cdn)
-	},
-
-	estimate_rate(frm, cdt, cdn) {
-		calc_amount(frm, cdt, cdn)
-	},
-
-	amount(frm) {
-		calc_total_amount(frm)
-	},
 })
 
 // Rental Estimation
@@ -137,15 +126,6 @@ const add_rental_quotation = () => {
 	}, 'Create')
 }
 
-const calc_total_amount = (frm) => {
-	let total = 0
-	frm.doc.items.map(row => {
-		if (row.amount) total += row.amount
-	})
-
-	frappe.model.set_value(frm.doc.doctype, frm.doc.name, 'total', total)
-}
-
 // Rental Estimation Item
 const calculate_lost_and_damage_price = (frm, cdt, cdn) => {
 	const row = locals[cdt][cdn]
@@ -166,10 +146,4 @@ const calculate_lost_and_damage_price = (frm, cdt, cdn) => {
 			frm.refresh()
 		}
 	})
-}
-
-const calc_amount = (frm, cdt, cdn) => {
-	const row = locals[cdt][cdn]
-	if (row.qty && row.estimate_rate)
-		frappe.model.set_value(cdt, cdn, 'amount', row.qty * row.estimate_rate)
 }

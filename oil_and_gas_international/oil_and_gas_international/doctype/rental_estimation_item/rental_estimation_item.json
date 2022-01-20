@@ -15,7 +15,6 @@
   "quantity_and_rate_section",
   "qty",
   "estimate_rate",
-  "amount",
   "operational_running",
   "lihdbr",
   "column_break_12",
@@ -75,23 +74,6 @@
    "label": "Quantity And Rate"
   },
   {
-   "columns": 2,
-   "fieldname": "estimate_rate",
-   "fieldtype": "Currency",
-   "in_list_view": 1,
-   "label": "Estimate Rate",
-   "reqd": 1
-  },
-  {
-   "columns": 2,
-   "fieldname": "amount",
-   "fieldtype": "Currency",
-   "in_list_view": 1,
-   "label": "Amount",
-   "read_only": 1,
-   "reqd": 1
-  },
-  {
    "fieldname": "column_break_12",
    "fieldtype": "Column Break"
   },
@@ -143,12 +125,18 @@
    "fieldname": "straight",
    "fieldtype": "Currency",
    "label": "Straight"
+  },
+  {
+   "fieldname": "estimate_rate",
+   "fieldtype": "Float",
+   "label": "Estimate Rate",
+   "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2022-01-20 00:10:56.884407",
+ "modified": "2022-01-20 14:55:15.476365",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Rental Estimation Item",
