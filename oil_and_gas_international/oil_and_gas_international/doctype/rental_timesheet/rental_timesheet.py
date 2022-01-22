@@ -18,8 +18,6 @@ def get_rental_order_items(docname=None):
     
     re_items = frappe.get_list("Rental Order Item", {
         "status": ["!=", "On Hold"],
-        "from_date": ["<=", today()],
-        "to_date": [">=", today()],
         "parent": docname
     }, ["*"])
 
@@ -34,6 +32,6 @@ def check_issue_note(docname=None,itm=None):
     rti = frappe.get_list("Rental Issue Note Item", {
         "parent": rt.name,
         "item_code":itm,
-        "docstatus":1
+        "docstatus":1,
     }, ["*"])
     return len(rti)
