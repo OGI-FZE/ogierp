@@ -99,8 +99,7 @@
    "allow_on_submit": 1,
    "fieldname": "to_date",
    "fieldtype": "Date",
-   "label": "To Date",
-   "reqd": 1
+   "label": "To Date"
   },
   {
    "allow_on_submit": 1,
@@ -203,7 +202,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2022-01-20 14:57:07.594169",
+ "modified": "2022-01-23 01:50:35.922733",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Rental Order Item",

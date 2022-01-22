@@ -124,7 +124,14 @@ const add_rental_order = () => {
 					const cdt = new_row.doctype
 					const cdn = new_row.name
 					frappe.model.set_value(cdt, cdn, "item_code", row.item_code)
-					frappe.model.set_value(cdt, cdn, "qty", row.qty)
+					setTimeout(function() {
+						frappe.model.set_value(cdt, cdn, "qty", row.qty)
+						frappe.model.set_value(cdt, cdn, "operational_running", row.operational_running)
+						frappe.model.set_value(cdt, cdn, "lihdbr", row.lihdbr)
+						frappe.model.set_value(cdt, cdn, "standby", row.standby)
+						frappe.model.set_value(cdt, cdn, "redress", row.redress)
+						frappe.model.set_value(cdt, cdn, "straight", row.straight)
+					}, 2000);
 				}
 
 				cur_frm.refresh()
