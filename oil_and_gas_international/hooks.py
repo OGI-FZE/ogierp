@@ -38,6 +38,9 @@ doctype_js = {
     "Asset": "public/js/asset.js",
     "Item": "public/js/item.js",
     "Sales Invoice": "public/js/sales_invoice.js",
+    "Sales Order": "public/js/sales_order.js",
+    "Purchase Receipt": "public/js/purchase_receipt.js",
+    "Supplier Quotation": "public/js/supplier_quotation.js",
 }
 # doctype_js = {"doctype" : "public/js/doctype.js"}
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
@@ -259,6 +262,11 @@ fixtures = [
 
                 # Stock Entry
                 "Stock Entry-against_asset_formation",
+
+                #Sales Order
+                'Sales Order Item-assets','Sales Order-rental_timesheet_item','Sales Order-rental_order_item',
+                'Sales Order-rental_timesheet','Sales Order-rental_order','Sales Order Item-rental_order',
+                'Sales Order Item-rental_order_item','Sales Order Item-references','Sales Order Item-asset_item',
             ]]
         ]
     },

@@ -37,8 +37,8 @@ const create_rental_estimation = (frm) => {
         frappe.run_serially([
             () => frappe.new_doc('Rental Estimation'),
             () => {
-                cur_frm.doc.customer = doc.party_name;
-                cur_frm.doc.customer_name = doc.customer_name;
+                cur_frm.doc.party = doc.customer;
+                cur_frm.doc.party_name = doc.customer_name;
                 cur_frm.doc.date = doc.transaction_date;
                 cur_frm.doc.valid_till = doc.valid_till;
                 cur_frm.doc.opportunity = doc.name;

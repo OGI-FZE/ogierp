@@ -11,6 +11,7 @@ frappe.ui.form.on('Rental Timesheet', {
 		}
 		else if(frm.doc.docstatus==1){
 			add_sales_invoice()
+			add_sales_order()
 		}
 	}
 });
@@ -44,6 +45,7 @@ const get_items_from_rental_order = (frm, cdt, cdn) => {
 									'lihdbr':row.lihdbr,
 									'redress':row.redress,
 									'straight':row.straight,
+									'assets':row.assets,
 								})
 								const cdt = new_row.doctype
 								const cdn = new_row.name
@@ -208,6 +210,42 @@ const add_sales_invoice = () => {
 						asset_item:row.item_code,
 						rental_order:row.rental_order,
 						rental_order_item:row.rental_order_item,
+					})
+					const cdt = new_row.doctype
+					const cdn = new_row.name
+					frappe.model.set_value(cdt, cdn, "item_code",'Asset Rent Item')
+					setTimeout(function(){
+						frappe.model.set_value(cdt, cdn, "price_list_rate",row.amount)
+						frappe.model.set_value(cdt, cdn, "rate",row.amount)
+						frappe.model.set_value(cdt, cdn, "amount",row.amount)
+					}, 2000);
+				}
+
+				cur_frm.refresh()
+			}
+		])
+	}, 'Create')
+}
+
+const add_sales_order = () => {
+	cur_frm.add_custom_button('Sales Order', () => {
+		const doc = cur_frm.doc
+		frappe.run_serially([
+			() => frappe.new_doc('Sales Order'),
+			() => {
+				const cur_doc = cur_frm.doc
+				cur_doc.customer = doc.customer
+				cur_doc.rental_timesheet = doc.name
+				cur_doc.rental_order = doc.rental_order
+				cur_doc.items = []
+
+				for (const row of doc.items) {
+					const new_row = cur_frm.add_child("items", {
+						qty: 1,
+						asset_item:row.item_code,
+						rental_order:row.rental_order,
+						rental_order_item:row.rental_order_item,
+						assets:row.assets,
 					})
 					const cdt = new_row.doctype
 					const cdn = new_row.name
