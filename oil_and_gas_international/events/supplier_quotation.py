@@ -8,7 +8,6 @@ from frappe.utils import flt
 def make_purchase_requisition(source_name, target_doc=None):
 
 	def update_status(source_doc, target_doc, source_parent):
-		# target_doc.status = "Draft"
 		target_doc.supplier_quotation = source_doc.name
 	
 
