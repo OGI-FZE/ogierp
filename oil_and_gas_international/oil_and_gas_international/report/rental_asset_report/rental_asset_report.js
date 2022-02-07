@@ -1,14 +1,21 @@
-// Copyright (c) 2016, Havenir Solutions and contributors
+// Copyright (c) 2022, Havenir Solutions and contributors
 // For license information, please see license.txt
 /* eslint-disable */
 
-frappe.query_reports["Rental Report"] = {
+frappe.query_reports["Rental Asset Report"] = {
 	"filters": [
+		// {
+		// 	"fieldname":"item_code",
+		// 	"label": __("Item Code"),
+		// 	"fieldtype": "Link",
+		// 	"options":"Item",
+		// 	"width": 100,
+		// },
 		{
-			"fieldname":"item_code",
-			"label": __("Item Code"),
+			"fieldname":"asset",
+			"label": __("Asset"),
 			"fieldtype": "Link",
-			"options":"Item",
+			"options":"Asset",
 			"width": 100,
 		},
 		{
@@ -32,6 +39,6 @@ frappe.query_reports["Rental Report"] = {
 			"options":'Item Group',
 			"width": "80",
 		},
-		
+
 	]
 };

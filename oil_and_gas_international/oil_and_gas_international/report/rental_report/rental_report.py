@@ -19,19 +19,19 @@ def execute(filters=None):
             "width": 100
         },
         {
-            "label": "Grand Parent Group",
+            "label": "Category",
             "fieldname": "grand_parent_group",
             "fieldtype": "Link",
             "options":'Item Group',
         },
         {
-            "label": "Parent Group",
+            "label": "Sub Category",
             "fieldname": "parent_group",
             "fieldtype": "Link",
             "options":'Item Group',
         },
         {
-            "label": "Child Group",
+            "label": "Child Category",
             "fieldname": "child_group",
             "fieldtype": "Link",
             "options":'Item Group',

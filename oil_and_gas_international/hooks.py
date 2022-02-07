@@ -248,6 +248,7 @@ fixtures = [
                 'Asset-rental_status',
                 'Asset-rental_order',
                 'Asset-against_asset_formation',
+                'Asset-item_group'
 
                 # Opportunity
                 'Opportunity-item_type',
