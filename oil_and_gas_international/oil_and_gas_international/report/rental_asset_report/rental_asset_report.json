@@ -1,5 +1,5 @@
 {
- "add_total_row": 1,
+ "add_total_row": 0,
  "columns": [],
  "creation": "2022-02-05 09:46:43.010949",
  "disable_prepared_report": 1,
@@ -10,7 +10,7 @@
  "idx": 0,
  "is_standard": "Yes",
  "letter_head": "Header",
- "modified": "2022-02-05 09:46:43.010949",
+ "modified": "2022-02-07 14:12:46.350891",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Rental Asset Report",
