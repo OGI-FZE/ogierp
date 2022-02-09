@@ -202,6 +202,11 @@ def fieldnames(item_list):
 		if row.material:
 			if 'material' not in field_list:
 				field_list['material']='Material'
+
+		if row.plastic_coating:
+			if 'plastic_coating' not in field_list:
+				field_list['plastic_coating']='PLASTIC COATING'
+
 			
 		if row.pressure_rating:
 			if 'pressure_rating' not in field_list:
@@ -211,9 +216,33 @@ def fieldnames(item_list):
 			if 'ppf' not in field_list:
 				field_list['ppf']='PPF'
 			
+		if row.tool_joint_id:
+			if 'tool_joint_id' not in field_list:
+				field_list['tool_joint_id']='Tool Joint ID'
+
 		if row.tool_joint_od:
 			if 'tool_joint_od' not in field_list:
 				field_list['tool_joint_od']='Tool Joint OD'
+
+		if row.hard_banding_:
+			if 'hard_banding_' not in field_list:
+				field_list['hard_banding_']='Hard Banding'
+
+		if row.gasket_size_rh_:
+			if 'gasket_size_rh_' not in field_list:
+				field_list['gasket_size_rh_']='GASKET SIZE RH'
+			
+		if row.no_of_stud_bolts_rh:
+			if 'no_of_stud_bolts_rh' not in field_list:
+				field_list['no_of_stud_bolts_rh']='No of Stud Bolts RH'
+			
+		if row.stud_bolt_size_rh:
+			if 'stud_bolt_size_rh' not in field_list:
+				field_list['stud_bolt_size_rh']='Stud Bolt Size RH'
+			
+		if row.no_of_stud_bolts_lh_:
+			if 'no_of_stud_bolts_lh_' not in field_list:
+				field_list['no_of_stud_bolts_lh_']='No of Stud Bolts LH'
 			
 		if row.pin_box:
 			if 'pin_box' not in field_list:
@@ -238,6 +267,10 @@ def fieldnames(item_list):
 		if row.od:
 			if 'od' not in field_list:
 				field_list['od']='OD'
+
+		if row.od_size_:
+			if 'od_size_' not in field_list:
+				field_list['od_size_']='OD size'
 		  
 		if row.id:
 			if 'id' not in field_list:
@@ -246,6 +279,34 @@ def fieldnames(item_list):
 		if row.mandrel_od:
 			if 'mandrel_od' not in field_list:
 				field_list['mandrel_od']='Mandrel OD'
+		   
+		if row.top_connection:
+			if 'top_connection' not in field_list:
+				field_list['top_connection']='Top Connection'
+		   
+		if row.bottom_connection:
+			if 'bottom_connection' not in field_list:
+				field_list['bottom_connection']='Bottom Connection'
+		   
+		if row.elvator_recess:
+			if 'elvator_recess' not in field_list:
+				field_list['elvator_recess']='ELVATOR RECESS'
+		   
+		if row.slip_recess_:
+			if 'slip_recess_' not in field_list:
+				field_list['slip_recess_']='SLIP RECESS'
+		   
+		if row.service:
+			if 'service' not in field_list:
+				field_list['service']='SERVICE'
+		   
+		if row.stud_bolt_size_lh_:
+			if 'stud_bolt_size_lh_' not in field_list:
+				field_list['stud_bolt_size_lh_']='Stud Bolt Size LH'
+		   
+		if row.packer_size:
+			if 'packer_size' not in field_list:
+				field_list['packer_size']='PACKER SIZE'
 		   
 		if row.stroke:
 			if 'stroke' not in field_list:
@@ -279,6 +340,30 @@ def fieldnames(item_list):
 			if 'lift_cylinders' not in field_list:
 				field_list['lift_cylinders']='Lift Cylinders'
 
+		if row.pressure_rating_rh:
+			if 'pressure_rating_rh' not in field_list:
+				field_list['pressure_rating_rh']='PRESSURE RATING RH'
+
+		if row.ss_ring_groove_:
+			if 'ss_ring_groove_' not in field_list:
+				field_list['ss_ring_groove_']='SS RING GROOVE'
+
+		if row.packing_element:
+			if 'packing_element' not in field_list:
+				field_list['packing_element']='PACKING ELEMENT'
+
+		if row.style:
+			if 'style' not in field_list:
+				field_list['style']='STYLE'
+
+		if row.used_for:
+			if 'used_for' not in field_list:
+				field_list['used_for']='USED FOR'
+
+		if row.gasket_size_lh_:
+			if 'gasket_size_lh_' not in field_list:
+				field_list['gasket_size_lh_']='GASKET SIZE LH'
+
 	return field_list
 
 def fieldnames_values(row):
@@ -304,6 +389,10 @@ def fieldnames_values(row):
 	if row.material:
 		if 'material' not in field_list:
 			field_list['material']=row.material
+
+	if row.plastic_coating:
+		if 'plastic_coating' not in field_list:
+			field_list['plastic_coating']=row.plastic_coating
 		
 	if row.pressure_rating:
 		if 'pressure_rating' not in field_list:
@@ -312,10 +401,38 @@ def fieldnames_values(row):
 	if row.ppf:
 		if 'ppf' not in field_list:
 			field_list['ppf']=row.ppf
+
+	if row.tool_joint_id:
+		if 'tool_joint_id' not in field_list:
+			field_list['tool_joint_id']=row.tool_joint_id
 		
 	if row.tool_joint_od:
 		if 'tool_joint_od' not in field_list:
 			field_list['tool_joint_od']=row.tool_joint_od
+
+	if row.hard_banding_:
+		if 'hard_banding_' not in field_list:
+			field_list['hard_banding_']=row.hard_banding_
+
+	if row.gasket_size_rh_:
+		if 'gasket_size_rh_' not in field_list:
+			field_list['gasket_size_rh_']=row.gasket_size_rh_
+
+	if row.no_of_stud_bolts_rh:
+		if 'no_of_stud_bolts_rh' not in field_list:
+			field_list['no_of_stud_bolts_rh']=row.no_of_stud_bolts_rh
+
+	if row.stud_bolt_size_rh:
+		if 'stud_bolt_size_rh' not in field_list:
+			field_list['stud_bolt_size_rh']=row.stud_bolt_size_rh
+
+	if row.no_of_stud_bolts_lh_:
+		if 'no_of_stud_bolts_lh_' not in field_list:
+			field_list['no_of_stud_bolts_lh_']=row.no_of_stud_bolts_lh_
+
+	if row.packer_size:
+		if 'packer_size' not in field_list:
+			field_list['packer_size']=row.packer_size
 		
 	if row.pin_box:
 		if 'pin_box' not in field_list:
@@ -341,6 +458,10 @@ def fieldnames_values(row):
 		if 'od' not in field_list:
 			field_list['od']=row.od
 		
+	if row.od_size_:
+		if 'od_size_' not in field_list:
+			field_list['od_size_']=row.od_size_
+		
 	if row.id:
 		if 'id' not in field_list:
 			field_list['id']=row.id
@@ -348,6 +469,30 @@ def fieldnames_values(row):
 	if row.mandrel_od:
 		if 'mandrel_od' not in field_list:
 			field_list['mandrel_od']=row.mandrel_od
+
+	if row.top_connection:
+		if 'top_connection' not in field_list:
+			field_list['top_connection']=row.top_connection
+
+	if row.bottom_connection:
+		if 'bottom_connection' not in field_list:
+			field_list['bottom_connection']=row.bottom_connection
+
+	if row.elvator_recess:
+		if 'elvator_recess' not in field_list:
+			field_list['elvator_recess']=row.elvator_recess
+
+	if row.slip_recess_:
+		if 'slip_recess_' not in field_list:
+			field_list['slip_recess_']=row.slip_recess_
+
+	if row.service:
+		if 'service' not in field_list:
+			field_list['service']=row.service
+
+	if row.stud_bolt_size_lh_:
+		if 'stud_bolt_size_lh_' not in field_list:
+			field_list['stud_bolt_size_lh_']=row.stud_bolt_size_lh_
 		
 	if row.stroke:
 		if 'stroke' not in field_list:
@@ -380,4 +525,29 @@ def fieldnames_values(row):
 	if row.lift_cylinders:
 		if 'lift_cylinders' not in field_list:
 			field_list['lift_cylinders']=row.lift_cylinders
+
+	if row.pressure_rating_rh:
+		if 'pressure_rating_rh' not in field_list:
+			field_list['pressure_rating_rh']=row.pressure_rating_rh
+
+	if row.ss_ring_groove_:
+		if 'ss_ring_groove_' not in field_list:
+			field_list['ss_ring_groove_']=row.ss_ring_groove_
+
+	if row.packing_element:
+		if 'packing_element' not in field_list:
+			field_list['packing_element']=row.packing_element
+
+	if row.style:
+		if 'style' not in field_list:
+			field_list['style']=row.style
+
+	if row.used_for:
+		if 'used_for' not in field_list:
+			field_list['used_for']=row.used_for
+
+	if row.gasket_size_lh_:
+		if 'gasket_size_lh_' not in field_list:
+			field_list['gasket_size_lh_']=row.gasket_size_lh_
+
 	return field_list

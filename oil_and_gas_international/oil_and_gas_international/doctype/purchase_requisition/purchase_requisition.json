@@ -191,15 +191,6 @@
    "label": "Quotation Number"
   },
   {
-   "fieldname": "amended_from",
-   "fieldtype": "Link",
-   "label": "Amended From",
-   "no_copy": 1,
-   "options": "Purchase Requisition",
-   "print_hide": 1,
-   "read_only": 1
-  },
-  {
    "collapsible": 1,
    "fieldname": "address_section",
    "fieldtype": "Section Break",

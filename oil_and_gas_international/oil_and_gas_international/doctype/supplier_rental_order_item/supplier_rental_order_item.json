@@ -1,0 +1,198 @@
+{
+ "actions": [],
+ "creation": "2022-02-08 10:42:18.766896",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "item_code",
+  "from_date",
+  "column_break_2",
+  "item_name",
+  "to_date",
+  "description_section",
+  "description",
+  "quantity_and_rate_section",
+  "qty",
+  "days_of_rent",
+  "delivered_qty",
+  "column_break_9",
+  "asset_location",
+  "received_qty",
+  "status",
+  "section_break_19",
+  "operational_running",
+  "standby",
+  "column_break_22",
+  "lihdbr",
+  "redress",
+  "straight",
+  "section_break_18",
+  "total_amount",
+  "billed_amount"
+ ],
+ "fields": [
+  {
+   "fieldname": "item_code",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Item Code",
+   "options": "Item",
+   "reqd": 1
+  },
+  {
+   "fieldname": "from_date",
+   "fieldtype": "Date",
+   "label": "From Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "item_code.item_name",
+   "fieldname": "item_name",
+   "fieldtype": "Data",
+   "label": "Item Name"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "to_date",
+   "fieldtype": "Date",
+   "label": "To Date"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "description_section",
+   "fieldtype": "Section Break",
+   "label": "Description"
+  },
+  {
+   "fetch_from": "item_code.description",
+   "fieldname": "description",
+   "fieldtype": "Text Editor",
+   "label": "Description"
+  },
+  {
+   "fieldname": "quantity_and_rate_section",
+   "fieldtype": "Section Break",
+   "label": "Quantity and Rate"
+  },
+  {
+   "fieldname": "qty",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Qty",
+   "non_negative": 1,
+   "reqd": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "days_of_rent",
+   "fieldtype": "Int",
+   "label": "Days Of Rent"
+  },
+  {
+   "allow_on_submit": 1,
+   "default": "0",
+   "fieldname": "delivered_qty",
+   "fieldtype": "Float",
+   "hidden": 1,
+   "label": "Delivered Qty",
+   "no_copy": 1
+  },
+  {
+   "fieldname": "column_break_9",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "asset_location",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Asset Location",
+   "options": "Location",
+   "reqd": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "received_qty",
+   "fieldtype": "Float",
+   "hidden": 1,
+   "label": "Received Qty",
+   "no_copy": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "default": "To Delivery",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "To Delivery\nDelivered\nReturned",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_19",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "operational_running",
+   "fieldtype": "Currency",
+   "label": "Operational/Running"
+  },
+  {
+   "fieldname": "standby",
+   "fieldtype": "Currency",
+   "label": "Standby"
+  },
+  {
+   "fieldname": "column_break_22",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "lihdbr",
+   "fieldtype": "Currency",
+   "label": "LIH/DBR"
+  },
+  {
+   "fieldname": "redress",
+   "fieldtype": "Currency",
+   "label": "Redress"
+  },
+  {
+   "fieldname": "straight",
+   "fieldtype": "Currency",
+   "label": "Straight"
+  },
+  {
+   "fieldname": "section_break_18",
+   "fieldtype": "Section Break"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "total_amount",
+   "fieldtype": "Currency",
+   "label": "Total Amount",
+   "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "billed_amount",
+   "fieldtype": "Currency",
+   "label": "Billed Amount",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2022-02-08 10:42:18.766896",
+ "modified_by": "Administrator",
+ "module": "Oil And Gas International",
+ "name": "Supplier Rental Order Item",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

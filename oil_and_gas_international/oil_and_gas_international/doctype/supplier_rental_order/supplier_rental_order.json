@@ -1,0 +1,234 @@
+{
+ "actions": [],
+ "autoname": "format:OGI-SRO-{MM}-{YYYY}-{####}",
+ "creation": "2022-02-08 10:47:01.660249",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "supplier",
+  "supplier_name",
+  "column_break_3",
+  "company",
+  "date",
+  "section_break_6",
+  "items",
+  "section_break_8",
+  "total_qty",
+  "column_break_10",
+  "total",
+  "taxes_and_charges_section",
+  "taxes",
+  "section_break_14",
+  "grand_total",
+  "terms_and_conditions_section",
+  "terms",
+  "terms_and_conditions_details",
+  "billing_and_delivery_status_section",
+  "status",
+  "percentage_delivered",
+  "percentage_received",
+  "column_break_23",
+  "total_timesheets",
+  "timesheets_billed",
+  "references_section",
+  "supplier_rental_quotation",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "supplier",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Supplier",
+   "options": "Supplier",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "supplier.supplier_name",
+   "fieldname": "supplier_name",
+   "fieldtype": "Data",
+   "label": "Supplier Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company"
+  },
+  {
+   "default": "Today",
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_6",
+   "fieldtype": "Section Break"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "items",
+   "fieldtype": "Table",
+   "label": "Items",
+   "options": "Supplier Rental Order Item",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_8",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "total_qty",
+   "fieldtype": "Float",
+   "label": "Total Qty",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_10",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "total",
+   "fieldtype": "Float",
+   "label": "Total"
+  },
+  {
+   "fieldname": "taxes_and_charges_section",
+   "fieldtype": "Section Break",
+   "label": "Taxes and Charges"
+  },
+  {
+   "fieldname": "taxes",
+   "fieldtype": "Table",
+   "label": "Taxes",
+   "options": "Sales Taxes and Charges"
+  },
+  {
+   "fieldname": "section_break_14",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "grand_total",
+   "fieldtype": "Currency",
+   "label": "Grand Total",
+   "read_only": 1
+  },
+  {
+   "fieldname": "terms_and_conditions_section",
+   "fieldtype": "Section Break",
+   "label": "Terms and Conditions"
+  },
+  {
+   "fieldname": "terms",
+   "fieldtype": "Link",
+   "label": "Terms",
+   "options": "Terms and Conditions"
+  },
+  {
+   "fetch_from": "terms.terms",
+   "fieldname": "terms_and_conditions_details",
+   "fieldtype": "Text Editor",
+   "label": "Terms and Conditions Details"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "billing_and_delivery_status_section",
+   "fieldtype": "Section Break",
+   "label": "Billing and Delivery Status"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Draft\nOpen\nOn Hold\nTo Issue and Bill\nTo Return and Bill\nTo Bill\nCompleted\nCancelled\nClosed"
+  },
+  {
+   "fieldname": "percentage_delivered",
+   "fieldtype": "Percent",
+   "label": "Percentage Delivered",
+   "read_only": 1
+  },
+  {
+   "fieldname": "percentage_received",
+   "fieldtype": "Percent",
+   "label": "Percentage Received",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_23",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "total_timesheets",
+   "fieldtype": "Int",
+   "label": "Total Timesheets",
+   "read_only": 1
+  },
+  {
+   "fieldname": "timesheets_billed",
+   "fieldtype": "Int",
+   "label": "Timesheets Billed",
+   "read_only": 1
+  },
+  {
+   "fieldname": "references_section",
+   "fieldtype": "Section Break",
+   "label": "References"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Supplier Rental Order",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "supplier_rental_quotation",
+   "fieldtype": "Link",
+   "label": "Supplier Rental Quotation",
+   "options": "Supplier Rental Quotation"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [
+  {
+   "link_doctype": "Supplier Rental Timesheet",
+   "link_fieldname": "supplier_rental_order"
+  }
+ ],
+ "modified": "2022-02-08 14:45:07.230510",
+ "modified_by": "Administrator",
+ "module": "Oil And Gas International",
+ "name": "Supplier Rental Order",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}
