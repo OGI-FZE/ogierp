@@ -48,9 +48,9 @@ const create_custom_buttons = () => {
 	if (status == 0) {
 		get_items_from_rental_quotation()
 	} else if (status == 1) {
+		add_project()
 		add_rental_issue_note()
 		add_rental_receipt()
-
 		add_material_request()
 		add_asset_formation()
 		add_purchase_order()
@@ -70,7 +70,7 @@ const get_items_from_rental_quotation = () => {
 			date_field: "date",
 			get_query() {
 				return {
-					filters: {}
+					filters: {docstatus:1}
 				}
 			},
 			action(selections) {
@@ -118,16 +118,35 @@ const get_items_from_rental_quotation = () => {
 	}, 'Get Items From')
 }
 
+const add_project = () => {
+	cur_frm.add_custom_button('Project', () => {
+		const doc = cur_frm.doc
+		// frm.clear_table('items');
+		frappe.run_serially([
+			() => frappe.new_doc('Project'),
+			() => {
+				const cur_doc = cur_frm.doc
+				cur_doc.customer = doc.customer
+				cur_doc.project_name = doc.name
+				cur_doc.expected_start_date = doc.date
+				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "rental_order", doc.name)
+				cur_frm.refresh()
+			}
+		])
+	}, 'Create')
+}
+
 const add_rental_issue_note = () => {
 	cur_frm.add_custom_button('Rental Issue Note', () => {
 		const doc = cur_frm.doc
+		// frm.clear_table('items');
 		frappe.run_serially([
 			() => frappe.new_doc('Rental Issue Note'),
 			() => {
 				const cur_doc = cur_frm.doc
 				cur_doc.customer = doc.customer
+				cur_doc.departments = doc.departments
 				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "rental_order", doc.name)
-
 				cur_frm.refresh()
 			}
 		])
@@ -142,6 +161,7 @@ const add_rental_receipt = () => {
 			() => {
 				const cur_doc = cur_frm.doc
 				cur_doc.customer = doc.customer
+				cur_doc.departments = doc.departments
 				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "rental_order", doc.name)
 
 				cur_frm.refresh()
@@ -213,7 +233,8 @@ const add_purchase_order = () => {
 			() => frappe.new_doc('Purchase Order'),
 			() => {
 				const cur_doc = cur_frm.doc
-				cur_doc.rental_order = doc.name
+				// cur_doc.rental_order = doc.name
+				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "rental_order", doc.name)
 				cur_doc.items = []
 
 				for (const row of doc.items) {
@@ -239,7 +260,8 @@ const add_purchase_invoice = () => {
 			() => frappe.new_doc('Purchase Invoice'),
 			() => {
 				const cur_doc = cur_frm.doc
-				cur_doc.rental_order = doc.name
+				// cur_doc.rental_order = doc.name
+				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "rental_order", doc.name)
 				cur_doc.items = []
 
 				for (const row of doc.items) {

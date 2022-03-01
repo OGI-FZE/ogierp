@@ -10,6 +10,7 @@ frappe.ui.form.on("Sales Invoice", {
     rental_timesheet(frm, cdt, cdn) {
         if(frm.doc.rental_timesheet){
 		    get_items_from_rental_timesheet(frm, cdt, cdn)
+            set_project(frm)
         }
 	},
 
@@ -48,6 +49,26 @@ const get_items_from_rental_timesheet = (frm, cdt, cdn) => {
 		}
 	})
 }
+
+const set_project = (frm) => {
+    frappe.db.get_value('Rental Timesheet', {'name':frm.doc.rental_timesheet}, 'rental_order', (r) => {
+        if(r && r.rental_order){
+            const rental_order = r.rental_order
+            frm.call({
+                method: "oil_and_gas_international.oil_and_gas_international.doctype.rental_issue_note.rental_issue_note.get_project",
+                args: { docname: rental_order },
+                async: false,
+                callback(res){
+                    console.log(res)
+                    const data = res.message
+                    frm.set_value("project", data.name)
+                }
+            })
+        }
+        
+    });
+}
+
 
 const rate_calc=(frm)=>{
     if(!frm.doc.rental_timesheet){

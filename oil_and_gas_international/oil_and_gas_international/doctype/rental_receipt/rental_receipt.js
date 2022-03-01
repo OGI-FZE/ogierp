@@ -4,13 +4,56 @@
 frappe.ui.form.on('Rental Receipt', {
 	rental_order(frm, cdt, cdn) {
 		get_items_from_rental_order(frm, cdt, cdn)
+		set_project(frm)
 	},
 	refresh:function(frm){
 		if(frm.is_new()){
 			frappe.model.set_value('Rental Receipt',frm.doc.name,'status','Draft')
 		}
+		create_custom_buttons()
 	}
 });
+
+const create_custom_buttons = () => {
+	const doc = cur_frm.doc
+	const status = doc.docstatus
+
+	if (status == 1){
+		add_work_order()
+	}
+}
+
+const add_work_order = () => {
+	cur_frm.add_custom_button('Work_Order', () => {
+		const doc = cur_frm.doc
+		frappe.run_serially([
+			() => frappe.new_doc('Work_Order'),
+			() => {
+				const cur_doc = cur_frm.doc
+				cur_doc.party_type = "Customer"
+				cur_doc.party = doc.customer
+				cur_doc.party_name = doc.customer_name
+				cur_doc.date = doc.date
+				cur_doc.rental_receipt = doc.name
+				cur_doc.job_number = doc.project
+				cur_doc.departments = doc.departments
+				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "rental_order", doc.rental_order)
+				cur_frm.doc.items = []
+				for (let row of doc.items) {
+					cur_frm.add_child('items', {
+						'quantity': row.qty,
+						'item_code': row.item_code,
+						'item_name': row.item_name,
+						'assets': row.assets,
+					})
+				}
+
+				cur_frm.refresh()
+			}
+		])
+	}, 'Create')
+}
+
 
 const get_items_from_rental_order = (frm, cdt, cdn) => {
 	const rental_order = frm.doc.rental_order
@@ -26,6 +69,7 @@ const get_items_from_rental_order = (frm, cdt, cdn) => {
 				const new_row = frm.add_child('items', {
 					'qty': row.qty,
 					'rate': row.rate,
+					'item_name': row.item_name,
 					'asset_location': row.asset_location,
 					'rental_order': rental_order,
 					'rental_order_item': row.name,
@@ -47,6 +91,19 @@ frappe.ui.form.on('Rental Receipt Item', {
 		get_assets_to_receive(frm, cdt, cdn)
 	}
 });
+
+const set_project = (frm) => {
+	const rental_order = frm.doc.rental_order
+	frappe.call({
+		method: "oil_and_gas_international.oil_and_gas_international.doctype.rental_issue_note.rental_issue_note.get_project",
+		args: { docname: rental_order },
+		async: false,
+		callback(res){
+			const data = res.message
+			frm.set_value("project", data.name)
+		}
+	})
+}
 
 const get_assets_to_receive = (frm, cdt, cdn) => {
 	const doctype = "Asset"

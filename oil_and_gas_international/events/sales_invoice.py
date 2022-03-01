@@ -40,6 +40,7 @@ def get_retal_order_rate(si_items,timesheet):
 
     return values
 
+
 def addbilledamount(doc, method=None):
     for row in doc.items:
         if row.rental_order_item:

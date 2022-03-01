@@ -9,9 +9,12 @@
   "customer",
   "customer_name",
   "rental_order",
+  "project",
+  "departments",
   "column_break_3",
   "company",
   "date",
+  "rental_start_date",
   "status",
   "section_break_6",
   "items",
@@ -41,7 +44,7 @@
    "fieldname": "date",
    "fieldtype": "Date",
    "in_list_view": 1,
-   "label": "Date",
+   "label": "Issue Date",
    "reqd": 1
   },
   {
@@ -83,12 +86,37 @@
    "fieldtype": "Select",
    "label": "Status",
    "options": "Draft\nSubmitted\nCancelled\nClosed"
+  },
+  {
+   "fieldname": "project",
+   "fieldtype": "Link",
+   "label": "Project",
+   "options": "Project",
+   "read_only": 1
+  },
+  {
+   "default": "Today",
+   "fieldname": "rental_start_date",
+   "fieldtype": "Date",
+   "label": "Rental start Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "departments",
+   "fieldtype": "Select",
+   "label": "Department",
+   "options": "\nTrading\nLogistics\nInspection\nRental\nAdmin\nMS - Sale\nMS - Repair\nMS - Internal\nQA/QC"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
- "links": [],
- "modified": "2021-12-03 17:48:12.480880",
+ "links": [
+  {
+   "link_doctype": "Work_Order",
+   "link_fieldname": "rental_issue_note"
+  }
+ ],
+ "modified": "2022-03-01 15:01:29.347749",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Rental Issue Note",

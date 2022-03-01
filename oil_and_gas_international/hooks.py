@@ -40,6 +40,7 @@ doctype_js = {
     "Sales Invoice": "public/js/sales_invoice.js",
     "Sales Order": "public/js/sales_order.js",
     "Purchase Receipt": "public/js/purchase_receipt.js",
+    "Purchase Invoice": "public/js/purchase_invoice.js",
     "Supplier Quotation": "public/js/supplier_quotation.js",
 }
 # doctype_js = {"doctype" : "public/js/doctype.js"}
@@ -113,13 +114,13 @@ doc_events = {
 
 # Scheduled Tasks
 # ---------------
-# scheduler_events = {
-#     "cron": {
-#         "daily": [
-#             "oil_and_gas_international.tasks.daily"
-#         ],
-#     }
-# }
+scheduler_events = {
+    "cron": {
+        "daily": [
+            "oil_and_gas_international.tasks.daily"
+        ],
+    }
+}
 
 # Testing
 # -------
@@ -254,6 +255,8 @@ fixtures = [
                 'Opportunity-item_type',
                 'Opportunity-references',
                 'Opportunity-rental_estimation',
+                'Opportunity-sales_person',
+                'Opportunity-departments',
 
                 # Opportunity Item
                 'Opportunity Item-item_type',
@@ -308,6 +311,23 @@ fixtures = [
                 'Sales Order Item-assets','Sales Order-rental_timesheet_item','Sales Order-rental_order_item',
                 'Sales Order-rental_timesheet','Sales Order-rental_order','Sales Order Item-rental_order',
                 'Sales Order Item-rental_order_item','Sales Order Item-references','Sales Order Item-asset_item',
+
+                # Project
+                'Project-rental_order',
+
+                #Rental order
+                'Rental Order-sales_employee','Rental Order-sales_person_link',
+                'Rental Order-sales_person_name','Rental Order-departments','Rental Order-remarks','Rental Order-freight',
+                'Rental Order-client_terms','Rental Order-credit_limit','Rental Order-payment_terms','Rental Order-delivery_terms',
+                'Rental Order-prices','Rental Order-delivery_date','Rental Order-mail_id','Rental Order-contact_number','Rental Order-sales_person_details',
+                'Rental Order-currency','Rental Order-client_po_date','Rental Order-client_po_no',
+
+                #Rental quotation
+                'Rental Quotation-sales_person','Rental Quotation-departments',
+
+                #Asset Movement
+                'Asset Movement-rental_issue_note',
+
             ]]
         ]
     },
@@ -316,7 +336,7 @@ fixtures = [
         "filters": [
             ["name", "in", [
                 # Item
-                'Item-item_group-label',
+                'Item-item_group-label','Project-main-quick_entry'
             ]]
         ]
     },

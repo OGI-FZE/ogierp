@@ -38,21 +38,23 @@ const create_rental_estimation = (frm) => {
         frappe.run_serially([
             () => frappe.new_doc('Rental Estimation'),
             () => {
-                cur_frm.doc.party = doc.customer;
-                cur_frm.doc.party_name = doc.customer_name;
+                cur_frm.doc.customer = doc.party_name;
+                cur_frm.doc.customer_name = doc.customer_name;
                 cur_frm.doc.date = doc.transaction_date;
-                cur_frm.doc.valid_till = doc.valid_till;
+                cur_frm.doc.valid_till = doc.expected_closing;
                 cur_frm.doc.opportunity = doc.name;
                 cur_frm.doc.items = []
                 for (let row of doc.items) {
                     if (row.item_type == 'Rental') {
-                        cur_frm.add_child('items', {
+                        const new_row = cur_frm.add_child('items', {
                             'qty': row.qty,
-                            'item_code': row.item_code,
                             'item_name': row.item_name,
                             'description': row.description,
                             'opportunity': doc.name,
                         })
+                        const cdt = new_row.doctype
+                        const cdn = new_row.name
+                        frappe.model.set_value(cdt, cdn, "item_code", row.item_code)
                     }
 
                 }
@@ -73,17 +75,23 @@ const create_rental_quotation = (frm) => {
                 cur_frm.doc.customer_name = doc.customer_name;
                 cur_frm.doc.date = doc.posting_date;
                 cur_frm.doc.valid_till = doc.expected_closing;
+                cur_frm.doc.departments = doc.departments;
+                cur_frm.doc.sales_person = doc.sales_person;
                 // cur_frm.doc.opportunity = doc.name;
                 cur_frm.doc.items = []
                 for (let row of doc.items) {
                     if (row.item_type == 'Rental') {
-                        cur_frm.add_child('items', {
+                        const new_row = cur_frm.add_child('items', {
                             'qty': row.qty,
-                            'item_code': row.item_code,
                             'item_name': row.item_name,
                             'description': row.description,
+                            'uom': row.uom,
+                            'rate': row.basic_rate,
                             // 'opportunity': doc.name,
                         })
+                        const cdt = new_row.doctype
+                        const cdn = new_row.name
+                        frappe.model.set_value(cdt, cdn, "item_code", row.item_code)
                     }
 
                 }

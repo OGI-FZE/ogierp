@@ -10,6 +10,7 @@ frappe.ui.form.on('Rental Issue Note', {
 	},
 	rental_order(frm, cdt, cdn) {
 		get_items_from_rental_order(frm, cdt, cdn)
+		set_project(frm)
 	}
 });
 
@@ -27,6 +28,10 @@ frappe.ui.form.on('Rental Issue Note Item', {
 const create_custom_buttons = () => {
 	const doc = cur_frm.doc
 	const status = doc.docstatus
+
+	if (status == 0){
+		add_work_order()
+	}
 
 	if (status == 1) {
 		add_rental_receipt()
@@ -51,6 +56,50 @@ const add_rental_receipt = () => {
 	}, 'Create')
 }
 
+const add_work_order = () => {
+	cur_frm.add_custom_button('Work_Order', () => {
+		const doc = cur_frm.doc
+		frappe.run_serially([
+			() => frappe.new_doc('Work_Order'),
+			() => {
+				const cur_doc = cur_frm.doc
+				cur_doc.party_type = "Customer"
+				cur_doc.party = doc.customer
+				cur_doc.party_name = doc.customer_name
+				cur_doc.date = doc.date
+				cur_doc.rental_issue_note = doc.name
+				cur_doc.job_number = doc.project
+				cur_doc.departments = doc.departments
+				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "rental_order", doc.rental_order)
+				cur_frm.doc.items = []
+				for (let row of doc.items) {
+					cur_frm.add_child('items', {
+						'quantity': row.qty,
+						'item_code': row.item_code,
+						'item_name': row.item_name,
+						'assets': row.assets,
+					})
+				}
+
+				cur_frm.refresh()
+			}
+		])
+	}, 'Create')
+}
+
+const set_project = (frm) => {
+	const rental_order = frm.doc.rental_order
+	frm.call({
+		method: "get_project",
+		args: { docname: rental_order },
+		async: false,
+		callback(res){
+			const data = res.message
+			frm.set_value("project", data.name)
+		}
+	})
+}
+
 
 const get_items_from_rental_order = (frm, cdt, cdn) => {
 	const rental_order = frm.doc.rental_order
@@ -63,18 +112,33 @@ const get_items_from_rental_order = (frm, cdt, cdn) => {
 			if (!data) return
 			frm.doc.items = []
 			for (const row of data) {
+				for(let i = 0; i < row.qty; i++){
+					const new_row = frm.add_child("items", {
+						'item_code': row.item_code,
+						'qty': 1,
+						'rate':row.rate,
+						'operational_running':row.operational_running,
+						'standby':row.standby,
+						'lihdbr':row.lihdbr,
+						'redress':row.redress,
+						'straight':row.straight,
+						'asset_location':row.asset_location,
+						'rental_order_item':row.rental_order_item,
+						'rental_order':row.rental_order
+					})
+					const cdt = new_row.doctype
+					const cdn = new_row.name
+				}
+				// const new_row = frm.add_child('items', {
+				// 	'qty': row.qty,
+				// 	'rate': row.rate,
+				// 	'asset_location': row.asset_location,
+				// 	'rental_order_item': row.name,
+				// 	'rental_order': row.parent,
+				// })
 
-				const new_row = frm.add_child('items', {
-					'qty': row.qty,
-					'rate': row.rate,
-					'asset_location': row.asset_location,
-					'rental_order_item': row.name,
-					'rental_order': row.parent,
-				})
-
-				const cdt = new_row.doctype
-				const cdn = new_row.name
-				frappe.model.set_value(cdt, cdn, "item_code", row.item_code)
+				
+				// frappe.model.set_value(cdt, cdn, "item_code", row.item_code)
 			}
 
 			cur_frm.refresh()
@@ -97,7 +161,8 @@ const get_assets_to_issue = (frm, cdt, cdn) => {
 			return {
 				filters: {
 					rental_status: "Available For Rent",
-					item_code: row.item_code
+					item_code: row.item_code,
+					docstatus:1
 				}
 			}
 		},

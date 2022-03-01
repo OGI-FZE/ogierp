@@ -4,6 +4,7 @@
 frappe.ui.form.on('Rental Timesheet', {
 	rental_order(frm, cdt, cdn) {
 		get_items_from_rental_order(frm, cdt, cdn)
+		set_project(frm)
 	},
 	refresh:function(frm){
 		if(frm.is_new()){
@@ -35,21 +36,25 @@ const get_items_from_rental_order = (frm, cdt, cdn) => {
 						callback(rti) {
 							const issuenote=rti.message
 							if (issuenote){
-								const new_row = frm.add_child('items', {
-									'qty': row.qty,
-									'asset_location': row.asset_location,
-									'rental_order': rental_order,
-									'rental_order_item': row.name,
-									'operational_running':row.operational_running,
-									'standby':row.standby,
-									'lihdbr':row.lihdbr,
-									'redress':row.redress,
-									'straight':row.straight,
-									'assets':row.assets,
-								})
-								const cdt = new_row.doctype
-								const cdn = new_row.name
-								frappe.model.set_value(cdt, cdn, "item_code", row.item_code)
+								for(let r = 0; r < issuenote.length; r++){
+									// for(let i = 0; i < row.qty; i++){
+									const new_row = frm.add_child('items', {
+										'qty': 1,
+										'asset_location': row.asset_location,
+										'rental_order': rental_order,
+										'rental_order_item': row.name,
+										'operational_running':row.operational_running,
+										'standby':row.standby,
+										'lihdbr':row.lihdbr,
+										'redress':row.redress,
+										'straight':row.straight,
+										'assets':issuenote[r].assets,
+									})
+									const cdt = new_row.doctype
+									const cdn = new_row.name
+									frappe.model.set_value(cdt, cdn, "item_code", row.item_code)
+									// }
+								}
 							}
 						}
 					})
@@ -60,6 +65,7 @@ const get_items_from_rental_order = (frm, cdt, cdn) => {
 		}
 	})
 }
+
 
 frappe.ui.form.on('Rental Timesheet Item', {
 	get_assets(frm, cdt, cdn) {
@@ -146,11 +152,11 @@ const calculate_amount=(frm,cdt,cdn)=>{
 		console.log(total);
 	}
 	if(row.redress_days && row.redress>0){
-		total = total+ ( row.redress_days*row.redress)
+		total = total+ (row.redress)
 		console.log(total);
 	}
 	if(row.lihdbr_days && row.lihdbr>0){
-		total = total+ ( row.lihdbr_days*row.lihdbr)
+		total = total+ (row.lihdbr)
 		console.log(total);
 	}
 	if(row.straight_days && row.straight>0){
@@ -192,6 +198,19 @@ const get_assets_to_receive = (frm, cdt, cdn) => {
 	});
 }
 
+const set_project = (frm) => {
+	const rental_order = frm.doc.rental_order
+	frappe.call({
+		method: "oil_and_gas_international.oil_and_gas_international.doctype.rental_issue_note.rental_issue_note.get_project",
+		args: { docname: rental_order },
+		async: false,
+		callback(res){
+			const data = res.message
+			frm.set_value("project", data.name)
+		}
+	})
+}
+
 const add_sales_invoice = () => {
 	cur_frm.add_custom_button('Sales Invoice', () => {
 		const doc = cur_frm.doc
@@ -200,8 +219,9 @@ const add_sales_invoice = () => {
 			() => {
 				const cur_doc = cur_frm.doc
 				cur_doc.customer = doc.customer
-				cur_doc.rental_timesheet = doc.name
+				// cur_doc.rental_timesheet = doc.name
 				cur_doc.rental_order = doc.rental_order
+				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "rental_timesheet", doc.name)
 				cur_doc.items = []
 
 				for (const row of doc.items) {
@@ -235,8 +255,9 @@ const add_sales_order = () => {
 			() => {
 				const cur_doc = cur_frm.doc
 				cur_doc.customer = doc.customer
-				cur_doc.rental_timesheet = doc.name
+				// cur_doc.rental_timesheet = doc.name
 				cur_doc.rental_order = doc.rental_order
+				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "rental_timesheet", doc.name)
 				cur_doc.items = []
 
 				for (const row of doc.items) {

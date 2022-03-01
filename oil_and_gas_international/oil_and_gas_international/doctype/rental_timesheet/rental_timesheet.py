@@ -56,5 +56,5 @@ def check_issue_note(docname=None,itm=None):
         "parent": rt.name,
         "item_code":itm,
         "docstatus":1,
-    }, ["*"])
-    return len(rti)
+    }, ["item_code","item_name","assets"])
+    return rti

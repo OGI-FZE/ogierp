@@ -3,8 +3,26 @@ frappe.ui.form.on("Purchase Order", {
         if (frm.doc.docstatus == 0) {
             create_custom_buttons(frm)
         }
-    }
+    },
+    rental_order(frm,cdt,cdn) {
+        if(frm.doc.rental_order){
+            set_project(frm,cdt,cdn)
+        }
+    },
 })
+
+const set_project = (frm,cdt,cdn) => {
+    const rental_order = frm.doc.rental_order
+    frappe.call({
+        method: "oil_and_gas_international.oil_and_gas_international.doctype.rental_issue_note.rental_issue_note.get_project",
+        args: { docname: rental_order },
+        async: false,
+        callback(res){
+            const data = res.message
+            frappe.model.set_value(cdt, cdn, "project",data.name)
+        }
+    })
+}
 
 
 const create_custom_buttons = (frm) => {
