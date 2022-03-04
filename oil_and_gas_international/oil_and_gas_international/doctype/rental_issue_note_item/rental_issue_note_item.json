@@ -12,6 +12,7 @@
   "qty",
   "operational_running",
   "standby",
+  "post_rental_inspection_charges",
   "column_break_8",
   "lihdbr",
   "redress",
@@ -125,12 +126,17 @@
    "fieldname": "straight",
    "fieldtype": "Currency",
    "label": "Straight"
+  },
+  {
+   "fieldname": "post_rental_inspection_charges",
+   "fieldtype": "Currency",
+   "label": "Post Rental Inspection charges"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2022-03-01 10:51:57.757854",
+ "modified": "2022-03-02 16:00:23.655013",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Rental Issue Note Item",

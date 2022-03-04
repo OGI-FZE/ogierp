@@ -16,6 +16,7 @@
   "qty",
   "operational_running",
   "lihdbr",
+  "post_rental_inspection_charges",
   "column_break_12",
   "estimate_rate",
   "asset_location",
@@ -142,12 +143,17 @@
    "fieldname": "lihdbr",
    "fieldtype": "Currency",
    "label": "LIH/DBR "
+  },
+  {
+   "fieldname": "post_rental_inspection_charges",
+   "fieldtype": "Currency",
+   "label": "Post Rental Inspection charges"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2022-01-20 14:40:49.094008",
+ "modified": "2022-03-02 15:55:28.244185",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Rental Quotation Item",

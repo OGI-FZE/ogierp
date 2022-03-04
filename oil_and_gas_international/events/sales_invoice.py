@@ -63,3 +63,9 @@ def on_submit(doc, method=None):
         if row.rental_timesheet_item:
             row.rate = frappe.db.set_value(
                 "Rental Timesheet Item", row.rental_timesheet_item, "is_billed", 1)
+
+def get_desc(doc,method=None):
+    print("\n\nvalidateeeeeeeeeeee")
+    if doc.items:
+        for item in doc.items:
+            item.description = item.details

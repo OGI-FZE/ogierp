@@ -143,6 +143,7 @@ const calculate_lost_and_damage_price = (frm, cdt, cdn) => {
 			row.lihdbr = data[2]
 			row.redress = data[3]
 			row.straight = data[4]
+			row.post_rental_inspection_charges = data[5]
 			frm.refresh()
 		}
 	})

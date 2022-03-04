@@ -20,6 +20,7 @@
   "redress_days",
   "lihdbr_days",
   "straight_days",
+  "post_rental_inspection_charges",
   "amount",
   "column_break_13",
   "operational_running",
@@ -174,12 +175,17 @@
    "fieldname": "assets",
    "fieldtype": "Small Text",
    "label": "Assets"
+  },
+  {
+   "fieldname": "post_rental_inspection_charges",
+   "fieldtype": "Currency",
+   "label": "Post Rental Inspection charges"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2022-03-01 16:17:19.503609",
+ "modified": "2022-03-02 16:02:22.523154",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Rental Timesheet Item",

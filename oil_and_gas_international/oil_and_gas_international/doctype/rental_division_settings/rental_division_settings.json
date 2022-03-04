@@ -11,7 +11,8 @@
   "straight",
   "column_break_2",
   "standby",
-  "redress"
+  "redress",
+  "post_rental_inspection_charges"
  ],
  "fields": [
   {
@@ -47,12 +48,18 @@
    "fieldtype": "Link",
    "label": "Straight",
    "options": "Price List"
+  },
+  {
+   "fieldname": "post_rental_inspection_charges",
+   "fieldtype": "Link",
+   "label": "Post Rental Inspection charges",
+   "options": "Price List"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2022-01-19 23:33:01.584868",
+ "modified": "2022-03-02 15:34:04.019841",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Rental Division Settings",

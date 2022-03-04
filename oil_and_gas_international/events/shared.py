@@ -11,6 +11,7 @@ def get_lost_and_damage_prices(item_code=None):
     standby = 0
     redress = 0
     straight = 0
+    post_rental_inspection_charges = 0
 
     rd_settings = frappe.get_single("Rental Division Settings")
 
@@ -44,4 +45,10 @@ def get_lost_and_damage_prices(item_code=None):
             "item_code": item_code
         }, "price_list_rate")
 
-    return oprunning, standby , lihdbr, redress, straight
+    if rd_settings.post_rental_inspection_charges:
+        post_rental_inspection_charges = frappe.get_value("Item Price", {
+            "price_list": rd_settings.post_rental_inspection_charges,
+            "item_code": item_code
+        }, "price_list_rate")
+
+    return oprunning, standby , lihdbr, redress, straight, post_rental_inspection_charges

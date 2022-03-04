@@ -14,7 +14,7 @@ frappe.ui.form.on("Sales Invoice", {
         }
 	},
 
-})
+});
 
 
 const get_items_from_rental_timesheet = (frm, cdt, cdn) => {
@@ -37,10 +37,17 @@ const get_items_from_rental_timesheet = (frm, cdt, cdn) => {
                 const cdt = new_row.doctype
                 const cdn = new_row.name
                 frappe.model.set_value(cdt, cdn, "item_code",'Asset Rent Item')
+                let desc = "Operational/Running : "+(row.operational_running_days)+ "*" + (row.operational_running) +"\n"+
+                "Standby : " +(row.standby_days)+ "*" + (row.standby)+"\n"+
+                "Redress : "+(row.redress_days)+ "*" + (row.redress)+"\n"+
+                "LIH/DBR : " +(row.lihdbr_days)+ "*" + (row.lihdbr)+"\n"+
+                "Straight : "+(row.straight_days)+ "*" + (row.straight)
                 setTimeout(function(){
                     frappe.model.set_value(cdt, cdn, "price_list_rate",row.amount)
                     frappe.model.set_value(cdt, cdn, "rate",row.amount)
                     frappe.model.set_value(cdt, cdn, "amount",row.amount)
+                    frappe.model.set_value(cdt, cdn, "details",desc)
+                    frappe.model.set_value(cdt, cdn, "description",desc)
                 }, 2000);           
 				
 			}

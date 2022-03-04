@@ -137,6 +137,12 @@ frappe.ui.form.on('Rental Timesheet Item', {
 		if(row.straight){
 			calculate_amount(frm,cdt,cdn)
 		}
+	},
+	post_rental_inspection_charges(frm,cdt,cdn){
+		let row=locals[cdt][cdn]
+		if(row.post_rental_inspection_charges){
+			calculate_amount(frm,cdt,cdn)
+		}
 	}
 });
 
@@ -161,6 +167,10 @@ const calculate_amount=(frm,cdt,cdn)=>{
 	}
 	if(row.straight_days && row.straight>0){
 		total = total+ ( row.straight_days*row.straight)
+		console.log(total);
+	}
+	if(row.post_rental_inspection_charges >0){
+		total = total+ ( row.post_rental_inspection_charges)
 		console.log(total);
 	}
 	frappe.model.set_value(cdt,cdn,'amount',total*row.qty)
@@ -221,6 +231,7 @@ const add_sales_invoice = () => {
 				cur_doc.customer = doc.customer
 				// cur_doc.rental_timesheet = doc.name
 				cur_doc.rental_order = doc.rental_order
+				cur_doc.departments = doc.departments
 				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "rental_timesheet", doc.name)
 				cur_doc.items = []
 
