@@ -1,7 +1,7 @@
 {
  "add_total_row": 1,
  "columns": [],
- "creation": "2022-03-04 11:35:12.207446",
+ "creation": "2022-03-07 09:34:39.971559",
  "disable_prepared_report": 0,
  "disabled": 0,
  "docstatus": 0,
@@ -10,14 +10,14 @@
  "idx": 0,
  "is_standard": "Yes",
  "letter_head": "Header",
- "modified": "2022-03-04 12:07:46.319747",
+ "modified": "2022-03-07 09:34:39.971559",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
- "name": "Purchase Order Receipt",
+ "name": "Open Order",
  "owner": "Administrator",
  "prepared_report": 0,
  "ref_doctype": "Purchase Order",
- "report_name": "Purchase Order Receipt",
+ "report_name": "Open Order",
  "report_type": "Script Report",
  "roles": [
   {

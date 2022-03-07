@@ -1,4 +1,4 @@
-frappe.query_reports["Purchase Order Receipt"] = {
+frappe.query_reports["Open Order"] = {
 	"filters": [
 		{
 			"fieldname":"from_date",

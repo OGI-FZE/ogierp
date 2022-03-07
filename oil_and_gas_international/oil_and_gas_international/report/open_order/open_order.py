@@ -1,5 +1,4 @@
 from __future__ import unicode_literals
-from multiprocessing import Condition
 import frappe
 from frappe import _
 from datetime import datetime
