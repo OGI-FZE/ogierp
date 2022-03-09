@@ -86,7 +86,6 @@ def execute(filters=None):
 	return columns, data
 
 def get_data(filters):
-	print("\ndataaaaaaaaa")
 	data = []
 
 	rt = frappe.db.sql("""select trt.name,trt.date,trt.customer,trt.start_date ,trt.end_date,trti.assets,
@@ -97,10 +96,9 @@ def get_data(filters):
 			from `tabRental Timesheet` trt 
 			join `tabRental Timesheet Item` trti 
 			on trti.parent = trt.name 
-			where trt.docstatus =1 and trti.assets = '{0}' or trti.assets = '{0}\n'
+			where trt.docstatus =1 and trti.assets = '{0}'
 			group by trt.name""".format(filters.get('asset')),as_dict=True)
 	
-	print("rtttttttttt\n",rt)
 
 	if not rt:
 		return data
@@ -111,7 +109,7 @@ def get_data(filters):
 	total_amnt = 0
 
 	for ts in rt:
-		total_amnt += ts.total_amount
+		total_amnt += (ts.total_op_amnt+ts.total_sb_amnt+ts.total_str_amnt)
 		row = {
 			'date':ts.date,
 			'timesheet':ts.name,

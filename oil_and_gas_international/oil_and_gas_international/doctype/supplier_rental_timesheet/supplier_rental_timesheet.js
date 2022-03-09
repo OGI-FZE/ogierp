@@ -13,6 +13,18 @@ frappe.ui.form.on('Supplier Rental Timesheet', {
 			add_purchase_invoice()
 			add_purchase_order()
 		}
+	},
+	setup(frm,cdt,cdn) {
+		frm.fields_dict['items'].grid.get_field('assets').get_query = function (doc, cdt, cdn) {
+			const row = locals[cdt][cdn]
+			return {
+				filters: {
+					rental_status: "In Use",
+					rental_order: frm.doc.supplier_rental_order,
+					docstatus:1
+				}
+			}
+		}
 	}
 });
 
@@ -53,7 +65,7 @@ const get_items_from_supplier_rental_order = (frm, cdt, cdn) => {
 
 frappe.ui.form.on('Supplier Rental Timesheet Item', {
 	get_assets(frm, cdt, cdn) {
-		get_assets_to_receive(frm, cdt, cdn)
+		// get_assets_to_receive(frm, cdt, cdn)
 	},
 	qty(frm,cdt,cdn){
 		let row=locals[cdt][cdn]
@@ -121,6 +133,12 @@ frappe.ui.form.on('Supplier Rental Timesheet Item', {
 		if(row.straight){
 			calculate_amount(frm,cdt,cdn)
 		}
+	},
+	post_rental_inspection_charges(frm,cdt,cdn){
+		let row=locals[cdt][cdn]
+		if(row.post_rental_inspection_charges){
+			calculate_amount(frm,cdt,cdn)
+		}
 	}
 });
 
@@ -145,6 +163,10 @@ const calculate_amount=(frm,cdt,cdn)=>{
 	}
 	if(row.straight_days && row.straight>0){
 		total = total+ ( row.straight_days*row.straight)
+		console.log(total);
+	}
+	if(row.post_rental_inspection_charges >0){
+		total = total+ ( row.post_rental_inspection_charges)
 		console.log(total);
 	}
 	frappe.model.set_value(cdt,cdn,'amount',total*row.qty)
@@ -237,7 +259,6 @@ const add_purchase_order = () => {
 						assets:row.assets,
 						supplier_rental_order:row.supplier_rental_order,
 						supplier_rental_order_item:row.supplier_rental_order_item,
-						assets:row.assets,
 					})
 					const cdt = new_row.doctype
 					const cdn = new_row.name

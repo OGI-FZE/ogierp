@@ -250,7 +250,8 @@ fixtures = [
                 'Asset-rental_status',
                 'Asset-rental_order',
                 'Asset-against_asset_formation',
-                'Asset-item_group'
+                'Asset-item_group',
+                'Asset-supplier_info',
 
                 # Opportunity
                 'Opportunity-item_type',
@@ -271,19 +272,19 @@ fixtures = [
                 # Purchase Order
                 'Purchase Order-rental_order',
                 'Purchase Order-supplier_rental_timesheet',
-                'Purchase Order-supplier_rental_order'
+                'Purchase Order-supplier_rental_order',
 
                 # Purchase Order Item
                 'Purchase Order Item-rental_order',
                 'Purchase Order Item-assets',
                 'Purchase Order Item-asset_item',
                 'Purchase Order Item-supplier_rental_order_item',
-                'Purchase Order Item-supplier_rental_order'
+                'Purchase Order Item-supplier_rental_order',
 
                 # Purcahse Invoice
                 'Purchase Invoice-rental_order',
                 'Purchase Invoice-supplier_rental_timesheet',
-                'Purchase Invoice-supplier_rental_order'
+                'Purchase Invoice-supplier_rental_order',
 
                 # purchase Invoice Item
                 'Purchase Invoice Item-rental_order',
@@ -291,7 +292,7 @@ fixtures = [
                 'Purchase Invoice Item-assets',
                 'Purchase Invoice Item-asset_item',
                 'Purchase Invoice Item-supplier_rental_order_item',
-                'Purchase Invoice Item-supplier_rental_order'
+                'Purchase Invoice Item-supplier_rental_order',
 
                 # Sales Invoice
                 "Sales Invoice-rental_references",
@@ -300,10 +301,12 @@ fixtures = [
                 "Sales Invoice-rental_timesheet",
                 "Sales Invoice-rental_timesheet_item",
                 "Sales Invoice-rental_order",
+                "Sales Invoice-departments",
                 #Sales Invoie Item
                 'Sales Invoice Item-asset_item',
                 'Sales Invoice Item-rental_order_item',
                 'Sales Invoice Item-rental_order',
+                'Sales Invoice Item-details',
 
                 # Stock Entry
                 "Stock Entry-against_asset_formation",

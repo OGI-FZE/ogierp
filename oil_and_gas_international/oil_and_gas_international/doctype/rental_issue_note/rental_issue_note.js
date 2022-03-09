@@ -11,6 +11,18 @@ frappe.ui.form.on('Rental Issue Note', {
 	rental_order(frm, cdt, cdn) {
 		get_items_from_rental_order(frm, cdt, cdn)
 		set_project(frm)
+	},
+	setup(frm,cdt,cdn) {
+		frm.fields_dict['items'].grid.get_field('assets').get_query = function (doc, cdt, cdn) {
+			const row = locals[cdt][cdn]
+			return {
+				filters: {
+					rental_status: "Available For Rent",
+					item_code: row.item_code,
+					docstatus:1
+				}
+			}
+		}
 	}
 });
 
@@ -19,9 +31,9 @@ frappe.ui.form.on('Rental Issue Note Item', {
 		calculate_lost_and_damage_price(frm, cdt, cdn)
 	},
 
-	get_assets(frm, cdt, cdn) {
-		get_assets_to_issue(frm, cdt, cdn)
-	}
+	// get_assets(frm, cdt, cdn) {
+	// 	get_assets_to_issue(frm, cdt, cdn)
+	// }
 });
 
 
@@ -87,6 +99,7 @@ const add_work_order = () => {
 	}, 'Create')
 }
 
+
 const set_project = (frm) => {
 	const rental_order = frm.doc.rental_order
 	frm.call({
@@ -122,8 +135,9 @@ const get_items_from_rental_order = (frm, cdt, cdn) => {
 						'lihdbr':row.lihdbr,
 						'redress':row.redress,
 						'straight':row.straight,
+						'post_rental_inspection_charges':row.post_rental_inspection_charges,
 						'asset_location':row.asset_location,
-						'rental_order_item':row.rental_order_item,
+						'rental_order_item':row.name,
 						'rental_order':row.rental_order
 					})
 					const cdt = new_row.doctype
@@ -147,7 +161,8 @@ const get_items_from_rental_order = (frm, cdt, cdn) => {
 }
 
 const get_assets_to_issue = (frm, cdt, cdn) => {
-	const row = locals[cdt][cdn]
+	
+
 
 	const doctype = "Asset"
 	new frappe.ui.form.MultiSelectDialog({

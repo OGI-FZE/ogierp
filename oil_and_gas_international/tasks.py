@@ -132,29 +132,29 @@ def change_rental_status():
 	for ri in rin:
 		rin_doc = frappe.get_doc("Rental Issue Note",ri.name)
 		for row in rin_doc.items:
-			assets = row.assets
-			assets = assets.split("\n")
-			for asset in assets:
-				# issue date
-				if asset:
-					if str(rin_doc.date) == today():
-						frappe.db.set_value("Asset", asset, "rental_status", "In transit")
-						
-					if str(rin_doc.rental_start_date) == today():
-						frappe.db.set_value("Asset", asset, "rental_status", "In Use")
-						frappe.db.set_value("Asset", asset, "rental_order", rin_doc.rental_order)
+			# assets = row.assets
+			# assets = assets.split("\n")
+			# for asset in assets:
+			# issue date
+			if row.assets:
+				if str(rin_doc.date) == today():
+					frappe.db.set_value("Asset", row.assets, "rental_status", "In transit")
+					
+				if str(rin_doc.rental_start_date) == today():
+					frappe.db.set_value("Asset", row.assets, "rental_status", "In Use")
+					frappe.db.set_value("Asset", row.assets, "rental_order", rin_doc.rental_order)
 
 	rr_all = frappe.get_all("Rental Receipt",filters={'docstatus':1,'rental_stop_date':[">=",today()]},fields=["name"])
 	for rr in rr_all:
 		rr_doc = frappe.get_doc("Rental Issue Note",rr.name)
 		for row in rr_doc.items:
-			assets = row.assets
-			assets = assets.split("\n")
-			for asset in assets:
-				if asset:
-					if str(rr_doc.rental_stop_date) == today():
-						frappe.db.set_value("Asset", asset, "rental_status", "In transit")
-						
-					if str(rr_doc.receipt_date) == today():
-						frappe.db.set_value("Asset", asset, "rental_status", "On hold for Inspection")
-						frappe.db.set_value("Asset", asset, "rental_order", "")
+			# assets = row.assets
+			# assets = assets.split("\n")
+			# for asset in assets:
+			if row.assets:
+				if str(rr_doc.rental_stop_date) == today():
+					frappe.db.set_value("Asset", row.assets, "rental_status", "In transit")
+					
+				if str(rr_doc.receipt_date) == today():
+					frappe.db.set_value("Asset", row.assets, "rental_status", "On hold for Inspection")
+					frappe.db.set_value("Asset", row.assets, "rental_order", "")

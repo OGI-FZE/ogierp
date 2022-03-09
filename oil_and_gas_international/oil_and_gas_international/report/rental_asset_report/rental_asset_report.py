@@ -39,7 +39,7 @@ def execute(filters=None):
 			"width": 130
 		},
 		{
-			"label": "Child Category",
+			"label": "Sub-sub Category",
 			"fieldname": "child_group",
 			"fieldtype": "Link",
 			"options":'Item Group',

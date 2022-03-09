@@ -173,8 +173,9 @@
   },
   {
    "fieldname": "assets",
-   "fieldtype": "Small Text",
-   "label": "Assets"
+   "fieldtype": "Link",
+   "label": "Asset",
+   "options": "Asset"
   },
   {
    "fieldname": "post_rental_inspection_charges",
@@ -185,7 +186,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2022-03-02 16:02:22.523154",
+ "modified": "2022-03-08 16:02:08.914833",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Rental Timesheet Item",

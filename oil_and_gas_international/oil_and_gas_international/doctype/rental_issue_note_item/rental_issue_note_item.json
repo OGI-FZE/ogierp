@@ -71,13 +71,15 @@
   },
   {
    "fieldname": "assets",
-   "fieldtype": "Small Text",
-   "label": "Assets",
+   "fieldtype": "Link",
+   "label": "Asset",
+   "options": "Asset",
    "reqd": 1
   },
   {
    "fieldname": "get_assets",
    "fieldtype": "Button",
+   "hidden": 1,
    "label": "Get Assets"
   },
   {
@@ -136,7 +138,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2022-03-02 16:00:23.655013",
+ "modified": "2022-03-08 16:00:44.646322",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Rental Issue Note Item",
