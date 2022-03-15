@@ -108,6 +108,8 @@ const add_rental_order = () => {
 				cur_doc.customer = doc.customer
 				cur_doc.customer_name = doc.customer_name
 				cur_doc.departments = doc.departments
+				cur_doc.terms = doc.terms
+				cur_doc.terms_and_conditions_details = doc.terms_and_conditions_details
 				// cur_doc.sales_person_link = doc.sales_person
 				frappe.model.set_value('Rental Order', cur_doc.name, "sales_person_link", doc.sales_person)
 				frappe.model.set_value('Rental Order', cur_doc.name, "sales_person_name", doc.sales_person)

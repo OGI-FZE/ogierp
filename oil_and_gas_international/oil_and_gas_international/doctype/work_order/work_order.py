@@ -24,3 +24,8 @@ class Work_Order(Document):
 				# for asset in assets:
 				if row.assets:
 					frappe.db.set_value("Asset", row.assets, "rental_status", "On hold for Inspection")
+
+	def on_cancel(self):
+		for row in self.items:
+			if row.assets:
+				frappe.db.set_value("Asset", row.assets, "rental_status", "Available for Rent")

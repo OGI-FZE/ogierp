@@ -96,7 +96,7 @@ def get_data(filters):
 			from `tabRental Timesheet` trt 
 			join `tabRental Timesheet Item` trti 
 			on trti.parent = trt.name 
-			where trt.docstatus =1 and trti.assets = '{0}'
+			where trt.docstatus =1 and (trti.assets = '{0}' or trti.assets = '{0}\n')
 			group by trt.name""".format(filters.get('asset')),as_dict=True)
 	
 

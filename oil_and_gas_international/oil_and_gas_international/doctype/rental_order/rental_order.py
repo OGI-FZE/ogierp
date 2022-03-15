@@ -3,6 +3,7 @@
 
 import frappe
 from frappe.model.document import Document
+from erpnext.controllers.accounts_controller import get_taxes_and_charges
 
 
 class RentalOrder(Document):
@@ -32,3 +33,11 @@ def get_rental_quotation_items(docname=None):
     }
 
     return response
+
+@frappe.whitelist()
+def get_taxes(ro=None,tt=None):
+    ro_doc = frappe.get_doc("Rental Order",ro)
+    if tt and not ro_doc.get('taxes'):
+        taxes = get_taxes_and_charges('Sales Taxes and Charges Template', tt)
+        if taxes:
+            return taxes

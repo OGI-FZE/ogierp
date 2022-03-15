@@ -36,6 +36,12 @@ class RentalReceipt(Document):
 			# for asset in assets:
 			if row.assets:
 				frappe.db.set_value("Asset", row.assets, "rental_status", "In Use")
+				if row.rental_order_item:
+					cdt = "Rental Order Item"
+					cdn = row.rental_order_item
+					received_qty = frappe.get_value(cdt, cdn, "received_qty")
+					frappe.set_value(cdt, cdn, "received_qty", int(received_qty) - int(row.qty))
+
 
 	def on_submit(self):
 		for row in self.items:

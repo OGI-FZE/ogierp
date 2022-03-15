@@ -15,12 +15,29 @@ frappe.ui.form.on('Rental Issue Note', {
 	setup(frm,cdt,cdn) {
 		frm.fields_dict['items'].grid.get_field('assets').get_query = function (doc, cdt, cdn) {
 			const row = locals[cdt][cdn]
+			let asset_list = []
+			let filters = {};
+
+		    $.each(doc.items, function(_idx, val) {
+				if (val.assets) asset_list.push(val.assets);
+			});
+
+			console.log("asset_list",asset_list);
+			console.log("len",asset_list.length);
+
+		    if(asset_list.length){
+		    	filters['rental_status'] = "Available For Rent";
+		    	filters['item_code'] = row.item_code;
+		    	filters['docstatus'] = 1;
+		    	filters['name'] = ['not in',asset_list];
+		    }
+		    else{
+		    	filters['rental_status'] = "Available For Rent";
+		    	filters['item_code'] = row.item_code;
+		    	filters['docstatus'] = 1;
+		    }
 			return {
-				filters: {
-					rental_status: "Available For Rent",
-					item_code: row.item_code,
-					docstatus:1
-				}
+				filters: filters
 			}
 		}
 	}

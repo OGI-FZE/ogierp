@@ -8,6 +8,27 @@ frappe.ui.form.on('Rental Order', {
 
 	refresh(frm) {
 		create_custom_buttons(frm)
+	},
+	taxes_and_charges(frm) {
+		frappe.call({
+			method: "oil_and_gas_international.oil_and_gas_international.doctype.rental_order.rental_order.get_taxes",
+			args: {
+				'ro':frm.doc.name,
+				'tt':frm.doc.taxes_and_charges
+			},
+			callback(r) {
+				let all_taxes = r.message
+				all_taxes.forEach(tax => {
+					let row = frm.add_child('taxes', {
+						'charge_type': tax.charge_type,
+						'account_head': tax.account_head,
+						'description': tax.description,
+						'rate': tax.rate,
+					});
+				});
+				frm.refresh();
+			}
+		})
 	}
 });
 

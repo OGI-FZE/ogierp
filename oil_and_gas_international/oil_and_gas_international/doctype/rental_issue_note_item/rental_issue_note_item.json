@@ -89,7 +89,6 @@
   {
    "fieldname": "rental_order_item",
    "fieldtype": "Link",
-   "hidden": 1,
    "label": "Rental Order Item",
    "options": "Rental Order Item"
   },
@@ -138,7 +137,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2022-03-08 16:00:44.646322",
+ "modified": "2022-03-15 10:34:28.829746",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Rental Issue Note Item",
