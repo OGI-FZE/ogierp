@@ -3,6 +3,11 @@ frappe.ui.form.on("Asset", {
         if (frm.doc.rental_status == "On hold for Inspection") {
             create_custom_buttons(frm)
         }
+        if(!frm.doc.__islocal) {
+            frm.add_custom_button(__('Asset Utilization'), function () {
+                frappe.set_route('query-report', 'Asset Utilization Report', {asset:frm.doc.name});
+            }, __('View'));
+        }
     },
     validate(frm) {
         if(frm.doc.purchase_receipt){

@@ -100,7 +100,7 @@ const get_items_from_rental_order = (frm, cdt, cdn) => {
 
 frappe.ui.form.on('Rental Receipt Item', {
 	get_assets(frm, cdt, cdn) {
-		// get_assets_to_receive(frm, cdt, cdn)
+		get_assets_to_receive(frm, cdt, cdn)
 	}
 });
 

@@ -11,20 +11,21 @@ class RentalIssueNote(Document):
 		if self.date > self.rental_start_date:
 			frappe.throw("Rental issue date can not be after rental start date")
 		for row in self.items:
-			# assets = row.assets
-			# assets = assets.split("\n")
+			assets = row.assets
+			assets = assets.split("\n")
 			serial_qty = 0
-			# for asset in assets:
-			if row.assets:
-				if not frappe.db.exists("Asset", row.assets):
-					frappe.throw(f"Asset {row.assets} not exists!")
+			for asset in assets:
+				if asset:
+					if not frappe.db.exists("Asset", asset):
+						frappe.throw(f"Asset {asset} not exists!")
 
-				status = frappe.get_value("Asset", row.assets, "rental_status")
-				if status != "Available for Rent":
-					frappe.throw(
-						f"Asset {row.assets} is not available for rent!")
-				else:
-					serial_qty = serial_qty + 1
+					status = frappe.get_value("Asset", asset, "rental_status")
+					if status != "Available for Rent":
+						frappe.throw(
+							f"Asset {asset} is not available for rent!")
+					else:
+						serial_qty = serial_qty + 1
+
 			if serial_qty != row.qty:
 				frappe.throw(
 					f"Serial no's count({serial_qty}) not matched with the Qty({row.qty}) of the asset!")
@@ -32,16 +33,16 @@ class RentalIssueNote(Document):
 	def on_cancel(self):
 		self.set('status','Cancelled')
 		for row in self.items:
-			# assets = row.assets
-			# assets = assets.split("\n")
-			# for asset in assets:
-			if row.assets:
-				frappe.db.set_value("Asset", row.assets, "rental_status", "Available for Rent")
-				if row.rental_order_item:
-					cdt = "Rental Order Item"
-					cdn = row.rental_order_item
-					delivered_qty = frappe.get_value(cdt, cdn, "delivered_qty")
-					frappe.set_value(cdt, cdn, "delivered_qty", int(delivered_qty) - int(row.qty))
+			assets = row.assets
+			assets = assets.split("\n")
+			for asset in assets:
+				if asset:
+					frappe.db.set_value("Asset", asset, "rental_status", "Available for Rent")
+					if row.rental_order_item:
+						cdt = "Rental Order Item"
+						cdn = row.rental_order_item
+						delivered_qty = frappe.get_value(cdt, cdn, "delivered_qty")
+						frappe.set_value(cdt, cdn, "delivered_qty", int(delivered_qty) - int(row.qty))
 
 
 		movements = frappe.get_list("Asset Movement",filters={'rental_issue_note':self.name})
@@ -58,53 +59,53 @@ class RentalIssueNote(Document):
 	def on_submit(self):
 		self.set('status','Submitted')
 		for row in self.items:
-			# assets = row.assets
-			# assets = assets.split("\n")
-			# for asset in assets:
-			if row.assets:
-				# updating asset status
-				# issue date
-				if self.date == today():
-					frappe.db.set_value("Asset", row.assets, "rental_status", "In transit")
+			assets = row.assets
+			assets = assets.split("\n")
+			for asset in assets:
+				if asset:
+					# updating asset status
+					# issue date
+					if self.date == today():
+						frappe.db.set_value("Asset", asset, "rental_status", "In transit")
+						
+					if self.rental_start_date == today():# issue date
+						frappe.db.set_value("Asset", asset, "rental_status", "In Use")
+						frappe.db.set_value("Asset", asset, "rental_order", self.rental_order)
 					
-				if self.rental_start_date == today():# issue date
-					frappe.db.set_value("Asset", row.assets, "rental_status", "In Use")
-					frappe.db.set_value("Asset", row.assets, "rental_order", self.rental_order)
-				
-				# updating rental order item status
-				if row.rental_order_item:
-					cdt = "Rental Order Item"
-					cdn = row.rental_order_item
-					qty = frappe.get_value(cdt, cdn, "qty")
-					delivered_qty = frappe.get_value(cdt, cdn, "delivered_qty")
-					if not delivered_qty:
-						delivered_qty = 0
+					# updating rental order item status
+					if row.rental_order_item:
+						cdt = "Rental Order Item"
+						cdn = row.rental_order_item
+						qty = frappe.get_value(cdt, cdn, "qty")
+						delivered_qty = frappe.get_value(cdt, cdn, "delivered_qty")
+						if not delivered_qty:
+							delivered_qty = 0
 
-					if (delivered_qty + 1) > qty:
-						frappe.throw(f"Can not deliver asset(s) more than remaining qty in Rental Order Item({qty-delivered_qty})")
-					
-					frappe.set_value(cdt, cdn, "delivered_qty", int(delivered_qty) + int(row.qty))
-					if (delivered_qty) == qty:
-						frappe.set_value(cdt, cdn, "status", "Delivered")
+						if (delivered_qty + 1) > qty:
+							frappe.throw(f"Can not deliver asset(s) more than remaining qty in Rental Order Item({qty-delivered_qty})")
+						
+						frappe.set_value(cdt, cdn, "delivered_qty", int(delivered_qty) + int(row.qty))
+						if (delivered_qty) == qty:
+							frappe.set_value(cdt, cdn, "status", "Delivered")
 
-			  
-				# asset movement
-				asset_location = frappe.get_value("Asset", row.assets, "location")
-				if asset_location != row.asset_location:
-					asset_movement_doc = frappe.get_doc({
-						"doctype": "Asset Movement",
-						"transaction_date": today(),
-						"purpose": "Transfer",
-						"rental_issue_note": self.name
-					})
-					asset_movement_doc.append("assets", {
-						"asset": row.assets,
-						"target_location": row.asset_location
-					})
-					asset_movement_doc.save()
-					asset_movement_doc.submit()
+				  
+					# asset movement
+					asset_location = frappe.get_value("Asset", asset, "location")
+					if asset_location != row.asset_location:
+						asset_movement_doc = frappe.get_doc({
+							"doctype": "Asset Movement",
+							"transaction_date": today(),
+							"purpose": "Transfer",
+							"rental_issue_note": self.name
+						})
+						asset_movement_doc.append("assets", {
+							"asset": asset,
+							"target_location": row.asset_location
+						})
+						asset_movement_doc.save()
+						asset_movement_doc.submit()
 
-				frappe.db.commit()
+					frappe.db.commit()
 
 
 @frappe.whitelist()
@@ -113,8 +114,10 @@ def get_rental_order_items(docname=None):
 		return {}
 
 	doc = frappe.get_doc("Rental Order", docname)
+	for i in doc.items:
+		cat = frappe.db.get_value("Asset", {"item_code": i.item_code}, "asset_category")
 
-	return doc.items
+	return [doc.items,cat]
 
 @frappe.whitelist()
 def get_project(docname=None):

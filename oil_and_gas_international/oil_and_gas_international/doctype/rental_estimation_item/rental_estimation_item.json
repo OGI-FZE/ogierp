@@ -131,14 +131,12 @@
   {
    "fieldname": "estimate_rate",
    "fieldtype": "Float",
-   "label": "Estimate Rate",
-   "reqd": 1
+   "label": "Estimate Rate"
   },
   {
    "fieldname": "assets",
-   "fieldtype": "Link",
-   "label": "Asset",
-   "options": "Asset"
+   "fieldtype": "Small Text",
+   "label": "Assets"
   },
   {
    "fieldname": "post_rental_inspection_charges",
@@ -149,7 +147,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2022-03-08 15:51:38.804235",
+ "modified": "2022-03-18 15:12:43.449242",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Rental Estimation Item",

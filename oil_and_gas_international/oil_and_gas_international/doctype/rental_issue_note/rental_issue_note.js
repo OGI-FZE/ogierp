@@ -12,35 +12,35 @@ frappe.ui.form.on('Rental Issue Note', {
 		get_items_from_rental_order(frm, cdt, cdn)
 		set_project(frm)
 	},
-	setup(frm,cdt,cdn) {
-		frm.fields_dict['items'].grid.get_field('assets').get_query = function (doc, cdt, cdn) {
-			const row = locals[cdt][cdn]
-			let asset_list = []
-			let filters = {};
+	// setup(frm,cdt,cdn) {
+	// 	frm.fields_dict['items'].grid.get_field('assets').get_query = function (doc, cdt, cdn) {
+	// 		const row = locals[cdt][cdn]
+	// 		let asset_list = []
+	// 		let filters = {};
 
-		    $.each(doc.items, function(_idx, val) {
-				if (val.assets) asset_list.push(val.assets);
-			});
+	// 	    $.each(doc.items, function(_idx, val) {
+	// 			if (val.assets) asset_list.push(val.assets);
+	// 		});
 
-			console.log("asset_list",asset_list);
-			console.log("len",asset_list.length);
+	// 		console.log("asset_list",asset_list);
+	// 		console.log("len",asset_list.length);
 
-		    if(asset_list.length){
-		    	filters['rental_status'] = "Available For Rent";
-		    	filters['item_code'] = row.item_code;
-		    	filters['docstatus'] = 1;
-		    	filters['name'] = ['not in',asset_list];
-		    }
-		    else{
-		    	filters['rental_status'] = "Available For Rent";
-		    	filters['item_code'] = row.item_code;
-		    	filters['docstatus'] = 1;
-		    }
-			return {
-				filters: filters
-			}
-		}
-	}
+	// 	    if(asset_list.length){
+	// 	    	filters['rental_status'] = "Available For Rent";
+	// 	    	filters['item_code'] = row.item_code;
+	// 	    	filters['docstatus'] = 1;
+	// 	    	filters['name'] = ['not in',asset_list];
+	// 	    }
+	// 	    else{
+	// 	    	filters['rental_status'] = "Available For Rent";
+	// 	    	filters['item_code'] = row.item_code;
+	// 	    	filters['docstatus'] = 1;
+	// 	    }
+	// 		return {
+	// 			filters: filters
+	// 		}
+	// 	}
+	// }
 });
 
 frappe.ui.form.on('Rental Issue Note Item', {
@@ -48,9 +48,9 @@ frappe.ui.form.on('Rental Issue Note Item', {
 		calculate_lost_and_damage_price(frm, cdt, cdn)
 	},
 
-	// get_assets(frm, cdt, cdn) {
-	// 	get_assets_to_issue(frm, cdt, cdn)
-	// }
+	get_assets(frm, cdt, cdn) {
+		get_assets_to_issue(frm, cdt, cdn)
+	}
 });
 
 
@@ -138,14 +138,16 @@ const get_items_from_rental_order = (frm, cdt, cdn) => {
 		args: { docname: rental_order },
 		async: false,
 		callback(res) {
-			const data = res.message
+			console.log(res.message)
+			const data = res.message[0]
 			if (!data) return
 			frm.doc.items = []
 			for (const row of data) {
-				for(let i = 0; i < row.qty; i++){
-					const new_row = frm.add_child("items", {
+				console.log("row",row)
+				if(res.message[1]=="Tubulars"){
+					const new_row = frm.add_child('items', {
 						'item_code': row.item_code,
-						'qty': 1,
+						'qty': row.qty,
 						'rate':row.rate,
 						'operational_running':row.operational_running,
 						'standby':row.standby,
@@ -159,6 +161,29 @@ const get_items_from_rental_order = (frm, cdt, cdn) => {
 					})
 					const cdt = new_row.doctype
 					const cdn = new_row.name
+					frappe.model.set_value(cdt, cdn, "item_code", row.item_code)
+				}
+				else{
+					console.log("elseeeeeee")
+					for(let i = 0; i < row.qty; i++){
+						const new_row = frm.add_child("items", {
+							'item_code': row.item_code,
+							'qty': 1,
+							'rate':row.rate,
+							'operational_running':row.operational_running,
+							'standby':row.standby,
+							'lihdbr':row.lihdbr,
+							'redress':row.redress,
+							'straight':row.straight,
+							'post_rental_inspection_charges':row.post_rental_inspection_charges,
+							'asset_location':row.asset_location,
+							'rental_order_item':row.name,
+							'rental_order':row.rental_order
+						})
+						const cdt = new_row.doctype
+						const cdn = new_row.name
+						frappe.model.set_value(cdt, cdn, "item_code", row.item_code)
+					}
 				}
 				// const new_row = frm.add_child('items', {
 				// 	'qty': row.qty,
@@ -178,8 +203,7 @@ const get_items_from_rental_order = (frm, cdt, cdn) => {
 }
 
 const get_assets_to_issue = (frm, cdt, cdn) => {
-	
-
+	const row = locals[cdt][cdn]
 
 	const doctype = "Asset"
 	new frappe.ui.form.MultiSelectDialog({
@@ -190,17 +214,43 @@ const get_assets_to_issue = (frm, cdt, cdn) => {
 		},
 		date_field: "transaction_date",
 		get_query() {
+			let asset_list = []
+			let filters = {};
+			$.each(frm.doc.items, function(_idx, val) {
+				if (val.assets) asset_list.push(val.assets);
+			});
+			console.log("asset_list",asset_list)
+		    if(asset_list.length){
+		    	filters['rental_status'] = "Available For Rent";
+		    	filters['item_code'] = row.item_code;
+		    	filters['docstatus'] = 1;
+		    	filters['name'] = ['not in',asset_list];
+		    }
+		    else{
+		    	filters['rental_status'] = "Available For Rent";
+		    	filters['item_code'] = row.item_code;
+		    	filters['docstatus'] = 1;
+		    }
 			return {
-				filters: {
-					rental_status: "Available For Rent",
-					item_code: row.item_code,
-					docstatus:1
-				}
+				filters: filters
 			}
+			// return {
+			// 	filters: {
+			// 		rental_status: "Available For Rent",
+			// 		item_code: row.item_code,
+			// 		docstatus:1
+			// 	}
+			// }
 		},
 		action(selections) {
+			console.log("selections",selections.length)
+			
 			const cur_row = locals[cdt][cdn]
+			console.log("qty",cur_row.qty)
 			let serial_nos = ""
+			if(selections.length != cur_row.qty){
+				frappe.throw(__("Please select same number of assets as the quantity: ")+cur_row.qty)
+			}
 			for (const row of selections) {
 				serial_nos += row + "\n"
 			}

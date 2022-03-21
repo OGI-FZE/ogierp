@@ -13,7 +13,6 @@ frappe.ui.form.on('Work_Order', {
 	},
 	party: function(frm) {
 		if(frm.doc.party && frm.doc.party_type){
-			console.log("njkjn",(frm.doc.party_type).toLowerCase())
 			var party_nm = (String(frm.doc.party_type).toLowerCase()).concat("_name")
 			frappe.db.get_value(frm.doc.party_type, frm.doc.party, party_nm, (r) => {				
 				if(r){

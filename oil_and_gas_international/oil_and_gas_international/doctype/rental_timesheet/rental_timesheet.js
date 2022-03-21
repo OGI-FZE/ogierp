@@ -15,18 +15,18 @@ frappe.ui.form.on('Rental Timesheet', {
 			add_sales_order()
 		}
 	},
-	setup(frm,cdt,cdn) {
-		frm.fields_dict['items'].grid.get_field('assets').get_query = function (doc, cdt, cdn) {
-			const row = locals[cdt][cdn]
-			return {
-				filters: {
-					rental_status: "In Use",
-					rental_order: frm.doc.rental_order,
-					docstatus:1
-				}
-			}
-		}
-	}
+	// setup(frm,cdt,cdn) {
+	// 	frm.fields_dict['items'].grid.get_field('assets').get_query = function (doc, cdt, cdn) {
+	// 		const row = locals[cdt][cdn]
+	// 		return {
+	// 			filters: {
+	// 				rental_status: "In Use",
+	// 				rental_order: frm.doc.rental_order,
+	// 				docstatus:1
+	// 			}
+	// 		}
+	// 	}
+	// }
 });
 
 const get_items_from_rental_order = (frm, cdt, cdn) => {
@@ -81,7 +81,7 @@ const get_items_from_rental_order = (frm, cdt, cdn) => {
 
 frappe.ui.form.on('Rental Timesheet Item', {
 	get_assets(frm, cdt, cdn) {
-		// get_assets_to_receive(frm, cdt, cdn)
+		get_assets_to_receive(frm, cdt, cdn)
 	},
 	qty(frm,cdt,cdn){
 		let row=locals[cdt][cdn]
