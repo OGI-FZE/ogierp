@@ -154,11 +154,11 @@ const calculate_amount=(frm,cdt,cdn)=>{
 		console.log(total);
 	}
 	if(row.redress_days && row.redress>0){
-		total = total+ ( row.redress_days*row.redress)
+		total = total+ (row.redress)
 		console.log(total);
 	}
 	if(row.lihdbr_days && row.lihdbr>0){
-		total = total+ ( row.lihdbr_days*row.lihdbr)
+		total = total+ (row.lihdbr)
 		console.log(total);
 	}
 	if(row.straight_days && row.straight>0){

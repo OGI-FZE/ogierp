@@ -1,6 +1,7 @@
 // Copyright (c) 2021, Havenir Solutions and contributors
 // For license information, please see license.txt
 
+var conv_rate = [1]
 frappe.ui.form.on('Rental Timesheet', {
 	rental_order(frm, cdt, cdn) {
 		get_items_from_rental_order(frm, cdt, cdn)
@@ -14,7 +15,54 @@ frappe.ui.form.on('Rental Timesheet', {
 			add_sales_invoice()
 			add_sales_order()
 		}
+		var company_currency = frappe.get_doc(":Company", frm.doc.company).default_currency;
+		frm.set_currency_labels([
+            "base_operational_running","base_lihdbr","base_post_rental_inspection_charges","base_standby","base_straight","base_redress"
+        	], company_currency, "items");
+		var customer_currency = frm.doc.currency
+		frm.set_currency_labels([
+            "operational_running","lihdbr","post_rental_inspection_charges","standby","straight","redress"
+        ], customer_currency, "items");
 	},
+	onload(frm){
+		if(frm.doc.customer && frm.doc.__islocal){
+			frappe.db.get_value("Customer", {"name": frm.doc.customer}, "default_currency", (r) => {
+				if(r.default_currency){
+					frm.set_value("currency", r.default_currency)
+				}
+			});
+		}
+		get_conversion_rate(frm)
+      	convert_rate(frm)
+	},
+	customer(frm){
+		if(frm.doc.customer){
+			frappe.db.get_value("Customer", {"name": frm.doc.customer}, "default_currency", (r) => {
+				if(r.default_currency){
+					frm.set_value("currency", r.default_currency)
+				}
+			});
+		}
+		get_conversion_rate(frm)
+	},
+	currency(frm){
+		get_conversion_rate(frm)
+		var customer_currency = frm.doc.currency
+		frm.set_currency_labels([
+            "operational_running","lihdbr","post_rental_inspection_charges","standby","straight","redress"
+        ], customer_currency, "items");
+
+	},
+	conversion_rate(frm){
+    	convert_rate(frm)
+  	},
+  	validate(frm){
+  		convert_rate(frm)
+  	},
+	rental_order(frm, cdt, cdn) {
+		get_items_from_rental_order(frm, cdt, cdn)
+		set_project(frm)
+	}
 	// setup(frm,cdt,cdn) {
 	// 	frm.fields_dict['items'].grid.get_field('assets').get_query = function (doc, cdt, cdn) {
 	// 		const row = locals[cdt][cdn]
@@ -28,6 +76,44 @@ frappe.ui.form.on('Rental Timesheet', {
 	// 	}
 	// }
 });
+
+const convert_rate = function(frm){
+  if(frm.doc.items && frm.doc.docstatus!=1){
+    conv_rate.push(frm.doc.conversion_rate)
+      for(let row of frm.doc.items){
+        var converted_op_rate = (row.base_operational_running)*conv_rate[conv_rate.length-1]
+        frappe.model.set_value(row.doctype,row.name,'operational_running',converted_op_rate)
+        var converted_lihdbr_rate = (row.base_lihdbr)*conv_rate[conv_rate.length-1]
+        frappe.model.set_value(row.doctype,row.name,'lihdbr',converted_lihdbr_rate)
+        var converted_pr_rate = (row.base_post_rental_inspection_charges)*conv_rate[conv_rate.length-1]
+        frappe.model.set_value(row.doctype,row.name,'post_rental_inspection_charges',converted_pr_rate)
+        var converted_standby_rate = (row.base_standby)*conv_rate[conv_rate.length-1]
+        frappe.model.set_value(row.doctype,row.name,'standby',converted_standby_rate)
+        var converted_straight_rate = (row.base_straight)*conv_rate[conv_rate.length-1]
+        frappe.model.set_value(row.doctype,row.name,'straight',converted_straight_rate)
+        var converted_redress_rate = (row.base_redress)*conv_rate[conv_rate.length-1]
+        frappe.model.set_value(row.doctype,row.name,'redress',converted_redress_rate)
+        var converted_base_total_amount = (row.total_amount)*conv_rate[conv_rate.length-1]
+        frappe.model.set_value(row.doctype,row.name,'base_total_amount',converted_base_total_amount)
+      }
+  }
+}
+
+const get_conversion_rate = (frm) => {
+	let company_currency = erpnext.get_currency(frm.doc.company);
+	frappe.call({
+		method: "erpnext.setup.utils.get_exchange_rate",
+		args: {
+			from_currency: company_currency,
+			to_currency: frm.doc.currency
+		},
+		callback: function(r) {
+			if (r.message) {
+				frm.set_value("conversion_rate",r.message)
+			}
+		}
+	});
+}
 
 const get_items_from_rental_order = (frm, cdt, cdn) => {
 	const rental_order = frm.doc.rental_order
@@ -60,6 +146,11 @@ const get_items_from_rental_order = (frm, cdt, cdn) => {
 										'lihdbr':row.lihdbr,
 										'redress':row.redress,
 										'straight':row.straight,
+										'base_operational_running':row.base_operational_running,
+										'base_standby':row.base_standby,
+										'base_lihdbr':row.base_lihdbr,
+										'base_redress':row.base_redress,
+										'base_straight':row.base_straight,
 										'assets':issuenote[r].assets,
 									})
 									const cdt = new_row.doctype
@@ -186,6 +277,7 @@ const calculate_amount=(frm,cdt,cdn)=>{
 		console.log(total);
 	}
 	frappe.model.set_value(cdt,cdn,'amount',total*row.qty)
+	convert_rate(frm)
 
 }
 
@@ -244,7 +336,10 @@ const add_sales_invoice = () => {
 				// cur_doc.rental_timesheet = doc.name
 				cur_doc.rental_order = doc.rental_order
 				cur_doc.departments = doc.departments
+				cur_doc.currency = doc.currency
+				cur_doc.conversion_rate = doc.conversion_rate
 				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "rental_timesheet", doc.name)
+				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "currency", doc.currency)
 				cur_doc.items = []
 
 				for (const row of doc.items) {
@@ -280,8 +375,11 @@ const add_sales_order = () => {
 				const cur_doc = cur_frm.doc
 				cur_doc.customer = doc.customer
 				// cur_doc.rental_timesheet = doc.name
+				cur_doc.currency = doc.currency
+				cur_doc.conversion_rate = doc.conversion_rate
 				cur_doc.rental_order = doc.rental_order
 				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "rental_timesheet", doc.name)
+				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "currency", doc.currency)
 				cur_doc.items = []
 
 				for (const row of doc.items) {

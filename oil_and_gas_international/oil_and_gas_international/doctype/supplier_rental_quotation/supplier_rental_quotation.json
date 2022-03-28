@@ -62,7 +62,7 @@
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Rate Type",
-   "options": "\nPer Hour\nPer Day\nPer Month",
+   "options": "Per Day\nPer Hour\nPer Month",
    "reqd": 1
   },
   {
@@ -128,7 +128,7 @@
    "link_fieldname": "supplier_rental_quotation"
   }
  ],
- "modified": "2022-02-08 14:16:21.841090",
+ "modified": "2022-03-23 12:40:51.510969",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Supplier Rental Quotation",

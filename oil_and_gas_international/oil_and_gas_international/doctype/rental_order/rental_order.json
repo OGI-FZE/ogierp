@@ -12,6 +12,10 @@
   "company",
   "date",
   "section_break_6",
+  "currency",
+  "column_break_8",
+  "conversion_rate",
+  "section_break_10",
   "items",
   "section_break_8",
   "total_qty",
@@ -72,7 +76,8 @@
   },
   {
    "fieldname": "section_break_6",
-   "fieldtype": "Section Break"
+   "fieldtype": "Section Break",
+   "label": "Currency"
   },
   {
    "fieldname": "section_break_8",
@@ -206,6 +211,26 @@
    "fieldtype": "Link",
    "label": "Sales Taxes and Charges Template",
    "options": "Sales Taxes and Charges Template"
+  },
+  {
+   "fieldname": "currency",
+   "fieldtype": "Link",
+   "label": "Currency",
+   "options": "Currency"
+  },
+  {
+   "fieldname": "column_break_8",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "conversion_rate",
+   "fieldtype": "Float",
+   "label": "Exchange Rate",
+   "precision": "9"
+  },
+  {
+   "fieldname": "section_break_10",
+   "fieldtype": "Section Break"
   }
  ],
  "index_web_pages_for_search": 1,
@@ -216,7 +241,7 @@
    "link_fieldname": "rental_order"
   }
  ],
- "modified": "2022-03-14 10:02:27.764969",
+ "modified": "2022-03-26 10:35:29.734609",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Rental Order",

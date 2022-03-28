@@ -32,3 +32,11 @@ class Work_Order(Document):
 			for asset in assets:
 				if asset:
 					frappe.db.set_value("Asset", asset, "rental_status", "Available for Rent")
+
+	def on_trash(self):
+		for row in self.items:
+			assets = row.assets
+			assets = assets.split("\n")
+			for asset in assets:
+				if asset:
+					frappe.db.set_value("Asset", asset, "rental_status", "Available for Rent")

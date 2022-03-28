@@ -17,6 +17,10 @@
   "rental_start_date",
   "status",
   "section_break_6",
+  "currency",
+  "column_break_13",
+  "conversion_rate",
+  "section_break_15",
   "items",
   "amended_from"
  ],
@@ -49,7 +53,8 @@
   },
   {
    "fieldname": "section_break_6",
-   "fieldtype": "Section Break"
+   "fieldtype": "Section Break",
+   "label": "Currency"
   },
   {
    "fieldname": "items",
@@ -106,6 +111,27 @@
    "fieldtype": "Select",
    "label": "Department",
    "options": "\nTrading\nLogistics\nInspection\nRental\nAdmin\nMS - Sale\nMS - Repair\nMS - Internal\nQA/QC"
+  },
+  {
+   "fieldname": "currency",
+   "fieldtype": "Link",
+   "label": "Currency",
+   "options": "Currency",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_13",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "conversion_rate",
+   "fieldtype": "Float",
+   "label": "Exchange Rate",
+   "precision": "9"
+  },
+  {
+   "fieldname": "section_break_15",
+   "fieldtype": "Section Break"
   }
  ],
  "index_web_pages_for_search": 1,
@@ -116,7 +142,7 @@
    "link_fieldname": "rental_issue_note"
   }
  ],
- "modified": "2022-03-01 15:01:29.347749",
+ "modified": "2022-03-26 11:10:39.196081",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Rental Issue Note",

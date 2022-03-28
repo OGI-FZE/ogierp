@@ -20,14 +20,22 @@
   "redress_days",
   "lihdbr_days",
   "straight_days",
-  "post_rental_inspection_charges",
   "amount",
+  "base_amount",
   "column_break_13",
   "operational_running",
   "standby",
   "redress",
   "lihdbr",
   "straight",
+  "post_rental_inspection_charges",
+  "column_break_24",
+  "base_operational_running",
+  "base_lihdbr",
+  "base_post_rental_inspection_charges",
+  "base_standby",
+  "base_straight",
+  "base_redress",
   "section_break_10",
   "rental_order",
   "rental_order_item",
@@ -147,29 +155,29 @@
   {
    "fieldname": "operational_running",
    "fieldtype": "Currency",
-   "label": "Operational/Running"
+   "label": "Operational/Running (Customer Currency)"
   },
   {
    "fieldname": "standby",
    "fieldtype": "Currency",
-   "label": "Standby"
+   "label": "Standby (Customer Currency)"
   },
   {
    "default": "0",
    "fieldname": "redress",
    "fieldtype": "Currency",
-   "label": "Redress"
+   "label": "Redress (Customer Currency)"
   },
   {
    "default": "0",
    "fieldname": "lihdbr",
    "fieldtype": "Currency",
-   "label": "LIH/DBR"
+   "label": "LIH/DBR (Customer Currency)"
   },
   {
    "fieldname": "straight",
    "fieldtype": "Currency",
-   "label": "Straight"
+   "label": "Straight (Customer Currency)"
   },
   {
    "fieldname": "assets",
@@ -179,13 +187,59 @@
   {
    "fieldname": "post_rental_inspection_charges",
    "fieldtype": "Currency",
-   "label": "Post Rental Inspection charges"
+   "label": "Post Rental Inspection charges (Customer Currency)"
+  },
+  {
+   "fieldname": "column_break_24",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "base_operational_running",
+   "fieldtype": "Currency",
+   "label": "Base Operational/Running (Company Currency)",
+   "options": "Company:company:default_currency"
+  },
+  {
+   "fieldname": "base_lihdbr",
+   "fieldtype": "Currency",
+   "label": "Base LIH/DBR (Company Currency)",
+   "options": "Company:company:default_currency"
+  },
+  {
+   "fieldname": "base_post_rental_inspection_charges",
+   "fieldtype": "Currency",
+   "label": "Base Post Rental Inspection charges (Company Currency)",
+   "options": "Company:company:default_currency"
+  },
+  {
+   "fieldname": "base_standby",
+   "fieldtype": "Currency",
+   "label": "Base Standby (Company Currency)",
+   "options": "Company:company:default_currency"
+  },
+  {
+   "fieldname": "base_straight",
+   "fieldtype": "Currency",
+   "label": "Base Straight (Company Currency)",
+   "options": "Company:company:default_currency"
+  },
+  {
+   "fieldname": "base_redress",
+   "fieldtype": "Currency",
+   "label": "Base Redress (Company Currency)",
+   "options": "Company:company:default_currency"
+  },
+  {
+   "fieldname": "base_amount",
+   "fieldtype": "Currency",
+   "label": "Base Amount (Company Currency)",
+   "options": "Company:company:default_currency"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2022-03-17 15:14:25.381455",
+ "modified": "2022-03-26 12:55:18.130299",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Rental Timesheet Item",

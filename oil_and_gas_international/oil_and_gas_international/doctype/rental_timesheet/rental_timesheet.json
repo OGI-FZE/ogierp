@@ -17,6 +17,10 @@
   "start_date",
   "end_date",
   "section_break_7",
+  "currency",
+  "column_break_13",
+  "conversion_rate",
+  "section_break_15",
   "items",
   "amended_from"
  ],
@@ -58,7 +62,8 @@
   },
   {
    "fieldname": "section_break_7",
-   "fieldtype": "Section Break"
+   "fieldtype": "Section Break",
+   "label": "Currency"
   },
   {
    "fieldname": "items",
@@ -117,6 +122,27 @@
    "fieldname": "end_date",
    "fieldtype": "Date",
    "label": "End Date"
+  },
+  {
+   "fieldname": "currency",
+   "fieldtype": "Link",
+   "label": "Currency",
+   "options": "Currency",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_13",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "conversion_rate",
+   "fieldtype": "Float",
+   "label": "Exchange Rate",
+   "precision": "9"
+  },
+  {
+   "fieldname": "section_break_15",
+   "fieldtype": "Section Break"
   }
  ],
  "index_web_pages_for_search": 1,
@@ -127,7 +153,7 @@
    "link_fieldname": "rental_timesheet"
   }
  ],
- "modified": "2022-03-01 15:56:50.898600",
+ "modified": "2022-03-26 11:40:14.611403",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Rental Timesheet",

@@ -128,9 +128,9 @@ const get_assets_to_receive = (frm, cdt, cdn) => {
 		date_field: "transaction_date",
 		get_query() {
 			return {
-				filters: {
-					rental_status: "In Use",
-					rental_order: frm.doc.rental_order
+				"filters": {
+					"rental_status": ["in",["In Use","In transit"]],
+					"rental_order": frm.doc.rental_order
 				}
 			}
 		},

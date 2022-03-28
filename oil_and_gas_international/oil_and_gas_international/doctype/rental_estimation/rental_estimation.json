@@ -6,6 +6,7 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
+  "company",
   "customer",
   "customer_name",
   "column_break_3",
@@ -13,6 +14,10 @@
   "valid_till",
   "rate_type",
   "section_break_7",
+  "currency",
+  "column_break_9",
+  "conversion_rate",
+  "section_break_12",
   "items",
   "print_settings_section",
   "letter_head",
@@ -53,7 +58,7 @@
    "fieldname": "rate_type",
    "fieldtype": "Select",
    "label": "Rate Type",
-   "options": "\nPer Hour\nPer Day\nPer Month"
+   "options": "Per Day\nPer Hour\nPer Month"
   },
   {
    "default": "Today",
@@ -69,8 +74,10 @@
    "reqd": 1
   },
   {
+   "collapsible": 1,
    "fieldname": "section_break_7",
-   "fieldtype": "Section Break"
+   "fieldtype": "Section Break",
+   "label": "Currency"
   },
   {
    "fieldname": "items",
@@ -127,12 +134,40 @@
   {
    "fieldname": "column_break_16",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_9",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "1",
+   "fieldname": "conversion_rate",
+   "fieldtype": "Float",
+   "label": "Exchange Rate",
+   "precision": "9"
+  },
+  {
+   "fieldname": "section_break_12",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "currency",
+   "fieldtype": "Link",
+   "label": "Currency",
+   "options": "Currency",
+   "reqd": 1
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2022-03-19 09:56:49.754326",
+ "modified": "2022-03-26 09:41:51.495941",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Rental Estimation",
