@@ -2,6 +2,7 @@
 // For license information, please see license.txt
 
 var conv_rate = [1]
+
 frappe.ui.form.on('Rental Order', {
 	setup(frm) {
 		set_query(frm)
