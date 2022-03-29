@@ -6,13 +6,19 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
+  "naming_series",
   "supplier",
   "supplier_name",
   "column_break_4",
+  "company",
   "date",
   "valid_till",
   "rate_type",
   "section_break_7",
+  "currency",
+  "column_break_11",
+  "conversion_rate",
+  "section_break_13",
   "items",
   "print_settings_section",
   "letter_head",
@@ -67,7 +73,8 @@
   },
   {
    "fieldname": "section_break_7",
-   "fieldtype": "Section Break"
+   "fieldtype": "Section Break",
+   "label": "Currency"
   },
   {
    "fieldname": "items",
@@ -118,6 +125,39 @@
    "options": "Supplier Rental Quotation",
    "print_hide": 1,
    "read_only": 1
+  },
+  {
+   "default": "OGI-SRQ-.MM.-.YYYY.-",
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Series",
+   "options": "OGI-SRQ-.MM.-.YYYY.-"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company"
+  },
+  {
+   "fieldname": "currency",
+   "fieldtype": "Link",
+   "label": "Currency",
+   "options": "Currency"
+  },
+  {
+   "fieldname": "column_break_11",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "conversion_rate",
+   "fieldtype": "Float",
+   "label": "Exchange Rate",
+   "precision": "9"
+  },
+  {
+   "fieldname": "section_break_13",
+   "fieldtype": "Section Break"
   }
  ],
  "index_web_pages_for_search": 1,
@@ -128,7 +168,7 @@
    "link_fieldname": "supplier_rental_quotation"
   }
  ],
- "modified": "2022-03-23 12:40:51.510969",
+ "modified": "2022-03-29 16:32:47.704356",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Supplier Rental Quotation",

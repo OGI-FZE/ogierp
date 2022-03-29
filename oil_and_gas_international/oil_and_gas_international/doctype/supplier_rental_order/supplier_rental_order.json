@@ -12,6 +12,10 @@
   "company",
   "date",
   "section_break_6",
+  "currency",
+  "column_break_8",
+  "conversion_rate",
+  "section_break_10",
   "items",
   "section_break_8",
   "total_qty",
@@ -72,7 +76,8 @@
   },
   {
    "fieldname": "section_break_6",
-   "fieldtype": "Section Break"
+   "fieldtype": "Section Break",
+   "label": "Currency"
   },
   {
    "allow_on_submit": 1,
@@ -199,6 +204,26 @@
    "fieldtype": "Link",
    "label": "Supplier Rental Quotation",
    "options": "Supplier Rental Quotation"
+  },
+  {
+   "fieldname": "currency",
+   "fieldtype": "Link",
+   "label": "Currency",
+   "options": "Currency"
+  },
+  {
+   "fieldname": "column_break_8",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "conversion_rate",
+   "fieldtype": "Float",
+   "label": "Exchange Rate",
+   "precision": "9"
+  },
+  {
+   "fieldname": "section_break_10",
+   "fieldtype": "Section Break"
   }
  ],
  "index_web_pages_for_search": 1,
@@ -209,7 +234,7 @@
    "link_fieldname": "supplier_rental_order"
   }
  ],
- "modified": "2022-02-08 14:45:07.230510",
+ "modified": "2022-03-29 16:53:22.544328",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Supplier Rental Order",

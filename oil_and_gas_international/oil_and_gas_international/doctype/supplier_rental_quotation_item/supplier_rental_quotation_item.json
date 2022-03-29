@@ -14,15 +14,23 @@
   "image_attachment",
   "quantity_and_rate_section",
   "qty",
+  "column_break_10",
+  "estimate_rate",
+  "asset_location",
+  "section_break_13",
   "operational_running",
   "lihdbr",
   "post_rental_inspection_charges",
-  "column_break_12",
-  "estimate_rate",
-  "asset_location",
   "standby",
   "redress",
-  "straight"
+  "straight",
+  "column_break_12",
+  "base_operational_running",
+  "base_lihdbr",
+  "base_post_rental_inspection_charges",
+  "base_standby",
+  "base_straight",
+  "base_redress"
  ],
  "fields": [
   {
@@ -83,12 +91,12 @@
   {
    "fieldname": "operational_running",
    "fieldtype": "Currency",
-   "label": "Operational/Running"
+   "label": "Operational/Running (Billing Currency)"
   },
   {
    "fieldname": "lihdbr",
    "fieldtype": "Currency",
-   "label": "LIH/DBR "
+   "label": "LIH/DBR (Billing Currency)"
   },
   {
    "fieldname": "column_break_12",
@@ -111,28 +119,72 @@
   {
    "fieldname": "standby",
    "fieldtype": "Currency",
-   "label": "Standby"
+   "label": "Standby (Billing Currency)"
   },
   {
    "fieldname": "redress",
    "fieldtype": "Currency",
-   "label": "Redress"
+   "label": "Redress (Billing Currency)"
   },
   {
    "fieldname": "straight",
    "fieldtype": "Currency",
-   "label": "Straight"
+   "label": "Straight (Billing Currency)"
   },
   {
    "fieldname": "post_rental_inspection_charges",
    "fieldtype": "Currency",
-   "label": "Post Rental Inspection charges"
+   "label": "Post Rental Inspection charges (Billing Currency)"
+  },
+  {
+   "fieldname": "column_break_10",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_13",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "base_operational_running",
+   "fieldtype": "Currency",
+   "label": "Base Operational/Running (Company Currency)",
+   "options": "Company:company:default_currency"
+  },
+  {
+   "fieldname": "base_lihdbr",
+   "fieldtype": "Currency",
+   "label": "Base LIH/DBR (Company Currency)",
+   "options": "Company:company:default_currency"
+  },
+  {
+   "fieldname": "base_post_rental_inspection_charges",
+   "fieldtype": "Currency",
+   "label": "Base Post Rental Inspection charges (Company Currency)",
+   "options": "Company:company:default_currency"
+  },
+  {
+   "fieldname": "base_standby",
+   "fieldtype": "Currency",
+   "label": "Base Standby (Company Currency)",
+   "options": "Company:company:default_currency"
+  },
+  {
+   "fieldname": "base_straight",
+   "fieldtype": "Currency",
+   "label": "Base Straight (Company Currency)",
+   "options": "Company:company:default_currency"
+  },
+  {
+   "fieldname": "base_redress",
+   "fieldtype": "Currency",
+   "label": "Base Redress (Company Currency)",
+   "options": "Company:company:default_currency"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2022-03-07 10:14:39.254179",
+ "modified": "2022-03-29 16:19:48.228524",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Supplier Rental Quotation Item",
