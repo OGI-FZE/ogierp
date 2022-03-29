@@ -74,6 +74,24 @@ frappe.ui.form.on('Rental Order', {
 				frm.refresh();
 			}
 		})
+	},
+	sales_person_link(frm) {
+		if(frm.doc.sales_person_link){
+			frm.set_value("sales_person",frm.doc.sales_person_link)
+			frappe.call({
+				method: "oil_and_gas_international.events.shared.get_sales_person_details",
+				args: {
+					'sp':frm.doc.sales_person_link
+				},
+				callback(r) {
+					const data = r.message
+					frm.set_value("contact_number",data[0])
+					frm.set_value("mail_id",data[1])
+					frm.set_value("sales_person_name",data[2])
+					frm.refresh()
+				}
+			})
+		}
 	}
 });
 

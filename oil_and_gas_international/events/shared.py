@@ -52,3 +52,19 @@ def get_lost_and_damage_prices(item_code=None):
         }, "price_list_rate")
 
     return oprunning, standby , lihdbr, redress, straight, post_rental_inspection_charges
+
+@frappe.whitelist()
+def get_sales_person_details(sp = None):
+    if not sp:
+        return []
+    mobile = ''
+    mail_id = ''
+    sp_name = ''
+    sp_doc = frappe.get_doc("Sales Person",sp)
+    if sp_doc.employee:
+        emp_doc = frappe.get_doc("Employee",sp_doc.employee)
+        mobile = emp_doc.cell_number
+        mail_id = emp_doc.company_email
+        sp_name = emp_doc.employee_name
+    return mobile,mail_id,sp_name
+

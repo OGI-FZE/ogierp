@@ -17,7 +17,7 @@ frappe.ui.form.on('Rental Receipt', {
 			const row = locals[cdt][cdn]
 			return {
 				filters: {
-					rental_status: "In Use",
+					rental_status: ["in",["In Use","In transit"]],
 					rental_order: frm.doc.rental_order,
 					docstatus:1
 				}
