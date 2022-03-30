@@ -35,6 +35,7 @@ frappe.ui.form.on('Supplier Rental Timesheet', {
 	// 		}
 	// 	}
 	// }
+	
 	onload(frm){
 		if(frm.doc.customer && frm.doc.__islocal){
 			frappe.db.get_value("Customer", {"name": frm.doc.customer}, "default_currency", (r) => {
