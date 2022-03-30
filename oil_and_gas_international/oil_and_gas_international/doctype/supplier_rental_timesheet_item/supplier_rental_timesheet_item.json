@@ -123,7 +123,7 @@
   },
   {
    "fieldname": "amount",
-   "fieldtype": "Float",
+   "fieldtype": "Currency",
    "label": "Amount"
   },
   {
@@ -237,7 +237,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2022-03-29 17:05:28.195916",
+ "modified": "2022-03-30 08:31:31.381108",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Supplier Rental Timesheet Item",
