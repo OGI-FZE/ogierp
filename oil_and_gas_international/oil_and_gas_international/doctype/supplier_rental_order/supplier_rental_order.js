@@ -120,7 +120,63 @@ frappe.ui.form.on('Supplier Rental Order Item', {
 	qty(frm, cdt, cdn) {
 		calc_total_qty(frm, cdt, cdn)
 	},
+	get_assets(frm, cdt, cdn) {
+		get_assets_to_supplier(frm, cdt, cdn)
+	}
 });
+
+const get_assets_to_supplier = (frm, cdt, cdn) => {
+	const row = locals[cdt][cdn]
+
+	const doctype = "Asset"
+	new frappe.ui.form.MultiSelectDialog({
+		doctype: doctype,
+		target: this.cur_frm,
+		setters: {
+			asset_name: null
+		},
+		date_field: "transaction_date",
+		get_query() {
+			let asset_list = []
+			let filters = {};
+			$.each(frm.doc.items, function(_idx, val) {
+				if (val.assets) asset_list.push(val.assets);
+			});
+			console.log("asset_list",asset_list)
+		    if(asset_list.length){
+		    	filters['rental_status'] = "Available For Rent";
+		    	filters['item_code'] = row.item_code;
+		    	filters['docstatus'] = 1;
+		    	filters['name'] = ['not in',asset_list];
+		    }
+		    else{
+		    	filters['rental_status'] = "Available For Rent";
+		    	filters['item_code'] = row.item_code;
+		    	filters['docstatus'] = 1;
+		    }
+			return {
+				filters: filters
+			}
+		},
+		action(selections) {
+			console.log("selections",selections.length)
+			
+			const cur_row = locals[cdt][cdn]
+			console.log("qty",cur_row.qty)
+			let serial_nos = ""
+			if(selections.length != cur_row.qty){
+				frappe.throw(__("Please select same number of assets as the quantity: ")+cur_row.qty)
+			}
+			for (const row of selections) {
+				serial_nos += row + "\n"
+			}
+
+			cur_row.assets = serial_nos
+			cur_frm.refresh()
+			cur_dialog.hide()
+		}
+	});
+}
 
 const set_query = (frm) => {
 	frm.fields_dict['items'].grid.get_field('item_code').get_query = function (doc, cdt, cdn) {

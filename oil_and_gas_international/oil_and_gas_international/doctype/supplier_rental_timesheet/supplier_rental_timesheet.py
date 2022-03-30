@@ -16,14 +16,12 @@ def get_supplier_rental_order_items(docname=None):
 	if not docname:
 		return {}
 
-	print("docname",docname)
 	
 	re_items = frappe.get_list("Supplier Rental Order Item", {
 		"status": ["!=", "On Hold"],
 		"parent": docname
 	}, ["*"])
 
-	
 	for itm in re_items:
 		asset_dict = {}
 		rti_assets = frappe.get_list("Asset", {
@@ -42,6 +40,4 @@ def get_supplier_rental_order_items(docname=None):
 
 						asset_dict['assets'] = d+'\n'+ast
 			itm.update(asset_dict) 
-
-
 	return re_items
