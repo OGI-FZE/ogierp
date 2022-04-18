@@ -33,20 +33,35 @@ const get_items_from_rental_timesheet = (frm, cdt, cdn) => {
                     asset_item:row.item_code,
                     rental_order:row.rental_order,
                     rental_order_item:row.rental_order_item,
+                    days:row.days,
+                    asset_qty:row.qty
                 })
                 const cdt = new_row.doctype
                 const cdn = new_row.name
                 frappe.model.set_value(cdt, cdn, "item_code",'Asset Rent Item')
                 
                 let desc = ""
-                if(row.operational_running_days){desc += ("Operational/Running : "+(row.operational_running_days)+ "*" + (row.operational_running) +"\n")}
-                if(row.standby_days){desc += ("Standby : " +(row.standby_days)+ "*" + (row.standby)+"\n")}
-                if(row.straight_days){desc += ("Straight : "+(row.straight_days)+ "*" + (row.straight))}
-                
+                if(row.item_code) {desc += row.item_name+"\n"}
+                if(row.operational_running_days){
+                    desc += "Operational/Running  " 
+                    frappe.model.set_value(cdt, cdn, "unit_price",row.operational_running)
+                }
+                if(row.standby_days){
+                    desc += "Standby  "
+                    frappe.model.set_value(cdt, cdn, "unit_price",row.standby)
+                }
+                if(row.straight_days){
+                    desc += "Straight  "
+                    frappe.model.set_value(cdt, cdn, "unit_price",row.straight)
+                }
+                if(row.timesheet_start_date && row.timesheet_end_date) {desc += ("\nRental period: "+ row.timesheet_start_date +" to "+row.timesheet_end_date)}
+               
                 setTimeout(function(){
                     frappe.model.set_value(cdt, cdn, "price_list_rate",row.amount)
                     frappe.model.set_value(cdt, cdn, "rate",row.amount)
                     frappe.model.set_value(cdt, cdn, "amount",row.amount)
+                    frappe.model.set_value(cdt, cdn, "days",row.days)
+                    frappe.model.set_value(cdt, cdn, "child_category",row.item_group)
                     frappe.model.set_value(cdt, cdn, "details",desc)
                     frappe.model.set_value(cdt, cdn, "description",desc)
                 }, 2000);           

@@ -252,6 +252,7 @@ fixtures = [
                 'Asset-against_asset_formation',
                 'Asset-item_group',
                 'Asset-supplier_info',
+                'Asset-last_cycle_count_date',
 
                 # Opportunity
                 'Opportunity-item_type',
@@ -308,6 +309,11 @@ fixtures = [
                 'Sales Invoice Item-rental_order',
                 'Sales Invoice Item-details',
                 'Sales Invoice Item-assets',
+                'Sales Invoice Item-asset_qty',
+                'Sales Invoice Item-unit_price',
+                'Sales Invoice Item-child_category',
+                'Sales Invoice Item-days',
+                'Sales Invoice-aed_exchange_rate',
 
                 # Stock Entry
                 "Stock Entry-against_asset_formation",
@@ -332,6 +338,16 @@ fixtures = [
 
                 #Asset Movement
                 'Asset Movement-rental_issue_note',
+
+                #dn
+                'Delivery Note-commercial_invoice_date',
+                
+                #employee
+                'Employee-visa_expiry_date','Employee-visa_issue_date','Employee-visa_no',
+                #bom
+                'BOM Operation-reference_std',
+                #workorder
+                'Work Order Operation-reference_std','Work Order Operation-acceptance_criteria'
 
             ]]
         ]

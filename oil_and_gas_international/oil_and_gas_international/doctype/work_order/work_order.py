@@ -23,9 +23,23 @@ class Work_Order(Document):
 				assets = row.assets
 				if assets:
 					assets = assets.split("\n")
+					serial_qty = 0
 					for asset in assets:
 						if asset:
-							frappe.db.set_value("Asset", asset, "rental_status", "On hold for Inspection")
+							if not frappe.db.exists("Asset", asset):
+								frappe.throw(f"Asset {asset} not exists!")
+
+							status = frappe.get_value("Asset", asset, "rental_status")
+							if status != "Available for Rent":
+								frappe.throw(
+									f"Asset {asset} is not available for rent!")
+							else:
+								serial_qty = serial_qty + 1
+							if asset:
+								frappe.db.set_value("Asset", asset, "rental_status", "On hold for Inspection")
+					if serial_qty != row.quantity:
+						frappe.throw(
+							f"Serial no's count({serial_qty}) not matched with the Qty({row.quantity}) of the asset!")
 
 	def on_cancel(self):
 		for row in self.items:

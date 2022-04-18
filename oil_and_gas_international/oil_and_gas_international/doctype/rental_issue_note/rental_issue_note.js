@@ -218,13 +218,11 @@ const get_items_from_rental_order = (frm, cdt, cdn) => {
 		args: { docname: rental_order },
 		async: false,
 		callback(res) {
-			console.log(res.message)
-			const data = res.message[0]
+			const data = res.message
 			if (!data) return
 			frm.doc.items = []
 			for (const row of data) {
-				console.log("row",row)
-				if(res.message[1]=="Tubulars"){
+				// if(res.message[1]=="Tubulars"){
 					const new_row = frm.add_child('items', {
 						'item_code': row.item_code,
 						'qty': row.qty,
@@ -248,35 +246,35 @@ const get_items_from_rental_order = (frm, cdt, cdn) => {
 					const cdt = new_row.doctype
 					const cdn = new_row.name
 					frappe.model.set_value(cdt, cdn, "item_code", row.item_code)
-				}
-				else{
-					console.log("elseeeeeee")
-					for(let i = 0; i < row.qty; i++){
-						const new_row = frm.add_child("items", {
-							'item_code': row.item_code,
-							'qty': 1,
-							'rate':row.rate,
-							'operational_running':row.operational_running,
-							'standby':row.standby,
-							'lihdbr':row.lihdbr,
-							'redress':row.redress,
-							'straight':row.straight,
-							'post_rental_inspection_charges':row.post_rental_inspection_charges,
-							'base_operational_running':row.base_operational_running,
-							'base_standby':row.base_standby,
-							'base_lihdbr':row.base_lihdbr,
-							'base_redress':row.base_redress,
-							'base_straight':row.base_straight,
-							'base_post_rental_inspection_charges':row.base_post_rental_inspection_charges,
-							'asset_location':row.asset_location,
-							'rental_order_item':row.name,
-							'rental_order':row.rental_order
-						})
-						const cdt = new_row.doctype
-						const cdn = new_row.name
-						frappe.model.set_value(cdt, cdn, "item_code", row.item_code)
-					}
-				}
+				// }
+				// else{
+				// 	console.log("elseeeeeee")
+				// 	for(let i = 0; i < row.qty; i++){
+				// 		const new_row = frm.add_child("items", {
+				// 			'item_code': row.item_code,
+				// 			'qty': 1,
+				// 			'rate':row.rate,
+				// 			'operational_running':row.operational_running,
+				// 			'standby':row.standby,
+				// 			'lihdbr':row.lihdbr,
+				// 			'redress':row.redress,
+				// 			'straight':row.straight,
+				// 			'post_rental_inspection_charges':row.post_rental_inspection_charges,
+				// 			'base_operational_running':row.base_operational_running,
+				// 			'base_standby':row.base_standby,
+				// 			'base_lihdbr':row.base_lihdbr,
+				// 			'base_redress':row.base_redress,
+				// 			'base_straight':row.base_straight,
+				// 			'base_post_rental_inspection_charges':row.base_post_rental_inspection_charges,
+				// 			'asset_location':row.asset_location,
+				// 			'rental_order_item':row.name,
+				// 			'rental_order':row.rental_order
+				// 		})
+				// 		const cdt = new_row.doctype
+				// 		const cdn = new_row.name
+				// 		frappe.model.set_value(cdt, cdn, "item_code", row.item_code)
+				// 	}
+				// }
 				// const new_row = frm.add_child('items', {
 				// 	'qty': row.qty,
 				// 	'rate': row.rate,
@@ -341,7 +339,7 @@ const get_assets_to_issue = (frm, cdt, cdn) => {
 			console.log("qty",cur_row.qty)
 			let serial_nos = ""
 			if(selections.length != cur_row.qty){
-				frappe.throw(__("Please select same number of assets as the quantity: ")+cur_row.qty)
+				frappe.msgprint(__("Warning! Required number of assets should be same as the quantity: ")+cur_row.qty)
 			}
 			for (const row of selections) {
 				serial_nos += row + "\n"

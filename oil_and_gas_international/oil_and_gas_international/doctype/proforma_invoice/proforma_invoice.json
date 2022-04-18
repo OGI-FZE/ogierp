@@ -16,6 +16,8 @@
   "customer_name",
   "order_type",
   "skip_delivery_note",
+  "rental_order",
+  "rental_timesheet",
   "column_break1",
   "company",
   "transaction_date",
@@ -43,6 +45,7 @@
   "currency_and_price_list",
   "currency",
   "conversion_rate",
+  "aed_exchange_rate",
   "column_break2",
   "selling_price_list",
   "price_list_currency",
@@ -1513,12 +1516,30 @@
    "fieldtype": "Link",
    "label": "Sales Order",
    "options": "Sales Order"
+  },
+  {
+   "fieldname": "rental_order",
+   "fieldtype": "Link",
+   "label": "Rental Order",
+   "options": "Rental Order"
+  },
+  {
+   "fieldname": "rental_timesheet",
+   "fieldtype": "Link",
+   "label": "Rental Timesheet",
+   "options": "Rental Timesheet"
+  },
+  {
+   "fieldname": "aed_exchange_rate",
+   "fieldtype": "Float",
+   "label": "AED Exchange Rate",
+   "precision": "9"
   }
  ],
  "icon": "fa fa-file-text",
  "is_submittable": 1,
  "links": [],
- "modified": "2022-02-02 11:19:04.003246",
+ "modified": "2022-04-18 10:21:10.437124",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Proforma Invoice",

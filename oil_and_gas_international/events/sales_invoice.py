@@ -11,7 +11,10 @@ def get_rental_timesheet_items(docname=None):
     re_items = frappe.get_list("Rental Timesheet Item", {
         "parent": docname
     }, ["*"])
-
+    for row in re_items:
+        itm = frappe.get_doc("Item",row.item_code)
+        row.update({'item_name':itm.item_name})
+        row.update({'item_group':itm.item_group})
     return re_items
 
 @frappe.whitelist()
@@ -65,7 +68,6 @@ def on_submit(doc, method=None):
                 "Rental Timesheet Item", row.rental_timesheet_item, "is_billed", 1)
 
 def get_desc(doc,method=None):
-    print("\n\nvalidateeeeeeeeeeee")
-    if doc.items:
+    if doc.rental_timesheet and doc.items:
         for item in doc.items:
             item.description = item.details

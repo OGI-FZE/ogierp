@@ -10,18 +10,23 @@
   "item_code",
   "customer_item_code",
   "ensure_delivery_based_on_produced_serial_no",
+  "days",
   "col_break1",
   "delivery_date",
   "item_name",
+  "asset_item",
+  "assets",
   "section_break_5",
+  "child_category",
+  "unit_price",
   "description",
-  "item_group",
   "brand",
   "image_section",
   "image",
   "image_view",
   "quantity_and_rate",
   "qty",
+  "asset_qty",
   "stock_uom",
   "col_break2",
   "uom",
@@ -91,7 +96,10 @@
   "section_break_63",
   "page_break",
   "item_tax_rate",
-  "transaction_date"
+  "transaction_date",
+  "ref_section",
+  "rental_order_item",
+  "rental_order"
  ],
  "fields": [
   {
@@ -139,6 +147,7 @@
    "print_hide": 1
   },
   {
+   "fetch_from": "item_code.item_name",
    "fieldname": "item_name",
    "fieldtype": "Data",
    "in_global_search": 1,
@@ -165,17 +174,6 @@
    "print_width": "300px",
    "reqd": 1,
    "width": "300px"
-  },
-  {
-   "fieldname": "item_group",
-   "fieldtype": "Link",
-   "hidden": 1,
-   "label": "Item Group",
-   "oldfieldname": "item_group",
-   "oldfieldtype": "Link",
-   "options": "Item Group",
-   "print_hide": 1,
-   "read_only": 1
   },
   {
    "fieldname": "brand",
@@ -797,11 +795,61 @@
    "print_hide": 1,
    "read_only": 1,
    "report_hide": 1
+  },
+  {
+   "fieldname": "asset_item",
+   "fieldtype": "Link",
+   "label": "Asset Item",
+   "options": "Item"
+  },
+  {
+   "fieldname": "assets",
+   "fieldtype": "Small Text",
+   "label": "Assets"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "ref_section",
+   "fieldtype": "Section Break",
+   "label": "References"
+  },
+  {
+   "fieldname": "rental_order_item",
+   "fieldtype": "Link",
+   "label": "Rental Order Item",
+   "options": "Rental Order Item"
+  },
+  {
+   "fieldname": "rental_order",
+   "fieldtype": "Link",
+   "label": "Rental Order",
+   "options": "Rental Order"
+  },
+  {
+   "fieldname": "days",
+   "fieldtype": "Int",
+   "label": "No of Days"
+  },
+  {
+   "fieldname": "child_category",
+   "fieldtype": "Link",
+   "label": "Child Category",
+   "options": "Item Group"
+  },
+  {
+   "fieldname": "unit_price",
+   "fieldtype": "Float",
+   "label": "Unit price/Day"
+  },
+  {
+   "fieldname": "asset_qty",
+   "fieldtype": "Float",
+   "label": "Asset Qty"
   }
  ],
  "istable": 1,
  "links": [],
- "modified": "2022-02-02 08:59:31.384294",
+ "modified": "2022-04-18 10:18:05.131381",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Proforma Invoice Item",

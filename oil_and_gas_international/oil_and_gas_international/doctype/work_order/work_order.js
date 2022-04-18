@@ -27,3 +27,58 @@ frappe.ui.form.on('Work_Order', {
 		}
 	}
 });
+
+frappe.ui.form.on('Workorder item', {
+	get_assets(frm, cdt, cdn) {
+		get_assets_to_issue(frm, cdt, cdn)
+	}
+});
+
+const get_assets_to_issue = (frm, cdt, cdn) => {
+	const row = locals[cdt][cdn]
+
+	const doctype = "Asset"
+	new frappe.ui.form.MultiSelectDialog({
+		doctype: doctype,
+		target: this.cur_frm,
+		setters: {
+			asset_name: null
+		},
+		date_field: "transaction_date",
+		get_query() {
+			let asset_list = []
+			let filters = {};
+			$.each(frm.doc.items, function(_idx, val) {
+				if (val.assets) asset_list.push(val.assets);
+			});
+		    if(asset_list.length){
+		    	filters['rental_status'] = "Available For Rent";
+		    	filters['item_code'] = row.item_code;
+		    	filters['docstatus'] = 1;
+		    	filters['name'] = ['not in',asset_list];
+		    }
+		    else{
+		    	filters['rental_status'] = "Available For Rent";
+		    	filters['item_code'] = row.item_code;
+		    	filters['docstatus'] = 1;
+		    }
+			return {
+				filters: filters
+			}
+		},
+		action(selections) {
+			const cur_row = locals[cdt][cdn]
+			let serial_nos = ""
+			if(selections.length != cur_row.quantity){
+				frappe.msgprint(__("Warning! Required number of assets should be same as the quantity: ")+cur_row.quantity)
+			}
+			for (const row of selections) {
+				serial_nos += row + "\n"
+			}
+
+			cur_row.assets = serial_nos
+			cur_frm.refresh()
+			cur_dialog.hide()
+		}
+	});
+}

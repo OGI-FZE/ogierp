@@ -15,10 +15,17 @@
   "asset_location",
   "assets",
   "section_break_9",
-  "operational_running_days",
-  "standby_days",
+  "timesheet_start_date",
+  "timesheet_end_date",
+  "days",
+  "section_break_13",
+  "operational_running_check",
+  "standby_check",
+  "straight_check",
   "redress_days",
   "lihdbr_days",
+  "operational_running_days",
+  "standby_days",
   "straight_days",
   "amount",
   "base_amount",
@@ -119,12 +126,14 @@
   {
    "fieldname": "operational_running_days",
    "fieldtype": "Int",
-   "label": "Operational/Running Days"
+   "label": "Operational/Running Days",
+   "read_only": 1
   },
   {
    "fieldname": "standby_days",
    "fieldtype": "Int",
-   "label": "Standby Days"
+   "label": "Standby Days",
+   "read_only": 1
   },
   {
    "default": "0",
@@ -145,7 +154,8 @@
   {
    "fieldname": "straight_days",
    "fieldtype": "Int",
-   "label": "Straight Days"
+   "label": "Straight Days",
+   "read_only": 1
   },
   {
    "fieldname": "amount",
@@ -234,12 +244,50 @@
    "fieldtype": "Currency",
    "label": "Base Amount (Company Currency)",
    "options": "Company:company:default_currency"
+  },
+  {
+   "default": "0",
+   "fieldname": "operational_running_check",
+   "fieldtype": "Check",
+   "label": "Operational/Running"
+  },
+  {
+   "default": "0",
+   "fieldname": "standby_check",
+   "fieldtype": "Check",
+   "label": "Standby"
+  },
+  {
+   "default": "0",
+   "fieldname": "straight_check",
+   "fieldtype": "Check",
+   "label": "Straight"
+  },
+  {
+   "fieldname": "timesheet_start_date",
+   "fieldtype": "Date",
+   "label": "Timesheet Start Date"
+  },
+  {
+   "fieldname": "timesheet_end_date",
+   "fieldtype": "Date",
+   "label": "Timesheet End Date"
+  },
+  {
+   "fieldname": "section_break_13",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "days",
+   "fieldtype": "Int",
+   "hidden": 1,
+   "label": "Days"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2022-03-26 12:55:18.130299",
+ "modified": "2022-04-07 09:04:18.324029",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Rental Timesheet Item",

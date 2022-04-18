@@ -20,6 +20,13 @@ frappe.ui.form.on("Asset", {
                 frappe.model.set_value('Asset',frm.doc.name,'supplier_info',value['supplier'])
             });
         }
+    },
+    status(frm) {
+        if(frm.doc.status){
+            if(frm.doc.status in ['Sold','Scrapped','In Maintenance','Out of Order']){
+                frappe.model.set_value('Asset',frm.doc.name,'rental_status',frm.doc.status)
+            }
+        }
     }
 })
 

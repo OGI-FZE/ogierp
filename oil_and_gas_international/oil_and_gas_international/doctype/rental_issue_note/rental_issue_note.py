@@ -65,14 +65,14 @@ class RentalIssueNote(Document):
 				if asset:
 					# updating asset status
 					# issue date
-					if self.date == today():
+					if (self.date == today()) or (self.date < today()):
 						frappe.db.set_value("Asset", asset, "rental_status", "In transit")
 						frappe.db.set_value("Asset", asset, "rental_order", self.rental_order)
 						
-					if self.rental_start_date == today():# issue date
+					if (self.rental_start_date == today()) or (self.rental_start_date < today()):# issue date
 						frappe.db.set_value("Asset", asset, "rental_status", "In Use")
 						frappe.db.set_value("Asset", asset, "rental_order", self.rental_order)
-					
+
 					# updating rental order item status
 					if row.rental_order_item:
 						cdt = "Rental Order Item"
@@ -115,10 +115,11 @@ def get_rental_order_items(docname=None):
 		return {}
 
 	doc = frappe.get_doc("Rental Order", docname)
-	for i in doc.items:
-		cat = frappe.db.get_value("Asset", {"item_code": i.item_code}, "asset_category")
+	# for i in doc.items:
+	# 	cat = frappe.db.get_value("Asset", {"item_code": i.item_code}, "asset_category")
 
-	return [doc.items,cat]
+	# return [doc.items,cat]
+	return doc.items
 
 @frappe.whitelist()
 def get_project(docname=None):

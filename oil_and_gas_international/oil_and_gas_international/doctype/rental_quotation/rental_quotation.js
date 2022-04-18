@@ -221,12 +221,6 @@ const add_rental_order = () => {
 						frappe.model.set_value(cdt, cdn, "redress", row.redress)
 						frappe.model.set_value(cdt, cdn, "straight", row.straight)
 						frappe.model.set_value(cdt, cdn, "post_rental_inspection_charges", row.post_rental_inspection_charges)
-						frappe.model.set_value(cdt, cdn, "base_operational_running", row.base_operational_running)
-						frappe.model.set_value(cdt, cdn, "base_lihdbr", row.base_lihdbr)
-						frappe.model.set_value(cdt, cdn, "base_standby", row.base_standby)
-						frappe.model.set_value(cdt, cdn, "base_redress", row.base_redress)
-						frappe.model.set_value(cdt, cdn, "base_straight", row.base_straight)
-						frappe.model.set_value(cdt, cdn, "base_post_rental_inspection_charges", row.base_post_rental_inspection_charges)
 					}, 2000);
 				}
 

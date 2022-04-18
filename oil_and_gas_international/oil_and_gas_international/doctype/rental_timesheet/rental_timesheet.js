@@ -13,7 +13,8 @@ frappe.ui.form.on('Rental Timesheet', {
 		}
 		else if(frm.doc.docstatus==1){
 			add_sales_invoice()
-			add_sales_order()
+			// add_sales_order()
+			add_proforma_invoice()
 		}
 		var company_currency = frappe.get_doc(":Company", frm.doc.company).default_currency;
 		frm.set_currency_labels([
@@ -56,9 +57,9 @@ frappe.ui.form.on('Rental Timesheet', {
 	conversion_rate(frm){
     	convert_rate(frm)
   	},
-  	validate(frm){
-  		convert_rate(frm)
-  	},
+	validate(frm){
+		convert_rate(frm)
+	}, 
 	rental_order(frm, cdt, cdn) {
 		get_items_from_rental_order(frm, cdt, cdn)
 		set_project(frm)
@@ -171,8 +172,72 @@ const get_items_from_rental_order = (frm, cdt, cdn) => {
 
 
 frappe.ui.form.on('Rental Timesheet Item', {
+	operational_running_check: function(frm,cdt,cdn){
+		let row=locals[cdt][cdn]
+		if(row.operational_running_check){
+			frappe.model.set_value(cdt, cdn,"operational_running_days", row.days);
+			frappe.model.set_value(cdt, cdn,"standby_days", '');
+			frappe.model.set_value(cdt, cdn,"straight_days", '');
+			frappe.model.set_value(cdt, cdn,"standby_check", 0);
+    	frappe.model.set_value(cdt, cdn,"straight_check", 0);
+		}
+		else{
+			frappe.model.set_value(cdt, cdn,"operational_running_days", '');
+		}
+  },
+  standby_check: function(frm,cdt,cdn){
+  	let row=locals[cdt][cdn]
+  	if(row.standby_check){
+  		frappe.model.set_value(cdt, cdn,"standby_days", row.days);
+  		frappe.model.set_value(cdt, cdn,"operational_running_days", '');
+  		frappe.model.set_value(cdt, cdn,"straight_days", '');
+	    frappe.model.set_value(cdt, cdn,"operational_running_check", 0);
+	    frappe.model.set_value(cdt, cdn,"straight_check", 0);
+	  }
+	  else{
+			frappe.model.set_value(cdt, cdn,"standby_days", '');
+		}
+  },
+  straight_check: function(frm,cdt,cdn){
+  	let row=locals[cdt][cdn]
+  	if(row.straight_check) {
+  		frappe.model.set_value(cdt, cdn,"straight_days", row.days);
+  		frappe.model.set_value(cdt, cdn,"standby_days", '');
+  		frappe.model.set_value(cdt, cdn,"operational_running_days", '');
+	    frappe.model.set_value(cdt, cdn,"operational_running_check", 0);
+	    frappe.model.set_value(cdt, cdn,"standby_check", 0);
+	  }
+	  else{
+			frappe.model.set_value(cdt, cdn,"straight_days", '');
+		}
+  },
+  timesheet_end_date: function(frm,cdt,cdn){
+  	let row = locals[cdt][cdn]
+  	if(row.timesheet_start_date && row.timesheet_end_date){
+  		if(row.timesheet_end_date < row.timesheet_start_date){
+  			frappe.throw("End date can not be before start date!")
+  		}
+  		if(row.timesheet_start_date < frm.doc.start_date || row.timesheet_end_date > frm.doc.end_date){
+  			frappe.throw("Please choose dates within the date range of timesheet: "+frm.doc.start_date+" to "+frm.doc.end_date)
+  		}
+  		frappe.model.set_value(cdt, cdn,"days", (frappe.datetime.get_day_diff(row.timesheet_end_date,row.timesheet_start_date))+1);
+
+  	}
+  },
+  timesheet_start_date: function(frm,cdt,cdn){
+  	let row = locals[cdt][cdn]
+  	if(row.timesheet_start_date && row.timesheet_end_date){
+  		if(row.timesheet_end_date < row.timesheet_start_date){
+  			frappe.throw("End date can not be before start date!")
+  		}
+  		if(row.timesheet_start_date < frm.doc.start_date || row.timesheet_end_date > frm.doc.end_date){
+  			frappe.throw("Please choose dates within the date range of timesheet: "+frm.doc.start_date+" to "+frm.doc.end_date)
+  		}
+  		frappe.model.set_value(cdt, cdn,"days", (frappe.datetime.get_day_diff( row.timesheet_end_date,row.timesheet_start_date))+1);
+  	}
+  },
 	get_assets(frm, cdt, cdn) {
-		get_assets_to_receive(frm, cdt, cdn)
+		get_assets_to_receive(frm, cdt, cdn)   
 	},
 	qty(frm,cdt,cdn){
 		let row=locals[cdt][cdn]
@@ -252,11 +317,11 @@ frappe.ui.form.on('Rental Timesheet Item', {
 const calculate_amount=(frm,cdt,cdn)=>{
 	let row= locals[cdt][cdn]
 	let total=0
-	if(row.operational_running_days && row.operational_running>0){
+	if(row.operational_running_check && row.operational_running_days && row.operational_running>0){
 		total = row.operational_running_days*row.operational_running
 		console.log(total);
 	}
-	if(row.standby_days && row.standby>0){
+	if(row.standby_check && row.standby_days && row.standby>0){
 		total = total +( row.standby_days*row.standby)
 		console.log(total);
 	}
@@ -268,7 +333,7 @@ const calculate_amount=(frm,cdt,cdn)=>{
 		total = total+ (row.lihdbr)
 		console.log(total);
 	}
-	if(row.straight_days && row.straight>0){
+	if(row.straight_check && row.straight_days && row.straight>0){
 		total = total+ ( row.straight_days*row.straight)
 		console.log(total);
 	}
@@ -341,15 +406,16 @@ const add_sales_invoice = () => {
 				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "rental_timesheet", doc.name)
 				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "currency", doc.currency)
 				cur_doc.items = []
-
+				console.log("itemss",doc.items)
 				for (const row of doc.items) {
 					const new_row = cur_frm.add_child("items", {
-						qty: 1,
+						qty: row.qty,
 						asset_item:row.item_code,
 						rental_order:row.rental_order,
 						rental_order_item:row.rental_order_item,
 						assets:row.assets
 					})
+					console.log("new_row",new_row)
 					const cdt = new_row.doctype
 					const cdn = new_row.name
 					frappe.model.set_value(cdt, cdn, "item_code",'Asset Rent Item')
@@ -384,7 +450,7 @@ const add_sales_order = () => {
 
 				for (const row of doc.items) {
 					const new_row = cur_frm.add_child("items", {
-						qty: 1,
+						qty: row.qty,
 						asset_item:row.item_code,
 						rental_order:row.rental_order,
 						rental_order_item:row.rental_order_item,
@@ -393,6 +459,7 @@ const add_sales_order = () => {
 					const cdt = new_row.doctype
 					const cdn = new_row.name
 					frappe.model.set_value(cdt, cdn, "item_code",'Asset Rent Item')
+					frappe.model.set_value(cdt, cdn, "item_name",'Asset Rent Item')
 					setTimeout(function(){
 						frappe.model.set_value(cdt, cdn, "price_list_rate",row.amount)
 						frappe.model.set_value(cdt, cdn, "rate",row.amount)
@@ -406,3 +473,43 @@ const add_sales_order = () => {
 	}, 'Create')
 }
 
+const add_proforma_invoice = () => {
+	cur_frm.add_custom_button('Proforma Invoice', () => {
+		const doc = cur_frm.doc
+		frappe.run_serially([
+			() => frappe.new_doc('Proforma Invoice'),
+			() => {
+				const cur_doc = cur_frm.doc
+				cur_doc.customer = doc.customer
+				// cur_doc.rental_timesheet = doc.name
+				cur_doc.currency = doc.currency
+				cur_doc.conversion_rate = doc.conversion_rate
+				cur_doc.rental_order = doc.rental_order
+				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "rental_timesheet", doc.name)
+				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "currency", doc.currency)
+				cur_doc.items = []
+
+				for (const row of doc.items) {
+					const new_row = cur_frm.add_child("items", {
+						qty: row.qty,
+						asset_item:row.item_code,
+						rental_order:row.rental_order,
+						rental_order_item:row.rental_order_item,
+						assets:row.assets,
+					})
+					const cdt = new_row.doctype
+					const cdn = new_row.name
+					frappe.model.set_value(cdt, cdn, "item_code",'Asset Rent Item')
+					frappe.model.set_value(cdt, cdn, "item_name",'Asset Rent Item')
+					setTimeout(function(){
+						frappe.model.set_value(cdt, cdn, "price_list_rate",row.amount)
+						frappe.model.set_value(cdt, cdn, "rate",row.amount)
+						frappe.model.set_value(cdt, cdn, "amount",row.amount)
+					}, 2000);
+				}
+
+				cur_frm.refresh()
+			}
+		])
+	}, 'Create')
+}

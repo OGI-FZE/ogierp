@@ -13,6 +13,7 @@
   "date",
   "section_break_6",
   "currency",
+  "aed_exchange_rate",
   "column_break_8",
   "conversion_rate",
   "section_break_10",
@@ -231,6 +232,12 @@
   {
    "fieldname": "section_break_10",
    "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "aed_exchange_rate",
+   "fieldtype": "Float",
+   "label": "AED Exchange Rate",
+   "precision": "9"
   }
  ],
  "index_web_pages_for_search": 1,
@@ -241,7 +248,7 @@
    "link_fieldname": "rental_order"
   }
  ],
- "modified": "2022-03-26 10:35:29.734609",
+ "modified": "2022-04-16 09:01:29.187823",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Rental Order",
