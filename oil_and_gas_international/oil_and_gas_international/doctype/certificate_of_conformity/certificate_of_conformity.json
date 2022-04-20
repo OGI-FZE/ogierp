@@ -15,12 +15,24 @@
   "customer",
   "customer_po",
   "section_break_8",
+  "description_of_job",
+  "section_break_10",
   "item",
   "quantity",
   "column_break_12",
   "serial",
   "heat_no",
-  "amended_from"
+  "amended_from",
+  "section_break_15",
+  "prepared_by",
+  "prep_name",
+  "prep_position",
+  "prep_date",
+  "column_break_19",
+  "approved_by",
+  "appr_name",
+  "appr_position",
+  "appr_date"
  ],
  "fields": [
   {
@@ -100,12 +112,77 @@
   {
    "fieldname": "column_break_12",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_15",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "prepared_by",
+   "fieldtype": "Heading",
+   "label": "Prepared By"
+  },
+  {
+   "fieldname": "prep_name",
+   "fieldtype": "Link",
+   "label": "Name ",
+   "options": "Employee"
+  },
+  {
+   "fetch_from": "prep_name.designation",
+   "fieldname": "prep_position",
+   "fieldtype": "Link",
+   "label": "Position",
+   "options": "Designation",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_19",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "approved_by",
+   "fieldtype": "Heading",
+   "label": "Approved By"
+  },
+  {
+   "fieldname": "appr_name",
+   "fieldtype": "Link",
+   "label": "Name ",
+   "options": "Employee"
+  },
+  {
+   "fetch_from": "appr_name.designation",
+   "fieldname": "appr_position",
+   "fieldtype": "Link",
+   "label": "Position",
+   "options": "Designation",
+   "read_only": 1
+  },
+  {
+   "fieldname": "prep_date",
+   "fieldtype": "Date",
+   "label": "Date"
+  },
+  {
+   "fieldname": "appr_date",
+   "fieldtype": "Date",
+   "label": "Date"
+  },
+  {
+   "fieldname": "description_of_job",
+   "fieldtype": "Small Text",
+   "label": "Description of Job"
+  },
+  {
+   "fieldname": "section_break_10",
+   "fieldtype": "Section Break"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2022-03-21 15:36:26.096006",
+ "modified": "2022-04-20 12:23:55.594013",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Certificate of Conformity",
