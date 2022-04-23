@@ -211,6 +211,39 @@ frappe.ui.form.on('Rental Timesheet Item', {
 			frappe.model.set_value(cdt, cdn,"straight_days", '');
 		}
   },
+  days: function(frm,cdt,cdn){
+  	let row=locals[cdt][cdn]
+  	if(row.operational_running_check){
+			frappe.model.set_value(cdt, cdn,"operational_running_days", row.days);
+			frappe.model.set_value(cdt, cdn,"standby_days", '');
+			frappe.model.set_value(cdt, cdn,"straight_days", '');
+			frappe.model.set_value(cdt, cdn,"standby_check", 0);
+    	frappe.model.set_value(cdt, cdn,"straight_check", 0);
+		}
+		else{
+			frappe.model.set_value(cdt, cdn,"operational_running_days", '');
+		}
+		if(row.straight_check) {
+  		frappe.model.set_value(cdt, cdn,"straight_days", row.days);
+  		frappe.model.set_value(cdt, cdn,"standby_days", '');
+  		frappe.model.set_value(cdt, cdn,"operational_running_days", '');
+	    frappe.model.set_value(cdt, cdn,"operational_running_check", 0);
+	    frappe.model.set_value(cdt, cdn,"standby_check", 0);
+	  }
+	  else{
+			frappe.model.set_value(cdt, cdn,"straight_days", '');
+		}
+		if(row.straight_check) {
+  		frappe.model.set_value(cdt, cdn,"straight_days", row.days);
+  		frappe.model.set_value(cdt, cdn,"standby_days", '');
+  		frappe.model.set_value(cdt, cdn,"operational_running_days", '');
+	    frappe.model.set_value(cdt, cdn,"operational_running_check", 0);
+	    frappe.model.set_value(cdt, cdn,"standby_check", 0);
+	  }
+	  else{
+			frappe.model.set_value(cdt, cdn,"straight_days", '');
+		}
+  },
   timesheet_end_date: function(frm,cdt,cdn){
   	let row = locals[cdt][cdn]
   	if(row.timesheet_start_date && row.timesheet_end_date){

@@ -137,10 +137,10 @@ def change_rental_status():
 			# for asset in assets:
 			# issue date
 			if row.assets:
-				if str(rin_doc.date) == today():
+				if str(rin_doc.date) <= today():
 					frappe.db.set_value("Asset", row.assets, "rental_status", "In transit")
 					
-				if str(rin_doc.rental_start_date) == today():
+				if str(rin_doc.rental_start_date) <= today():
 					frappe.db.set_value("Asset", row.assets, "rental_status", "In Use")
 					frappe.db.set_value("Asset", row.assets, "rental_order", rin_doc.rental_order)
 
@@ -152,9 +152,9 @@ def change_rental_status():
 			# assets = assets.split("\n")
 			# for asset in assets:
 			if row.assets:
-				if str(rr_doc.rental_stop_date) == today():
+				if str(rr_doc.rental_stop_date) <= today():
 					frappe.db.set_value("Asset", row.assets, "rental_status", "In transit")
 					
-				if str(rr_doc.receipt_date) == today():
+				if str(rr_doc.receipt_date) <= today():
 					frappe.db.set_value("Asset", row.assets, "rental_status", "On hold for Inspection")
 					frappe.db.set_value("Asset", row.assets, "rental_order", "")

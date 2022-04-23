@@ -322,6 +322,7 @@ fixtures = [
                 'Sales Order Item-assets','Sales Order-rental_timesheet_item','Sales Order-rental_order_item',
                 'Sales Order-rental_timesheet','Sales Order-rental_order','Sales Order Item-rental_order',
                 'Sales Order Item-rental_order_item','Sales Order Item-references','Sales Order Item-asset_item',
+                'Sales Order-aed_exchange_rate',
 
                 # Project
                 'Project-rental_order',
@@ -347,7 +348,11 @@ fixtures = [
                 #bom
                 'BOM Operation-reference_std',
                 #workorder
-                'Work Order Operation-reference_std','Work Order Operation-acceptance_criteria'
+                'Work Order Operation-reference_std','Work Order Operation-acceptance_criteria',
+                #Quotation
+                'Quotation-aed_exchange_rate','Quotation-email','Quotation-contact','Quotation-sales_person',
+                #sales person
+                'Sales Person-email','Sales Person-contact'
 
             ]]
         ]
