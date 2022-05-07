@@ -140,7 +140,6 @@ const get_conversion_rate = (frm) => {
 
 const get_items_from_supplier_rental_order = (frm, cdt, cdn) => {
 	const supplier_rental_order = frm.doc.supplier_rental_order
-	console.log("sup rent order",supplier_rental_order)
 	frm.call({
 		method: "get_supplier_rental_order_items",
 		args: { docname: supplier_rental_order },

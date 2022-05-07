@@ -3,6 +3,7 @@
 
 import frappe
 from frappe.model.document import Document
+from frappe.utils import today
 
 class SubRentalIssue(Document):
 	def validate(self):
@@ -36,11 +37,11 @@ class SubRentalIssue(Document):
 			for asset in assets:
 				if asset:
 					frappe.db.set_value("Asset", asset, "rental_status", "Available for Rent")
-					if row.rental_order_item:
-						cdt = "Rental Order Item"
-						cdn = row.rental_order_item
+					if row.sub_rental_order_item:
+						cdt = "Supplier Rental Order Item"
+						cdn = row.sub_rental_order_item
 						delivered_qty = frappe.get_value(cdt, cdn, "delivered_qty")
-						frappe.set_value(cdt, cdn, "delivered_qty", int(delivered_qty) - int(row.qty))
+						frappe.set_value(cdt, cdn, "delivered_qty", int(delivered_qty) - 1)
 
 
 		movements = frappe.get_list("Asset Movement",filters={'rental_issue_note':self.name})
@@ -68,12 +69,12 @@ class SubRentalIssue(Document):
 						frappe.db.set_value("Asset", asset, "sub_rental_order", self.sub_rental_order)
 						
 					if (self.sub_rental_return_date == today()) or (self.sub_rental_return_date < today()):# issue date
-						frappe.db.set_value("Asset", asset, "rental_status", "Available for Rent")
+						frappe.db.set_value("Asset", asset, "rental_status", "Delivered to supplier")
 						frappe.db.set_value("Asset", asset, "sub_rental_order", self.sub_rental_order)
 
 					# updating rental order item status
 					if row.sub_rental_order_item:
-						cdt = "Sub Rental Order Item"
+						cdt = "Supplier Rental Order Item"
 						cdn = row.sub_rental_order_item
 						qty = frappe.get_value(cdt, cdn, "qty")
 						delivered_qty = frappe.get_value(cdt, cdn, "delivered_qty")
@@ -83,7 +84,7 @@ class SubRentalIssue(Document):
 						if (delivered_qty + 1) > qty:
 							frappe.throw(f"Can not deliver asset(s) more than remaining qty in Rental Order Item({qty-delivered_qty})")
 						
-						frappe.set_value(cdt, cdn, "delivered_qty", int(delivered_qty) + int(row.qty))
+						frappe.set_value(cdt, cdn, "delivered_qty", int(delivered_qty) + 1)
 						if (delivered_qty) == qty:
 							frappe.set_value(cdt, cdn, "status", "Delivered")
 
@@ -109,12 +110,43 @@ class SubRentalIssue(Document):
 
 @frappe.whitelist()
 def get_sub_rental_order_items(docname=None):
+	# if not docname:
+	# 	return {}
+
+	# doc = frappe.get_doc("Supplier Rental Order", docname)
+	# # for i in doc.items:
+	# # 	cat = frappe.db.get_value("Asset", {"item_code": i.item_code}, "asset_category")
+
+	# # return [doc.items,cat]
+	# return doc.items
+
+	asset_list = []
+	
 	if not docname:
 		return {}
 
-	doc = frappe.get_doc("Supplier Rental Order", docname)
-	# for i in doc.items:
-	# 	cat = frappe.db.get_value("Asset", {"item_code": i.item_code}, "asset_category")
+	
+	re_items = frappe.get_list("Supplier Rental Order Item", {
+		"status": ["!=", "On Hold"],
+		"parent": docname
+	}, ["*"])
+	rt=frappe.get_doc("Sub Rental Receipt", {"sub_rental_order": docname})
+	for itm in re_items:
+		asset_dict = {}
+		rti_assets = frappe.get_list("Sub Rental Receipt Item", {
+            "parent": rt.name,
+            "item_code":itm.item_code,
+            "docstatus":1,
+        }, ["assets"])
+		if rti_assets:
+			l = (rti_assets[0]['assets']).splitlines()
+			for ast in l:
+				status = frappe.db.get_value("Asset",ast,"rental_status")
+				if not asset_dict:
+					asset_dict = {'assets':ast}
+				else:
+					d = asset_dict['assets']
 
-	# return [doc.items,cat]
-	return doc.items
+					asset_dict['assets'] = d+'\n'+ast
+			itm.update(asset_dict) 
+	return re_items

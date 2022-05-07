@@ -195,7 +195,6 @@ const get_items_from_rental_order = (frm, cdt, cdn) => {
 			for (const row of data) {
 				// if(res.message[1]=="Tubulars"){
 					const new_row = frm.add_child('items', {
-						'item_code': row.item_code,
 						'qty': row.qty,
 						'rate':row.rate,
 						'operational_running':row.operational_running,
@@ -212,7 +211,9 @@ const get_items_from_rental_order = (frm, cdt, cdn) => {
 						'base_post_rental_inspection_charges':row.base_post_rental_inspection_charges,
 						'asset_location':row.asset_location,
 						'rental_order_item':row.name,
-						'rental_order':row.rental_order
+						'sub_rental_order':rental_order,
+						'sub_rental_order_item': row.name,
+						'assets':row.assets,
 					})
 					const cdt = new_row.doctype
 					const cdn = new_row.name

@@ -253,6 +253,8 @@ fixtures = [
                 'Asset-item_group',
                 'Asset-supplier_info',
                 'Asset-last_cycle_count_date',
+                'Asset-is_sub_rental_asset',
+                'Asset-sub_rental_order'
 
                 # Opportunity
                 'Opportunity-item_type',
@@ -325,7 +327,7 @@ fixtures = [
                 'Sales Order-aed_exchange_rate',
 
                 # Project
-                'Project-rental_order',
+                'Project-rental_order','Project-sub_rental_order'
 
                 #Rental order
                 'Rental Order-sales_employee','Rental Order-sales_person_link',
