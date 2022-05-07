@@ -13,6 +13,21 @@ frappe.query_reports["Asset Utilization"] = {
 			"reqd":1,
 		},
 		{
+			"fieldname":"asset",
+			"label":__("Asset"),
+			"fieldtype": "Link",
+			"options": "Asset",
+			"width":100,
+			get_query: () => {
+				var asset_category = frappe.query_report.get_filter_value('asset_category');
+				return {
+					filters: {
+						'asset_category': asset_category
+					}
+				}
+			}
+		},
+		{
 			"fieldname":"from_date",
 			"label": __("From Date"),
 			"fieldtype": "Date",
