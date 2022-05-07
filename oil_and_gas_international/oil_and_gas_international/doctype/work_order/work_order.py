@@ -30,13 +30,20 @@ class Work_Order(Document):
 								frappe.throw(f"Asset {asset} not exists!")
 
 							status = frappe.get_value("Asset", asset, "rental_status")
-							if status != "Available for Rent":
-								frappe.throw(
-									f"Asset {asset} is not available for rent!")
-							else:
-								serial_qty = serial_qty + 1
-							if asset:
-								frappe.db.set_value("Asset", asset, "rental_status", "On hold for Inspection")
+							if self.rental_order:
+								if status != "Available for Rent":
+									frappe.throw(
+										f"Asset {asset} is not available for rent!")
+								else:
+									serial_qty = serial_qty + 1
+								if asset:
+									frappe.db.set_value("Asset", asset, "rental_status", "On hold for Inspection")
+							if self.sub_rental_order:
+								if status != "On hold for Inspection":
+									frappe.throw(
+										f"Asset {asset} is not on hold for inspection!")
+								else:
+									serial_qty = serial_qty + 1
 					if serial_qty != row.quantity:
 						frappe.throw(
 							f"Serial no's count({serial_qty}) not matched with the Qty({row.quantity}) of the asset!")
@@ -48,7 +55,10 @@ class Work_Order(Document):
 				assets = assets.split("\n")
 				for asset in assets:
 					if asset:
-						frappe.db.set_value("Asset", asset, "rental_status", "Available for Rent")
+						if self.rental_order:
+							frappe.db.set_value("Asset", asset, "rental_status", "Available for Rent")
+						if self.sub_rental_order:
+							frappe.db.set_value("Asset", asset, "rental_status", "On hold for Inspection")
 
 	def on_trash(self):
 		for row in self.items:
@@ -57,4 +67,7 @@ class Work_Order(Document):
 				assets = assets.split("\n")
 				for asset in assets:
 					if asset:
-						frappe.db.set_value("Asset", asset, "rental_status", "Available for Rent")
+						if self.rental_order:
+							frappe.db.set_value("Asset", asset, "rental_status", "Available for Rent")
+						if self.sub_rental_order:
+							frappe.db.set_value("Asset", asset, "rental_status", "On hold for Inspection")

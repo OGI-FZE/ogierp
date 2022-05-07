@@ -3,6 +3,13 @@ frappe.ui.form.on("Sales Order", {
         if (!frm.is_new()) {
             create_custom_buttons(frm)
         }
+        // frm.call({
+        //     method: "oil_and_gas_international.events.sales_order.get_weight",
+        //     args: { docname: frm.doc.name },
+        //     callback(res){
+        //         frm.refresh_field("items")
+        //     }
+        // })
     },
     rental_timesheet(frm) {
         if(frm.doc.rental_timesheet){

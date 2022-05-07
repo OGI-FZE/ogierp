@@ -110,7 +110,7 @@ doc_events = {
         "on_cancel": "oil_and_gas_international.events.sales_invoice.removebilledamount",
         "validate": "oil_and_gas_international.events.sales_invoice.get_desc",
     #     "on_submit": "oil_and_gas_international.events.sales_invoice.on_submit"
-    },
+    }
 }
 
 # Scheduled Tasks

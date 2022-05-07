@@ -1,14 +1,12 @@
-# Copyright (c) 2021, Havenir Solutions and contributors
+# Copyright (c) 2022, Havenir Solutions and contributors
 # For license information, please see license.txt
 
 import frappe
 from frappe.model.document import Document
-from frappe.utils import today
 
-
-class RentalIssueNote(Document):
+class SubRentalIssue(Document):
 	def validate(self):
-		if self.date > self.rental_start_date:
+		if self.date > self.sub_rental_return_date:
 			frappe.throw("Rental issue date can not be after rental start date")
 		for row in self.items:
 			assets = row.assets
@@ -42,7 +40,7 @@ class RentalIssueNote(Document):
 						cdt = "Rental Order Item"
 						cdn = row.rental_order_item
 						delivered_qty = frappe.get_value(cdt, cdn, "delivered_qty")
-						frappe.set_value(cdt, cdn, "delivered_qty", int(delivered_qty) - 1)
+						frappe.set_value(cdt, cdn, "delivered_qty", int(delivered_qty) - int(row.qty))
 
 
 		movements = frappe.get_list("Asset Movement",filters={'rental_issue_note':self.name})
@@ -51,10 +49,10 @@ class RentalIssueNote(Document):
 			if mov_doc.docstatus ==1:
 				mov_doc.cancel()
 
-	def before_submit(self):
-		issue_notes = frappe.get_list("Work_Order",filters={'rental_issue_note':self.name,'docstatus':1})
-		if not issue_notes:
-			frappe.throw("Please create work order before submitting issue note")
+	# def before_submit(self):
+	# 	issue_notes = frappe.get_list("Work_Order",filters={'rental_issue_note':self.name,'docstatus':1})
+	# 	if not issue_notes:
+	# 		frappe.throw("Please create work order before submitting issue note")
 
 	def on_submit(self):
 		self.set('status','Submitted')
@@ -67,16 +65,16 @@ class RentalIssueNote(Document):
 					# issue date
 					if (self.date == today()) or (self.date < today()):
 						frappe.db.set_value("Asset", asset, "rental_status", "In transit")
-						frappe.db.set_value("Asset", asset, "rental_order", self.rental_order)
+						frappe.db.set_value("Asset", asset, "sub_rental_order", self.sub_rental_order)
 						
-					if (self.rental_start_date == today()) or (self.rental_start_date < today()):# issue date
-						frappe.db.set_value("Asset", asset, "rental_status", "In Use")
-						frappe.db.set_value("Asset", asset, "rental_order", self.rental_order)
+					if (self.sub_rental_return_date == today()) or (self.sub_rental_return_date < today()):# issue date
+						frappe.db.set_value("Asset", asset, "rental_status", "Available for Rent")
+						frappe.db.set_value("Asset", asset, "sub_rental_order", self.sub_rental_order)
 
 					# updating rental order item status
-					if row.rental_order_item:
-						cdt = "Rental Order Item"
-						cdn = row.rental_order_item
+					if row.sub_rental_order_item:
+						cdt = "Sub Rental Order Item"
+						cdn = row.sub_rental_order_item
 						qty = frappe.get_value(cdt, cdn, "qty")
 						delivered_qty = frappe.get_value(cdt, cdn, "delivered_qty")
 						if not delivered_qty:
@@ -85,7 +83,7 @@ class RentalIssueNote(Document):
 						if (delivered_qty + 1) > qty:
 							frappe.throw(f"Can not deliver asset(s) more than remaining qty in Rental Order Item({qty-delivered_qty})")
 						
-						frappe.set_value(cdt, cdn, "delivered_qty", int(delivered_qty) + 1)
+						frappe.set_value(cdt, cdn, "delivered_qty", int(delivered_qty) + int(row.qty))
 						if (delivered_qty) == qty:
 							frappe.set_value(cdt, cdn, "status", "Delivered")
 
@@ -110,24 +108,13 @@ class RentalIssueNote(Document):
 
 
 @frappe.whitelist()
-def get_rental_order_items(docname=None):
+def get_sub_rental_order_items(docname=None):
 	if not docname:
 		return {}
 
-	doc = frappe.get_doc("Rental Order", docname)
+	doc = frappe.get_doc("Supplier Rental Order", docname)
 	# for i in doc.items:
 	# 	cat = frappe.db.get_value("Asset", {"item_code": i.item_code}, "asset_category")
 
 	# return [doc.items,cat]
 	return doc.items
-
-@frappe.whitelist()
-def get_project(docname=None):
-	if not docname:
-		return 0
-
-	proj = frappe.get_list("Project",fields = ["name"],filters = {'rental_order':docname})
-	if proj:
-		return proj[0]
-	else:
-		return 0

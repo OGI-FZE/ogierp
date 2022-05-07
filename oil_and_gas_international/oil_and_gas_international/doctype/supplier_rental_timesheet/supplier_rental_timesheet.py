@@ -21,23 +21,23 @@ def get_supplier_rental_order_items(docname=None):
 		"status": ["!=", "On Hold"],
 		"parent": docname
 	}, ["*"])
-
+	rt=frappe.get_doc("Sub Rental Receipt", {"sub_rental_order": docname})
 	for itm in re_items:
 		asset_dict = {}
-		rti_assets = frappe.get_list("Asset", {
-			"item_code":itm.item_code,
-			"docstatus":1,
-		}, ["name"])
+		rti_assets = frappe.get_list("Sub Rental Receipt Item", {
+            "parent": rt.name,
+            "item_code":itm.item_code,
+            "docstatus":1,
+        }, ["assets"])
 		if rti_assets:
-			l = (rti_assets[0]['name']).splitlines()
+			l = (rti_assets[0]['assets']).splitlines()
 			for ast in l:
 				status = frappe.db.get_value("Asset",ast,"rental_status")
-				if status == 'In Use':
-					if not asset_dict:
-						asset_dict = {'assets':ast}
-					else:
-						d = asset_dict['assets']
+				if not asset_dict:
+					asset_dict = {'assets':ast}
+				else:
+					d = asset_dict['assets']
 
-						asset_dict['assets'] = d+'\n'+ast
+					asset_dict['assets'] = d+'\n'+ast
 			itm.update(asset_dict) 
 	return re_items

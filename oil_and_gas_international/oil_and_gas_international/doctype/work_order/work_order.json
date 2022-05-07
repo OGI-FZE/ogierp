@@ -32,6 +32,10 @@
   "rental_order",
   "rental_issue_note",
   "rental_receipt",
+  "column_break_26",
+  "sub_rental_order",
+  "sub_rental_issue_note",
+  "sub_rental_receipt",
   "amended_from"
  ],
  "fields": [
@@ -181,12 +185,34 @@
    "fieldtype": "Link",
    "label": "Rental Order",
    "options": "Rental Order"
+  },
+  {
+   "fieldname": "column_break_26",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "sub_rental_order",
+   "fieldtype": "Link",
+   "label": "Sub Rental Order",
+   "options": "Supplier Rental Order"
+  },
+  {
+   "fieldname": "sub_rental_issue_note",
+   "fieldtype": "Link",
+   "label": "Sub Rental Issue Note",
+   "options": "Sub Rental Issue"
+  },
+  {
+   "fieldname": "sub_rental_receipt",
+   "fieldtype": "Link",
+   "label": "Sub Rental Receipt",
+   "options": "Sub Rental Receipt"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2022-04-06 12:24:55.517645",
+ "modified": "2022-04-26 09:22:20.870806",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Work_Order",

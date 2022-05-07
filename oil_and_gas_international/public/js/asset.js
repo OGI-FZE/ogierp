@@ -27,6 +27,14 @@ frappe.ui.form.on("Asset", {
                 frappe.model.set_value('Asset',frm.doc.name,'rental_status',frm.doc.status)
             }
         }
+    },
+    is_sub_rental_asset(frm){
+        if(frm.doc.is_sub_rental_asset){
+            frappe.model.set_value('Asset',frm.doc.name,'rental_status',"Sub Rental Asset")
+        }
+        else{
+            frappe.model.set_value('Asset',frm.doc.name,'rental_status',"Available for Rent")
+        }
     }
 })
 

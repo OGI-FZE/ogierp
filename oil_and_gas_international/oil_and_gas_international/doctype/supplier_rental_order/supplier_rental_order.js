@@ -100,7 +100,9 @@ const create_custom_buttons = () => {
 	if (status == 0) {
 		get_items_from_supplier_rental_quotation()
 	} else if (status == 1) {
-		add_supplier_rental_timesheet()
+		add_sub_rental_receipt()
+		add_sub_rental_timesheet()
+		add_sub_rental_issue_note()
 	}
 }
 
@@ -245,7 +247,7 @@ const get_items_from_supplier_rental_quotation = () => {
 	}, 'Get Items From')
 }
 
-const add_supplier_rental_timesheet = () => {
+const add_sub_rental_timesheet = () => {
 	cur_frm.add_custom_button('Supplier Rental Timesheet', () => {
 		const doc = cur_frm.doc
 		frappe.run_serially([
@@ -255,6 +257,42 @@ const add_supplier_rental_timesheet = () => {
 				cur_doc.supplier = doc.supplier
 				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "supplier_rental_order", doc.name)
 
+				cur_frm.refresh()
+			}
+		])
+	}, 'Create')
+}
+
+const add_sub_rental_receipt = () => {
+	cur_frm.add_custom_button('Sub Rental Receipt', () => {
+		const doc = cur_frm.doc
+		frappe.run_serially([
+			() => frappe.new_doc('Sub Rental Receipt'),
+			() => {
+				const cur_doc = cur_frm.doc
+				cur_doc.supplier = doc.supplier
+				cur_doc.departments = doc.departments
+				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "sub_rental_order", doc.name)
+
+				cur_frm.refresh()
+			}
+		])
+	}, 'Create')
+}
+
+const add_sub_rental_issue_note = () => {
+	cur_frm.add_custom_button('Sub Rental Issue', () => {
+		const doc = cur_frm.doc
+		// frm.clear_table('items');
+		frappe.run_serially([
+			() => frappe.new_doc('Sub Rental Issue'),
+			() => {
+				const cur_doc = cur_frm.doc
+				cur_doc.supplier = doc.supplier
+				cur_doc.departments = doc.departments
+				cur_doc.currency = doc.currency
+				cur_doc.conversion_rate = doc.conversion_rate
+				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "sub_rental_order", doc.name)
 				cur_frm.refresh()
 			}
 		])

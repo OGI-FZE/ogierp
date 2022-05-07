@@ -9,16 +9,20 @@
   "supplier",
   "supplier_name",
   "supplier_rental_order",
+  "project",
   "status",
   "column_break_4",
   "date",
   "company",
+  "start_date",
+  "end_date",
   "section_break_7",
   "currency",
   "column_break_10",
   "conversion_rate",
   "section_break_12",
   "items",
+  "total_amount",
   "amended_from"
  ],
  "fields": [
@@ -112,12 +116,33 @@
   {
    "fieldname": "section_break_12",
    "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "start_date",
+   "fieldtype": "Date",
+   "label": "Start Date"
+  },
+  {
+   "fieldname": "end_date",
+   "fieldtype": "Date",
+   "label": "End Date"
+  },
+  {
+   "fieldname": "project",
+   "fieldtype": "Link",
+   "label": "Project",
+   "options": "Project"
+  },
+  {
+   "fieldname": "total_amount",
+   "fieldtype": "Currency",
+   "label": "Total Amount"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2022-03-29 16:58:46.168733",
+ "modified": "2022-05-07 16:16:23.422279",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Supplier Rental Timesheet",

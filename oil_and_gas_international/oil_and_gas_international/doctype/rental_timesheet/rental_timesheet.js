@@ -63,6 +63,14 @@ frappe.ui.form.on('Rental Timesheet', {
 	rental_order(frm, cdt, cdn) {
 		get_items_from_rental_order(frm, cdt, cdn)
 		set_project(frm)
+	},
+	calc_amount(frm,cdt, cdn){
+		var items = frm.doc.items;
+		var amnt = 0
+		$.each(items, function(index, row){
+			amnt = amnt + row.amount
+		});
+		frappe.model.set_value(cdt,cdn,'total_amount',amnt);
 	}
 	// setup(frm,cdt,cdn) {
 	// 	frm.fields_dict['items'].grid.get_field('assets').get_query = function (doc, cdt, cdn) {
@@ -344,6 +352,9 @@ frappe.ui.form.on('Rental Timesheet Item', {
 		if(row.post_rental_inspection_charges){
 			calculate_amount(frm,cdt,cdn)
 		}
+	},
+	amount(frm,cdt,cdn){
+		frm.trigger('calc_amount');
 	}
 });
 

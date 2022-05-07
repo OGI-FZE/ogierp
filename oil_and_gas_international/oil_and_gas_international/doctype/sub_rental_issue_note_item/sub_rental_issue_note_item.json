@@ -1,47 +1,42 @@
 {
  "actions": [],
- "creation": "2022-02-08 10:42:18.766896",
+ "creation": "2022-04-25 11:51:35.650197",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
   "item_code",
-  "from_date",
   "column_break_2",
   "item_name",
-  "to_date",
-  "description_section",
-  "description",
   "quantity_and_rate_section",
   "qty",
-  "days_of_rent",
-  "delivered_qty",
+  "uom",
+  "rate",
+  "unit_weight",
+  "net_weight",
   "column_break_9",
   "asset_location",
   "assets",
   "get_assets",
-  "received_qty",
-  "status",
-  "section_break_19",
+  "tax_code",
+  "country_of_origin",
+  "prices_section",
   "operational_running",
   "standby",
   "post_rental_inspection_charges",
   "lihdbr",
   "redress",
   "straight",
-  "column_break_22",
+  "column_break_8",
   "base_operational_running",
-  "base_standby",
-  "base_post_rental_inspection_charges",
   "base_lihdbr",
-  "base_redress",
+  "base_post_rental_inspection_charges",
+  "base_standby",
   "base_straight",
-  "section_break_18",
-  "total_amount",
-  "billed_amount",
-  "column_break_33",
-  "base_total_amount",
-  "base_billed_amount"
+  "base_redress",
+  "section_break_10",
+  "sub_rental_order",
+  "sub_rental_order_item"
  ],
  "fields": [
   {
@@ -53,13 +48,6 @@
    "reqd": 1
   },
   {
-   "fieldname": "from_date",
-   "fieldtype": "Date",
-   "in_list_view": 1,
-   "label": "From Date",
-   "reqd": 1
-  },
-  {
    "fieldname": "column_break_2",
    "fieldtype": "Column Break"
   },
@@ -68,24 +56,6 @@
    "fieldname": "item_name",
    "fieldtype": "Data",
    "label": "Item Name"
-  },
-  {
-   "allow_on_submit": 1,
-   "fieldname": "to_date",
-   "fieldtype": "Date",
-   "label": "To Date"
-  },
-  {
-   "collapsible": 1,
-   "fieldname": "description_section",
-   "fieldtype": "Section Break",
-   "label": "Description"
-  },
-  {
-   "fetch_from": "item_code.description",
-   "fieldname": "description",
-   "fieldtype": "Text Editor",
-   "label": "Description"
   },
   {
    "fieldname": "quantity_and_rate_section",
@@ -101,18 +71,26 @@
    "reqd": 1
   },
   {
-   "allow_on_submit": 1,
-   "fieldname": "days_of_rent",
-   "fieldtype": "Int",
-   "label": "Days Of Rent"
+   "fetch_from": "item_code.stock_uom",
+   "fieldname": "uom",
+   "fieldtype": "Link",
+   "label": "UOM",
+   "options": "UOM"
   },
   {
-   "allow_on_submit": 1,
-   "default": "0",
-   "fieldname": "delivered_qty",
+   "fieldname": "rate",
+   "fieldtype": "Currency",
+   "label": "Rate"
+  },
+  {
+   "fieldname": "unit_weight",
    "fieldtype": "Float",
-   "label": "Delivered Qty",
-   "no_copy": 1
+   "label": "Unit Weight"
+  },
+  {
+   "fieldname": "net_weight",
+   "fieldtype": "Float",
+   "label": "Net Weight"
   },
   {
    "fieldname": "column_break_9",
@@ -127,77 +105,65 @@
    "reqd": 1
   },
   {
-   "allow_on_submit": 1,
-   "fieldname": "received_qty",
-   "fieldtype": "Float",
-   "label": "Received Qty",
-   "no_copy": 1
+   "fieldname": "assets",
+   "fieldtype": "Small Text",
+   "label": "Assets",
+   "reqd": 1
   },
   {
-   "allow_on_submit": 1,
-   "default": "To Receive",
-   "fieldname": "status",
-   "fieldtype": "Select",
-   "label": "Status",
-   "no_copy": 1,
-   "options": "To Receive\nReceived\nDelivered",
-   "read_only": 1
+   "fieldname": "get_assets",
+   "fieldtype": "Button",
+   "label": "Get Assets"
   },
   {
-   "fieldname": "section_break_19",
+   "fetch_from": "item_code.tax_code",
+   "fieldname": "tax_code",
+   "fieldtype": "Read Only",
+   "label": "Tax Code"
+  },
+  {
+   "fetch_from": "item_code.country_of_origin",
+   "fieldname": "country_of_origin",
+   "fieldtype": "Read Only",
+   "label": "Country of Origin"
+  },
+  {
+   "fieldname": "prices_section",
    "fieldtype": "Section Break"
   },
   {
    "fieldname": "operational_running",
    "fieldtype": "Currency",
-   "label": "Operational/Running (Billing Currency)"
+   "label": "Operational/Running (Supplier Currency)"
   },
   {
    "fieldname": "standby",
    "fieldtype": "Currency",
-   "label": "Standby (Billing Currency)"
-  },
-  {
-   "fieldname": "column_break_22",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "lihdbr",
-   "fieldtype": "Currency",
-   "label": "LIH/DBR (Billing Currency)"
-  },
-  {
-   "fieldname": "redress",
-   "fieldtype": "Currency",
-   "label": "Redress (Billing Currency)"
-  },
-  {
-   "fieldname": "straight",
-   "fieldtype": "Currency",
-   "label": "Straight (Billing Currency)"
-  },
-  {
-   "fieldname": "section_break_18",
-   "fieldtype": "Section Break"
-  },
-  {
-   "allow_on_submit": 1,
-   "fieldname": "total_amount",
-   "fieldtype": "Currency",
-   "label": "Total Amount (Billing Currency)",
-   "read_only": 1
-  },
-  {
-   "allow_on_submit": 1,
-   "fieldname": "billed_amount",
-   "fieldtype": "Currency",
-   "label": "Billed Amount (Billing Currency)",
-   "read_only": 1
+   "label": "Standby (Supplier Currency)"
   },
   {
    "fieldname": "post_rental_inspection_charges",
    "fieldtype": "Currency",
-   "label": "Post Rental Inspection charges (Billing Currency)"
+   "label": "Post Rental Inspection charges (Supplier Currency)"
+  },
+  {
+   "fieldname": "lihdbr",
+   "fieldtype": "Currency",
+   "label": "LIH/DBR (Supplier Currency)"
+  },
+  {
+   "fieldname": "redress",
+   "fieldtype": "Currency",
+   "label": "Redress (Supplier Currency)"
+  },
+  {
+   "fieldname": "straight",
+   "fieldtype": "Currency",
+   "label": "Straight (Supplier Currency)"
+  },
+  {
+   "fieldname": "column_break_8",
+   "fieldtype": "Column Break"
   },
   {
    "fieldname": "base_operational_running",
@@ -236,39 +202,29 @@
    "options": "Company:company:default_currency"
   },
   {
-   "fieldname": "column_break_33",
-   "fieldtype": "Column Break"
+   "fieldname": "section_break_10",
+   "fieldtype": "Section Break"
   },
   {
-   "fieldname": "base_total_amount",
-   "fieldtype": "Currency",
-   "label": "Base Total Amount (Company Currency)",
-   "options": "Company:company:default_currency"
+   "fieldname": "sub_rental_order",
+   "fieldtype": "Link",
+   "label": "Sub Rental Order",
+   "options": "Supplier Rental Order"
   },
   {
-   "fieldname": "base_billed_amount",
-   "fieldtype": "Currency",
-   "label": "Base Billed Amount (Company Currency)",
-   "options": "Company:company:default_currency"
-  },
-  {
-   "fieldname": "assets",
-   "fieldtype": "Small Text",
-   "label": "Assets"
-  },
-  {
-   "fieldname": "get_assets",
-   "fieldtype": "Button",
-   "label": "Get Assets"
+   "fieldname": "sub_rental_order_item",
+   "fieldtype": "Link",
+   "label": "Sub Rental Order Item",
+   "options": "Supplier Rental Order Item"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2022-05-07 11:56:20.927119",
+ "modified": "2022-04-26 10:52:38.627949",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
- "name": "Supplier Rental Order Item",
+ "name": "Sub Rental Issue Note Item",
  "owner": "Administrator",
  "permissions": [],
  "sort_field": "modified",

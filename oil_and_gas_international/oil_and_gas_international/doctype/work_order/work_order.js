@@ -52,13 +52,23 @@ const get_assets_to_issue = (frm, cdt, cdn) => {
 				if (val.assets) asset_list.push(val.assets);
 			});
 		    if(asset_list.length){
-		    	filters['rental_status'] = "Available For Rent";
+		    	if(frm.doc.rental_order){
+		    		filters['rental_status'] = "Available For Rent";
+		    	}
+		    	if(frm.doc.sub_rental_order){
+		    		filters['rental_status'] = "On hold for Inspection";
+		    	}
 		    	filters['item_code'] = row.item_code;
 		    	filters['docstatus'] = 1;
 		    	filters['name'] = ['not in',asset_list];
 		    }
 		    else{
-		    	filters['rental_status'] = "Available For Rent";
+		    	if(frm.doc.rental_order){
+		    		filters['rental_status'] = "Available For Rent";
+		    	}
+		    	if(frm.doc.sub_rental_order){
+		    		filters['rental_status'] = "On hold for Inspection";
+		    	}
 		    	filters['item_code'] = row.item_code;
 		    	filters['docstatus'] = 1;
 		    }

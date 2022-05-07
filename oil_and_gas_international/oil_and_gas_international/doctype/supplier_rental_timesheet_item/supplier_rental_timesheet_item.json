@@ -15,6 +15,13 @@
   "asset_location",
   "assets",
   "section_break_9",
+  "timesheet_start_date",
+  "timesheet_end_date",
+  "days",
+  "section_break_14",
+  "operational_running_check",
+  "standby_check",
+  "straight_check",
   "operational_running_days",
   "standby_days",
   "redress_days",
@@ -232,12 +239,49 @@
    "fieldtype": "Currency",
    "label": "Base Redress (Company Currency)",
    "options": "Company:company:default_currency"
+  },
+  {
+   "fieldname": "timesheet_start_date",
+   "fieldtype": "Date",
+   "label": "Timesheet Start Date"
+  },
+  {
+   "fieldname": "timesheet_end_date",
+   "fieldtype": "Date",
+   "label": "Timesheet End Date"
+  },
+  {
+   "fieldname": "days",
+   "fieldtype": "Int",
+   "label": "Days"
+  },
+  {
+   "fieldname": "section_break_14",
+   "fieldtype": "Section Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "operational_running_check",
+   "fieldtype": "Check",
+   "label": "Operational/Running"
+  },
+  {
+   "default": "0",
+   "fieldname": "standby_check",
+   "fieldtype": "Check",
+   "label": "Standby"
+  },
+  {
+   "default": "0",
+   "fieldname": "straight_check",
+   "fieldtype": "Check",
+   "label": "Straight"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2022-03-30 08:31:31.381108",
+ "modified": "2022-05-07 13:18:52.006222",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Supplier Rental Timesheet Item",
