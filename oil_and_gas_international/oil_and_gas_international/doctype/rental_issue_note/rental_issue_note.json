@@ -18,6 +18,9 @@
   "date",
   "rental_start_date",
   "status",
+  "address_and_contact_section",
+  "address_html",
+  "column_break_15",
   "contact_person",
   "contact_number",
   "section_break_6",
@@ -240,6 +243,22 @@
    "fieldname": "total_gross_weight",
    "fieldtype": "Float",
    "label": "Total Gross Weight"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "address_and_contact_section",
+   "fieldtype": "Section Break",
+   "label": "Address and Contact"
+  },
+  {
+   "fieldname": "address_html",
+   "fieldtype": "Link",
+   "label": "Address",
+   "options": "Address"
+  },
+  {
+   "fieldname": "column_break_15",
+   "fieldtype": "Column Break"
   }
  ],
  "index_web_pages_for_search": 1,
@@ -250,7 +269,7 @@
    "link_fieldname": "rental_issue_note"
   }
  ],
- "modified": "2022-04-23 10:23:40.390401",
+ "modified": "2022-05-10 12:28:23.083120",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Rental Issue Note",

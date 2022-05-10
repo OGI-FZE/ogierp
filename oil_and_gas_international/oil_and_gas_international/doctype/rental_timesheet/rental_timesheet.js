@@ -535,7 +535,6 @@ const add_proforma_invoice = () => {
 
 				for (const row of doc.items) {
 					const new_row = cur_frm.add_child("items", {
-						qty: row.qty,
 						asset_item:row.item_code,
 						rental_order:row.rental_order,
 						rental_order_item:row.rental_order_item,
