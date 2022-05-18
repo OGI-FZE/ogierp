@@ -1119,6 +1119,7 @@
    "print_hide": 1
   },
   {
+   "fetch_from": "tc_name.terms",
    "fieldname": "terms",
    "fieldtype": "Text Editor",
    "hide_days": 1,
@@ -1552,7 +1553,7 @@
  "icon": "fa fa-file-text",
  "is_submittable": 1,
  "links": [],
- "modified": "2022-04-23 10:50:45.322447",
+ "modified": "2022-05-11 10:14:04.267351",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Proforma Invoice",

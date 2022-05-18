@@ -27,6 +27,36 @@ frappe.ui.form.on('Proforma Invoice', {
 		frm.refresh_field('items');
 		frm.set_value('total_qty', total_qty);
 		frm.set_value('net_total', net_total);
+	},
+	taxes_and_charges:function(frm){
+		if(frm.doc.taxes_and_charges){
+			frappe.call({
+				method: "oil_and_gas_international.oil_and_gas_international.doctype.proforma_invoice.proforma_invoice.getTax",
+				args: {
+					tx:frm.doc.taxes_and_charges
+				},
+				callback(res){
+					res.message.forEach(tax => {
+						let row = frm.add_child('taxes', {
+							'charge_type': tax.charge_type, 
+							'account_head': tax.account_head, 
+							'description': tax.account_head, 
+							'cost_center': tax.cost_center, 
+							'rate': tax.rate, 
+							'tax_amount': tax.tax_amount, 
+							'total': tax.total, 
+							'tax_amount_after_discount_amount': tax.tax_amount_after_discount_amount, 
+							'base_tax_amount': tax.base_tax_amount, 
+							'base_total': tax.base_total, 
+							'base_tax_amount_after_discount_amount': tax.base_tax_amount_after_discount_amount, 
+
+						})
+					})
+				}
+			});
+			frm.refresh_field('taxes');
+		}
+		frm.refresh_field('taxes');
 	}
 });
 

@@ -327,7 +327,7 @@ fixtures = [
                 'Sales Order-aed_exchange_rate',
 
                 # Project
-                'Project-rental_order','Project-sub_rental_order'
+                'Project-rental_order','Project-sub_rental_order',
 
                 #Rental order
                 'Rental Order-sales_employee','Rental Order-sales_person_link',
