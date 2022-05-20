@@ -340,7 +340,7 @@ fixtures = [
                 'Rental Quotation-sales_person','Rental Quotation-departments',
 
                 #Asset Movement
-                'Asset Movement-rental_issue_note',
+                'Asset Movement-rental_issue_note','Asset Movement-sub_rental_issue_note',
 
                 #dn
                 'Delivery Note-commercial_invoice_date',

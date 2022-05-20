@@ -96,7 +96,7 @@ class SubRentalIssue(Document):
 							"doctype": "Asset Movement",
 							"transaction_date": today(),
 							"purpose": "Transfer",
-							"rental_issue_note": self.name
+							"sub_rental_issue_note": self.name
 						})
 						asset_movement_doc.append("assets", {
 							"asset": asset,
