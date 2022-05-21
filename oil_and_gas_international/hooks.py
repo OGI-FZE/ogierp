@@ -351,10 +351,15 @@ fixtures = [
                 'BOM Operation-reference_std',
                 #workorder
                 'Work Order Operation-reference_std','Work Order Operation-acceptance_criteria',
+                'Work Order-raw_material_details','Work Order-bar_heat_no','Work Order-acceptance_standard',
+                'Work Order-material_grade_spec','Work Order-uom','Work Order-date','Work Order-department',
                 #Quotation
                 'Quotation-aed_exchange_rate','Quotation-email','Quotation-contact','Quotation-sales_person',
                 #sales person
-                'Sales Person-email','Sales Person-contact'
+                'Sales Person-email','Sales Person-contact',
+
+                #purchase receipt
+                ''
 
             ]]
         ]

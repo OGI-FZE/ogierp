@@ -8,9 +8,20 @@
  "field_order": [
   "supplier",
   "supplier_name",
+  "project",
+  "items_required_date",
+  "purchase_red_no",
   "column_break_3",
   "company",
   "date",
+  "departments",
+  "requested_by",
+  "address_and_contact_section",
+  "address_html",
+  "column_break_13",
+  "contact_person",
+  "contact_number",
+  "email_address",
   "section_break_6",
   "currency",
   "column_break_8",
@@ -224,6 +235,64 @@
   {
    "fieldname": "section_break_10",
    "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "departments",
+   "fieldtype": "Select",
+   "label": "Department",
+   "options": "\nTrading\nLogistics\nInspection\nRental\nAdmin\nMS - Sale\nMS - Repair\nMS - Internal\nQA/QC"
+  },
+  {
+   "fieldname": "project",
+   "fieldtype": "Link",
+   "label": "Job Number",
+   "options": "Project"
+  },
+  {
+   "fieldname": "items_required_date",
+   "fieldtype": "Date",
+   "label": "Items Required Date"
+  },
+  {
+   "fieldname": "requested_by",
+   "fieldtype": "Data",
+   "label": "Requested By"
+  },
+  {
+   "fieldname": "purchase_red_no",
+   "fieldtype": "Data",
+   "label": "Purchase Red. No"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "address_and_contact_section",
+   "fieldtype": "Section Break",
+   "label": "Address and Contact"
+  },
+  {
+   "fieldname": "address_html",
+   "fieldtype": "Link",
+   "label": "Address",
+   "options": "Address"
+  },
+  {
+   "fieldname": "column_break_13",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "contact_person",
+   "fieldtype": "Data",
+   "label": "Contact Person"
+  },
+  {
+   "fieldname": "contact_number",
+   "fieldtype": "Data",
+   "label": "Contact Number"
+  },
+  {
+   "fieldname": "email_address",
+   "fieldtype": "Data",
+   "label": "Email Address"
   }
  ],
  "index_web_pages_for_search": 1,
@@ -234,7 +303,7 @@
    "link_fieldname": "supplier_rental_order"
   }
  ],
- "modified": "2022-03-29 16:53:22.544328",
+ "modified": "2022-05-21 16:32:52.868192",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Supplier Rental Order",
