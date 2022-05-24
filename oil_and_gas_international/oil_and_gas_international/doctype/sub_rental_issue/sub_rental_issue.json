@@ -13,6 +13,7 @@
   "departments",
   "client_po_no",
   "client_po_date",
+  "rental_shop_entry_no",
   "column_break_3",
   "company",
   "date",
@@ -20,6 +21,10 @@
   "status",
   "contact_person",
   "contact_number",
+  "delivery_order_no",
+  "delivery_order_date",
+  "address_and_contact_section",
+  "address_html",
   "section_break_6",
   "currency",
   "column_break_13",
@@ -40,6 +45,8 @@
   "column_break_32",
   "total_net_weight",
   "total_gross_weight",
+  "more_information_section",
+  "remarks",
   "amended_from"
  ],
  "fields": [
@@ -237,6 +244,44 @@
    "fieldname": "sub_rental_return_date",
    "fieldtype": "Date",
    "label": "Sub Rental Return Date"
+  },
+  {
+   "fieldname": "rental_shop_entry_no",
+   "fieldtype": "Data",
+   "label": "Rental Shop Entry No"
+  },
+  {
+   "fieldname": "delivery_order_no",
+   "fieldtype": "Data",
+   "label": "Delivery Order No"
+  },
+  {
+   "fieldname": "delivery_order_date",
+   "fieldtype": "Date",
+   "label": "Delivery Order Date"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "more_information_section",
+   "fieldtype": "Section Break",
+   "label": "More Information"
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Small Text",
+   "label": "Remarks"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "address_and_contact_section",
+   "fieldtype": "Section Break",
+   "label": "Address and Contact"
+  },
+  {
+   "fieldname": "address_html",
+   "fieldtype": "Link",
+   "label": "Address",
+   "options": "Address"
   }
  ],
  "index_web_pages_for_search": 1,
@@ -247,7 +292,7 @@
    "link_fieldname": "rental_issue_note"
   }
  ],
- "modified": "2022-04-26 13:13:27.978593",
+ "modified": "2022-05-24 12:02:44.740117",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Sub Rental Issue",

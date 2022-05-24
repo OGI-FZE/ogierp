@@ -8,6 +8,8 @@
   "item_code",
   "column_break_2",
   "item_name",
+  "description_section_section",
+  "description",
   "quantity_and_rate_section",
   "qty",
   "uom",
@@ -216,12 +218,24 @@
    "fieldtype": "Link",
    "label": "Sub Rental Order Item",
    "options": "Supplier Rental Order Item"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "description_section_section",
+   "fieldtype": "Section Break",
+   "label": "Description"
+  },
+  {
+   "fetch_from": "item_code.description",
+   "fieldname": "description",
+   "fieldtype": "Text Editor",
+   "label": "Description"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2022-04-26 10:52:38.627949",
+ "modified": "2022-05-24 12:21:31.412235",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Sub Rental Issue Note Item",

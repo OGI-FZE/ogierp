@@ -189,6 +189,7 @@ fixtures = [
                 'Item-relevant_item',
                 #Custom Section
                 'Item-specifications',
+                'Item-hs_code',
                 'Item-make',
                 'Item-model',
                 'Item-size',
@@ -359,7 +360,7 @@ fixtures = [
                 'Sales Person-email','Sales Person-contact',
 
                 #purchase receipt
-                ''
+                'Purchase Receipt-reason_for_purchase'
 
             ]]
         ]
