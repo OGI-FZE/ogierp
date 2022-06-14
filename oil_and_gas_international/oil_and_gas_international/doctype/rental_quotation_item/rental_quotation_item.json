@@ -61,7 +61,6 @@
    "label": "Description"
   },
   {
-   "fetch_from": "item_code.description",
    "fieldname": "description",
    "fieldtype": "Text Editor",
    "label": "Description"
@@ -206,7 +205,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2022-03-28 14:06:28.805335",
+ "modified": "2022-06-14 10:45:53.560178",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Rental Quotation Item",

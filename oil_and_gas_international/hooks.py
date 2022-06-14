@@ -256,6 +256,7 @@ fixtures = [
                 'Asset-last_cycle_count_date',
                 'Asset-is_sub_rental_asset',
                 'Asset-sub_rental_order',
+                'Asset-currently_with',
 
                 # Opportunity
                 'Opportunity-item_type',

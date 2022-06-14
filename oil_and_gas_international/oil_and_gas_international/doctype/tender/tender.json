@@ -1,0 +1,118 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "naming_series:",
+ "creation": "2022-05-30 12:45:36.390405",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "naming_series",
+  "type",
+  "tender_description",
+  "column_break_4",
+  "date",
+  "template",
+  "tender_submission_date",
+  "tender_value",
+  "section_break_7",
+  "activities"
+ ],
+ "fields": [
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Series",
+   "options": "TEND-.YY.-",
+   "reqd": 1
+  },
+  {
+   "allow_in_quick_entry": 1,
+   "fieldname": "type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Type",
+   "options": "Type 1\nType 2",
+   "reqd": 1
+  },
+  {
+   "fieldname": "tender_description",
+   "fieldtype": "Small Text",
+   "label": "Tender Description"
+  },
+  {
+   "fieldname": "column_break_4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "allow_in_quick_entry": 1,
+   "fieldname": "tender_submission_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Tender Submission Date"
+  },
+  {
+   "allow_in_quick_entry": 1,
+   "fieldname": "tender_value",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Tender Value"
+  },
+  {
+   "fieldname": "section_break_7",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "activities",
+   "fieldtype": "Table",
+   "label": "Activities",
+   "no_copy": 1,
+   "options": "Tender Item",
+   "read_only": 1
+  },
+  {
+   "fieldname": "template",
+   "fieldtype": "Link",
+   "label": "Template",
+   "options": "Tender Template"
+  },
+  {
+   "default": "Today",
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "label": "Date"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [
+  {
+   "link_doctype": "Tender Activity",
+   "link_fieldname": "tender"
+  }
+ ],
+ "modified": "2022-06-09 15:54:21.997584",
+ "modified_by": "Administrator",
+ "module": "Oil And Gas International",
+ "name": "Tender",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

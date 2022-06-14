@@ -175,6 +175,21 @@ frappe.ui.form.on('Rental Order Item', {
 	operational_running(frm,cdt,cdn){
 		convert_rate(frm)
 	},
+	lihdbr(frm,cdt,cdn){
+		convert_rate(frm)
+	},
+	post_rental_inspection_charges(frm,cdt,cdn){
+		convert_rate(frm)
+	},
+	standby(frm,cdt,cdn){
+		convert_rate(frm)
+	},
+	straight(frm,cdt,cdn){
+		convert_rate(frm)
+	},
+	redress(frm,cdt,cdn){
+		convert_rate(frm)
+	},
 });
 
 // Rental Order

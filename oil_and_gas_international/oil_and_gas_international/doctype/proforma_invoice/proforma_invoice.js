@@ -16,17 +16,20 @@ frappe.ui.form.on('Proforma Invoice', {
         }
 	},
 	calculate_amount: function (frm){
+		console.log("Caluculatinggg")
 		let doc = frm.doc;
 		let total_qty = 0;
 		let net_total = 0;
 		for (let i in doc.items){
 			total_qty += doc.items[i].qty;
-			net_total += doc.items[i].amount;      
+			net_total += doc.items[i].amount; 
+			console.log("totals in loop",total_qty,net_total)     
 		}
-
+		console.log("totals",total_qty,net_total)
 		frm.refresh_field('items');
 		frm.set_value('total_qty', total_qty);
 		frm.set_value('net_total', net_total);
+		frm.set_value('total', net_total);
 	},
 	taxes_and_charges:function(frm){
 		if(frm.doc.taxes_and_charges){

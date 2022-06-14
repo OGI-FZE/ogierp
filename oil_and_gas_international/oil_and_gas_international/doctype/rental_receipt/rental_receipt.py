@@ -92,6 +92,7 @@ class RentalReceipt(Document):
 						asset_movement_doc.submit()
 
 					frappe.db.commit()
+					frappe.db.set_value("Asset", asset, "currently_with", "")
 		self.set('status','Submitted')
 
 
