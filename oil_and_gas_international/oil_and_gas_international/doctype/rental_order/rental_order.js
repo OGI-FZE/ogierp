@@ -30,6 +30,20 @@ frappe.ui.form.on('Rental Order', {
 		get_conversion_rate(frm)
       	convert_rate(frm)
 	},
+	terms(frm) {
+		if(frm.doc.terms) {
+			return frappe.call({
+				method: 'erpnext.setup.doctype.terms_and_conditions.terms_and_conditions.get_terms_and_conditions',
+				args: {
+					template_name: frm.doc.terms,
+					doc: frm.doc
+				},
+				callback: function(r) {
+					frm.set_value('terms_and_conditions_details',r.message)
+				}
+			});
+		}
+	},
 	customer(frm){
 		if(frm.doc.customer){
 			frappe.db.get_value("Customer", {"name": frm.doc.customer}, "default_currency", (r) => {

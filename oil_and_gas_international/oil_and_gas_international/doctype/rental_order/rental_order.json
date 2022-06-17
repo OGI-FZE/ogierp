@@ -39,6 +39,7 @@
   "timesheets_billed",
   "references_section",
   "rental_quotation",
+  "project",
   "amended_from"
  ],
  "fields": [
@@ -238,6 +239,13 @@
    "fieldtype": "Float",
    "label": "AED Exchange Rate",
    "precision": "9"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "project",
+   "fieldtype": "Link",
+   "label": "Project",
+   "options": "Project"
   }
  ],
  "index_web_pages_for_search": 1,
@@ -248,7 +256,7 @@
    "link_fieldname": "rental_order"
   }
  ],
- "modified": "2022-05-21 15:52:56.203510",
+ "modified": "2022-06-17 10:41:10.285671",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Rental Order",

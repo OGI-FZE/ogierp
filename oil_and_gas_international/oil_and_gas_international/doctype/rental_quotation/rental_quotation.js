@@ -46,9 +46,23 @@ frappe.ui.form.on('Rental Quotation', {
 	conversion_rate(frm){
     	convert_rate(frm)
   	},
-  	validate(frm){
-  		convert_rate(frm)
-  	}
+	validate(frm){
+		convert_rate(frm)
+	},
+	terms(frm) {
+		if(frm.doc.terms) {
+			return frappe.call({
+				method: 'erpnext.setup.doctype.terms_and_conditions.terms_and_conditions.get_terms_and_conditions',
+				args: {
+					template_name: frm.doc.terms,
+					doc: frm.doc
+				},
+				callback: function(r) {
+					frm.set_value('terms_and_conditions_details',r.message)
+				}
+			});
+		}
+	},
 });
 
 const convert_base_rate = function(frm){
