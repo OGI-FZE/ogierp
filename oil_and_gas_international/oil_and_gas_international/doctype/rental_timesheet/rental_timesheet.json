@@ -9,11 +9,11 @@
   "customer",
   "customer_name",
   "rental_order",
+  "project",
   "status",
   "column_break_4",
   "date",
   "company",
-  "project",
   "start_date",
   "end_date",
   "section_break_7",
@@ -22,6 +22,7 @@
   "conversion_rate",
   "section_break_15",
   "items",
+  "total_amount",
   "amended_from"
  ],
  "fields": [
@@ -143,6 +144,11 @@
   {
    "fieldname": "section_break_15",
    "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "total_amount",
+   "fieldtype": "Currency",
+   "label": "Total Amount"
   }
  ],
  "index_web_pages_for_search": 1,
@@ -153,7 +159,7 @@
    "link_fieldname": "rental_timesheet"
   }
  ],
- "modified": "2022-03-26 11:40:14.611403",
+ "modified": "2022-05-07 16:37:23.404499",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Rental Timesheet",

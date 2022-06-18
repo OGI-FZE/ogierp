@@ -42,7 +42,7 @@ class RentalIssueNote(Document):
 						cdt = "Rental Order Item"
 						cdn = row.rental_order_item
 						delivered_qty = frappe.get_value(cdt, cdn, "delivered_qty")
-						frappe.set_value(cdt, cdn, "delivered_qty", int(delivered_qty) - int(row.qty))
+						frappe.set_value(cdt, cdn, "delivered_qty", int(delivered_qty) - 1)
 
 
 		movements = frappe.get_list("Asset Movement",filters={'rental_issue_note':self.name})
@@ -85,7 +85,7 @@ class RentalIssueNote(Document):
 						if (delivered_qty + 1) > qty:
 							frappe.throw(f"Can not deliver asset(s) more than remaining qty in Rental Order Item({qty-delivered_qty})")
 						
-						frappe.set_value(cdt, cdn, "delivered_qty", int(delivered_qty) + int(row.qty))
+						frappe.set_value(cdt, cdn, "delivered_qty", int(delivered_qty) + 1)
 						if (delivered_qty) == qty:
 							frappe.set_value(cdt, cdn, "status", "Delivered")
 
@@ -107,6 +107,8 @@ class RentalIssueNote(Document):
 						asset_movement_doc.submit()
 
 					frappe.db.commit()
+					
+					frappe.db.set_value("Asset", asset, "currently_with", self.customer)
 
 
 @frappe.whitelist()

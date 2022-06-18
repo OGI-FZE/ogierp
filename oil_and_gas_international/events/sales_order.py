@@ -36,3 +36,13 @@ def make_proforma_invoice(source_name, target_doc=None):
 	}, target_doc)
 
 	return doclist
+
+# @frappe.whitelist()
+# def get_weight(docname=None):
+# 	print("\nvalidateeeee\n\n")
+# 	doc = frappe.get_doc("Sales Order",docname)
+# 	if(doc.docstatus==1 and doc.items):
+# 		for i in doc.items:
+# 			print(">>>>>>>>.weight",i.doctype,i.total_weight)
+# 			print(">>>>>>>>.stock_qty*i.weight_per_unit",i.stock_qty,i.weight_per_unit)
+# 			frappe.db.set_value(i.doctype, i.name, 'total_weight', (i.stock_qty*i.weight_per_unit));

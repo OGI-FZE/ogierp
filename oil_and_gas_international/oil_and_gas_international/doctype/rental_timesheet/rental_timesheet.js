@@ -63,6 +63,14 @@ frappe.ui.form.on('Rental Timesheet', {
 	rental_order(frm, cdt, cdn) {
 		get_items_from_rental_order(frm, cdt, cdn)
 		set_project(frm)
+	},
+	calc_amount(frm,cdt, cdn){
+		var items = frm.doc.items;
+		var amnt = 0
+		$.each(items, function(index, row){
+			amnt = amnt + row.amount
+		});
+		frappe.model.set_value(cdt,cdn,'total_amount',amnt);
 	}
 	// setup(frm,cdt,cdn) {
 	// 	frm.fields_dict['items'].grid.get_field('assets').get_query = function (doc, cdt, cdn) {
@@ -211,6 +219,39 @@ frappe.ui.form.on('Rental Timesheet Item', {
 			frappe.model.set_value(cdt, cdn,"straight_days", '');
 		}
   },
+  days: function(frm,cdt,cdn){
+  	let row=locals[cdt][cdn]
+  	if(row.operational_running_check){
+			frappe.model.set_value(cdt, cdn,"operational_running_days", row.days);
+			frappe.model.set_value(cdt, cdn,"standby_days", '');
+			frappe.model.set_value(cdt, cdn,"straight_days", '');
+			frappe.model.set_value(cdt, cdn,"standby_check", 0);
+    	frappe.model.set_value(cdt, cdn,"straight_check", 0);
+		}
+		else{
+			frappe.model.set_value(cdt, cdn,"operational_running_days", '');
+		}
+		if(row.straight_check) {
+  		frappe.model.set_value(cdt, cdn,"straight_days", row.days);
+  		frappe.model.set_value(cdt, cdn,"standby_days", '');
+  		frappe.model.set_value(cdt, cdn,"operational_running_days", '');
+	    frappe.model.set_value(cdt, cdn,"operational_running_check", 0);
+	    frappe.model.set_value(cdt, cdn,"standby_check", 0);
+	  }
+	  else{
+			frappe.model.set_value(cdt, cdn,"straight_days", '');
+		}
+		if(row.straight_check) {
+  		frappe.model.set_value(cdt, cdn,"straight_days", row.days);
+  		frappe.model.set_value(cdt, cdn,"standby_days", '');
+  		frappe.model.set_value(cdt, cdn,"operational_running_days", '');
+	    frappe.model.set_value(cdt, cdn,"operational_running_check", 0);
+	    frappe.model.set_value(cdt, cdn,"standby_check", 0);
+	  }
+	  else{
+			frappe.model.set_value(cdt, cdn,"straight_days", '');
+		}
+  },
   timesheet_end_date: function(frm,cdt,cdn){
   	let row = locals[cdt][cdn]
   	if(row.timesheet_start_date && row.timesheet_end_date){
@@ -311,6 +352,9 @@ frappe.ui.form.on('Rental Timesheet Item', {
 		if(row.post_rental_inspection_charges){
 			calculate_amount(frm,cdt,cdn)
 		}
+	},
+	amount(frm,cdt,cdn){
+		frm.trigger('calc_amount');
 	}
 });
 
@@ -491,7 +535,6 @@ const add_proforma_invoice = () => {
 
 				for (const row of doc.items) {
 					const new_row = cur_frm.add_child("items", {
-						qty: row.qty,
 						asset_item:row.item_code,
 						rental_order:row.rental_order,
 						rental_order_item:row.rental_order_item,

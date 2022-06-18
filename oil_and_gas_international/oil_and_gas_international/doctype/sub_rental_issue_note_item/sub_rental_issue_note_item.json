@@ -1,0 +1,247 @@
+{
+ "actions": [],
+ "creation": "2022-04-25 11:51:35.650197",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "item_code",
+  "column_break_2",
+  "item_name",
+  "description_section_section",
+  "description",
+  "quantity_and_rate_section",
+  "qty",
+  "uom",
+  "rate",
+  "unit_weight",
+  "net_weight",
+  "column_break_9",
+  "asset_location",
+  "assets",
+  "get_assets",
+  "tax_code",
+  "country_of_origin",
+  "prices_section",
+  "operational_running",
+  "standby",
+  "post_rental_inspection_charges",
+  "lihdbr",
+  "redress",
+  "straight",
+  "column_break_8",
+  "base_operational_running",
+  "base_lihdbr",
+  "base_post_rental_inspection_charges",
+  "base_standby",
+  "base_straight",
+  "base_redress",
+  "section_break_10",
+  "sub_rental_order",
+  "sub_rental_order_item"
+ ],
+ "fields": [
+  {
+   "fieldname": "item_code",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Item Code",
+   "options": "Item",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "item_code.item_name",
+   "fieldname": "item_name",
+   "fieldtype": "Data",
+   "label": "Item Name"
+  },
+  {
+   "fieldname": "quantity_and_rate_section",
+   "fieldtype": "Section Break",
+   "label": "Quantity and Rate"
+  },
+  {
+   "fieldname": "qty",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Qty",
+   "non_negative": 1,
+   "reqd": 1
+  },
+  {
+   "fetch_from": "item_code.stock_uom",
+   "fieldname": "uom",
+   "fieldtype": "Link",
+   "label": "UOM",
+   "options": "UOM"
+  },
+  {
+   "fieldname": "rate",
+   "fieldtype": "Currency",
+   "label": "Rate"
+  },
+  {
+   "fieldname": "unit_weight",
+   "fieldtype": "Float",
+   "label": "Unit Weight"
+  },
+  {
+   "fieldname": "net_weight",
+   "fieldtype": "Float",
+   "label": "Net Weight"
+  },
+  {
+   "fieldname": "column_break_9",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "asset_location",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Asset Location",
+   "options": "Location",
+   "reqd": 1
+  },
+  {
+   "fieldname": "assets",
+   "fieldtype": "Small Text",
+   "label": "Assets",
+   "reqd": 1
+  },
+  {
+   "fieldname": "get_assets",
+   "fieldtype": "Button",
+   "label": "Get Assets"
+  },
+  {
+   "fetch_from": "item_code.tax_code",
+   "fieldname": "tax_code",
+   "fieldtype": "Read Only",
+   "label": "Tax Code"
+  },
+  {
+   "fetch_from": "item_code.country_of_origin",
+   "fieldname": "country_of_origin",
+   "fieldtype": "Read Only",
+   "label": "Country of Origin"
+  },
+  {
+   "fieldname": "prices_section",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "operational_running",
+   "fieldtype": "Currency",
+   "label": "Operational/Running (Supplier Currency)"
+  },
+  {
+   "fieldname": "standby",
+   "fieldtype": "Currency",
+   "label": "Standby (Supplier Currency)"
+  },
+  {
+   "fieldname": "post_rental_inspection_charges",
+   "fieldtype": "Currency",
+   "label": "Post Rental Inspection charges (Supplier Currency)"
+  },
+  {
+   "fieldname": "lihdbr",
+   "fieldtype": "Currency",
+   "label": "LIH/DBR (Supplier Currency)"
+  },
+  {
+   "fieldname": "redress",
+   "fieldtype": "Currency",
+   "label": "Redress (Supplier Currency)"
+  },
+  {
+   "fieldname": "straight",
+   "fieldtype": "Currency",
+   "label": "Straight (Supplier Currency)"
+  },
+  {
+   "fieldname": "column_break_8",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "base_operational_running",
+   "fieldtype": "Currency",
+   "label": "Base Operational/Running (Company Currency)",
+   "options": "Company:company:default_currency"
+  },
+  {
+   "fieldname": "base_lihdbr",
+   "fieldtype": "Currency",
+   "label": "Base LIH/DBR (Company Currency)",
+   "options": "Company:company:default_currency"
+  },
+  {
+   "fieldname": "base_post_rental_inspection_charges",
+   "fieldtype": "Currency",
+   "label": "Base Post Rental Inspection charges (Company Currency)",
+   "options": "Company:company:default_currency"
+  },
+  {
+   "fieldname": "base_standby",
+   "fieldtype": "Currency",
+   "label": "Base Standby (Company Currency)",
+   "options": "Company:company:default_currency"
+  },
+  {
+   "fieldname": "base_straight",
+   "fieldtype": "Currency",
+   "label": "Base Straight (Company Currency)",
+   "options": "Company:company:default_currency"
+  },
+  {
+   "fieldname": "base_redress",
+   "fieldtype": "Currency",
+   "label": "Base Redress (Company Currency)",
+   "options": "Company:company:default_currency"
+  },
+  {
+   "fieldname": "section_break_10",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "sub_rental_order",
+   "fieldtype": "Link",
+   "label": "Sub Rental Order",
+   "options": "Supplier Rental Order"
+  },
+  {
+   "fieldname": "sub_rental_order_item",
+   "fieldtype": "Link",
+   "label": "Sub Rental Order Item",
+   "options": "Supplier Rental Order Item"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "description_section_section",
+   "fieldtype": "Section Break",
+   "label": "Description"
+  },
+  {
+   "fetch_from": "item_code.description",
+   "fieldname": "description",
+   "fieldtype": "Text Editor",
+   "label": "Description"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2022-05-24 12:21:31.412235",
+ "modified_by": "Administrator",
+ "module": "Oil And Gas International",
+ "name": "Sub Rental Issue Note Item",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

@@ -8,12 +8,20 @@
   "item_code",
   "column_break_2",
   "item_name",
+  "description_section",
+  "description",
   "quantity_and_rate_section",
   "qty",
+  "uom",
+  "rate",
+  "unit_weight",
+  "net_weight",
   "column_break_9",
   "asset_location",
   "assets",
   "get_assets",
+  "tax_code",
+  "country_of_origin",
   "prices_section",
   "operational_running",
   "standby",
@@ -95,7 +103,8 @@
    "fieldname": "rental_order_item",
    "fieldtype": "Link",
    "label": "Rental Order Item",
-   "options": "Rental Order Item"
+   "options": "Rental Order Item",
+   "read_only": 1
   },
   {
    "fieldname": "rental_order",
@@ -177,12 +186,58 @@
    "fieldtype": "Currency",
    "label": "Base Redress (Company Currency)",
    "options": "Company:company:default_currency"
+  },
+  {
+   "fetch_from": "item_code.stock_uom",
+   "fieldname": "uom",
+   "fieldtype": "Link",
+   "label": "UOM",
+   "options": "UOM"
+  },
+  {
+   "fieldname": "rate",
+   "fieldtype": "Currency",
+   "label": "Rate"
+  },
+  {
+   "fieldname": "unit_weight",
+   "fieldtype": "Float",
+   "label": "Unit Weight"
+  },
+  {
+   "fieldname": "net_weight",
+   "fieldtype": "Float",
+   "label": "Net Weight"
+  },
+  {
+   "fetch_from": "item_code.tax_code",
+   "fieldname": "tax_code",
+   "fieldtype": "Read Only",
+   "label": "Tax Code"
+  },
+  {
+   "fetch_from": "item_code.country_of_origin",
+   "fieldname": "country_of_origin",
+   "fieldtype": "Read Only",
+   "label": "Country of Origin"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "description_section",
+   "fieldtype": "Section Break",
+   "label": "Description"
+  },
+  {
+   "fetch_from": "item_code.description",
+   "fieldname": "description",
+   "fieldtype": "Text Editor",
+   "label": "Description"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2022-03-26 11:47:08.216430",
+ "modified": "2022-05-09 14:52:24.644858",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Rental Issue Note Item",

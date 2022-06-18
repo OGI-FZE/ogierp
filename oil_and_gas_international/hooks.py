@@ -42,6 +42,7 @@ doctype_js = {
     "Purchase Receipt": "public/js/purchase_receipt.js",
     "Purchase Invoice": "public/js/purchase_invoice.js",
     "Supplier Quotation": "public/js/supplier_quotation.js",
+    "Project": "public/js/project.js",
 }
 # doctype_js = {"doctype" : "public/js/doctype.js"}
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
@@ -110,7 +111,7 @@ doc_events = {
         "on_cancel": "oil_and_gas_international.events.sales_invoice.removebilledamount",
         "validate": "oil_and_gas_international.events.sales_invoice.get_desc",
     #     "on_submit": "oil_and_gas_international.events.sales_invoice.on_submit"
-    },
+    }
 }
 
 # Scheduled Tasks
@@ -189,6 +190,7 @@ fixtures = [
                 'Item-relevant_item',
                 #Custom Section
                 'Item-specifications',
+                'Item-hs_code',
                 'Item-make',
                 'Item-model',
                 'Item-size',
@@ -253,6 +255,9 @@ fixtures = [
                 'Asset-item_group',
                 'Asset-supplier_info',
                 'Asset-last_cycle_count_date',
+                'Asset-is_sub_rental_asset',
+                'Asset-sub_rental_order',
+                'Asset-currently_with',
 
                 # Opportunity
                 'Opportunity-item_type',
@@ -322,9 +327,10 @@ fixtures = [
                 'Sales Order Item-assets','Sales Order-rental_timesheet_item','Sales Order-rental_order_item',
                 'Sales Order-rental_timesheet','Sales Order-rental_order','Sales Order Item-rental_order',
                 'Sales Order Item-rental_order_item','Sales Order Item-references','Sales Order Item-asset_item',
+                'Sales Order-aed_exchange_rate',
 
                 # Project
-                'Project-rental_order',
+                'Project-rental_order','Project-sub_rental_order',
 
                 #Rental order
                 'Rental Order-sales_employee','Rental Order-sales_person_link',
@@ -337,7 +343,7 @@ fixtures = [
                 'Rental Quotation-sales_person','Rental Quotation-departments',
 
                 #Asset Movement
-                'Asset Movement-rental_issue_note',
+                'Asset Movement-rental_issue_note','Asset Movement-sub_rental_issue_note',
 
                 #dn
                 'Delivery Note-commercial_invoice_date',
@@ -347,7 +353,16 @@ fixtures = [
                 #bom
                 'BOM Operation-reference_std',
                 #workorder
-                'Work Order Operation-reference_std','Work Order Operation-acceptance_criteria'
+                'Work Order Operation-reference_std','Work Order Operation-acceptance_criteria',
+                'Work Order-raw_material_details','Work Order-bar_heat_no','Work Order-acceptance_standard',
+                'Work Order-material_grade_spec','Work Order-uom','Work Order-date','Work Order-department',
+                #Quotation
+                'Quotation-aed_exchange_rate','Quotation-email','Quotation-contact','Quotation-sales_person',
+                #sales person
+                'Sales Person-email','Sales Person-contact',
+
+                #purchase receipt
+                'Purchase Receipt-reason_for_purchase'
 
             ]]
         ]

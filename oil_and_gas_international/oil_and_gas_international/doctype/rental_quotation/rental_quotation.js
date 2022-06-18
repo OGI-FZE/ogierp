@@ -46,12 +46,26 @@ frappe.ui.form.on('Rental Quotation', {
 	conversion_rate(frm){
     	convert_rate(frm)
   	},
-  	validate(frm){
-  		convert_rate(frm)
-  	}
+	validate(frm){
+		convert_rate(frm)
+	},
+	terms(frm) {
+		if(frm.doc.terms) {
+			return frappe.call({
+				method: 'erpnext.setup.doctype.terms_and_conditions.terms_and_conditions.get_terms_and_conditions',
+				args: {
+					template_name: frm.doc.terms,
+					doc: frm.doc
+				},
+				callback: function(r) {
+					frm.set_value('terms_and_conditions_details',r.message)
+				}
+			});
+		}
+	},
 });
 
-const convert_rate = function(frm){
+const convert_base_rate = function(frm){
   if(frm.doc.items && frm.doc.docstatus!=1){
     conv_rate.push(frm.doc.conversion_rate)
       for(let row of frm.doc.items){
@@ -70,12 +84,54 @@ const convert_rate = function(frm){
       }
   }
 }
+const convert_rate = function(frm){
+  if(frm.doc.items && frm.doc.docstatus!=1){
+    conv_rate.push(frm.doc.conversion_rate)
+      for(let row of frm.doc.items){
+        var converted_op_rate = (row.operational_running)*conv_rate[conv_rate.length-1]
+        frappe.model.set_value(row.doctype,row.name,'base_operational_running',converted_op_rate)
+        var converted_lihdbr_rate = (row.lihdbr)*conv_rate[conv_rate.length-1]
+        frappe.model.set_value(row.doctype,row.name,'base_lihdbr',converted_lihdbr_rate)
+        var converted_pr_rate = (row.post_rental_inspection_charges)*conv_rate[conv_rate.length-1]
+        frappe.model.set_value(row.doctype,row.name,'base_post_rental_inspection_charges',converted_pr_rate)
+        var converted_standby_rate = (row.standby)*conv_rate[conv_rate.length-1]
+        frappe.model.set_value(row.doctype,row.name,'base_standby',converted_standby_rate)
+        var converted_straight_rate = (row.straight)*conv_rate[conv_rate.length-1]
+        frappe.model.set_value(row.doctype,row.name,'base_straight',converted_straight_rate)
+        var converted_redress_rate = (row.redress)*conv_rate[conv_rate.length-1]
+        frappe.model.set_value(row.doctype,row.name,'base_redress',converted_redress_rate)
+      }
+  }
+}
+// const convert_rate = function(frm){
+//   if(frm.doc.items && frm.doc.docstatus!=1){
+//     conv_rate.push(frm.doc.conversion_rate)
+//       for(let row of frm.doc.items){
+//         var converted_op_rate = (row.base_operational_running)*conv_rate[conv_rate.length-1]
+//         frappe.model.set_value(row.doctype,row.name,'operational_running',converted_op_rate)
+//         var converted_lihdbr_rate = (row.base_lihdbr)*conv_rate[conv_rate.length-1]
+//         frappe.model.set_value(row.doctype,row.name,'lihdbr',converted_lihdbr_rate)
+//         var converted_pr_rate = (row.base_post_rental_inspection_charges)*conv_rate[conv_rate.length-1]
+//         frappe.model.set_value(row.doctype,row.name,'post_rental_inspection_charges',converted_pr_rate)
+//         var converted_standby_rate = (row.base_standby)*conv_rate[conv_rate.length-1]
+//         frappe.model.set_value(row.doctype,row.name,'standby',converted_standby_rate)
+//         var converted_straight_rate = (row.base_straight)*conv_rate[conv_rate.length-1]
+//         frappe.model.set_value(row.doctype,row.name,'straight',converted_straight_rate)
+//         var converted_redress_rate = (row.base_redress)*conv_rate[conv_rate.length-1]
+//         frappe.model.set_value(row.doctype,row.name,'redress',converted_redress_rate)
+//       }
+//   }
+// }
 
 // Rental Quotation Item
 frappe.ui.form.on('Rental Quotation Item', {
 	item_code(frm, cdt, cdn) {
 		calculate_lost_and_damage_price(frm, cdt, cdn)
-		convert_rate(frm)
+		const row = locals[cdt][cdn]
+		const item_code = row.item_code
+		frappe.db.get_value('Item', item_code, ["description"], function(value) {
+				frappe.model.set_value(cdt, cdn, "description", value.description);
+		});
 	},
 	qty(frm, cdt, cdn) {
 		calc_amount(frm, cdt, cdn)
@@ -87,6 +143,24 @@ frappe.ui.form.on('Rental Quotation Item', {
 
 	amount(frm) {
 		calc_total_amount(frm)
+	},
+	operational_running(frm,cdt,cdn){
+		convert_rate(frm)
+	},
+	lihdbr(frm,cdt,cdn){
+		convert_rate(frm)
+	},
+	post_rental_inspection_charges(frm,cdt,cdn){
+		convert_rate(frm)
+	},
+	standby(frm,cdt,cdn){
+		convert_rate(frm)
+	},
+	straight(frm,cdt,cdn){
+		convert_rate(frm)
+	},
+	redress(frm,cdt,cdn){
+		convert_rate(frm)
 	},
 });
 
@@ -214,6 +288,7 @@ const add_rental_order = () => {
 					const cdn = new_row.name
 					frappe.model.set_value(cdt, cdn, "item_code", row.item_code)
 					setTimeout(function() {
+						frappe.model.set_value(cdt, cdn, "description", row.description)
 						frappe.model.set_value(cdt, cdn, "qty", row.qty)
 						frappe.model.set_value(cdt, cdn, "operational_running", row.operational_running)
 						frappe.model.set_value(cdt, cdn, "lihdbr", row.lihdbr)
@@ -266,6 +341,7 @@ const calculate_lost_and_damage_price = (frm, cdt, cdn) => {
 			frm.refresh()
 		}
 	})
+	convert_base_rate(frm)
 }
 
 

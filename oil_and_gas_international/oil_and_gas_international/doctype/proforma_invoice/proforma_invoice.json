@@ -53,6 +53,7 @@
   "ignore_pricing_rule",
   "sec_warehouse",
   "set_warehouse",
+  "prices",
   "items_section",
   "scan_barcode",
   "items",
@@ -147,6 +148,7 @@
   "auto_repeat",
   "update_auto_repeat_reference",
   "sales_order",
+  "quotation",
   "amended_from"
  ],
  "fields": [
@@ -1117,6 +1119,7 @@
    "print_hide": 1
   },
   {
+   "fetch_from": "tc_name.terms",
    "fieldname": "terms",
    "fieldtype": "Text Editor",
    "hide_days": 1,
@@ -1534,12 +1537,23 @@
    "fieldtype": "Float",
    "label": "AED Exchange Rate",
    "precision": "9"
+  },
+  {
+   "fieldname": "quotation",
+   "fieldtype": "Link",
+   "label": "Quotation",
+   "options": "Quotation"
+  },
+  {
+   "fieldname": "prices",
+   "fieldtype": "Data",
+   "label": "Prices"
   }
  ],
  "icon": "fa fa-file-text",
  "is_submittable": 1,
  "links": [],
- "modified": "2022-04-18 10:21:10.437124",
+ "modified": "2022-05-11 10:14:04.267351",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Proforma Invoice",

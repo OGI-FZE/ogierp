@@ -51,10 +51,10 @@ class RentalReceipt(Document):
 				if asset:
 					# updating asset status
 
-					if self.rental_stop_date == today():
+					if self.rental_stop_date <= today():
 						frappe.db.set_value("Asset", asset, "rental_status", "In transit")
 						
-					if self.receipt_date == today():
+					if self.receipt_date <= today():
 						frappe.db.set_value("Asset", asset, "rental_status", "On hold for Inspection")
 						frappe.db.set_value("Asset", asset, "rental_order", "")
 					
@@ -92,6 +92,7 @@ class RentalReceipt(Document):
 						asset_movement_doc.submit()
 
 					frappe.db.commit()
+					frappe.db.set_value("Asset", asset, "currently_with", "")
 		self.set('status','Submitted')
 
 
