@@ -80,6 +80,7 @@ def execute(filters=None):
 	return columns, data
 
 def get_data(filters):
+	print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
 	data = []
 
 	print("<<<<<<<<<<>>>>>>>>>>>>>>>>>>",frappe.db.sql("""DECLARE @count INT;
