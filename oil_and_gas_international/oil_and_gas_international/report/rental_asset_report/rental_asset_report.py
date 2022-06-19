@@ -380,7 +380,6 @@ def get_columns(filters):
 	
 	return columns
 def get_data(filters):
-	asdas
 	all_asset = frappe.db.get_list('Asset')
 	all_items = dict()
 	final_list = list()
