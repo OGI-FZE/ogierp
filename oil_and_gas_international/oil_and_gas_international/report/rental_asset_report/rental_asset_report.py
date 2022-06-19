@@ -1,16 +1,20 @@
-# Copyright (c) 2013, Havenir Solutions Private Limited and contributors
+# Copyright (c) 2022, Craft and contributors
 # For license information, please see license.txt
 
+from itertools import count
+from typing import Counter
 
-from __future__ import unicode_literals
+from numpy import take
 import frappe
-from frappe.utils import add_to_date
-from frappe import _
-from dateutil.relativedelta import relativedelta
+from frappe import _, get_all
 
 
 def execute(filters=None):
-	columns= [
+	columns, data = get_columns(filters), get_data(filters)
+	return columns, data
+
+def get_columns(filters):
+	columns = [
 		{
 			"label": "Asset Id",
 			"fieldname": "asset_id",
@@ -26,26 +30,28 @@ def execute(filters=None):
 		},
 		{
 			"label": "Category",
-			"fieldname": "grand_parent_group",
+			"fieldname": "asset_category",
 			"fieldtype": "Link",
 			"options":'Item Group',
 			"width": 130
 		},
 		{
-			"label": "Sub Category",
-			"fieldname": "parent_group",
+			"label": "location",
+			"fieldname": "location",
 			"fieldtype": "Link",
-			"options":'Item Group',
+			"options":'Location',
 			"width": 130
 		},
+
+
 		{
-			"label": "Sub-sub Category",
-			"fieldname": "child_group",
+			"label": "Company",
+			"fieldname": "company",
 			"fieldtype": "Link",
-			"options":'Item Group',
+			"options":'Company',
 			"width": 130
 		},
-		{
+{
 			"label": "Status",
 			"fieldtype": "Data",
 			"fieldname": "status",
@@ -57,497 +63,372 @@ def execute(filters=None):
 			"fieldname": "rental_status",
 			"width": 170
 		},
+
+			{
+			"label": "Item name",
+			"fieldname": "item_name",
+			"fieldtype": "Data",
+			"width": 130
+		},
+			{
+			"label": "Item code",
+			"fieldname": "item_code",
+			"fieldtype": "Link",
+			"options":'Item',
+			"width": 130
+		},
+			
+		# {
+		# 	"label": "Sub Category",
+		# 	"fieldname": "parent_group",
+		# 	"fieldtype": "Link",
+		# 	"options":'Item Group',
+		# 	"width": 130
+		# },
+		{
+			"label": "Sub-sub Category",
+			"fieldname": "item_group",
+			"fieldtype": "Link",
+			"options":'Item Group',
+			"width": 130
+		},
 		
+
+		{
+			"label": "Type",
+			"fieldtype": "Data",
+			"fieldname": "type",
+			"width": 170
+		},
+	
+		{
+			"label": "PPF",
+			"fieldtype": "Data",
+			"fieldname": "ppf",
+			"width": 170
+		},
+	
+	
+		{
+			"label": "tool joint id ",
+			"fieldtype": "Data",
+			"fieldname": "tool_joint_id",
+			"width": 170
+		},
+	
+	{
+			"label": "tool joint od",
+			"fieldtype": "Data",
+			"fieldname": "tool_joint_od",
+			"width": 170
+		},
+	{
+			"label": "range",
+			"fieldtype": "Data",
+			"fieldname": "range",
+			"width": 170
+		},
+	{
+			"label": "od size",
+			"fieldtype": "Data",
+			"fieldname": "od_size_",
+			"width": 170
+		},
+	{
+			"label": "top connection",
+			"fieldtype": "Data",
+			"fieldname": "top_connection",
+			"width": 170
+		},
+	{
+			"label": "bottom connection",
+			"fieldtype": "Data",
+			"fieldname": "bottom_connection",
+			"width": 170
+		},
+	{
+			"label": "service",
+			"fieldtype": "Data",
+			"fieldname": "service",
+			"width": 170
+		},
+	{
+			"label": "make",
+			"fieldtype": "Data",
+			"fieldname": "make",
+			"width": 170
+		},
+	{
+			"label": "size",
+			"fieldtype": "Data",
+			"fieldname": "size",
+			"width": 170
+		},
+	{
+			"label": "pin connection",
+			"fieldtype": "Data",
+			"fieldname": "pin_connection",
+			"width": 170
+		},
+	{
+			"label": "box connection",
+			"fieldtype": "Data",
+			"fieldname": "box_connection",
+			"width": 170
+		},
+	{
+			"label": "od",
+			"fieldtype": "Data",
+			"fieldname": "od",
+			"width": 170
+		},
+	{
+			"label": "wrap angle",
+			"fieldtype": "Data",
+			"fieldname": "wrap_angle",
+			"width": 170
+		},
+	{
+			"label": "hard facing",
+			"fieldtype": "Data",
+			"fieldname": "hard_facing",
+			"width": 170
+		},
+	{
+			"label": "model",
+			"fieldtype": "Data",
+			"fieldname": "model",
+			"width": 170
+		},
+	{
+			"label": "degree",
+			"fieldtype": "Data",
+			"fieldname": "degree",
+			"width": 170
+		},
+	{
+			"label": "capacity",
+			"fieldtype": "Data",
+			"fieldname": "capacity",
+			"width": 170
+		},
+	{
+			"label": "material",
+			"fieldtype": "Data",
+			"fieldname": "material",
+			"width": 170
+		},
+	{
+			"label": "oal",
+			"fieldtype": "Data",
+			"fieldname": "oal",
+			"width": 170
+		},
+	{
+			"label": "pin_box",
+			"fieldtype": "Data",
+			"fieldname": "pin_box",
+			"width": 170
+		},
+	{
+			"label": "id",
+			"fieldtype": "Data",
+			"fieldname": "id",
+			"width": 170
+		},
+	{
+			"label": "stroke",
+			"fieldtype": "Data",
+			"fieldname": "stroke",
+			"width": 170
+		},
+	{
+			"label": "pressure rating",
+			"fieldtype": "Data",
+			"fieldname": "pressure_rating",
+			"width": 170
+		},
+	{
+			"label": "gasket size rh",
+			"fieldtype": "Data",
+			"fieldname": "gasket_size_rh_",
+			"width": 170
+		},
+		
+		{
+			"label": "no of stud bolts rh",
+			"fieldtype": "Data",
+			"fieldname": "no_of_stud_bolts_rh",
+			"width": 170
+		},
+	
+	{
+			"label": "stud bolt size rh",
+			"fieldtype": "Data",
+			"fieldname": "stud_bolt_size_rh",
+			"width": 170
+		},
+	{
+			"label": "no of stud bolts lh",
+			"fieldtype": "Data",
+			"fieldname": "no_of_stud_bolts_lh_",
+			"width": 170
+		},
+	{
+			"label": "pressure rating rh",
+			"fieldtype": "Data",
+			"fieldname": "pressure_rating_rh",
+			"width": 170
+		},
+	{
+			"label": "ss ring groove",
+			"fieldtype": "Data",
+			"fieldname": "ss_ring_groove_",
+			"width": 170
+		},
+	{
+			"label": "gasket size lh",
+			"fieldtype": "Data",
+			"fieldname": "gasket_size_lh_",
+			"width": 170
+		},
+	{
+			"label": "part number",
+			"fieldtype": "Data",
+			"fieldname": "part_number",
+			"width": 170
+		},
+	{
+			"label": "plastic coating",
+			"fieldtype": "Data",
+			"fieldname": "plastic_coating",
+			"width": 170
+		},
+	{
+			"label": "hard banding",
+			"fieldtype": "Data",
+			"fieldname": "hard_banding_",
+			"width": 170
+		},
+	{
+			"label": "mandrel od",
+			"fieldtype": "Data",
+			"fieldname": "mandrel_od",
+			"width": 170
+		},
+	{
+			"label": "elvator recess",
+			"fieldtype": "Data",
+			"fieldname": "elvator_recess",
+			"width": 170
+		},
+	{
+			"label": "slip recess",
+			"fieldtype": "Data",
+			"fieldname": "slip_recess_",
+			"width": 170
+		},
+	{
+			"label": "psi",
+			"fieldtype": "Data",
+			"fieldname": "psi",
+			"width": 170
+		},
+	{
+			"label": "torque guage",
+			"fieldtype": "Data",
+			"fieldname": "torque_guage",
+			"width": 170
+		},
+	{
+			"label": "lift cylinders",
+			"fieldtype": "Data",
+			"fieldname": "lift_cylinders",
+			"width": 170
+		},
+
+	{
+			"label": "packing element",
+			"fieldtype": "Data",
+			"fieldname": "packing_element",
+			"width": 170
+		},
+	
+{
+			"label": "style",
+			"fieldtype": "Data",
+			"fieldname": "style",
+			"width": 170
+		},
+	{
+			"label": "used for",
+			"fieldtype": "Data",
+			"fieldname": "used_for",
+			"width": 170
+		},
+	{
+			"label": "packer size",
+			"fieldtype": "Data",
+			"fieldname": "packer_size",
+			"width": 170
+		},
+	
 	]
 
-	asset_filter = {
-		'docstatus': 1,
-	}
 
-
-	if filters.get("asset"):
-		asset_filter["name"] = filters.get("asset")
-	if filters.get("child_group"):
-		asset_filter["item_group"] = filters.get("child_group")
-
+	
+	
+	return columns
+def get_data(filters):
+	all_asset = frappe.db.get_list('Asset')
+	# 057276699
+	all_items = dict()
+	# take_one = frappe.get_doc('Asset' , all_asset[0]['name'])
+	# print(take_one)
+	# print(take_one.item_code)
+	# tt = frappe.get_doc('Item' , take_one.item_code)
+	# print('>>>>>>>>>>>>>' , tt.naming_series)
+	final_list = list()
+	counter = 0 
+	while counter < len(all_asset)   : 
+		take_ass = frappe.get_doc('Asset' , all_asset[counter]['name'])
+		get_item_name = take_ass.item_code
+		ass_dict = { 'asset_id' : all_asset[counter]['name'] , 'asset_name' : take_ass.asset_name , 'asset_category' : take_ass.asset_category , 'location' : take_ass.location , 
+		'company' : take_ass.company , 'status' : take_ass.status , 'rental_status' : take_ass.rental_status , 
+		'item_name' : take_ass.item_name , 'item_code' : take_ass.item_code 
 		
-	asset_list=frappe.db.get_list('Asset',asset_filter,['*'])
-
-	if filters.get("parent_group"):
-		asset_filter["parent_group"] = filters.get("parent_group")
-	if filters.get("grand_parent_group"):
-		asset_filter["grand_parent_group"] = filters.get("grand_parent_group")
-
-
-	filtered_list=[]
-
-	# for row in asset_list:
-	# 	itm = frappe.get_doc("Item",row.item_code)
-	# 	item_group = itm.item_group
-	# 	parent_group = frappe.db.get_value('Item Group',itm.item_group,['parent_item_group'])
-	# 	if frappe.db.exists({
-	# 			'doctype': 'Item Group',
-	# 			'name': parent_group,
-	# 		}):
-	# 		g_parent=frappe.db.get_value('Item Group',parent_group,['parent_item_group'])
-	# 		if g_parent==asset_filter["grand_parent_group"] and asset_filter["parent_group"]==parent_group:
-	# 			filtered_list.append(row)
-
-	if not filters.get("grand_parent_group") and not filters.get("parent_group"):
-		filtered_list=asset_list
-
-	if filters.get("grand_parent_group") and filters.get("parent_group"):
-		for row in asset_list:
-			itm = frappe.get_doc("Item",row.item_code)
-			parent_group = frappe.db.get_value('Item Group',itm.item_group,['parent_item_group'])
-			if frappe.db.exists({
-					'doctype': 'Item Group',
-					'name': parent_group,
-				}):
-				g_parent=frappe.db.get_value('Item Group',parent_group,['parent_item_group'])
-				if g_parent==asset_filter["grand_parent_group"] and asset_filter["parent_group"]==parent_group:
-					filtered_list.append(row)
-
-	if filters.get("grand_parent_group") and not filters.get("parent_group"):
-		for row in asset_list:
-			itm = frappe.get_doc("Item",row.item_code)
-			parent_group = frappe.db.get_value('Item Group',itm.item_group,['parent_item_group'])
-			if frappe.db.exists({
-					'doctype': 'Item Group',
-					'name': parent_group,
-				}):
-				g_parent=frappe.db.get_value('Item Group',parent_group,['parent_item_group'])
-				if g_parent==asset_filter["grand_parent_group"]:
-					filtered_list.append(row)
-	
-	if filters.get("parent_group") and not filters.get("grand_parent_group"):
-		for row in asset_list:
-			itm = frappe.get_doc("Item",row.item_code)
-			parent_group = frappe.db.get_value('Item Group',itm.item_group,['parent_item_group'])
-			if frappe.db.exists({
-					'doctype': 'Item Group',
-					'name': parent_group,
-				}):
-				g_parent=frappe.db.get_value('Item Group',parent_group,['parent_item_group'])
-				if parent_group==asset_filter["parent_group"]:
-					filtered_list.append(row)
-	
-
-	fields=fieldnames(filtered_list)
-	for field_name in fields:
-		columns.append({
-			'label': fields[field_name],
-			'fieldname': field_name,
-			'fieldtype': 'Data',
-			'width':100,
-		})
-	data = get_data(filtered_list)
-	return columns, data
-
-
-def get_data(asset_list):
-	data = []
-	
-	for row in asset_list: 
-		pg = '' 
-		gpg = '' 
-		item = frappe.get_doc('Item',row.item_code) 
-		fields=fieldnames_values(item) 
-		parent_group = frappe.db.get_value('Item Group',item.item_group,['parent_item_group'])
-		if parent_group:
-			pg = parent_group
-			gpg=frappe.db.get_value('Item Group',parent_group,['parent_item_group'])
-		
-		asset_data ={
-			'asset_id':row.name,
-			'asset_name':row.asset_name,
-			'child_group':item.item_group,
-			'parent_group':pg,
-			'grand_parent_group':gpg,
-			'status':row.status,
-			'rental_status':row.rental_status,
 		}
-
-		for asset in fields:
-			asset_data.update({
-				asset:fields[asset]
-			})
-
-		data.append(asset_data)
-
-	return data
-
-def fieldnames(item_list):
-	field_list={}
-	for row in item_list:
-		row = frappe.get_doc("Item",row.item_code)
-		if row.make:
-			if 'make' not in field_list:
-				field_list['make']='Make'
-		if row.model:
-			if 'model' not in field_list:
-				field_list['model']='Model'
-		if row.size:
-			if 'size' not in field_list:
-				field_list['size']='Size'
-		   
-		if row.part_number:
-			if 'part_number' not in field_list:
-				field_list['part_number']='Part Number'
-			
-		if row.type:
-			if 'type' not in field_list:
-				field_list['type']='Type'
-		   
-		if row.material:
-			if 'material' not in field_list:
-				field_list['material']='Material'
-
-		if row.plastic_coating:
-			if 'plastic_coating' not in field_list:
-				field_list['plastic_coating']='PLASTIC COATING'
-
-			
-		if row.pressure_rating:
-			if 'pressure_rating' not in field_list:
-				field_list['pressure_rating']='Pressure Rating'
-		   
-		if row.ppf:
-			if 'ppf' not in field_list:
-				field_list['ppf']='PPF'
-			
-		if row.tool_joint_id:
-			if 'tool_joint_id' not in field_list:
-				field_list['tool_joint_id']='Tool Joint ID'
-
-		if row.tool_joint_od:
-			if 'tool_joint_od' not in field_list:
-				field_list['tool_joint_od']='Tool Joint OD'
-
-		if row.hard_banding_:
-			if 'hard_banding_' not in field_list:
-				field_list['hard_banding_']='Hard Banding'
-
-		if row.gasket_size_rh_:
-			if 'gasket_size_rh_' not in field_list:
-				field_list['gasket_size_rh_']='GASKET SIZE RH'
-			
-		if row.no_of_stud_bolts_rh:
-			if 'no_of_stud_bolts_rh' not in field_list:
-				field_list['no_of_stud_bolts_rh']='No of Stud Bolts RH'
-			
-		if row.stud_bolt_size_rh:
-			if 'stud_bolt_size_rh' not in field_list:
-				field_list['stud_bolt_size_rh']='Stud Bolt Size RH'
-			
-		if row.no_of_stud_bolts_lh_:
-			if 'no_of_stud_bolts_lh_' not in field_list:
-				field_list['no_of_stud_bolts_lh_']='No of Stud Bolts LH'
-			
-		if row.pin_box:
-			if 'pin_box' not in field_list:
-				field_list['pin_box']='Pin/Box'
-			
-		if row.pin_connection:
-			if 'pin_connection' not in field_list:
-				field_list['pin_connection']='Pin Connection'
-		   
-		if row.box_connection:
-			if 'box_connection' not in field_list:
-				field_list['box_connection']='Box Connection'
-			
-		if row.range:
-			if 'range' not in field_list:
-				field_list['range']='Range'
-			
-		if row.oal:
-			if 'oal' not in field_list:
-				field_list['oal']='Oal'
-		   
-		if row.od:
-			if 'od' not in field_list:
-				field_list['od']='OD'
-
-		if row.od_size_:
-			if 'od_size_' not in field_list:
-				field_list['od_size_']='OD size'
-		  
-		if row.id:
-			if 'id' not in field_list:
-				field_list['id']='ID'
-		   
-		if row.mandrel_od:
-			if 'mandrel_od' not in field_list:
-				field_list['mandrel_od']='Mandrel OD'
-		   
-		if row.top_connection:
-			if 'top_connection' not in field_list:
-				field_list['top_connection']='Top Connection'
-		   
-		if row.bottom_connection:
-			if 'bottom_connection' not in field_list:
-				field_list['bottom_connection']='Bottom Connection'
-		   
-		if row.elvator_recess:
-			if 'elvator_recess' not in field_list:
-				field_list['elvator_recess']='ELVATOR RECESS'
-		   
-		if row.slip_recess_:
-			if 'slip_recess_' not in field_list:
-				field_list['slip_recess_']='SLIP RECESS'
-		   
-		if row.service:
-			if 'service' not in field_list:
-				field_list['service']='SERVICE'
-		   
-		if row.stud_bolt_size_lh_:
-			if 'stud_bolt_size_lh_' not in field_list:
-				field_list['stud_bolt_size_lh_']='Stud Bolt Size LH'
-		   
-		if row.packer_size:
-			if 'packer_size' not in field_list:
-				field_list['packer_size']='PACKER SIZE'
-		   
-		if row.stroke:
-			if 'stroke' not in field_list:
-				field_list['stroke']='Stroke'
-		   
-		if row.wrap_angle:
-			if 'wrap_angle' not in field_list:
-				field_list['wrap_angle']='Wrap Angel'
-			
-		if row.hard_facing:
-			if 'hard_facing' not in field_list:
-				field_list['hard_facing']='Hard Facing'
-			
-		if row.capacity:
-			if 'capacity' not in field_list:
-				field_list['capacity']='Capacity'
-			
-		if row.degree:
-			if 'degree' not in field_list:
-				field_list['degree']='Degree'
-			
-		if row.psi:
-			if 'psi' not in field_list:
-				field_list['psi']='PSI'
-			
-		if row.torque_guage:
-			if 'torque_guage' not in field_list:
-				field_list['torque_guage']='Torque Guage'
-			
-		if row.lift_cylinders:
-			if 'lift_cylinders' not in field_list:
-				field_list['lift_cylinders']='Lift Cylinders'
-
-		if row.pressure_rating_rh:
-			if 'pressure_rating_rh' not in field_list:
-				field_list['pressure_rating_rh']='PRESSURE RATING RH'
-
-		if row.ss_ring_groove_:
-			if 'ss_ring_groove_' not in field_list:
-				field_list['ss_ring_groove_']='SS RING GROOVE'
-
-		if row.packing_element:
-			if 'packing_element' not in field_list:
-				field_list['packing_element']='PACKING ELEMENT'
-
-		if row.style:
-			if 'style' not in field_list:
-				field_list['style']='STYLE'
-
-		if row.used_for:
-			if 'used_for' not in field_list:
-				field_list['used_for']='USED FOR'
-
-		if row.gasket_size_lh_:
-			if 'gasket_size_lh_' not in field_list:
-				field_list['gasket_size_lh_']='GASKET SIZE LH'
-
-	return field_list
-
-def fieldnames_values(row):
-	field_list={}
-	if row.make:
-		if 'make' not in field_list:
-			field_list['make']=row.make
-	if row.model:
-		if 'model' not in field_list:
-			field_list['model']=row.model
-	if row.size:
-		if 'size' not in field_list:
-			field_list['size']=row.size
+		# print( '>>>>>>>>>>>>>>>>>>>>>>>>>. ', ass_dict)
+# 'asset_id' : take_ass.asset_id , 
+		try:
+			fetch_item = all_items[take_ass.item_code] 
 		
-	if row.part_number:
-		if 'part_number' not in field_list:
-			field_list['part_number']=row.part_number
-		
-	if row.type:
-		if 'type' not in field_list:
-			field_list['type']=row.type
-		
-	if row.material:
-		if 'material' not in field_list:
-			field_list['material']=row.material
 
-	if row.plastic_coating:
-		if 'plastic_coating' not in field_list:
-			field_list['plastic_coating']=row.plastic_coating
-		
-	if row.pressure_rating:
-		if 'pressure_rating' not in field_list:
-			field_list['pressure_rating']=row.pressure_rating
-		
-	if row.ppf:
-		if 'ppf' not in field_list:
-			field_list['ppf']=row.ppf
+		except: 
+			fetch_item = frappe.get_doc('Item' , get_item_name)
+			all_items.update({get_item_name : {'item_group' : fetch_item.item_group , 'type' : fetch_item.type , 'ppf' : fetch_item.ppf ,
+			'tool_joint_id' :fetch_item.tool_joint_id , 'tool_joint_od' : fetch_item.tool_joint_od , 'range' : fetch_item.range , 
+			'od_size_' : fetch_item.od_size_ , 'top_connection' : fetch_item.top_connection , 'bottom_connection' : fetch_item.bottom_connection , 
+			'service' : fetch_item.service , 'make':fetch_item.make , 'size': fetch_item.size , 'pin_connection' : fetch_item.pin_connection , 
+			'box_connection' : fetch_item.box_connection , 'od': fetch_item.od , 'wrap_angle' : fetch_item.wrap_angle , 'hard_facing' : fetch_item.hard_facing , 
+			'model' : fetch_item.model , 'degree' : fetch_item.degree , 'capacity' : fetch_item.capacity , 'material' : fetch_item.material , 
+			'oal' : fetch_item.oal , 'pin_box' : fetch_item.pin_box , 'id': fetch_item.id , 'stroke' : fetch_item.stroke , 
+			'pressure_rating' : fetch_item.pressure_rating , 'gasket_size_rh_' : fetch_item.gasket_size_rh_ , 'no_of_stud_bolts_rh' : fetch_item.no_of_stud_bolts_rh , 
+			'stud_bolt_size_rh'  : fetch_item.stud_bolt_size_rh , 'no_of_stud_bolts_lh_' : fetch_item.no_of_stud_bolts_lh_ , 'pressure_rating_rh' : fetch_item.pressure_rating_rh , 
+			'ss_ring_groove_' : fetch_item.ss_ring_groove_ , 'gasket_size_lh_' : fetch_item.gasket_size_lh_ , 'part_number' : fetch_item.part_number , 'plastic_coating' : fetch_item.plastic_coating , 
+			'hard_banding_' : fetch_item.hard_banding_ , 'mandrel_od' : fetch_item.mandrel_od , 'elvator_recess' : fetch_item.elvator_recess , 
+			'slip_recess_' : fetch_item.slip_recess_ , 'psi' : fetch_item.psi , 'torque_guage' : fetch_item.torque_guage , 'lift_cylinders' : fetch_item.lift_cylinders , 
+			'packing_element' : fetch_item.packing_element , 'style' : fetch_item.style , 'used_for' : fetch_item.used_for , 'packer_size' : fetch_item.packer_size
+				
+			}})
 
-	if row.tool_joint_id:
-		if 'tool_joint_id' not in field_list:
-			field_list['tool_joint_id']=row.tool_joint_id
-		
-	if row.tool_joint_od:
-		if 'tool_joint_od' not in field_list:
-			field_list['tool_joint_od']=row.tool_joint_od
+		# print( '>>>>>>>>>>>>22222222222222222>>>>>>>>>>>>>. ', all_items[take_ass.item_code])
 
-	if row.hard_banding_:
-		if 'hard_banding_' not in field_list:
-			field_list['hard_banding_']=row.hard_banding_
+		ass_dict.update(all_items[take_ass.item_code] )
+		final_list.append(ass_dict)
 
-	if row.gasket_size_rh_:
-		if 'gasket_size_rh_' not in field_list:
-			field_list['gasket_size_rh_']=row.gasket_size_rh_
+		counter +=1 
 
-	if row.no_of_stud_bolts_rh:
-		if 'no_of_stud_bolts_rh' not in field_list:
-			field_list['no_of_stud_bolts_rh']=row.no_of_stud_bolts_rh
+	print(final_list)
+	return final_list
 
-	if row.stud_bolt_size_rh:
-		if 'stud_bolt_size_rh' not in field_list:
-			field_list['stud_bolt_size_rh']=row.stud_bolt_size_rh
-
-	if row.no_of_stud_bolts_lh_:
-		if 'no_of_stud_bolts_lh_' not in field_list:
-			field_list['no_of_stud_bolts_lh_']=row.no_of_stud_bolts_lh_
-
-	if row.packer_size:
-		if 'packer_size' not in field_list:
-			field_list['packer_size']=row.packer_size
-		
-	if row.pin_box:
-		if 'pin_box' not in field_list:
-			field_list['pin_box']=row.pin_box
-		
-	if row.pin_connection:
-		if 'pin_connection' not in field_list:
-			field_list['pin_connection']=row.pin_connection
-		
-	if row.box_connection:
-		if 'box_connection' not in field_list:
-			field_list['box_connection']=row.box_connection
-		
-	if row.range:
-		if 'range' not in field_list:
-			field_list['range']=row.range
-		
-	if row.oal:
-		if 'oal' not in field_list:
-			field_list['oal']=row.oal
-		
-	if row.od:
-		if 'od' not in field_list:
-			field_list['od']=row.od
-		
-	if row.od_size_:
-		if 'od_size_' not in field_list:
-			field_list['od_size_']=row.od_size_
-		
-	if row.id:
-		if 'id' not in field_list:
-			field_list['id']=row.id
-		
-	if row.mandrel_od:
-		if 'mandrel_od' not in field_list:
-			field_list['mandrel_od']=row.mandrel_od
-
-	if row.top_connection:
-		if 'top_connection' not in field_list:
-			field_list['top_connection']=row.top_connection
-
-	if row.bottom_connection:
-		if 'bottom_connection' not in field_list:
-			field_list['bottom_connection']=row.bottom_connection
-
-	if row.elvator_recess:
-		if 'elvator_recess' not in field_list:
-			field_list['elvator_recess']=row.elvator_recess
-
-	if row.slip_recess_:
-		if 'slip_recess_' not in field_list:
-			field_list['slip_recess_']=row.slip_recess_
-
-	if row.service:
-		if 'service' not in field_list:
-			field_list['service']=row.service
-
-	if row.stud_bolt_size_lh_:
-		if 'stud_bolt_size_lh_' not in field_list:
-			field_list['stud_bolt_size_lh_']=row.stud_bolt_size_lh_
-		
-	if row.stroke:
-		if 'stroke' not in field_list:
-			field_list['stroke']=row.stroke
-		
-	if row.wrap_angle:
-		if 'wrap_angle' not in field_list:
-			field_list['wrap_angle']=row.wrap_angle
-		
-	if row.hard_facing:
-		if 'hard_facing' not in field_list:
-			field_list['hard_facing']=row.hard_facing
-		
-	if row.capacity:
-		if 'capacity' not in field_list:
-			field_list['capacity']=row.capacity
-		
-	if row.degree:
-		if 'degree' not in field_list:
-			field_list['degree']=row.degree
-		
-	if row.psi:
-		if 'psi' not in field_list:
-			field_list['psi']=row.psi
-		
-	if row.torque_guage:
-		if 'torque_guage' not in field_list:
-			field_list['torque_guage']=row.torque_guage
-		
-	if row.lift_cylinders:
-		if 'lift_cylinders' not in field_list:
-			field_list['lift_cylinders']=row.lift_cylinders
-
-	if row.pressure_rating_rh:
-		if 'pressure_rating_rh' not in field_list:
-			field_list['pressure_rating_rh']=row.pressure_rating_rh
-
-	if row.ss_ring_groove_:
-		if 'ss_ring_groove_' not in field_list:
-			field_list['ss_ring_groove_']=row.ss_ring_groove_
-
-	if row.packing_element:
-		if 'packing_element' not in field_list:
-			field_list['packing_element']=row.packing_element
-
-	if row.style:
-		if 'style' not in field_list:
-			field_list['style']=row.style
-
-	if row.used_for:
-		if 'used_for' not in field_list:
-			field_list['used_for']=row.used_for
-
-	if row.gasket_size_lh_:
-		if 'gasket_size_lh_' not in field_list:
-			field_list['gasket_size_lh_']=row.gasket_size_lh_
-
-	return field_list
