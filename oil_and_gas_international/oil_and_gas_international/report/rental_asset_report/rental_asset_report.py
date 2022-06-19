@@ -381,10 +381,11 @@ def get_columns(filters):
 	return columns
 def get_data(filters):
 	all_asset = frappe.db.get_list('Asset')
+	# print(all_asset)
 	all_items = dict()
 	final_list = list()
 	counter = 0 
-	while counter < len(all_asset)   : 
+	while counter < len(all_asset) : 
 		take_ass = frappe.get_doc('Asset' , all_asset[counter]['name'])
 		ass_dict = { 'asset_id' : all_asset[counter]['name'] , 'asset_name' : take_ass.asset_name , 'asset_category' : take_ass.asset_category , 'location' : take_ass.location , 
 		'company' : take_ass.company , 'status' : take_ass.status , 'rental_status' : take_ass.rental_status , 
@@ -392,7 +393,8 @@ def get_data(filters):
 		
 		}
 		try:
-			fetch_item = all_items[take_ass.item_code] 
+			all_items[take_ass.item_code] 
+			ass_dict.update(all_items[take_ass.item_code] )
 		
 
 		except: 
@@ -412,9 +414,10 @@ def get_data(filters):
 			'packing_element' : fetch_item.packing_element , 'style' : fetch_item.style , 'used_for' : fetch_item.used_for , 'packer_size' : fetch_item.packer_size
 				
 			}})
+			ass_dict.update(all_items[take_ass.item_code] )
 
 
-		ass_dict.update(all_items[take_ass.item_code] )
+		
 		final_list.append(ass_dict)
 
 		counter +=1 
