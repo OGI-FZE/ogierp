@@ -8,9 +8,7 @@ from numpy import take
 import frappe
 from frappe import _, get_all
 
-
-# Done by Mr.index 0_0 A.M
-
+# DONE by MR.index 0_0 A.M
 def execute(filters=None):
 	columns, data = get_columns(filters), get_data(filters)
 	return columns, data
@@ -383,31 +381,23 @@ def get_columns(filters):
 	return columns
 def get_data(filters):
 	all_asset = frappe.db.get_list('Asset')
-	# 057276699
 	all_items = dict()
-	# take_one = frappe.get_doc('Asset' , all_asset[0]['name'])
-	# print(take_one)
-	# print(take_one.item_code)
-	# tt = frappe.get_doc('Item' , take_one.item_code)
-	
 	final_list = list()
 	counter = 0 
 	while counter < len(all_asset)   : 
 		take_ass = frappe.get_doc('Asset' , all_asset[counter]['name'])
-		get_item_name = take_ass.item_code
 		ass_dict = { 'asset_id' : all_asset[counter]['name'] , 'asset_name' : take_ass.asset_name , 'asset_category' : take_ass.asset_category , 'location' : take_ass.location , 
 		'company' : take_ass.company , 'status' : take_ass.status , 'rental_status' : take_ass.rental_status , 
 		'item_name' : take_ass.item_name , 'item_code' : take_ass.item_code 
 		
 		}
-		
 		try:
 			fetch_item = all_items[take_ass.item_code] 
 		
 
 		except: 
-			fetch_item = frappe.get_doc('Item' , get_item_name)
-			all_items.update({get_item_name : {'item_group' : fetch_item.item_group , 'type' : fetch_item.type , 'ppf' : fetch_item.ppf ,
+			fetch_item = frappe.get_doc('Item' , take_ass.item_code)
+			all_items.update({take_ass.item_code : {'item_group' : fetch_item.item_group , 'type' : fetch_item.type , 'ppf' : fetch_item.ppf ,
 			'tool_joint_id' :fetch_item.tool_joint_id , 'tool_joint_od' : fetch_item.tool_joint_od , 'range' : fetch_item.range , 
 			'od_size_' : fetch_item.od_size_ , 'top_connection' : fetch_item.top_connection , 'bottom_connection' : fetch_item.bottom_connection , 
 			'service' : fetch_item.service , 'make':fetch_item.make , 'size': fetch_item.size , 'pin_connection' : fetch_item.pin_connection , 
@@ -429,6 +419,5 @@ def get_data(filters):
 
 		counter +=1 
 
-	
 	return final_list
 
