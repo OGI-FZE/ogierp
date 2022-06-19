@@ -8,6 +8,7 @@ from numpy import take
 import frappe
 from frappe import _, get_all
 
+
 # Done by Mr.index 0_0 A.M
 
 def execute(filters=None):
