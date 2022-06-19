@@ -388,7 +388,7 @@ def get_data(filters):
 	# print(take_one)
 	# print(take_one.item_code)
 	# tt = frappe.get_doc('Item' , take_one.item_code)
-	# print('>>>>>>>>>>>>>' , tt.naming_series)
+	
 	final_list = list()
 	counter = 0 
 	while counter < len(all_asset)   : 
@@ -399,8 +399,7 @@ def get_data(filters):
 		'item_name' : take_ass.item_name , 'item_code' : take_ass.item_code 
 		
 		}
-		# print( '>>>>>>>>>>>>>>>>>>>>>>>>>. ', ass_dict)
-# 'asset_id' : take_ass.asset_id , 
+		
 		try:
 			fetch_item = all_items[take_ass.item_code] 
 		
@@ -423,13 +422,12 @@ def get_data(filters):
 				
 			}})
 
-		# print( '>>>>>>>>>>>>22222222222222222>>>>>>>>>>>>>. ', all_items[take_ass.item_code])
 
 		ass_dict.update(all_items[take_ass.item_code] )
 		final_list.append(ass_dict)
 
 		counter +=1 
 
-	print(final_list)
+	
 	return final_list
 
