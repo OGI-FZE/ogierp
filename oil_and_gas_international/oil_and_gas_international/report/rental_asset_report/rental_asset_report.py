@@ -381,7 +381,6 @@ def get_columns(filters):
 	return columns
 def get_data(filters):
 	# all_asset = frappe.db.get_list('Asset',['*'])
-
 	if filters.get('asset') : 
 		all_asset = frappe.db.get_list('Asset',
     filters={
@@ -416,7 +415,6 @@ def get_data(filters):
 
 		except: 
 			if filters.get('parent_group'): 
-
 				fetch_item = frappe.get_doc({'doctype' : 'Item' , 'item_group' : filters.get('parent_group')} )
 			else : 
 				fetch_item = frappe.get_doc('Item' , i['item_code'])
@@ -435,9 +433,7 @@ def get_data(filters):
 			'packing_element' : fetch_item.packing_element , 'style' : fetch_item.style , 'used_for' : fetch_item.used_for , 'packer_size' : fetch_item.packer_size
 				
 			}})
-			ass_dict.update(all_items[i['item_code']] )
-
-
+			
 		ass_dict.update(all_items[i['item_code']] )
 		
 		final_list.append(ass_dict)
