@@ -409,16 +409,20 @@ def get_data(filters):
 		'item_name' : i['item_name'] , 'item_code' : i['item_code'] 
 		
 		}
+		fetch_item = ''
 		try:
 			all_items[i['item_code']] 
+			ass_dict.update(all_items[i['item_code']] )
+			final_list.append(ass_dict)
 		
 
 		except: 
+			fetch_item = frappe.get_doc('Item' , i['item_code'])
+
 			if filters.get('parent_group'): 
-				fetch_item = frappe.get_doc({'doctype' : 'Item' , 'item_group' : filters.get('parent_group')} )
-			else : 
-				fetch_item = frappe.get_doc('Item' , i['item_code'])
-			all_items.update({i['item_code'] : { 'parent_group' : (frappe.get_doc('Item Group' , fetch_item.item_group)).parent_item_group, 'item_group' : fetch_item.item_group , 'type' : fetch_item.type , 'ppf' : fetch_item.ppf ,
+				aa = filters.get('parent_group')
+				if f'{fetch_item.item_group}' ==   f'{aa}': 
+					all_items.update({i['item_code'] : { 'parent_group' : (frappe.get_doc('Item Group' , fetch_item.item_group)).parent_item_group, 'item_group' : fetch_item.item_group , 'type' : fetch_item.type , 'ppf' : fetch_item.ppf ,
 			'tool_joint_id' :fetch_item.tool_joint_id , 'tool_joint_od' : fetch_item.tool_joint_od , 'range' : fetch_item.range , 
 			'od_size_' : fetch_item.od_size_ , 'top_connection' : fetch_item.top_connection , 'bottom_connection' : fetch_item.bottom_connection , 
 			'service' : fetch_item.service , 'make':fetch_item.make , 'size': fetch_item.size , 'pin_connection' : fetch_item.pin_connection , 
@@ -433,10 +437,41 @@ def get_data(filters):
 			'packing_element' : fetch_item.packing_element , 'style' : fetch_item.style , 'used_for' : fetch_item.used_for , 'packer_size' : fetch_item.packer_size
 				
 			}})
+					ass_dict.update(all_items[i['item_code']] )
+					final_list.append(ass_dict)
+
+
+
+				else : 
+					pass 
+
+
+
+
+				
+			else : 
+				
+				all_items.update({i['item_code'] : { 'parent_group' : (frappe.get_doc('Item Group' , fetch_item.item_group)).parent_item_group, 'item_group' : fetch_item.item_group , 'type' : fetch_item.type , 'ppf' : fetch_item.ppf ,
+				'tool_joint_id' :fetch_item.tool_joint_id , 'tool_joint_od' : fetch_item.tool_joint_od , 'range' : fetch_item.range , 
+				'od_size_' : fetch_item.od_size_ , 'top_connection' : fetch_item.top_connection , 'bottom_connection' : fetch_item.bottom_connection , 
+				'service' : fetch_item.service , 'make':fetch_item.make , 'size': fetch_item.size , 'pin_connection' : fetch_item.pin_connection , 
+				'box_connection' : fetch_item.box_connection , 'od': fetch_item.od , 'wrap_angle' : fetch_item.wrap_angle , 'hard_facing' : fetch_item.hard_facing , 
+				'model' : fetch_item.model , 'degree' : fetch_item.degree , 'capacity' : fetch_item.capacity , 'material' : fetch_item.material , 
+				'oal' : fetch_item.oal , 'pin_box' : fetch_item.pin_box , 'id': fetch_item.id , 'stroke' : fetch_item.stroke , 
+				'pressure_rating' : fetch_item.pressure_rating , 'gasket_size_rh_' : fetch_item.gasket_size_rh_ , 'no_of_stud_bolts_rh' : fetch_item.no_of_stud_bolts_rh , 
+				'stud_bolt_size_rh'  : fetch_item.stud_bolt_size_rh , 'no_of_stud_bolts_lh_' : fetch_item.no_of_stud_bolts_lh_ , 'pressure_rating_rh' : fetch_item.pressure_rating_rh , 
+				'ss_ring_groove_' : fetch_item.ss_ring_groove_ , 'gasket_size_lh_' : fetch_item.gasket_size_lh_ , 'part_number' : fetch_item.part_number , 'plastic_coating' : fetch_item.plastic_coating , 
+				'hard_banding_' : fetch_item.hard_banding_ , 'mandrel_od' : fetch_item.mandrel_od , 'elvator_recess' : fetch_item.elvator_recess , 
+				'slip_recess_' : fetch_item.slip_recess_ , 'psi' : fetch_item.psi , 'torque_guage' : fetch_item.torque_guage , 'lift_cylinders' : fetch_item.lift_cylinders , 
+				'packing_element' : fetch_item.packing_element , 'style' : fetch_item.style , 'used_for' : fetch_item.used_for , 'packer_size' : fetch_item.packer_size
+					
+				}})
+				ass_dict.update(all_items[i['item_code']] )
+				final_list.append(ass_dict)
+
+
 			
-		ass_dict.update(all_items[i['item_code']] )
 		
-		final_list.append(ass_dict)
 
 
 	return final_list
