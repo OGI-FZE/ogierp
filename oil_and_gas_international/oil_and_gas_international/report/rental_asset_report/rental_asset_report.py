@@ -78,13 +78,13 @@ def get_columns(filters):
 			"width": 130
 		},
 			
-		# {
-		# 	"label": "Sub Category",
-		# 	"fieldname": "parent_group",
-		# 	"fieldtype": "Link",
-		# 	"options":'Item Group',
-		# 	"width": 130
-		# },
+		{
+			"label": "Sub Category",
+			"fieldname": "parent_group",
+			"fieldtype": "Link",
+			"options":'Item Group',
+			"width": 130
+		},
 		{
 			"label": "Sub-sub Category",
 			"fieldname": "item_group",
@@ -380,8 +380,28 @@ def get_columns(filters):
 	
 	return columns
 def get_data(filters):
-	all_asset = frappe.db.get_list('Asset',['*'])
+	# all_asset = frappe.db.get_list('Asset',['*'])
+
+	if filters.get('asset') : 
+		all_asset = frappe.db.get_list('Asset',
+    filters={
+        'name': filters.get('asset') 
+    },
+    fields=['name' ,  'asset_name' ,'asset_category'  , 'location' , 'company' , 'status' , 'rental_status' , 'item_name' , 'item_code']
+	)
+
 	
+	elif filters.get('asset_category') : 
+		all_asset = frappe.db.get_list('Asset',
+    filters={
+        'asset_category': filters.get('asset_category') 
+    },
+    fields=['name' ,  'asset_name' ,'asset_category'  , 'location' , 'company' , 'status' , 'rental_status' , 'item_name' , 'item_code']
+	)
+	else : 
+		all_asset = frappe.db.get_list('Asset', fields=['name' ,  'asset_name' ,'asset_category'  , 'location' , 'company' , 'status' , 'rental_status' , 'item_name' , 'item_code'])
+
+
 	all_items = dict()
 	final_list = list()
 	for i in all_asset : 
@@ -395,8 +415,12 @@ def get_data(filters):
 		
 
 		except: 
-			fetch_item = frappe.get_doc('Item' , i['item_code'])
-			all_items.update({i['item_code'] : {'item_group' : fetch_item.item_group , 'type' : fetch_item.type , 'ppf' : fetch_item.ppf ,
+			if filters.get('parent_group'): 
+
+				fetch_item = frappe.get_doc({'doctype' : 'Item' , 'item_group' : filters.get('parent_group')} )
+			else : 
+				fetch_item = frappe.get_doc('Item' , i['item_code'])
+			all_items.update({i['item_code'] : { 'parent_group' : (frappe.get_doc('Item Group' , fetch_item.item_group)).parent_item_group, 'item_group' : fetch_item.item_group , 'type' : fetch_item.type , 'ppf' : fetch_item.ppf ,
 			'tool_joint_id' :fetch_item.tool_joint_id , 'tool_joint_od' : fetch_item.tool_joint_od , 'range' : fetch_item.range , 
 			'od_size_' : fetch_item.od_size_ , 'top_connection' : fetch_item.top_connection , 'bottom_connection' : fetch_item.bottom_connection , 
 			'service' : fetch_item.service , 'make':fetch_item.make , 'size': fetch_item.size , 'pin_connection' : fetch_item.pin_connection , 
