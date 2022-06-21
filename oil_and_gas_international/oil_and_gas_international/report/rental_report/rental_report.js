@@ -15,7 +15,7 @@ frappe.query_reports["Rental Report"] = {
 			"fieldname":"grand_parent_group",
 			"label": __("Category"),
 			"fieldtype": "Link",
-			"options":'Item Group',
+			"options":'Asset Category',
 			"width": "80",
 		},
 		{
