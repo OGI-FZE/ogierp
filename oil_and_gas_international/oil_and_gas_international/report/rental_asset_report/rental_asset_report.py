@@ -8,7 +8,7 @@ from numpy import take
 import frappe
 from frappe import _, get_all
 
-# DONE by MR.index 0_0 A.M
+# DONE by MR.index 0_0 A.M 
 def execute(filters=None):
 	columns, data = get_columns(filters), get_data(filters)
 	return columns, data
@@ -29,12 +29,34 @@ def get_columns(filters):
 			"width": 150
 		},
 		{
+			"label": "Currently With",
+			"fieldname": "currently_with",
+			"fieldtype": "Link",
+			"options":'Customer',
+			"width": 130
+		},
+		{
 			"label": "Category",
 			"fieldname": "asset_category",
 			"fieldtype": "Link",
 			"options":'Item Group',
 			"width": 130
 		},
+		{
+			"label": "Sub Category",
+			"fieldname": "parent_group",
+			"fieldtype": "Link",
+			"options":'Item Group',
+			"width": 130
+		},
+		{
+			"label": "Sub-sub Category",
+			"fieldname": "item_group",
+			"fieldtype": "Link",
+			"options":'Item Group',
+			"width": 130
+		},
+		
 		{
 			"label": "location",
 			"fieldname": "location",
@@ -78,20 +100,6 @@ def get_columns(filters):
 			"width": 130
 		},
 			
-		{
-			"label": "Sub Category",
-			"fieldname": "parent_group",
-			"fieldtype": "Link",
-			"options":'Item Group',
-			"width": 130
-		},
-		{
-			"label": "Sub-sub Category",
-			"fieldname": "item_group",
-			"fieldtype": "Link",
-			"options":'Item Group',
-			"width": 130
-		},
 		
 
 		{
@@ -386,7 +394,7 @@ def get_data(filters):
     filters={
         'name': filters.get('asset') 
     },
-    fields=['name' ,  'asset_name' ,'asset_category'  , 'location' , 'company' , 'status' , 'rental_status' , 'item_name' , 'item_code']
+    fields=['name' ,  'asset_name','currently_with' ,'asset_category'  , 'location' , 'company' , 'status' , 'rental_status' , 'item_name' , 'item_code']
 	)
 
 	
@@ -395,16 +403,16 @@ def get_data(filters):
     filters={
         'asset_category': filters.get('asset_category') 
     },
-    fields=['name' ,  'asset_name' ,'asset_category'  , 'location' , 'company' , 'status' , 'rental_status' , 'item_name' , 'item_code']
+    fields=['name' ,  'asset_name','currently_with' ,'asset_category'  , 'location' , 'company' , 'status' , 'rental_status' , 'item_name' , 'item_code']
 	)
 	else : 
-		all_asset = frappe.db.get_list('Asset', fields=['name' ,  'asset_name' ,'asset_category'  , 'location' , 'company' , 'status' , 'rental_status' , 'item_name' , 'item_code'])
+		all_asset = frappe.db.get_list('Asset', fields=['name' ,  'asset_name','currently_with' ,'asset_category'  , 'location' , 'company' , 'status' , 'rental_status' , 'item_name' , 'item_code'])
 
 
 	all_items = dict()
 	final_list = list()
 	for i in all_asset : 
-		ass_dict = { 'asset_id' : i['name'] , 'asset_name' : i['asset_name'] , 'asset_category' : i['asset_category'] , 'location' : i['location'] , 
+		ass_dict = { 'asset_id' : i['name'] , 'asset_name' : i['asset_name']  , 'currently_with' : i['currently_with'], 'asset_category' : i['asset_category'] , 'location' : i['location'] , 
 		'company' : i['company'] , 'status' : i['status'] , 'rental_status' : i['rental_status'] , 
 		'item_name' : i['item_name'] , 'item_code' : i['item_code'] 
 		
