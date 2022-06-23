@@ -71,3 +71,4 @@ def get_desc(doc,method=None):
     if doc.rental_timesheet and doc.items:
         for item in doc.items:
             item.description = item.details
+
