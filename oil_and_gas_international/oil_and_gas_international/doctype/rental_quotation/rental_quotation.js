@@ -129,9 +129,10 @@ frappe.ui.form.on('Rental Quotation Item', {
 		calculate_lost_and_damage_price(frm, cdt, cdn)
 		const row = locals[cdt][cdn]
 		const item_code = row.item_code
+		if(!row.description){
 		frappe.db.get_value('Item', item_code, ["description"], function(value) {
 				frappe.model.set_value(cdt, cdn, "description", value.description);
-		});
+		});}
 	},
 	qty(frm, cdt, cdn) {
 		calc_amount(frm, cdt, cdn)
@@ -265,6 +266,11 @@ const add_rental_order = () => {
 				cur_doc.departments = doc.departments
 				cur_doc.terms = doc.terms
 				cur_doc.terms_and_conditions_details = doc.terms_and_conditions_details
+				cur_doc.remarks = doc.remarks
+				cur_doc.prices = doc.prices
+				cur_doc.delivery_terms = doc.delivery_terms
+				cur_doc.payment_terms = doc.payment_terms
+				cur_doc.freight = doc.freight
 				// cur_doc.sales_person_link = doc.sales_person
 				frappe.model.set_value('Rental Order', cur_doc.name, "sales_person_link", doc.sales_person)
 				frappe.model.set_value('Rental Order', cur_doc.name, "currency", doc.currency)

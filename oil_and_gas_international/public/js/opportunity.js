@@ -77,7 +77,7 @@ const create_rental_quotation = (frm) => {
                 cur_frm.doc.valid_till = doc.expected_closing;
                 cur_frm.doc.departments = doc.departments;
                 cur_frm.doc.sales_person = doc.sales_person;
-                // cur_frm.doc.opportunity = doc.name;
+                cur_frm.doc.opportunity = doc.name;
                 cur_frm.doc.items = []
                 for (let row of doc.items) {
                     if (row.item_type == 'Rental') {
