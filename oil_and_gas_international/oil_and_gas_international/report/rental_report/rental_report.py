@@ -9,7 +9,7 @@ from numpy import take
 import frappe
 from frappe import _, get_all
 
-# DONE by MR.index 0_0 A.M - enhanced algorithm-24 seconds to render
+# DONE by MR.index 0_0 A.M
 def execute(filters=None):
 	columns, data = get_columns(filters), get_data(filters)
 	return columns, data
@@ -119,8 +119,51 @@ def get_columns(filters):
 			"fieldtype": "Data",
 			"width": 130
 		},
-		
+		# In transit
+		 {
+			"label": "In transit",
+			"fieldname": "in_transit",
+			"fieldtype": "Data",
+			"width": 130
+		},
 
+ 		{
+			"label": "Sold",
+			"fieldname": "sold",
+			"fieldtype": "Data",
+			"width": 130
+		},
+
+		{
+			"label": "Scrapped",
+			"fieldname": "scrapped",
+			"fieldtype": "Data",
+			"width": 130
+		},
+		{
+			"label": "In Maintenance",
+			"fieldname": "in_maintenance",
+			"fieldtype": "Data",
+			"width": 130
+		},
+		{
+			"label": "Out of Order",
+			"fieldname": "out_of_order",
+			"fieldtype": "Data",
+			"width": 130
+		},
+		{
+			"label": "Delivered to supplier",
+			"fieldname": "delivered_to_supplier",
+			"fieldtype": "Data",
+			"width": 130
+		},
+		{
+			"label": "Sub Rental Asset",
+			"fieldname": "sub_rental_asset",
+			"fieldtype": "Data",
+			"width": 130
+		},
 		{
 			"label": "Type",
 			"fieldtype": "Data",
@@ -466,10 +509,10 @@ def get_data(filters):
 	full_assets = frappe.db.get_list('Asset', fields=[ 'rental_status'  , 'item_code' , 'docstatus'])
 
 
-
+# in_transit
 	for i in all_asset : 
 		counter = 0 
-		no_asset = no_ava = no_use = no_hold = 0;
+		no_asset = no_ava = no_use = no_hold = no_trans = no_sold = no_scrapp = no_maint = no_out = no_deliver = no_subrent = 0 ;
 		while counter < len(full_assets) :  
 			if full_assets[counter]['item_code'] == i['item_code'] and full_assets[counter]['docstatus'] == 1 :
 				no_asset +=1 
@@ -483,11 +526,35 @@ def get_data(filters):
 				elif  full_assets[counter]['rental_status'] == 'On hold for Inspection' :
 					no_hold +=1
 					full_assets.remove(full_assets[counter])
+				elif  full_assets[counter]['rental_status'] == 'In transit' :
+					no_trans +=1
+					full_assets.remove(full_assets[counter])
+				elif  full_assets[counter]['rental_status'] == 'Sold' :
+					no_sold +=1
+					full_assets.remove(full_assets[counter])
+				elif  full_assets[counter]['rental_status'] == 'Scrapped' :
+					no_scrapp +=1
+					full_assets.remove(full_assets[counter])
+				elif  full_assets[counter]['rental_status'] == 'In Maintenance' :
+					no_maint +=1
+					full_assets.remove(full_assets[counter])
+				elif  full_assets[counter]['rental_status'] == 'Out of Order' :
+					no_out +=1
+					full_assets.remove(full_assets[counter])
+				elif  full_assets[counter]['rental_status'] == 'Delivered to supplier' :
+					no_deliver +=1
+					full_assets.remove(full_assets[counter])
+				elif  full_assets[counter]['rental_status'] == 'Sub Rental Asset' :
+					no_subrent +=1
+					full_assets.remove(full_assets[counter])
 
 			else : 
 				counter +=1 
 
-		i.update({'total_assets' : no_asset , 'available' : no_ava , 'rented' : no_use , 'under_inspection' : no_hold , 'parent_group' : (frappe.get_doc('Item Group' ,i['item_group'])).parent_item_group   })
+		i.update({'total_assets' : no_asset , 'available' : no_ava , 'rented' : no_use , 'under_inspection' : no_hold , 
+		'in_transit' : no_trans , 'sold' : no_sold , 'scrapped' : no_scrapp , 'in_maintenance' : no_maint , 'out_of_order' : no_out , 
+		'delivered_to_supplier' : no_deliver , 'sub_rental_asset' : no_subrent , 
+		'parent_group' : (frappe.get_doc('Item Group' ,i['item_group'])).parent_item_group   })
 
 		final_list.append(i)
 
