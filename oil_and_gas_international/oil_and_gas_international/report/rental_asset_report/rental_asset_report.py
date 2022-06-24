@@ -8,7 +8,7 @@ from numpy import take
 import frappe
 from frappe import _, get_all
 
-# DONE by MR.index 0_0 A.M 
+# DONE by MR.index 0_0 A.M
 def execute(filters=None):
 	columns, data = get_columns(filters), get_data(filters)
 	return columns, data
