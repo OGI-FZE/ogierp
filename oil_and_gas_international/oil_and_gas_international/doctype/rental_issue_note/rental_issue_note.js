@@ -108,19 +108,21 @@ const convert_rate = function(frm){
 }
 
 const get_conversion_rate = (frm) => {
-	let company_currency = erpnext.get_currency(frm.doc.company);
-	frappe.call({
-		method: "erpnext.setup.utils.get_exchange_rate",
-		args: {
-			from_currency: company_currency,
-			to_currency: frm.doc.currency
-		},
-		callback: function(r) {
-			if (r.message) {
-				frm.set_value("conversion_rate",r.message)
+	if(frm.doc.docstatus == 0){
+		let company_currency = erpnext.get_currency(frm.doc.company);
+		frappe.call({
+			method: "erpnext.setup.utils.get_exchange_rate",
+			args: {
+				from_currency: company_currency,
+				to_currency: frm.doc.currency
+			},
+			callback: function(r) {
+				if (r.message) {
+					frm.set_value("conversion_rate",r.message)
+				}
 			}
-		}
-	});
+		});
+	}
 }
 
 frappe.ui.form.on('Rental Issue Note Item', {

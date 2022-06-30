@@ -135,7 +135,6 @@ def get_asset_details(asset):
 	return details.asset_name, delta.days, purchase_date, details.supplier_info, details.gross_purchase_amount, details.asset_category
 
 def get_data(filters):
-	print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
 	data = []
 	all_data = get_data_from_timesheets(filters)
 	data_list = list(all_data.values())

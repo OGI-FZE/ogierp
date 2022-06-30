@@ -67,11 +67,11 @@ class RentalIssueNote(Document):
 					# issue date
 					if (self.date == today()) or (self.date < today()):
 						frappe.db.set_value("Asset", asset, "rental_status", "In transit")
-						frappe.db.set_value("Asset", asset, "rental_order", self.rental_order)
+						# frappe.db.set_value("Asset", asset, "rental_order", self.rental_order)
 						
 					if (self.rental_start_date == today()) or (self.rental_start_date < today()):# issue date
 						frappe.db.set_value("Asset", asset, "rental_status", "In Use")
-						frappe.db.set_value("Asset", asset, "rental_order", self.rental_order)
+						# frappe.db.set_value("Asset", asset, "rental_order", self.rental_order)
 
 					# updating rental order item status
 					if row.rental_order_item:
