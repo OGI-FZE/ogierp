@@ -53,7 +53,7 @@ const get_assets_to_issue = (frm, cdt, cdn) => {
 			});
 		    if(asset_list.length){
 		    	if(frm.doc.rental_order){
-		    		filters['rental_status'] = "Available For Rent";
+		    		filters['rental_status'] = ["in","Available For Rent","On hold for Inspection"];
 		    	}
 		    	if(frm.doc.sub_rental_order){
 		    		filters['rental_status'] = "On hold for Inspection";
@@ -64,7 +64,7 @@ const get_assets_to_issue = (frm, cdt, cdn) => {
 		    }
 		    else{
 		    	if(frm.doc.rental_order){
-		    		filters['rental_status'] = "Available For Rent";
+		    		filters['rental_status'] = ["in","Available For Rent","On hold for Inspection"];
 		    	}
 		    	if(frm.doc.sub_rental_order){
 		    		filters['rental_status'] = "On hold for Inspection";

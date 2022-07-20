@@ -16,6 +16,7 @@ class RentalIssueNote(Document):
 			serial_qty = 0
 			for asset in assets:
 				if asset:
+					asset_doc = frappe.get_doc("Asset",asset)
 					if not frappe.db.exists("Asset", asset):
 						frappe.throw(f"Asset {asset} not exists!")
 
@@ -25,6 +26,16 @@ class RentalIssueNote(Document):
 							f"Asset {asset} is not available for rent!")
 					else:
 						serial_qty = serial_qty + 1
+					#If tubular,
+					if asset_doc.is_string_asset:
+						for ast in asset_doc.get("tubulars"):
+							if not frappe.db.exists("Asset", ast.asset):
+								frappe.throw(f"Tubular Asset {ast.asset} not exists!")
+
+							status = frappe.get_value("Asset", ast.asset, "rental_status")
+							if status != "Available for Rent":
+								frappe.throw(
+									f"Tubular Asset {ast.asset} is not available for rent!")
 
 			if serial_qty != row.qty:
 				frappe.throw(
@@ -43,6 +54,13 @@ class RentalIssueNote(Document):
 						cdn = row.rental_order_item
 						delivered_qty = frappe.get_value(cdt, cdn, "delivered_qty")
 						frappe.set_value(cdt, cdn, "delivered_qty", int(delivered_qty) - 1)
+					asset_doc = frappe.get_doc("Asset",asset)
+					if asset_doc.is_string_asset:
+						for ast in asset_doc.get("tubulars"):
+							frappe.db.set_value("Asset", ast.asset, "rental_status", "Available for Rent")
+							frappe.db.set_value("Tubulars", ast.name, "rental_status", "Available for Rent")
+							
+
 
 
 		movements = frappe.get_list("Asset Movement",filters={'rental_issue_note':self.name})
@@ -63,6 +81,7 @@ class RentalIssueNote(Document):
 			assets = assets.split("\n")
 			for asset in assets:
 				if asset:
+					asset_doc = frappe.get_doc("Asset",asset)
 					# updating asset status
 					# issue date
 					if (self.date == today()) or (self.date < today()):
@@ -109,6 +128,39 @@ class RentalIssueNote(Document):
 					frappe.db.commit()
 					
 					frappe.db.set_value("Asset", asset, "currently_with", self.customer)
+					#If tubular,
+					if asset_doc.is_string_asset:
+						for ast in asset_doc.get("tubulars"):
+							if (self.date == today()) or (self.date < today()):
+								frappe.db.set_value("Asset", ast.asset, "rental_status", "In transit")
+								frappe.db.set_value("Tubulars", ast.name, "rental_status", "In transit")
+								
+							if (self.rental_start_date == today()) or (self.rental_start_date < today()):# issue date
+								frappe.db.set_value("Asset", ast.asset, "rental_status", "In Use")
+								frappe.db.set_value("Tubulars", ast.name, "rental_status", "In Use")
+
+							# asset movement
+
+							asset_location = frappe.get_value("Asset", ast.asset, "location")
+							if asset_location != row.asset_location:
+								asset_movement_doc = frappe.get_doc({
+									"doctype": "Asset Movement",
+									"transaction_date": today(),
+									"purpose": "Transfer",
+									"rental_issue_note": self.name
+								})
+								asset_movement_doc.append("assets", {
+									"asset": ast.asset,
+									"target_location": row.asset_location
+								})
+								asset_movement_doc.save()
+								asset_movement_doc.submit()
+
+							frappe.db.commit()
+							frappe.db.set_value("Tubulars", ast.name, "location", row.asset_location)
+							frappe.db.set_value("Asset", ast.asset, "currently_with", self.customer)
+
+
 
 
 @frappe.whitelist()

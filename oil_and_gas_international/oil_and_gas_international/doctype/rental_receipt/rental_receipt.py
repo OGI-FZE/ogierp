@@ -21,9 +21,20 @@ class RentalReceipt(Document):
 					status = frappe.get_value("Asset", asset, "rental_status")
 					if status != "In Use":
 						frappe.throw(
-							f"Asset {asset} is not available for rent!")
+							f"Asset {asset} is not in use!")
 					else:
 						serial_qty = serial_qty + 1
+					#If tubular,
+					asset_doc = frappe.get_doc("Asset",asset)
+					if asset_doc.is_string_asset:
+						for ast in asset_doc.get("tubulars"):
+							if not frappe.db.exists("Asset", ast.asset):
+								frappe.throw(f"Tubular Asset {ast.asset} not exists!")
+
+							status = frappe.get_value("Asset", ast.asset, "rental_status")
+							if status != "In Use":
+								frappe.throw(
+									f"Tubular Asset {ast.asset} is not in use!")
 			if serial_qty != row.qty:
 				frappe.throw(
 					f"Serial no's count({serial_qty}) not matched with the Qty({row.qty}) of the asset!")
@@ -41,14 +52,25 @@ class RentalReceipt(Document):
 						cdn = row.rental_order_item
 						received_qty = frappe.get_value(cdt, cdn, "received_qty")
 						frappe.set_value(cdt, cdn, "received_qty", int(received_qty) - int(row.qty))
+					asset_doc = frappe.get_doc("Asset",asset)
+					if asset_doc.is_string_asset:
+						for ast in asset_doc.get("tubulars"):
+							frappe.db.set_value("Asset", ast.asset, "rental_status", "In Use")
+							frappe.db.set_value("Tubulars", ast.name, "rental_status", "In Use")
+
 
 
 	def on_submit(self):
 		for row in self.items:
+			if not self.rental_stop_date:
+				frappe.throw("Please provide rental stop date")
+			if not self.receipt_date:
+				frappe.throw("Please provide receipt date")
 			assets = row.assets
 			assets = assets.split("\n")
 			for asset in assets:
 				if asset:
+					asset_doc = frappe.get_doc("Asset",asset)
 					# updating asset status
 
 					if self.rental_stop_date <= today():
@@ -68,8 +90,8 @@ class RentalReceipt(Document):
 						if not received_qty:
 							received_qty = 0
 
-						if received_qty > delivered_qty:
-							frappe.throw(f"Can not receive more than remaining delivered qty in Rental Order Item({delivered_qty-received_qty})")
+						# if received_qty > delivered_qty:
+						# 	frappe.throw(f"Can not receive more than remaining delivered qty in Rental Order Item({delivered_qty-received_qty})")
 						
 						frappe.set_value(cdt, cdn, "received_qty", int(received_qty) + int(row.qty))
 						if received_qty == qty:
@@ -93,6 +115,35 @@ class RentalReceipt(Document):
 
 					frappe.db.commit()
 					frappe.db.set_value("Asset", asset, "currently_with", "")
+					#If tubular,
+					if asset_doc.is_string_asset:
+						for ast in asset_doc.get("tubulars"):
+							if self.rental_stop_date <= today():
+								frappe.db.set_value("Asset", ast.asset, "rental_status", "In transit")
+								frappe.db.set_value("Tubulars", ast.name, "rental_status", "In transit")
+								
+							if self.receipt_date <= today():
+								frappe.db.set_value("Asset", ast.asset, "rental_status", "On hold for Inspection")
+								# frappe.db.set_value("Asset", ast.asset, "rental_order", "")
+								frappe.db.set_value("Tubulars", ast.name, "rental_status", "On hold for Inspection")
+							frappe.db.set_value("Tubulars", ast.name, "location", row.asset_location)
+							# asset movement
+							asset_location = frappe.get_value("Asset", ast.asset, "location")
+							if asset_location != row.asset_location:
+								asset_movement_doc = frappe.get_doc({
+									"doctype": "Asset Movement",
+									"transaction_date": today(),
+									"purpose": "Transfer"
+								})
+								asset_movement_doc.append("assets", {
+									"asset": ast.asset,
+									"target_location": row.asset_location
+								})
+								asset_movement_doc.save()
+								asset_movement_doc.submit()
+
+							frappe.db.commit()
+							frappe.db.set_value("Asset", ast.asset, "currently_with", "")
 		self.set('status','Submitted')
 
 
@@ -105,3 +156,17 @@ def get_rental_order_items(docname=None):
 	doc = frappe.get_doc("Rental Order", docname)
 
 	return doc.items
+
+@frappe.whitelist()
+def get_rental_issue_assets(ro=None,item_code=None):
+	asset_list =[]
+	rin_list = frappe.db.get_list("Rental Issue Note",{'rental_order':ro,'docstatus':1},['name'])
+	for rin in rin_list:
+		rin = frappe.get_doc("Rental Issue Note",rin.name)
+		for row in rin.items:
+			if row.item_code == item_code:
+				assets = row.assets
+				assets = assets.split("\n")
+				asset_list = list(set(asset_list + assets))
+
+	return asset_list

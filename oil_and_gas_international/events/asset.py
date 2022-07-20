@@ -1,4 +1,6 @@
 import frappe
+from frappe.utils import today 
+from frappe.utils import now_datetime
 
 def create_stock_entry_for_asset_conversion (doc, method):
     '''
@@ -57,3 +59,29 @@ def create_stock_entry_for_asset_conversion (doc, method):
         frappe.msgprint(f'Stock Entry# {stock_entry.name} Created')
         frappe.msgprint(f'Serial No {doc.asset_name} status updated')
 
+@frappe.whitelist()
+def set_initial_location(asset=None):
+    asset_doc = frappe.get_doc("Asset",asset)
+    current_loc = asset_doc.location
+    init_loc = frappe.db.sql("""select tami.target_location from `tabAsset Movement` tam join `tabAsset Movement Item` tami on tam.name=tami.parent where
+        tami.asset='{0}' and tam.purpose='Receipt' and tam.docstatus=1""".format(asset))
+    init_loc = init_loc[0][0]
+
+    if init_loc:
+        # asset movement to put it back in initial location
+        if current_loc != init_loc:
+            asset_movement_doc = frappe.get_doc({
+                "doctype": "Asset Movement",
+                "transaction_date": now_datetime(),
+                "purpose": "Transfer"
+            })
+            asset_movement_doc.append("assets", {
+                "asset": asset,
+                "source_location": current_loc,
+                "target_location": init_loc
+            })
+            asset_movement_doc.save()
+            asset_movement_doc.submit()
+
+        frappe.db.commit()
+    return init_loc

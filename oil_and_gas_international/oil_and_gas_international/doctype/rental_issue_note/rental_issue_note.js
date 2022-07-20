@@ -323,6 +323,7 @@ const get_assets_to_issue = (frm, cdt, cdn) => {
 		    	filters['item_code'] = row.item_code;
 		    	filters['docstatus'] = 1;
 		    }
+		  console.log("filters",filters)
 			return {
 				filters: filters
 			}

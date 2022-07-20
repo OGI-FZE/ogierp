@@ -118,6 +118,7 @@ const set_project = (frm) => {
 }
 
 const get_assets_to_receive = (frm, cdt, cdn) => {
+	const row = locals[cdt][cdn]
 	const doctype = "Asset"
 	new frappe.ui.form.MultiSelectDialog({
 		doctype: doctype,
@@ -126,12 +127,35 @@ const get_assets_to_receive = (frm, cdt, cdn) => {
 			asset_name: null,
 		},
 		date_field: "transaction_date",
+
 		get_query() {
+			let asset_list = []
+			let filters = {};
+			if(frm.doc.rental_issue_note){
+				let rin = frm.doc.rental_issue_note
+				frappe.model.with_doc("Rental Issue Note",rin, function(){
+					var issue = frappe.model.get_doc("Rental Issue Note",rin);
+					$.each(issue.items, function(_idx, row) {
+						if (row.assets) asset_list.push(row.assets);
+					});
+				})
+			}
+			else{
+				frappe.call({
+					method: "oil_and_gas_international.oil_and_gas_international.doctype.rental_receipt.rental_receipt.get_rental_issue_assets",
+					args: { ro: frm.doc.rental_order,item_code:row.item_code },
+					async: false,
+					callback(res){
+						asset_list=res.message
+					}
+				})
+			}
+			filters['name'] = ['in',asset_list];
+			filters['rental_status'] = ["in",["In Use","In transit"]];
+			filters['item_code'] = row.item_code;
+			filters['docstatus'] = 1;
 			return {
-				"filters": {
-					"rental_status": ["in",["In Use","In transit"]],
-					"rental_order": frm.doc.rental_order
-				}
+				filters: filters
 			}
 		},
 		action(selections) {
