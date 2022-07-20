@@ -258,6 +258,9 @@ fixtures = [
                 'Asset-is_sub_rental_asset',
                 'Asset-sub_rental_order',
                 'Asset-currently_with',
+                'Asset-tubulars',
+                'Asset-section_break_25',
+                'Asset-is_string_asset',
 
                 # Opportunity
                 'Opportunity-item_type',
