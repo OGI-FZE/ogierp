@@ -17,15 +17,6 @@ class RentalOrder(Document):
     def on_update(self):
         pass
 
-    # def before_cancel(self):
-    #     assets = frappe.get_list("Asset",filters={'rental_order':self.name})
-    #     print("\n>>>>>>>>>>assets",assets)
-    #     if assets:
-    #         for asset in assets:
-    #             print("\nasetttttttttttttttttttt",asset,asset.name)
-    #             frappe.db.set_value("Asset", asset.name, "rental_order", '')
-
-
 @frappe.whitelist()
 def get_rental_quotation_items(docname=None):
     if not docname:

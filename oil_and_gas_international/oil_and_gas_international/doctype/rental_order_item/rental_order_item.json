@@ -6,6 +6,7 @@
  "engine": "InnoDB",
  "field_order": [
   "item_code",
+  "is_string",
   "from_date",
   "column_break_2",
   "item_name",
@@ -97,8 +98,8 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Asset Location",
-   "options": "Location",
-   "reqd": 1
+   "mandatory_depends_on": "eval:!doc.is_string",
+   "options": "Location"
   },
   {
    "fieldname": "from_date",
@@ -264,12 +265,20 @@
    "fieldtype": "Currency",
    "label": "Base Billed Amount (Company Currency)",
    "options": "Company:company:default_currency"
+  },
+  {
+   "default": "0",
+   "fetch_from": "item_code.is_string",
+   "fieldname": "is_string",
+   "fieldtype": "Check",
+   "label": "Is String",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2022-04-16 10:27:54.195510",
+ "modified": "2022-07-23 10:34:34.786162",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Rental Order Item",

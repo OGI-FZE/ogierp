@@ -213,7 +213,8 @@ const set_query = (frm) => {
 	frm.fields_dict['items'].grid.get_field('item_code').get_query = function (doc, cdt, cdn) {
 		return {
 			filters: [
-				['item_type', '=', 'Rental']
+				['item_type', '=', 'Rental'],
+				['is_fixed_asset', '=', 1]
 			]
 		}
 	}

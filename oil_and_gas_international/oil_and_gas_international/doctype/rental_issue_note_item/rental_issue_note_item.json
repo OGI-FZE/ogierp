@@ -6,6 +6,7 @@
  "engine": "InnoDB",
  "field_order": [
   "item_code",
+  "is_string",
   "column_break_2",
   "item_name",
   "description_section",
@@ -81,14 +82,14 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Asset Location",
-   "options": "Location",
-   "reqd": 1
+   "mandatory_depends_on": "eval:!doc.is_string",
+   "options": "Location"
   },
   {
    "fieldname": "assets",
    "fieldtype": "Small Text",
    "label": "Assets",
-   "reqd": 1
+   "mandatory_depends_on": "eval:!doc.is_string"
   },
   {
    "fieldname": "get_assets",
@@ -232,12 +233,20 @@
    "fieldname": "description",
    "fieldtype": "Text Editor",
    "label": "Description"
+  },
+  {
+   "default": "0",
+   "fetch_from": "item_code.is_string",
+   "fieldname": "is_string",
+   "fieldtype": "Check",
+   "label": "Is String",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2022-05-09 14:52:24.644858",
+ "modified": "2022-07-23 10:14:01.110375",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Rental Issue Note Item",

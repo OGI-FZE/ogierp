@@ -80,6 +80,7 @@ const get_items_from_rental_order = (frm, cdt, cdn) => {
 			for (const row of data) {
 				const new_row = frm.add_child('items', {
 					'qty': row.qty,
+					'is_string': row.is_string,
 					'rate': row.rate,
 					'item_name': row.item_name,
 					'asset_location': row.asset_location,

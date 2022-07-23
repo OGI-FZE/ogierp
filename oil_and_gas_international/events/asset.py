@@ -2,6 +2,24 @@ import frappe
 from frappe.utils import today 
 from frappe.utils import now_datetime
 
+def on_submit(doc,method):
+    create_stock_entry_for_asset_conversion(doc,method)
+    update_string_item(doc,method)
+
+def update_string_item(doc,method):
+    item_doc = frappe.get_doc("Item",doc.item_code)
+    if item_doc and item_doc.is_string:
+        total_assets = item_doc.total_assets + 1
+        frappe.db.set_value("Item",doc.item_code,'total_assets',total_assets)
+        frappe.db.set_value("Item",doc.item_code,'assets_available_for_rent',(total_assets - item_doc.assets_in_use))
+
+def remove_from_tubular(doc,method):
+    item_doc = frappe.get_doc("Item",doc.item_code)
+    if item_doc and item_doc.is_string:
+        total_assets = item_doc.total_assets - 1
+        frappe.db.set_value("Item",doc.item_code,'total_assets',total_assets)
+        frappe.db.set_value("Item",doc.item_code,'assets_available_for_rent',(total_assets - item_doc.assets_in_use))
+
 def create_stock_entry_for_asset_conversion (doc, method):
     '''
     Creates a Stock Entry to remove the value from Stock in Hand to Asset Account if linked with Asset Formation

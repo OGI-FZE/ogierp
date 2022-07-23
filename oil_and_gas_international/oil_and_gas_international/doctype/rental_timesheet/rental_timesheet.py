@@ -32,17 +32,18 @@ def get_rental_order_items(docname=None):
             "docstatus":1,
         }, ["assets"])
         if rti_assets:
-            l = (rti_assets[0]['assets']).splitlines()
-            for ast in l:
-                status = frappe.db.get_value("Asset",ast,"rental_status")
-                if status == 'In Use':
-                    if not asset_dict:
-                        asset_dict = {'assets':ast}
-                    else:
-                        d = asset_dict['assets']
+            if rti_assets[0]['assets']:
+                l = (rti_assets[0]['assets']).splitlines()
+                for ast in l:
+                    status = frappe.db.get_value("Asset",ast,"rental_status")
+                    if status == 'In Use':
+                        if not asset_dict:
+                            asset_dict = {'assets':ast}
+                        else:
+                            d = asset_dict['assets']
 
-                        asset_dict['assets'] = d+'\n'+ast
-            itm.update(asset_dict) 
+                            asset_dict['assets'] = d+'\n'+ast
+                itm.update(asset_dict) 
             
             # for ast in l:
             #     status = frappe.db.get_value("Asset",rti_assets[0]['assets'],"rental_status")

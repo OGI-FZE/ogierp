@@ -1,15 +1,23 @@
 frappe.ui.form.on("Asset", {
     setup: function(frm) {
-        frm.fields_dict.tubulars.grid.get_field('asset').get_query = function(doc, cdt, cdn) {
-        var child = locals[cdt][cdn];
-        return {  
-          filters:[
-            ['is_string_asset', '=', 0],
-            ['docstatus', '=', 1],
-            ['rental_status', '=', "Available for Rent"]
-          ]
-        };
-      }; 
+      //   frm.fields_dict.tubulars.grid.get_field('asset').get_query = function(doc, cdt, cdn) {
+      //   var child = locals[cdt][cdn];
+      //   return {  
+      //     filters:[
+      //       ['is_string_asset', '=', 0],
+      //       ['docstatus', '=', 1],
+      //       ['rental_status', '=', "Available for Rent"]
+      //     ]
+      //   };
+      // };
+      if(frm.doc.asset_category == 'Tubulars'){
+        frm.set_value('rental_status','String Asset')
+      } 
+    },
+    asset_category(frm){
+        if(frm.doc.asset_category == 'Tubulars'){
+            frm.set_value('rental_status','String Asset')
+        }  
     },
     refresh(frm) {
         if (frm.doc.rental_status == "On hold for Inspection") {
@@ -53,6 +61,11 @@ frappe.ui.form.on("Asset", {
             frappe.model.set_value('Asset',frm.doc.name,'rental_status',"Available for Rent")
         }
     },
+    before_save(frm){
+        if(frm.doc.asset_category == 'Tubulars'){
+            frm.set_value('rental_status','String Asset')
+        }  
+    },
     // remove_assets(frm) {
     //     remove_assets_from_tubulars(frm)
     // }
@@ -73,56 +86,26 @@ const create_sub_custom_button = (frm) => {
     })
 }
 
-const remove_assets_from_tubulars = (frm) => {
-    console.log("remove_assets_from_tubulars")
-    new frappe.ui.form.MultiSelectDialog ({
-        doctype: "Asset",
-        target: this.cur_frm,
-        setters: {
-            asset_name: null
-        },
-        get_query() {
-            let asset_list = []
-            let filters = {};
-            $.each(frm.doc.tubulars, function(_idx, val) {
-                if (val.asset) asset_list.push(val.asset);
-            });
-            filters['name'] = ['in',asset_list];
-            filters['docstatus'] = 1;
-            return {
-                filters: filters
-            }
-        },
-        action(selections) {
-            for (var i = 0; i < frm.doc.tubulars.length; i++) {
-                if(frm.doc.tubulars[i] in selections) {
-                    frm.get_field("suppliers").grid.grid_rows[i].remove();
-                }
-            }
-        }
-    })
-}
-
-frappe.ui.form.on('Tubulars', {
-    before_tubulars_remove:function (frm, cdt, cdn) {
-    let row = frappe.get_doc(cdt, cdn);
-    if(row.asset){
-        frappe.db.get_doc("Asset", row.asset)
-            .then((doc) => {
-                frappe.db.set_value('Asset',doc.name,'rental_status',"On hold for Inspection")
-                frappe.call({
-                    method: 'oil_and_gas_international.events.asset.set_initial_location',
-                    args: {
-                        asset: doc.name,
-                    },
-                    callback: function(r) {
-                        console.log("r",r.message)
-                        // frappe.db.set_value('Asset',doc.name,'location',r.message)
-                    }
-                }); 
-            });   
-        }
-    }
-})
+// frappe.ui.form.on('Tubulars', {
+//     before_tubulars_remove:function (frm, cdt, cdn) {
+//     let row = frappe.get_doc(cdt, cdn);
+//     if(row.asset){
+//         frappe.db.get_doc("Asset", row.asset)
+//             .then((doc) => {
+//                 frappe.db.set_value('Asset',doc.name,'rental_status',"On hold for Inspection")
+//                 frappe.call({
+//                     method: 'oil_and_gas_international.events.asset.set_initial_location',
+//                     args: {
+//                         asset: doc.name,
+//                     },
+//                     callback: function(r) {
+//                         console.log("r",r.message)
+//                         // frappe.db.set_value('Asset',doc.name,'location',r.message)
+//                     }
+//                 }); 
+//             });   
+//         }
+//     }
+// })
 
 

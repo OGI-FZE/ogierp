@@ -227,6 +227,7 @@ const get_items_from_rental_order = (frm, cdt, cdn) => {
 				// if(res.message[1]=="Tubulars"){
 					const new_row = frm.add_child('items', {
 						'item_code': row.item_code,
+						'is_string': row.is_string,
 						'qty': row.qty,
 						'rate':row.rate,
 						'operational_running':row.operational_running,

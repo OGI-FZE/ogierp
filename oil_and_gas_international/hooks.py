@@ -104,7 +104,8 @@ doctype_js = {
 
 doc_events = {
     "Asset": {
-        "on_submit": "oil_and_gas_international.events.asset.create_stock_entry_for_asset_conversion"
+        "on_submit": "oil_and_gas_international.events.asset.on_submit",
+        "on_cancel": "oil_and_gas_international.events.asset.remove_from_tubular"
     },
     "Sales Invoice": {
         "on_submit": "oil_and_gas_international.events.sales_invoice.addbilledamount",
@@ -245,6 +246,11 @@ fixtures = [
                 'Item-is_exempt',
                 'Item-is_zero_rated',
                 'Item-tax_code',
+                'Item-is_string',
+                'Item-assets_available_for_rent',
+                'Item-assets_in_use',
+                'Item-total_assets',
+                'Item-string_details',
 
 
 
@@ -258,8 +264,6 @@ fixtures = [
                 'Asset-is_sub_rental_asset',
                 'Asset-sub_rental_order',
                 'Asset-currently_with',
-                'Asset-tubulars',
-                'Asset-section_break_25',
                 'Asset-is_string_asset',
 
                 # Opportunity
