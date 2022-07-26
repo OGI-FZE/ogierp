@@ -124,6 +124,49 @@ const get_conversion_rate = (frm) => {
 	});
 }
 
+const get_items_from_rental_order_old = (frm, cdt, cdn) => {
+	const rental_order = frm.doc.rental_order
+	frm.call({
+		method: "get_rental_order_items",
+		args: { docname: rental_order },
+		async: false,
+		callback(res) {
+			const data = res.message
+			if (!data) return
+			frm.doc.items = []
+			for (const row of data) {
+					const new_row = frm.add_child('items', {
+						'item_code': row.item_code,
+						'is_string': row.is_string,
+						'qty': row.qty,
+						'rate':row.rate,
+						'operational_running':row.operational_running,
+						'standby':row.standby,
+						'lihdbr':row.lihdbr,
+						'redress':row.redress,
+						'straight':row.straight,
+						'post_rental_inspection_charges':row.post_rental_inspection_charges,
+						'base_operational_running':row.base_operational_running,
+						'base_standby':row.base_standby,
+						'base_lihdbr':row.base_lihdbr,
+						'base_redress':row.base_redress,
+						'base_straight':row.base_straight,
+						'base_post_rental_inspection_charges':row.base_post_rental_inspection_charges,
+						'asset_location':row.asset_location,
+						'rental_order_item':row.name,
+						'rental_order':row.rental_order,
+						'assets':row.assets,
+					})
+					const cdt = new_row.doctype
+					const cdn = new_row.name
+					frappe.model.set_value(cdt, cdn, "item_code", row.item_code)
+			}
+
+			cur_frm.refresh()
+		}
+	})
+}
+
 const get_items_from_rental_order = (frm, cdt, cdn) => {
 	const rental_order = frm.doc.rental_order
 	frm.call({
@@ -146,7 +189,8 @@ const get_items_from_rental_order = (frm, cdt, cdn) => {
 								for(let r = 0; r < issuenote.length; r++){
 									// for(let i = 0; i < row.qty; i++){
 									const new_row = frm.add_child('items', {
-										'qty': 1,
+										'qty': row.qty,
+										'is_string': row.is_string,
 										'asset_location': row.asset_location,
 										'rental_order': rental_order,
 										'rental_order_item': row.name,

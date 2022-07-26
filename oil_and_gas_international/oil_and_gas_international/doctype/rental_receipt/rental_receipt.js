@@ -2,8 +2,8 @@
 // For license information, please see license.txt
 
 frappe.ui.form.on('Rental Receipt', {
-	rental_order(frm, cdt, cdn) {
-		get_items_from_rental_order(frm, cdt, cdn)
+	rental_issue_note(frm, cdt, cdn) {
+		get_items_from_rental_issue_note(frm, cdt, cdn)
 		set_project(frm)
 	},
 	refresh:function(frm){
@@ -66,6 +66,42 @@ const add_work_order = () => {
 	}, 'Create')
 }
 
+const get_items_from_rental_issue_note = (frm, cdt, cdn) => {
+	const rental_issue_note = frm.doc.rental_issue_note
+	const rental_order = frm.doc.rental_order
+	frm.call({
+		method: "get_rental_issue_note_items",
+		args: { docname: rental_issue_note },
+		async: false,
+		callback(res) {
+			const data = res.message
+			if (!data) return
+			frm.doc.items = []
+			for (const row of data) {
+				if(row.received_qty < row.qty){
+					const new_row = frm.add_child('items', {
+						'qty': row.qty,
+						'is_string': row.is_string,
+						'rate': row.rate,
+						'item_name': row.item_name,
+						'asset_location': row.asset_location,
+						'rental_order': rental_order,
+						// 'rental_order_item': row.name,
+						'rental_issue_note': frm.doc.rental_issue_note || '',
+						'rental_issue_note_item': row.name,
+						'asset_location': row.asset_location,
+						'assets':row.assets,
+					})
+					const cdt = new_row.doctype
+					const cdn = new_row.name
+					frappe.model.set_value(cdt, cdn, "item_code", row.item_code)
+				}
+			}
+
+			cur_frm.refresh()
+		}
+	})
+}
 
 const get_items_from_rental_order = (frm, cdt, cdn) => {
 	const rental_order = frm.doc.rental_order

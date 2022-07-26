@@ -39,7 +39,9 @@
   "base_redress",
   "section_break_10",
   "rental_order_item",
-  "rental_order"
+  "rental_order",
+  "column_break_36",
+  "received_qty"
  ],
  "fields": [
   {
@@ -241,12 +243,24 @@
    "fieldtype": "Check",
    "label": "Is String",
    "read_only": 1
+  },
+  {
+   "fieldname": "column_break_36",
+   "fieldtype": "Column Break"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "received_qty",
+   "fieldtype": "Float",
+   "label": "Received Qty",
+   "no_copy": 1,
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2022-07-23 10:14:01.110375",
+ "modified": "2022-07-26 08:33:39.389972",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Rental Issue Note Item",

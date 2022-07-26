@@ -9,7 +9,14 @@ class RentalTimesheet(Document):
     def on_submit(self):
         self.set('status','To Bill')
 
+@frappe.whitelist()
+def get_rental_order_items_old(docname=None):
+    if not docname:
+        return {}
 
+    doc = frappe.get_doc("Rental Order", docname)
+
+    return doc.items
 
 @frappe.whitelist()
 def get_rental_order_items(docname=None):
@@ -56,7 +63,6 @@ def get_rental_order_items(docname=None):
 
                 #         asset_dict['assets'] = d+'\n'+rti_assets[0]['assets']
                 # itm.update(asset_dict) 
-
     return re_items
 
 @frappe.whitelist()
@@ -69,5 +75,5 @@ def check_issue_note(docname=None,itm=None):
         "parent": rt.name,
         "item_code":itm,
         "docstatus":1,
-    }, ["item_code","item_name","assets"])
+    }, ["item_code","item_name","assets","qty"])
     return rti

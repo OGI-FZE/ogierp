@@ -52,6 +52,7 @@ class RentalReceipt(Document):
 						if row.rental_order_item:
 							cdt = "Rental Order Item"
 							cdn = row.rental_order_item
+							qty = frappe.get_value(cdt, cdn, "qty")
 							received_qty = frappe.get_value(cdt, cdn, "received_qty")
 							frappe.set_value(cdt, cdn, "received_qty", int(received_qty) - int(row.qty))
 						asset_doc = frappe.get_doc("Asset",asset)
@@ -63,8 +64,26 @@ class RentalReceipt(Document):
 				item_doc = frappe.get_doc("Item",row.item_code)
 				assets_in_use = item_doc.assets_in_use + row.qty
 				assets_available_for_rent = item_doc.total_assets - assets_in_use
+				usage_status = item_doc.usage_status
+				if item_doc.usage_status:
+					upd = 0
+					for line in item_doc.usage_status:
+						if line.customer == self.customer:
+							cdt = "Usage Status"
+							cdn = line.name
+							frappe.set_value(cdt, cdn, "qty", int(line.qty+row.qty))
+							upd = 1
 				frappe.db.set_value("Item",row.item_code,'assets_in_use',assets_in_use)
 				frappe.db.set_value("Item",row.item_code,'assets_available_for_rent',assets_available_for_rent)
+			if row.rental_issue_note:
+				cdt = "Rental Issue Note Item"
+				cdn = row.rental_issue_note_item
+				received_qty = frappe.get_value(cdt, cdn, "received_qty")
+				if not received_qty:
+					received_qty = 0
+				
+				frappe.set_value(cdt, cdn, "received_qty", int(received_qty) - int(row.qty))
+
 
 
 
@@ -93,7 +112,7 @@ class RentalReceipt(Document):
 						# updating rental order item status
 						if row.rental_order_item:
 							cdt = "Rental Order Item"
-							cdn = row.rental_order_item
+							cdn = row.rental_issue_note_item
 							qty = frappe.get_value(cdt, cdn, "qty")
 							delivered_qty = frappe.get_value(cdt, cdn, "delivered_qty")
 							received_qty = frappe.get_value(cdt, cdn, "received_qty")
@@ -106,6 +125,17 @@ class RentalReceipt(Document):
 							frappe.set_value(cdt, cdn, "received_qty", int(received_qty) + int(row.qty))
 							if received_qty == qty:
 								frappe.set_value(cdt, cdn, "status", "Returned")
+						if row.rental_issue_note:
+							cdt = "Rental Issue Note Item"
+							cdn = row.rental_issue_note_item
+							qty = frappe.get_value(cdt, cdn, "qty")
+							received_qty = frappe.get_value(cdt, cdn, "received_qty")
+							if not received_qty:
+								received_qty = 0
+							if (int(received_qty) + int(row.qty)) > qty:
+								frappe.throw(f"Can not receive more than issued qty in Rental Issue Item({qty})")
+							
+							frappe.set_value(cdt, cdn, "received_qty", int(received_qty) + int(row.qty))
 
 					  
 						# asset movement
@@ -159,6 +189,29 @@ class RentalReceipt(Document):
 				item_doc = frappe.get_doc("Item",row.item_code)
 				assets_in_use = item_doc.assets_in_use - row.qty
 				assets_available_for_rent = item_doc.total_assets - assets_in_use
+				usage_status = item_doc.usage_status
+				if item_doc.usage_status:
+					upd = 0
+					for line in item_doc.usage_status:
+						if line.customer == self.customer:
+							cdt = "Usage Status"
+							cdn = line.name
+							upd_qty = int(line.qty-row.qty)
+							frappe.set_value(cdt, cdn, "qty", upd_qty)
+							upd = 1
+				if row.rental_issue_note:
+					cdt = "Rental Issue Note Item"
+					cdn = row.rental_issue_note_item
+					qty = frappe.get_value(cdt, cdn, "qty")
+					received_qty = frappe.get_value(cdt, cdn, "received_qty")
+					if not received_qty:
+						received_qty = 0
+					if (int(received_qty) + int(row.qty)) > qty:
+						frappe.throw(f"Can not receive more than issued qty in Rental Issue Item({qty})")
+					
+					frappe.set_value(cdt, cdn, "received_qty", int(received_qty) + int(row.qty))
+
+
 				frappe.db.set_value("Item",row.item_code,'assets_in_use',assets_in_use)
 				frappe.db.set_value("Item",row.item_code,'assets_available_for_rent',assets_available_for_rent)						
 
@@ -172,6 +225,14 @@ def get_rental_order_items(docname=None):
 		return {}
 
 	doc = frappe.get_doc("Rental Order", docname)
+
+	return doc.items
+
+@frappe.whitelist()
+def get_rental_issue_note_items(docname=None):
+	if not docname:
+		return {}
+	doc = frappe.get_doc("Rental Issue Note",docname)
 
 	return doc.items
 

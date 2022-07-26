@@ -158,7 +158,7 @@ const add_rental_receipt = () => {
 			() => {
 				const cur_doc = cur_frm.doc
 				cur_doc.customer = doc.customer
-				cur_doc.rental_issue_note = doc.name
+				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "rental_issue_note", doc.name)
 				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "rental_order", doc.rental_order)
 
 				cur_frm.refresh()

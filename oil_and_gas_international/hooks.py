@@ -251,6 +251,7 @@ fixtures = [
                 'Item-assets_in_use',
                 'Item-total_assets',
                 'Item-string_details',
+                'Item-usage_status',
 
 
 

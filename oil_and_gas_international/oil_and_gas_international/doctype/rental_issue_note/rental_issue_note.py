@@ -2,6 +2,7 @@
 # For license information, please see license.txt
 
 import frappe
+from frappe import _
 from frappe.model.document import Document
 from frappe.utils import today
 
@@ -65,6 +66,17 @@ class RentalIssueNote(Document):
 				item_doc = frappe.get_doc("Item",row.item_code)
 				assets_in_use = item_doc.assets_in_use - row.qty
 				assets_available_for_rent = item_doc.total_assets - assets_in_use
+				usage_status = item_doc.usage_status
+				if item_doc.usage_status:
+					upd = 0
+					for line in item_doc.usage_status:
+						if line.customer == self.customer:
+							cdt = "Usage Status"
+							cdn = line.name
+							upd_qty = int(line.qty-row.qty)
+							frappe.set_value(cdt, cdn, "qty", upd_qty)
+							upd = 1
+					
 				frappe.db.set_value("Item",row.item_code,'assets_in_use',assets_in_use)
 				frappe.db.set_value("Item",row.item_code,'assets_available_for_rent',assets_available_for_rent)						
 
@@ -79,6 +91,12 @@ class RentalIssueNote(Document):
 		issue_notes = frappe.get_list("Work_Order",filters={'rental_issue_note':self.name,'docstatus':1})
 		if not issue_notes:
 			frappe.throw("Please create work order before submitting issue note")
+		for row in self.items:
+			if row.is_string:
+				item_doc = frappe.get_doc("Item",row.item_code)
+				if row.qty > item_doc.assets_available_for_rent:
+					frappe.throw(_("You can not issue more than available.\nAvailable Quantity:{0}").format(item_doc.assets_available_for_rent))
+
 
 	def on_submit(self):
 		self.set('status','Submitted')
@@ -170,10 +188,30 @@ class RentalIssueNote(Document):
 				item_doc = frappe.get_doc("Item",row.item_code)
 				assets_in_use = item_doc.assets_in_use + row.qty
 				assets_available_for_rent = item_doc.total_assets - assets_in_use
+				usage_status = item_doc.usage_status
+				if item_doc.usage_status:
+					upd = 0
+					for line in item_doc.usage_status:
+						if line.customer == self.customer:
+							cdt = "Usage Status"
+							cdn = line.name
+							frappe.set_value(cdt, cdn, "qty", int(line.qty+row.qty))
+							upd = 1
+					if not upd:
+						item_doc.append('usage_status',{
+								"customer":self.customer,
+								"qty":row.qty
+							})
+						item_doc.save(ignore_permissions=True)
+				else:
+					item_doc.append('usage_status',{
+							"customer":self.customer,
+							"qty":row.qty
+						})
+					item_doc.save(ignore_permissions=True)
+
 				frappe.db.set_value("Item",row.item_code,'assets_in_use',assets_in_use)
 				frappe.db.set_value("Item",row.item_code,'assets_available_for_rent',assets_available_for_rent)
-
-
 
 
 @frappe.whitelist()
