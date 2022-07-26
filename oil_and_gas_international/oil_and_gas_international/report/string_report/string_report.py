@@ -72,7 +72,7 @@ def get_data(filters):
 			        'is_string':1,
 			        'total_assets':[">",0],
 			    },
-			    fields=['name','item_code' ,'item_name', 'total_assets', 'assets_in_use', 'assets_available_for_rent','usage_status'
+			    fields=['name','item_code' ,'item_name', 'total_assets', 'assets_in_use', 'assets_available_for_rent'
 			    ]
 			)
 		else:
@@ -81,7 +81,7 @@ def get_data(filters):
 			        'name': filters.get('item_code'),
 			        'is_string':1
 			    },
-			    fields=['name','item_code' ,'item_name', 'total_assets', 'assets_in_use', 'assets_available_for_rent','usage_status'
+			    fields=['name','item_code' ,'item_name', 'total_assets', 'assets_in_use', 'assets_available_for_rent'
 			    ]
 			)
 	else:
@@ -91,7 +91,7 @@ def get_data(filters):
 			        'is_string':1,
 			        'total_assets':[">",0],
 			    },
-			    fields=['name','item_code' ,'item_name', 'total_assets', 'assets_in_use', 'assets_available_for_rent','usage_status'
+			    fields=['name','item_code' ,'item_name', 'total_assets', 'assets_in_use', 'assets_available_for_rent'
 			    ]
 			)
 		else:
@@ -99,7 +99,7 @@ def get_data(filters):
 				filters={
 			        'is_string':1
 			    },
-			    fields=['name','item_code' ,'item_name' , 'total_assets', 'assets_in_use', 'assets_available_for_rent','usage_status'
+			    fields=['name','item_code' ,'item_name' , 'total_assets', 'assets_in_use', 'assets_available_for_rent'
 			    ]
 			)
 	if filters.get("with_cust"):
