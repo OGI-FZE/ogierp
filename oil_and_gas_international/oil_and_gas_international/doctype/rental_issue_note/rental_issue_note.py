@@ -57,7 +57,8 @@ class RentalIssueNote(Document):
 							cdn = row.rental_order_item
 							delivered_qty = frappe.get_value(cdt, cdn, "delivered_qty")
 							frappe.set_value(cdt, cdn, "delivered_qty", int(delivered_qty) - 1)
-						asset_doc = frappe.get_doc("Asset",asset)
+						frappe.db.set_value("Asset", asset, "currently_with", '')
+						# asset_doc = frappe.get_doc("Asset",asset)
 						# if asset_doc.is_string_asset:
 						# 	for ast in asset_doc.get("tubulars"):
 						# 		frappe.db.set_value("Asset", ast.asset, "rental_status", "Available for Rent")

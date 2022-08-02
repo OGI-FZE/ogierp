@@ -55,7 +55,8 @@ class RentalReceipt(Document):
 							qty = frappe.get_value(cdt, cdn, "qty")
 							received_qty = frappe.get_value(cdt, cdn, "received_qty")
 							frappe.set_value(cdt, cdn, "received_qty", int(received_qty) - int(row.qty))
-						asset_doc = frappe.get_doc("Asset",asset)
+						# asset_doc = frappe.get_doc("Asset",asset)
+						frappe.db.set_value("Asset", asset, "currently_with", self.customer)
 						# if asset_doc.is_string_asset:
 						# 	for ast in asset_doc.get("tubulars"):
 						# 		frappe.db.set_value("Asset", ast.asset, "rental_status", "In Use")
