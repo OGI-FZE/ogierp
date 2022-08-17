@@ -10,8 +10,7 @@ class RentalQuotation(Document):
     def on_submit(self):
         if self.rental_estimation:
             self.status = "Open"
-            frappe.set_value("Rental Estimation",
-                             self.rental_estimation, "status", "To Quotation")
+            frappe.set_value("Rental Estimation",self.rental_estimation, "status", "To Quotation")
             frappe.db.commit()
 
     def on_cancel(self):

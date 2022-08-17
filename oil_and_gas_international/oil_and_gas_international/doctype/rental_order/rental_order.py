@@ -9,13 +9,16 @@ from erpnext.controllers.accounts_controller import get_taxes_and_charges
 class RentalOrder(Document):
     def on_submit(self):
         if self.rental_quotation:
-            self.status = "Open"
             frappe.set_value("Rental Quotation",
                              self.rental_quotation, "status", "Ordered")
+        self.db_set("status", "Submitted")
         frappe.db.commit()
 
     def on_update(self):
         pass
+
+    def on_cancel(self):
+        self.db_set("status", "Cancelled")
 
 @frappe.whitelist()
 def get_rental_quotation_items(docname=None):
@@ -40,3 +43,13 @@ def get_taxes(ro=None,tt=None):
         taxes = get_taxes_and_charges('Sales Taxes and Charges Template', tt)
         if taxes:
             return taxes
+
+def set_status():
+    ro_docs = frappe.get_list("Rental Order",fields=["name","docstatus"])
+    for row in ro_docs:
+        if row.docstatus == 1:
+            frappe.set_value("Rental Order", row.name, "status", "Submitted")
+        if row.docstatus == 2:
+            frappe.db.sql("""update `tabRental Order` tro set tro.status='Cancelled' where tro.name='{0}'""".format(row.name))
+            # frappe.set_value("Rental Order", row.name, "status", "Cancelled")
+    frappe.db.commit()

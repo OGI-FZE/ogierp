@@ -141,10 +141,13 @@
   },
   {
    "allow_on_submit": 1,
+   "default": "Draft",
    "fieldname": "status",
    "fieldtype": "Select",
    "label": "Status",
-   "options": "Draft\nOpen\nOn Hold\nTo Issue and Bill\nTo Return and Bill\nTo Bill\nCompleted\nCancelled\nClosed"
+   "no_copy": 1,
+   "options": "Draft\nSubmitted\nCancelled\nOpen\nOn Hold\nTo Issue and Bill\nTo Return and Bill\nTo Bill\nCompleted\nCancelled\nClosed",
+   "read_only": 1
   },
   {
    "fieldname": "amended_from",
@@ -256,7 +259,7 @@
    "link_fieldname": "rental_order"
   }
  ],
- "modified": "2022-06-17 10:41:10.285671",
+ "modified": "2022-08-17 12:11:41.776608",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Rental Order",
