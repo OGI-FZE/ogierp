@@ -38,11 +38,7 @@
   "notify_details",
   "shipping_details",
   "packing_list_section",
-  "dimension",
-  "package_weight",
-  "column_break_32",
-  "total_net_weight",
-  "total_gross_weight",
+  "rental_issue_packing",
   "amended_from"
  ],
  "fields": [
@@ -221,30 +217,6 @@
    "label": "Packing List"
   },
   {
-   "fieldname": "dimension",
-   "fieldtype": "Data",
-   "label": "Dimension"
-  },
-  {
-   "fieldname": "package_weight",
-   "fieldtype": "Float",
-   "label": "Package Weight"
-  },
-  {
-   "fieldname": "column_break_32",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "total_net_weight",
-   "fieldtype": "Float",
-   "label": "Total Net Weight"
-  },
-  {
-   "fieldname": "total_gross_weight",
-   "fieldtype": "Float",
-   "label": "Total Gross Weight"
-  },
-  {
    "collapsible": 1,
    "fieldname": "address_and_contact_section",
    "fieldtype": "Section Break",
@@ -259,6 +231,11 @@
   {
    "fieldname": "column_break_15",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "rental_issue_packing",
+   "fieldtype": "Table",
+   "options": "Rental Issue Packing"
   }
  ],
  "index_web_pages_for_search": 1,
@@ -269,7 +246,7 @@
    "link_fieldname": "rental_issue_note"
   }
  ],
- "modified": "2022-05-10 12:28:23.083120",
+ "modified": "2022-08-17 12:45:45.898261",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Rental Issue Note",
