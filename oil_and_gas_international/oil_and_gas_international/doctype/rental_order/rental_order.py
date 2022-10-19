@@ -45,11 +45,11 @@ def get_taxes(ro=None,tt=None):
             return taxes
 
 def set_status():
-    ro_docs = frappe.get_list("Rental Order",fields=["name","docstatus"])
+    ro_docs = frappe.get_list("Rental Issue Note",fields=["name","docstatus"])
     for row in ro_docs:
         if row.docstatus == 1:
-            frappe.set_value("Rental Order", row.name, "status", "Submitted")
+            frappe.set_value("Rental Issue Note", row.name, "status", "Submitted")
         if row.docstatus == 2:
-            frappe.db.sql("""update `tabRental Order` tro set tro.status='Cancelled' where tro.name='{0}'""".format(row.name))
+            frappe.db.sql("""update `tabRental Issue Note` tro set tro.status='Cancelled' where tro.name='{0}'""".format(row.name))
             # frappe.set_value("Rental Order", row.name, "status", "Cancelled")
     frappe.db.commit()

@@ -28,6 +28,7 @@ frappe.ui.form.on("Opportunity Item", {
 })
 
 const create_custom_buttons = (frm) => {
+    create_estimation(frm)
     create_rental_estimation(frm)
     create_rental_quotation(frm)
 }
@@ -63,6 +64,18 @@ const create_rental_estimation = (frm) => {
             }
         ])
     }, 'Create');
+}
+
+const create_estimation = (frm) => {
+    if (!frm.doc.__islocal && frm.doc.docstatus == 0) {
+        frm.add_custom_button(__('Estimation Sheet'),
+            function() {
+                frappe.model.open_mapped_doc({
+                    method: "oil_and_gas_international.oil_and_gas_international.doctype.estimation_sheet.estimation_sheet.make_estimation",
+                    frm: frm
+                })
+            }, __("Create"), "btn-default");
+    }
 }
 
 const create_rental_quotation = (frm) => {

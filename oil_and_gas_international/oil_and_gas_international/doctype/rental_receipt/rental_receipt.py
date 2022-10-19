@@ -57,6 +57,8 @@ class RentalReceipt(Document):
 							frappe.set_value(cdt, cdn, "received_qty", int(received_qty) - int(row.qty))
 						# asset_doc = frappe.get_doc("Asset",asset)
 						frappe.db.set_value("Asset", asset, "currently_with", self.customer)
+						if self.issue_date:
+							frappe.db.set_value("Asset", asset, "issue_date", self.issue_date)
 						# if asset_doc.is_string_asset:
 						# 	for ast in asset_doc.get("tubulars"):
 						# 		frappe.db.set_value("Asset", ast.asset, "rental_status", "In Use")
@@ -133,8 +135,8 @@ class RentalReceipt(Document):
 							received_qty = frappe.get_value(cdt, cdn, "received_qty")
 							if not received_qty:
 								received_qty = 0
-							if (int(received_qty) + int(row.qty)) > qty:
-								frappe.throw(f"Can not receive more than issued qty in Rental Issue Item({qty})")
+							# if (int(received_qty) + int(row.qty)) > qty:
+							# 	frappe.throw(f"Can not receive more than issued qty in Rental Issue Item({qty})")
 							
 							frappe.set_value(cdt, cdn, "received_qty", int(received_qty) + int(row.qty))
 
@@ -156,6 +158,10 @@ class RentalReceipt(Document):
 
 						frappe.db.commit()
 						frappe.db.set_value("Asset", asset, "currently_with", "")
+						issue_date = frappe.db.get_value("Asset",asset,['issue_date'],as_dict=1)
+						if issue_date:
+							frappe.db.set_value("Rental Receipt", self.name, "issue_date",issue_date.issue_date)
+						frappe.db.set_value("Asset", asset, "issue_date", "")
 						#If tubular,
 						# if asset_doc.is_string_asset:
 						# 	for ast in asset_doc.get("tubulars"):

@@ -44,7 +44,7 @@ class RentalIssueNote(Document):
 						f"Serial no's count({serial_qty}) not matched with the Qty({row.qty}) of the asset!")
 
 	def on_cancel(self):
-		self.set('status','Cancelled')
+		self.db_set("status", "Cancelled")
 		for row in self.items:
 			if not row.is_string:
 				assets = row.assets
@@ -58,6 +58,7 @@ class RentalIssueNote(Document):
 							delivered_qty = frappe.get_value(cdt, cdn, "delivered_qty")
 							frappe.set_value(cdt, cdn, "delivered_qty", int(delivered_qty) - 1)
 						frappe.db.set_value("Asset", asset, "currently_with", '')
+						frappe.db.set_value("Asset", asset, "issue_date", '')
 						# asset_doc = frappe.get_doc("Asset",asset)
 						# if asset_doc.is_string_asset:
 						# 	for ast in asset_doc.get("tubulars"):
@@ -100,7 +101,7 @@ class RentalIssueNote(Document):
 
 
 	def on_submit(self):
-		self.set('status','Submitted')
+		self.db_set("status", "Submitted")
 		for row in self.items:
 			if not row.is_string:
 				assets = row.assets
@@ -154,6 +155,7 @@ class RentalIssueNote(Document):
 						frappe.db.commit()
 						
 						frappe.db.set_value("Asset", asset, "currently_with", self.customer)
+						frappe.db.set_value("Asset", asset, "issue_date", today())
 						#If tubular,
 						# if asset_doc.is_string_asset:
 						# 	for ast in asset_doc.get("tubulars"):

@@ -43,6 +43,7 @@ doctype_js = {
     "Purchase Invoice": "public/js/purchase_invoice.js",
     "Supplier Quotation": "public/js/supplier_quotation.js",
     "Project": "public/js/project.js",
+    "Quotation": "public/js/quotation.js",
 }
 # doctype_js = {"doctype" : "public/js/doctype.js"}
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
@@ -370,7 +371,8 @@ fixtures = [
                 'Sales Person-email','Sales Person-contact',
 
                 #purchase receipt
-                'Purchase Receipt-reason_for_purchase'
+                'Purchase Receipt-reason_for_purchase',
+                'Quotation-estimation_sheet'
 
             ]]
         ]

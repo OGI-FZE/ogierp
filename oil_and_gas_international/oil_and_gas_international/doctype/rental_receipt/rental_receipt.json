@@ -18,6 +18,7 @@
   "status",
   "rental_stop_date",
   "receipt_date",
+  "issue_date",
   "section_break_7",
   "items",
   "amended_from"
@@ -121,12 +122,18 @@
    "fieldtype": "Select",
    "label": "Department",
    "options": "\nTrading\nLogistics\nInspection\nRental\nAdmin\nMS - Sale\nMS - Repair\nMS - Internal\nQA/QC"
+  },
+  {
+   "fieldname": "issue_date",
+   "fieldtype": "Date",
+   "hidden": 1,
+   "label": "Issue Date"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2022-03-26 11:35:02.350340",
+ "modified": "2022-08-24 11:02:13.047465",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Rental Receipt",

@@ -1,0 +1,160 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2022-10-19 11:58:29.946548",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "customer",
+  "sales_person",
+  "column_break_3",
+  "division",
+  "item_group",
+  "section_break_5",
+  "january",
+  "february",
+  "march",
+  "april",
+  "column_break_9",
+  "may",
+  "june",
+  "july",
+  "august",
+  "column_break_14",
+  "september",
+  "october",
+  "november",
+  "december"
+ ],
+ "fields": [
+  {
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Customer",
+   "options": "Customer"
+  },
+  {
+   "fieldname": "sales_person",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Assit In Charge",
+   "options": "Sales Person"
+  },
+  {
+   "fieldname": "division",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Division",
+   "options": "\nTrading\nLogistics\nInspection\nRental\nAdmin\nMS - Sale\nMS - Repair\nMS - Internal\nQA/QC"
+  },
+  {
+   "fieldname": "item_group",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Product Main Group",
+   "options": "Item Group"
+  },
+  {
+   "fieldname": "january",
+   "fieldtype": "Currency",
+   "label": "January (Company Currency)",
+   "options": "Company:company:default_currency"
+  },
+  {
+   "fieldname": "february",
+   "fieldtype": "Currency",
+   "label": "February (Company Currency)",
+   "options": "Company:company:default_currency"
+  },
+  {
+   "fieldname": "march",
+   "fieldtype": "Currency",
+   "label": "March (Company Currency)",
+   "options": "Company:company:default_currency"
+  },
+  {
+   "fieldname": "april",
+   "fieldtype": "Currency",
+   "label": "April (Company Currency)",
+   "options": "Company:company:default_currency"
+  },
+  {
+   "fieldname": "may",
+   "fieldtype": "Currency",
+   "label": "May (Company Currency)",
+   "options": "Company:company:default_currency"
+  },
+  {
+   "fieldname": "june",
+   "fieldtype": "Currency",
+   "label": "June (Company Currency)",
+   "options": "Company:company:default_currency"
+  },
+  {
+   "fieldname": "july",
+   "fieldtype": "Currency",
+   "label": "July (Company Currency)",
+   "options": "Company:company:default_currency"
+  },
+  {
+   "fieldname": "august",
+   "fieldtype": "Currency",
+   "label": "August (Company Currency)",
+   "options": "Company:company:default_currency"
+  },
+  {
+   "fieldname": "september",
+   "fieldtype": "Currency",
+   "label": "September (Company Currency)",
+   "options": "Company:company:default_currency"
+  },
+  {
+   "fieldname": "october",
+   "fieldtype": "Currency",
+   "label": "October (Company Currency)",
+   "options": "Company:company:default_currency"
+  },
+  {
+   "fieldname": "november",
+   "fieldtype": "Currency",
+   "label": "November (Company Currency)",
+   "options": "Company:company:default_currency"
+  },
+  {
+   "fieldname": "december",
+   "fieldtype": "Currency",
+   "label": "December (Company Currency)",
+   "options": "Company:company:default_currency"
+  },
+  {
+   "fieldname": "column_break_9",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_14",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_5",
+   "fieldtype": "Section Break",
+   "label": "Forecast Value"
+  },
+  {
+   "fieldname": "column_break_3",
+   "fieldtype": "Column Break"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2022-10-19 12:14:56.853879",
+ "modified_by": "Administrator",
+ "module": "Oil And Gas International",
+ "name": "Forecast target",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC"
+}
