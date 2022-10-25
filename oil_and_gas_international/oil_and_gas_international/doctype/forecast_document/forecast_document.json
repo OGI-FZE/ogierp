@@ -1,13 +1,15 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "field:fiscal_year",
+ "autoname": "FC.###",
  "creation": "2022-10-19 11:20:21.132865",
  "doctype": "DocType",
+ "document_type": "Document",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
   "fiscal_year",
+  "version",
   "column_break_1",
   "company",
   "section_break_4",
@@ -21,8 +23,7 @@
    "in_standard_filter": 1,
    "label": "Fiscal Year",
    "options": "Fiscal Year",
-   "reqd": 1,
-   "unique": 1
+   "reqd": 1
   },
   {
    "fieldname": "forecast_target",
@@ -44,11 +45,19 @@
   {
    "fieldname": "section_break_4",
    "fieldtype": "Section Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "version",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Version",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-10-19 12:50:06.126738",
+ "modified": "2022-10-25 16:40:33.909045",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Forecast Document",

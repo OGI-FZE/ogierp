@@ -2,9 +2,22 @@
 // For license information, please see license.txt
 
 frappe.ui.form.on('Estimation Sheet', {
-	// refresh: function(frm) {
-
-	// }
+	refresh: function(frm) {
+		cur_frm.get_field("items").grid.cannot_add_rows = true;
+		cur_frm.get_field("items").grid.only_sortable();
+		if(frm.doc.docstatus == 1) {
+			cur_frm.add_custom_button(__('Quotation'), () => {
+				frappe.model.open_mapped_doc({
+					method: "oil_and_gas_international.oil_and_gas_international.doctype.estimation_sheet.estimation_sheet.make_quotation",
+					frm: cur_frm
+				})
+			}, __('Create'));
+		}
+	},
+	onload: function(frm) {
+		cur_frm.get_field("items").grid.cannot_add_rows = true;
+		cur_frm.get_field("items").grid.only_sortable();
+	},
 });
 
 frappe.ui.form.on('Estimation Sheet Item', {
@@ -45,6 +58,9 @@ frappe.ui.form.on('Estimation Sheet Item', {
 		calc_total_cost(frm, cdt, cdn)
 	},
 	logistics(frm, cdt, cdn) {
+		calc_total_cost(frm, cdt, cdn)
+	},
+	items_remove: function(frm,cdt,cdn){
 		calc_total_cost(frm, cdt, cdn)
 	},
 

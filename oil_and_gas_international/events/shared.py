@@ -70,10 +70,8 @@ def get_sales_person_details(sp = None):
 
 @frappe.whitelist()
 def get_estimation(opp=None):
-    print("\n\nGETTTTTTTTTTTTTTTTTTT")
     opportunity = frappe.get_doc("Opportunity",opp)
     est = frappe.get_all("Estimation Sheet",{"opportunity":opp,"docstatus":1})
-    print("estttttttttt\n\n\n",est)
     if est:
         return est[0].name
 

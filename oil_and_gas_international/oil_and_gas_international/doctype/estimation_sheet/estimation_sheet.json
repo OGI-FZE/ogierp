@@ -5,7 +5,6 @@
  "autoname": "naming_series:",
  "creation": "2022-10-18 14:09:56.502278",
  "doctype": "DocType",
- "document_type": "Document",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
@@ -215,7 +214,7 @@
  "icon": "fa fa-info-sign",
  "is_submittable": 1,
  "links": [],
- "modified": "2022-10-18 16:00:57.717904",
+ "modified": "2022-10-25 14:37:14.655062",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Estimation Sheet",
@@ -233,6 +232,8 @@
    "write": 1
   },
   {
+   "amend": 1,
+   "cancel": 1,
    "create": 1,
    "delete": 1,
    "email": 1,
@@ -242,7 +243,9 @@
    "read": 1,
    "report": 1,
    "role": "Sales Manager",
+   "select": 1,
    "share": 1,
+   "submit": 1,
    "write": 1
   }
  ],
