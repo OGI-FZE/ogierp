@@ -67,7 +67,7 @@ const create_rental_estimation = (frm) => {
 }
 
 const create_estimation = (frm) => {
-    if (!frm.doc.__islocal && frm.doc.docstatus == 0) {
+    if (!frm.doc.__islocal && frm.doc.docstatus == 0 && frm.doc.with_items) {
         frm.add_custom_button(__('Estimation Sheet'),
             function() {
                 frappe.model.open_mapped_doc({
