@@ -1,7 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "FC.###",
+ "autoname": "format:FY-{fiscal_year}-{version}",
  "creation": "2022-10-19 11:20:21.132865",
  "doctype": "DocType",
  "document_type": "Document",
@@ -12,6 +12,7 @@
   "version",
   "column_break_1",
   "company",
+  "date",
   "section_break_4",
   "forecast_target"
  ],
@@ -53,11 +54,17 @@
    "in_list_view": 1,
    "label": "Version",
    "read_only": 1
+  },
+  {
+   "default": "Today",
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "label": "Date"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-10-25 16:40:33.909045",
+ "modified": "2022-10-28 15:29:53.753445",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Forecast Document",
