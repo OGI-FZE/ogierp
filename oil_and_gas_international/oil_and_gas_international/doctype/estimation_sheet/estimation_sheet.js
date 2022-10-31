@@ -67,14 +67,16 @@ frappe.ui.form.on('Estimation Sheet Item', {
 });
 
 const calc_total_cost = (frm,cdt,cdn) => {
-	console.log("calc_total_cost")
-	let total = 0
-	let unit = 0
 	frm.doc.items.map(row => {
-		unit += flt(row.raw_material_cost) + flt(row.cutting_charges) + flt(row.od_id_profiling) + flt(row.machining_connection_1) + flt(row.machining_connection_2) +
+		let total = 0
+		let unit = 0
+		let uc = 0
+		unit = flt(row.raw_material_cost) + flt(row.cutting_charges) + flt(row.od_id_profiling) + flt(row.machining_connection_1) + flt(row.machining_connection_2) +
 				flt(row.marking) + flt(row.phosphating) + flt(row.other_operational_cost) + flt(row.consumables) + flt(row.panting) + flt(row.packing) + flt(row.logistics)
-		if (row.qty) total += (row.qty * unit)
+		frappe.model.set_value(row.doctype, row.name, 'unit_cost', unit)
+
+		if (row.qty) total = (row.qty * unit)
+		frappe.model.set_value(row.doctype, row.name, 'total_cost', total)
 	})
-	frappe.model.set_value(cdt, cdn, 'unit_cost', unit)
-	frappe.model.set_value(cdt, cdn, 'total_cost', total)
+	
 }
