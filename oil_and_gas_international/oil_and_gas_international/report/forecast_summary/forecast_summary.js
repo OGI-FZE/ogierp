@@ -19,12 +19,12 @@ frappe.query_reports["Forecast Summary"] = {
 			default: frappe.sys_defaults.fiscal_year,
 			reqd:1
 		},
-		{
-			fieldname:"customer",
-			label: __("Customer"),
-			fieldtype: "Link",
-			options: "Customer"
-		},
+		// {
+		// 	fieldname:"customer",
+		// 	label: __("Customer"),
+		// 	fieldtype: "Link",
+		// 	options: "Customer"
+		// },
 		{
 			fieldname: "group_by",
 			label: __("Group By"),
