@@ -93,8 +93,6 @@ def get_data(filters):
 				,sum(tft.september) as sep{1},sum(tft.october) as oct{1},sum(tft.november) as nov{1},sum(tft.december) as dec{1} from `tabForecast target` tft 
 				WHERE tft.parent='{2}' and tft.{0}!='' and tft.docstatus = 1 group by tft.{0}""".format(filters.get('group_by'),filters.get('fiscal_year'),latest))
 
-		print("\ndata\n",data)
-
 		# frappe.db.sql("""select tft.%s as group_by,sum(tft.january) as jan2022,sum(tft.february) as feb2022,sum(tft.march) as mar2022,
 		# 	sum(tft.april) as apr2022,sum(tft.may) as may2022,sum(tft.june) as jun2022,sum(tft.july) as jul2022,sum(tft.august) as aug2022
 		# 	,sum(tft.september) as sep2022,sum(tft.october) as oct2022,sum(tft.november) as nov2022,sum(tft.december) as dec2022 from `tabForecast target` tft 

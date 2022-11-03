@@ -69,8 +69,6 @@ class Analytics(object):
 					{"label": pp + " " +_(period), "fieldname": scrub(pp + " " +period), "fieldtype": "Float", "width": 120}
 				)
 
-		print("\ncollllllllllllllll\n",self.columns)
-
 	def get_data(self):
 		if self.filters.tree_type == "Customer":
 			self.get_sales_transactions_based_on_customers()
