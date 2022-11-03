@@ -12,7 +12,7 @@ frappe.ui.form.on('Forecast Document', {
 		frm.set_df_property("fiscal_year", "read_only", frm.is_new() ? 0 : 1);
 		frm.set_df_property("company", "read_only", frm.is_new() ? 0 : 1);
 	},
-	before_save: function(frm) {
-		frm.set_value("version",frm.doc.version+1)
-	}
+	// before_save: function(frm) {
+	// 	frm.set_value("version",frm.doc.version+1)
+	// }
 });
