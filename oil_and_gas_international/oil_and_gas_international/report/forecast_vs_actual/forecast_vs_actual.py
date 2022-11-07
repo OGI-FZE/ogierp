@@ -104,9 +104,25 @@ class Analytics(object):
 		        for k in set(d1.keys()) | set(d2.keys())
 		    }
 
+		# def combine_dict(d1, d2, d3):
+		#     return {
+		#         k: list(d[k] for d in (d1, d2, d3) if k in d)
+		#         for k in set(d1.keys()) | set(d2.keys()) | set(d2.keys())
+		#     }
+
+		# self.entity_periodic_data = combine_dict(self.so_periodic_data,self.si_periodic_data,self.no_forecast_data)
 		self.entity_periodic_data = combine_dict(self.so_periodic_data,self.si_periodic_data)
 		for t in self.entity_periodic_data:
 			self.entity_periodic_data[t] = reduce(lambda a, b: dict(a, **b), self.entity_periodic_data[t])
+
+		# print("so\n\n",self.so_periodic_data)
+		# print("si\n",self.si_periodic_data)
+		# print("noforecast\n",self.no_forecast_data)
+		# print("entity_periodic_data...........\n",self.entity_periodic_data)
+
+		# self.entity_periodic_data.update(self.no_forecast_data)
+
+		# print("entity_periodic_data...........\n",self.entity_periodic_data)
 
 		for entity, period_data in iteritems(self.entity_periodic_data):
 			i=0
@@ -116,6 +132,12 @@ class Analytics(object):
 					index: entity[i],
 				})
 				i +=1
+
+			for d in self.forecast_data:
+				if d["customer"] == row["customer"] and d["country"] == row["country"] and d["sales_person"] == row["sales_person"] and d["division"] == row["division"] and d["item_group"] == row["item_group"]:
+					for k,v in d.items():
+						if k not in ['customer','country','sales_person','division','item_group']:
+							row[k] = v
 				
 			for end_date in self.periodic_daterange:
 				so_period = self.get_period_so(end_date)
@@ -132,12 +154,22 @@ class Analytics(object):
 					row.setdefault(all_forecasted, 0.0)
 
 			self.data.append(row)
+		# 	print("\nrow",row)
+		# print("data",self.data)
+
+		# self.data.append(self.no_forecast_data.copy())
+
+		# print("data",self.data)
+
+		# for r in self.no_forecast:
+		# 	self.data.append(r)
 
 
 	def get_sales_transactions_based_on_forecast(self):
 
 		self.so_entries = []
 		self.si_entries = []
+		self.no_forecast = []
 
 		def get_conditions(row):
 			conditions = " and so.company = '{0}' ".format(self.filters.company)
@@ -185,15 +217,20 @@ class Analytics(object):
 				for si in si_entries:
 					self.si_entries.append(si)
 
+			if not so_entries and not si_entries:
+				self.no_forecast.append(f_row)
+
+
+
+		# print("\n\nso_entries",so_entries)
+
 		self.get_periodic_data()
 
 
 	def get_periodic_data(self):
 		self.so_periodic_data = frappe._dict()
 		self.si_periodic_data = frappe._dict()
-
-
-		
+		self.no_forecast_data = frappe._dict()
 		for so in self.so_entries:
 			period = self.get_period_so(so.get("transaction_date"))
 			self.so_periodic_data.setdefault((so.customer,so.country,so.sales_person,so.division,so.item_group), frappe._dict()).setdefault(period, 0.0)
@@ -203,6 +240,32 @@ class Analytics(object):
 			period = self.get_period_si(si.get("posting_date"))
 			self.si_periodic_data.setdefault((si.customer,si.country,si.sales_person,si.division,si.item_group), frappe._dict()).setdefault(period, 0.0)
 			self.si_periodic_data[(si.customer,si.country,si.sales_person,si.division,si.item_group)][period] += flt(si.value_field)
+
+		for f in self.no_forecast:
+			dic = frappe._dict()
+			for m in self.months:
+				dic['customer'] = f.customer
+				dic['country'] = f.country
+				dic['sales_person'] = f.sales_person
+				dic['division'] = f.division
+				dic['item_group'] = f.item_group
+				so_no_forecasted = "so"+"_"+m.lower() + "_" + self.filters.fiscal_year
+				si_no_forecasted = "si"+"_"+m.lower() + "_" + self.filters.fiscal_year
+				m_no_forecasted = m.lower() + "_" + self.filters.fiscal_year
+
+				dic[so_no_forecasted] = 0.00
+				dic[si_no_forecasted] = 0.00
+				dic.setdefault(m_no_forecasted, 0.0)
+				dic[m_no_forecasted] += flt(f[m_no_forecasted])
+
+			# print("///////self.no_forecast_data",dic)
+			self.data.append(dic)
+
+				# M_no_forecasted = m + " " + self.filters.fiscal_year
+				# self.no_forecast_data.setdefault((f.customer,f.country,f.sales_person,f.division,f.item_group), frappe._dict()).setdefault(so_no_forecasted, 0.0)
+				# self.no_forecast_data.setdefault((f.customer,f.country,f.sales_person,f.division,f.item_group), frappe._dict()).setdefault(si_no_forecasted, 0.0)
+				# self.no_forecast_data.setdefault((f.customer,f.country,f.sales_person,f.division,f.item_group), frappe._dict()).setdefault(m_no_forecasted, 0.0)
+				# self.no_forecast_data[(f.customer,f.country,f.sales_person,f.division,f.item_group)][m_no_forecasted] += flt(f[m_no_forecasted])
 
 
 	def get_forecast_entries(self):
