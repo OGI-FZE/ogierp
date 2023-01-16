@@ -9,7 +9,8 @@
  "field_order": [
   "template_name",
   "tender_type",
-  "activities"
+  "activities",
+  "amended_from"
  ],
  "fields": [
   {
@@ -30,11 +31,21 @@
    "fieldtype": "Data",
    "label": "Template Name",
    "unique": 1
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Tender Template",
+   "print_hide": 1,
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
+ "is_submittable": 1,
  "links": [],
- "modified": "2022-06-09 15:20:02.006225",
+ "modified": "2023-01-16 20:45:08.368270",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Tender Template",

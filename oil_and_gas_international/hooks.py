@@ -187,7 +187,6 @@ fixtures = [
         "filters": [
             ["name", "in", [
                 # Item
-                'Item-item_type',
                 'Item-other_item_type',
                 'Item-relevant_item',
                 #Custom Section

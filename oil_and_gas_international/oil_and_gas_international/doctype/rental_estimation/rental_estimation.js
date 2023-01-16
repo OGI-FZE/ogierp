@@ -183,14 +183,13 @@ const get_items_from_opportunity = () => {
 						cur_frm.doc.items = []
 
 						for (const row of data.opportunity_items) {
-							if (row.item_type == 'Rental') {
-								const new_row = cur_frm.add_child("items", {
-									qty: row.qty
-								})
-								const cdt = new_row.doctype
-								const cdn = new_row.name
-								frappe.model.set_value(cdt, cdn, "item_code", row.item_code)
-							}
+							const new_row = cur_frm.add_child("items", {
+								qty: row.qty
+							})
+							const cdt = new_row.doctype
+							const cdn = new_row.name
+							frappe.model.set_value(cdt, cdn, "item_code", row.item_code)
+							
 						}
 
 						cur_frm.refresh()

@@ -90,7 +90,7 @@
  "links": [
   {
    "link_doctype": "Tender Activity",
-   "link_fieldname": "tender"
+   "link_fieldname": "name1"
   }
  ],
  "modified": "2022-06-09 15:54:21.997584",
