@@ -6,7 +6,6 @@
  "engine": "InnoDB",
  "field_order": [
   "item_code",
-  "is_string",
   "column_break_2",
   "item_name",
   "description_section",
@@ -17,7 +16,6 @@
   "qty",
   "column_break_10",
   "estimate_rate",
-  "asset_location",
   "section_break_10",
   "operational_running",
   "lihdbr",
@@ -91,14 +89,6 @@
    "fieldtype": "Currency",
    "label": "Estimate Rate",
    "read_only": 1
-  },
-  {
-   "fieldname": "asset_location",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "Asset Location",
-   "options": "Location",
-   "reqd": 1
   },
   {
    "fieldname": "references_section",
@@ -201,13 +191,6 @@
    "fieldtype": "Currency",
    "label": "Base Redress (Company Currency)",
    "options": "Company:company:default_currency"
-  },
-  {
-   "default": "0",
-   "fetch_from": "item_code.is_string",
-   "fieldname": "is_string",
-   "fieldtype": "Check",
-   "label": "Is String"
   }
  ],
  "index_web_pages_for_search": 1,

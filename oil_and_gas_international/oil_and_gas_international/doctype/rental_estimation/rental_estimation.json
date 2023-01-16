@@ -12,7 +12,6 @@
   "column_break_3",
   "date",
   "valid_till",
-  "rate_type",
   "section_break_7",
   "currency",
   "column_break_9",
@@ -53,12 +52,6 @@
    "options": "Rental Estimation",
    "print_hide": 1,
    "read_only": 1
-  },
-  {
-   "fieldname": "rate_type",
-   "fieldtype": "Select",
-   "label": "Rate Type",
-   "options": "Per Day\nPer Hour\nPer Month"
   },
   {
    "default": "Today",

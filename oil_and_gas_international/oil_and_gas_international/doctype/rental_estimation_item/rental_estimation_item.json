@@ -16,9 +16,6 @@
   "qty",
   "estimate_rate",
   "column_break_12",
-  "asset_location",
-  "assets",
-  "opportunity",
   "section_break_15",
   "operational_running",
   "lihdbr",
@@ -88,15 +85,6 @@
    "fieldtype": "Column Break"
   },
   {
-   "columns": 2,
-   "fieldname": "asset_location",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "Asset Location",
-   "options": "Location",
-   "reqd": 1
-  },
-  {
    "columns": 1,
    "fieldname": "qty",
    "fieldtype": "Float",
@@ -104,12 +92,6 @@
    "label": "Qty",
    "non_negative": 1,
    "reqd": 1
-  },
-  {
-   "fieldname": "opportunity",
-   "fieldtype": "Link",
-   "label": "Opportunity",
-   "options": "Opportunity"
   },
   {
    "fieldname": "operational_running",
@@ -140,11 +122,6 @@
    "fieldname": "estimate_rate",
    "fieldtype": "Float",
    "label": "Estimate Rate"
-  },
-  {
-   "fieldname": "assets",
-   "fieldtype": "Small Text",
-   "label": "Assets"
   },
   {
    "fieldname": "post_rental_inspection_charges",

@@ -269,14 +269,12 @@ fixtures = [
                 'Asset-is_string_asset',
 
                 # Opportunity
-                'Opportunity-item_type',
                 'Opportunity-references',
                 'Opportunity-rental_estimation',
                 'Opportunity-sales_person',
                 'Opportunity-departments',
 
                 # Opportunity Item
-                'Opportunity Item-item_type',
 
                 # Material Request Item
                 'Material Request Item-rental_order',

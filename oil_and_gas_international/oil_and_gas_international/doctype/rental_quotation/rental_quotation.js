@@ -46,9 +46,19 @@ frappe.ui.form.on('Rental Quotation', {
 	conversion_rate(frm){
     	convert_rate(frm)
   	},
-	validate(frm){
-		convert_rate(frm)
-	},
+  	validate(frm){
+		frm.doc.items.forEach(function(item){
+			console.log(item.base_operational_running* frm.doc.conversion_rate)
+			frappe.model.set_value(item.doctype, item.name, 'operational_running', item.base_operational_running* frm.doc.conversion_rate);
+			frappe.model.set_value(item.doctype, item.name, 'lihdbr', item.base_lihdbr* frm.doc.conversion_rate);
+			frappe.model.set_value(item.doctype, item.name, 'post_rental_inspection_charges', item.base_post_rental_inspection_charges* frm.doc.conversion_rate);
+			frappe.model.set_value(item.doctype, item.name, 'standby', item.base_standby* frm.doc.conversion_rate);
+			frappe.model.set_value(item.doctype, item.name, 'straight', item.base_straight* frm.doc.conversion_rate);
+			frappe.model.set_value(item.doctype, item.name, 'redress', item.base_redress* frm.doc.conversion_rate);
+
+		}),
+  		convert_rate(frm)
+  	},
 	terms(frm) {
 		if(frm.doc.terms) {
 			return frappe.call({
@@ -89,17 +99,17 @@ const convert_rate = function(frm){
     conv_rate.push(frm.doc.conversion_rate)
       for(let row of frm.doc.items){
         var converted_op_rate = (row.operational_running)*conv_rate[conv_rate.length-1]
-        frappe.model.set_value(row.doctype,row.name,'base_operational_running',converted_op_rate)
+       // frappe.model.set_value(row.doctype,row.name,'base_operational_running',converted_op_rate)
         var converted_lihdbr_rate = (row.lihdbr)*conv_rate[conv_rate.length-1]
-        frappe.model.set_value(row.doctype,row.name,'base_lihdbr',converted_lihdbr_rate)
+ //       frappe.model.set_value(row.doctype,row.name,'base_lihdbr',converted_lihdbr_rate)
         var converted_pr_rate = (row.post_rental_inspection_charges)*conv_rate[conv_rate.length-1]
-        frappe.model.set_value(row.doctype,row.name,'base_post_rental_inspection_charges',converted_pr_rate)
+   //     frappe.model.set_value(row.doctype,row.name,'base_post_rental_inspection_charges',converted_pr_rate)
         var converted_standby_rate = (row.standby)*conv_rate[conv_rate.length-1]
-        frappe.model.set_value(row.doctype,row.name,'base_standby',converted_standby_rate)
+     //   frappe.model.set_value(row.doctype,row.name,'base_standby',converted_standby_rate)
         var converted_straight_rate = (row.straight)*conv_rate[conv_rate.length-1]
-        frappe.model.set_value(row.doctype,row.name,'base_straight',converted_straight_rate)
+   //     frappe.model.set_value(row.doctype,row.name,'base_straight',converted_straight_rate)
         var converted_redress_rate = (row.redress)*conv_rate[conv_rate.length-1]
-        frappe.model.set_value(row.doctype,row.name,'base_redress',converted_redress_rate)
+     //   frappe.model.set_value(row.doctype,row.name,'base_redress',converted_redress_rate)
       }
   }
 }
@@ -271,6 +281,10 @@ const add_rental_order = () => {
 				cur_doc.delivery_terms = doc.delivery_terms
 				cur_doc.payment_terms = doc.payment_terms
 				cur_doc.freight = doc.freight
+				cur_doc.rental_estimation = doc.rental_estimation
+				cur_doc.opportunity = doc.opportunity
+				cur_doc.currency = doc.currency
+				cur_doc.conversion_rate = doc.conversion_rate
 				// cur_doc.sales_person_link = doc.sales_person
 				frappe.model.set_value('Rental Order', cur_doc.name, "sales_person_link", doc.sales_person)
 				frappe.model.set_value('Rental Order', cur_doc.name, "currency", doc.currency)
@@ -285,10 +299,26 @@ const add_rental_order = () => {
 					}
 
 					const new_row = cur_frm.add_child('items', {
+						'description_2': row.description_2,
+						'description': row.description,
 						'rate': rate,
-						'asset_location': row.asset_location,
-						'rental_quotation': doc.name,
-						'rental_estimation': row.rental_estimate,
+						'item_name': row.item_name,
+						'rental_quotation': cur_doc.rental_quotation,
+						'rental_estimation': cur_doc.rental_estimation,
+						'opportunity': cur_doc.opportunity,
+						'qty': row.qty,
+						'base_operational_running': row.base_operational_running,
+						'operational_running': row.base_operational_running* doc.conversion_rate,
+						'base_lihdbr': row.base_lihdbr,
+						'base_straight': row.base_straight,
+						'base_standby': row.base_standby,
+						'base_redress': row.base_redress,
+						'base_post_rental_inspection_charges' : row.base_post_rental_inspection_charges,
+						'lihdbr': row.base_lihdbr* doc.conversion_rate,
+						'straight': row.base_straight* doc.conversion_rate,
+						'standby': row.base_standby* doc.conversion_rate,
+						'redress': row.base_redress* doc.conversion_rate,
+						'post_rental_inspection_charges' : row.base_post_rental_inspection_charges* doc.conversion_rate,
 					})
 					const cdt = new_row.doctype
 					const cdn = new_row.name
@@ -331,19 +361,22 @@ const calculate_lost_and_damage_price = (frm, cdt, cdn) => {
 			item_code
 		},
 		callback(r) {
-			const data = r.message
-			row.operational_running = data[0]
-			row.standby = data[1]
-			row.lihdbr = data[2]
-			row.redress = data[3]
-			row.straight = data[4]
-			row.post_rental_inspection_charges = data[5]
-			row.base_operational_running = data[0]
-			row.base_standby = data[1]
-			row.base_lihdbr = data[2]
-			row.base_redress = data[3]
-			row.base_straight = data[4]
-			row.base_post_rental_inspection_charges = data[5]
+			if (!row.base_operational_running && !row.base_standby && !row.base_lihdbr && !row.base_redress && 
+				!row.base_post_rental_inspection_charges){
+				const data = r.message
+				row.operational_running = data[0]
+				row.standby = data[1]
+				row.lihdbr = data[2]
+				row.redress = data[3]
+				row.straight = data[4]
+				row.post_rental_inspection_charges = data[5]
+				row.base_operational_running = data[0]
+				row.base_standby = data[1]
+				row.base_lihdbr = data[2]
+				row.base_redress = data[3]
+				row.base_straight = data[4]
+				row.base_post_rental_inspection_charges = data[5]
+			}
 			frm.refresh()
 		}
 	})

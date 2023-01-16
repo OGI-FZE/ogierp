@@ -2,9 +2,10 @@
 // For license information, please see license.txt
 var conv_rate = [1]
 frappe.ui.form.on('Rental Estimation', {
-	setup(frm) {
-		set_query(frm)
-	},
+	// setup(frm) {
+	// 	set_query(frm)
+	// },
+
 	refresh(frm) {
 		create_custom_buttons()
 		var company_currency = frappe.get_doc(":Company", frm.doc.company).default_currency;
@@ -51,6 +52,12 @@ frappe.ui.form.on('Rental Estimation', {
 	    convert_rate(frm)
 	},
   	validate(frm){
+		frm.doc.items.forEach(function(item){
+			frappe.db.set_value('Item', item.item_code, 'base_operational_running', item.operational_running* frm.doc.conversion_rate);
+	
+				
+			
+		}),
   		convert_rate(frm)
   	}
 })
@@ -121,15 +128,14 @@ const get_conversion_rate = (frm) => {
 // }
 
 // Rental Estimation
-const set_query = (frm) => {
-	frm.fields_dict['items'].grid.get_field('item_code').get_query = function (doc, cdt, cdn) {
-		return {
-			filters: [
-				['item_type', '=', 'Rental']
-			]
-		}
-	}
-}
+// const set_query = (frm) => {
+// 	frm.fields_dict['items'].grid.get_field('item_code').get_query = function (doc, cdt, cdn) {
+// 		return {
+// 			filters: [
+// 			]
+// 		}
+// 	}
+// }
 
 const create_custom_buttons = () => {
 	const doc = cur_frm.doc
@@ -205,19 +211,47 @@ const add_rental_quotation = () => {
 			() => {
 				const cur_doc = cur_frm.doc
 				cur_doc.customer = doc.customer
+				cur_doc.departments = doc.departments
+				cur_doc.customer_reference = doc.customer_reference
 				cur_doc.date = doc.date
 				cur_doc.valid_till = doc.valid_till
+				cur_doc.sales_person = doc.sales_person
 				cur_doc.rate_type = doc.rate_type
 				cur_doc.rental_estimation = doc.name
+				cur_doc.opportunity = doc.opportunity
+				cur_doc.currency = doc.currency
+				cur_doc.conversion_rate = doc.conversion_rate
+			
 
 				cur_doc.items = []
+				
 				for (const row of doc.items) {
 					const new_row = cur_frm.add_child('items', {
+						'description_2': row.description_2_,
+						'description': row.description,
+						'item_name': row.item_name,
 						'qty': row.qty,
 						'estimate_rate': row.estimate_rate,
-						'asset_location': row.asset_location,
 						'rental_estimate': doc.name,
 						'rental_estimate_item': row.name,
+						'opportunity': cur_doc.opportunity,
+						'uom': row.uom,
+						'base_operational_running': row.base_operational_running,
+						'operational_running': row.base_operational_running* doc.conversion_rate,
+						'base_lihdbr': row.base_lihdbr,
+						'base_straight': row.base_straight,
+						'base_standby': row.base_standby,
+						'base_redress': row.base_redress,
+						'base_post_rental_inspection_charges' : row.base_post_rental_inspection_charges,
+						'lihdbr': row.base_lihdbr* doc.conversion_rate,
+						'straight': row.base_straight* doc.conversion_rate,
+						'standby': row.base_standby* doc.conversion_rate,
+						'redress': row.base_redress* doc.conversion_rate,
+						'post_rental_inspection_charges' : row.base_post_rental_inspection_charges* doc.conversion_rate,
+			
+
+
+
 					})
 					const cdt = new_row.doctype
 					const cdn = new_row.name
@@ -226,6 +260,7 @@ const add_rental_quotation = () => {
 
 				cur_frm.refresh()
 			}
+		
 		])
 	}, 'Create')
 }
@@ -241,6 +276,7 @@ const calculate_lost_and_damage_price = (frm, cdt, cdn) => {
 			item_code
 		},
 		callback(r) {
+			console.log(r.message)
 			const data = r.message
 			row.operational_running = data[0]
 			row.standby = data[1]

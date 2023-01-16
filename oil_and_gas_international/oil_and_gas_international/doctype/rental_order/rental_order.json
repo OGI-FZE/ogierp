@@ -13,7 +13,6 @@
   "date",
   "section_break_6",
   "currency",
-  "aed_exchange_rate",
   "column_break_8",
   "conversion_rate",
   "section_break_10",
@@ -236,12 +235,6 @@
   {
    "fieldname": "section_break_10",
    "fieldtype": "Section Break"
-  },
-  {
-   "fieldname": "aed_exchange_rate",
-   "fieldtype": "Float",
-   "label": "AED Exchange Rate",
-   "precision": "9"
   },
   {
    "allow_on_submit": 1,

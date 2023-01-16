@@ -12,7 +12,6 @@
   "company",
   "date",
   "valid_till",
-  "rate_type",
   "section_break_7",
   "currency",
   "column_break_9",
@@ -27,7 +26,6 @@
   "status",
   "column_break_16",
   "rental_estimation",
-  "opportunity",
   "amended_from"
  ],
  "fields": [
@@ -63,15 +61,6 @@
    "fieldtype": "Date",
    "in_list_view": 1,
    "label": "Valid Till",
-   "reqd": 1
-  },
-  {
-   "default": "Per Day",
-   "fieldname": "rate_type",
-   "fieldtype": "Select",
-   "in_list_view": 1,
-   "label": "Rate Type",
-   "options": "\nPer Hour\nPer Day\nPer Month",
    "reqd": 1
   },
   {
@@ -166,14 +155,6 @@
    "fieldtype": "Link",
    "label": "Company",
    "options": "Company"
-  },
-  {
-   "fieldname": "opportunity",
-   "fieldtype": "Link",
-   "label": "Opportunity",
-   "no_copy": 1,
-   "options": "Opportunity",
-   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,

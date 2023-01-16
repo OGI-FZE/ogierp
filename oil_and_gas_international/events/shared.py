@@ -2,7 +2,7 @@ import frappe
 
 
 @frappe.whitelist()
-def get_lost_and_damage_prices(item_code=None):
+def get_lost_and_damage_prices(item_code='TESTING'):
     if not item_code:
         return 0, 0
 

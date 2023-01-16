@@ -4,9 +4,9 @@
 var conv_rate = [1]
 
 frappe.ui.form.on('Rental Order', {
-	setup(frm) {
-		set_query(frm)
-	},
+	// setup(frm) {
+	// 	set_query(frm)
+	// },
 
 	refresh(frm) {
 		create_custom_buttons(frm)
@@ -28,7 +28,7 @@ frappe.ui.form.on('Rental Order', {
 			});
 		}
 		get_conversion_rate(frm)
-      	convert_rate(frm)
+      	// convert_rate(frm)
 	},
 	terms(frm) {
 		if(frm.doc.terms) {
@@ -66,8 +66,18 @@ frappe.ui.form.on('Rental Order', {
     	convert_rate(frm)
 	},
 	validate(frm){
-		convert_rate(frm)
-	},
+		frm.doc.items.forEach(function(item){
+			console.log(item.base_operational_running* frm.doc.conversion_rate)
+			frappe.model.set_value(item.doctype, item.name, 'operational_running', item.base_operational_running* frm.doc.conversion_rate);
+			frappe.model.set_value(item.doctype, item.name, 'lihdbr', item.base_lihdbr* frm.doc.conversion_rate);
+			frappe.model.set_value(item.doctype, item.name, 'post_rental_inspection_charges', item.base_post_rental_inspection_charges* frm.doc.conversion_rate);
+			frappe.model.set_value(item.doctype, item.name, 'standby', item.base_standby* frm.doc.conversion_rate);
+			frappe.model.set_value(item.doctype, item.name, 'straight', item.base_straight* frm.doc.conversion_rate);
+			frappe.model.set_value(item.doctype, item.name, 'redress', item.base_redress* frm.doc.conversion_rate);
+
+		}),
+  		convert_rate(frm)
+  	},
 	taxes_and_charges(frm) {
 		frappe.call({
 			method: "oil_and_gas_international.oil_and_gas_international.doctype.rental_order.rental_order.get_taxes",
@@ -113,7 +123,7 @@ const convert_base_rate = function(frm){
   if(frm.doc.items && frm.doc.docstatus!=1){
     conv_rate.push(frm.doc.conversion_rate)
       for(let row of frm.doc.items){
-        var converted_op_rate = (row.base_operational_running)*conv_rate[conv_rate.length-1]
+       // var converted_op_rate = (row.base_operational_running)*conv_rate[conv_rate.length-1]
         frappe.model.set_value(row.doctype,row.name,'operational_running',converted_op_rate)
         var converted_lihdbr_rate = (row.base_lihdbr)*conv_rate[conv_rate.length-1]
         frappe.model.set_value(row.doctype,row.name,'lihdbr',converted_lihdbr_rate)
@@ -136,19 +146,19 @@ const convert_rate = function(frm){
     conv_rate.push(frm.doc.conversion_rate)
       for(let row of frm.doc.items){
         var converted_op_rate = (row.operational_running)*conv_rate[conv_rate.length-1]
-        frappe.model.set_value(row.doctype,row.name,'base_operational_running',converted_op_rate)
+        // frappe.model.set_value(row.doctype,row.name,'base_operational_running',converted_op_rate)
         var converted_lihdbr_rate = (row.lihdbr)*conv_rate[conv_rate.length-1]
-        frappe.model.set_value(row.doctype,row.name,'base_lihdbr',converted_lihdbr_rate)
+        // frappe.model.set_value(row.doctype,row.name,'base_lihdbr',converted_lihdbr_rate)
         var converted_pr_rate = (row.post_rental_inspection_charges)*conv_rate[conv_rate.length-1]
-        frappe.model.set_value(row.doctype,row.name,'base_post_rental_inspection_charges',converted_pr_rate)
+        // frappe.model.set_value(row.doctype,row.name,'base_post_rental_inspection_charges',converted_pr_rate)
         var converted_standby_rate = (row.standby)*conv_rate[conv_rate.length-1]
-        frappe.model.set_value(row.doctype,row.name,'base_standby',converted_standby_rate)
+        // frappe.model.set_value(row.doctype,row.name,'base_standby',converted_standby_rate)
         var converted_straight_rate = (row.straight)*conv_rate[conv_rate.length-1]
-        frappe.model.set_value(row.doctype,row.name,'base_straight',converted_straight_rate)
+        // frappe.model.set_value(row.doctype,row.name,'base_straight',converted_straight_rate)
         var converted_redress_rate = (row.redress)*conv_rate[conv_rate.length-1]
-        frappe.model.set_value(row.doctype,row.name,'base_redress',converted_redress_rate)
+        // frappe.model.set_value(row.doctype,row.name,'base_redress',converted_redress_rate)
         var converted_base_total_amount = (row.total_amount)*conv_rate[conv_rate.length-1]
-        frappe.model.set_value(row.doctype,row.name,'base_total_amount',converted_base_total_amount)
+        // frappe.model.set_value(row.doctype,row.name,'base_total_amount',converted_base_total_amount)
       }
   }
 }
@@ -174,7 +184,7 @@ const get_conversion_rate = (frm) => {
 // Rental Order Item
 frappe.ui.form.on('Rental Order Item', {
 	item_code(frm, cdt, cdn) {
-		calculate_lost_and_damage_price(frm, cdt, cdn)
+		// calculate_lost_and_damage_price(frm, cdt, cdn)
 	},
 
 	from_date(frm, cdt, cdn) {
@@ -209,16 +219,16 @@ frappe.ui.form.on('Rental Order Item', {
 });
 
 // Rental Order
-const set_query = (frm) => {
-	frm.fields_dict['items'].grid.get_field('item_code').get_query = function (doc, cdt, cdn) {
-		return {
-			filters: [
-				['item_type', '=', 'Rental'],
-				['is_fixed_asset', '=', 1]
-			]
-		}
-	}
-}
+// const set_query = (frm) => {
+// 	frm.fields_dict['items'].grid.get_field('item_code').get_query = function (doc, cdt, cdn) {
+// 		return {
+// 			filters: [
+// 				['item_type', '=', 'Rental'],
+// 				['is_fixed_asset', '=', 1]
+// 			]
+// 		}
+// 	}
+// }
 
 const create_custom_buttons = () => {
 	const doc = cur_frm.doc
@@ -484,34 +494,34 @@ const calc_total_qty = (frm) => {
 
 // Rental Order Item
 
-const calculate_lost_and_damage_price = (frm, cdt, cdn) => {
-	const row = locals[cdt][cdn]
-	const item_code = row.item_code
+// const calculate_lost_and_damage_price = (frm, cdt, cdn) => {
+// 	const row = locals[cdt][cdn]
+// 	const item_code = row.item_code
 
-	frappe.call({
-		method: "oil_and_gas_international.events.shared.get_lost_and_damage_prices",
-		args: {
-			item_code
-		},
-		callback(r) {
-			const data = r.message
-			row.operational_running = data[0]
-			row.standby = data[1]
-			row.lihdbr = data[2]
-			row.redress = data[3]
-			row.straight = data[4]
-			row.post_rental_inspection_charges = data[5]
-			// row.base_operational_running = data[0]
-			// row.base_standby = data[1]
-			// row.base_lihdbr = data[2]
-			// row.base_redress = data[3]
-			// row.base_straight = data[4]
-			// row.base_post_rental_inspection_charges = data[5]
-			frm.refresh()
-		}
-	})
-	convert_base_rate(frm)
-}
+// 	frappe.call({
+// 		method: "oil_and_gas_international.events.shared.get_lost_and_damage_prices",
+// 		args: {
+// 			item_code
+// 		},
+// 		callback(r) {
+// 			const data = r.message
+// 			row.operational_running = data[0]
+// 			row.standby = data[1]
+// 			row.lihdbr = data[2]
+// 			row.redress = data[3]
+// 			row.straight = data[4]
+// 			row.post_rental_inspection_charges = data[5]
+// 			// row.base_operational_running = data[0]
+// 			// row.base_standby = data[1]
+// 			// row.base_lihdbr = data[2]
+// 			// row.base_redress = data[3]
+// 			// row.base_straight = data[4]
+// 			// row.base_post_rental_inspection_charges = data[5]
+// 			frm.refresh()
+// 		}
+// 	})
+// 	convert_base_rate(frm)
+// }
 
 
 

@@ -6,7 +6,6 @@
  "engine": "InnoDB",
  "field_order": [
   "item_code",
-  "is_string",
   "from_date",
   "column_break_2",
   "item_name",
@@ -16,9 +15,7 @@
   "quantity_and_rate_section",
   "qty",
   "days_of_rent",
-  "delivered_qty",
   "column_break_9",
-  "asset_location",
   "received_qty",
   "status",
   "section_break_19",
@@ -36,11 +33,7 @@
   "base_redress",
   "base_straight",
   "section_break_18",
-  "total_amount",
-  "billed_amount",
   "column_break_33",
-  "base_total_amount",
-  "base_billed_amount",
   "rental_estimation",
   "rental_quotation"
  ],
@@ -93,32 +86,16 @@
    "reqd": 1
   },
   {
-   "fieldname": "asset_location",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "Asset Location",
-   "mandatory_depends_on": "eval:!doc.is_string",
-   "options": "Location"
-  },
-  {
    "fieldname": "from_date",
    "fieldtype": "Date",
    "label": "From Date",
-   "reqd": 1
+   "reqd": 0
   },
   {
    "allow_on_submit": 1,
    "fieldname": "to_date",
    "fieldtype": "Date",
    "label": "To Date"
-  },
-  {
-   "allow_on_submit": 1,
-   "default": "0",
-   "fieldname": "delivered_qty",
-   "fieldtype": "Float",
-   "label": "Delivered Qty",
-   "no_copy": 1
   },
   {
    "allow_on_submit": 1,
@@ -160,20 +137,6 @@
    "hidden": 1,
    "label": "Rental Quotation",
    "options": "Rental Quotation"
-  },
-  {
-   "allow_on_submit": 1,
-   "fieldname": "total_amount",
-   "fieldtype": "Currency",
-   "label": "Total Amount (Customer Currency)",
-   "read_only": 1
-  },
-  {
-   "allow_on_submit": 1,
-   "fieldname": "billed_amount",
-   "fieldtype": "Currency",
-   "label": "Billed Amount (Customer Currency)",
-   "read_only": 1
   },
   {
    "fieldname": "section_break_19",
@@ -252,26 +215,6 @@
   {
    "fieldname": "column_break_33",
    "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "base_total_amount",
-   "fieldtype": "Currency",
-   "label": "Base Total Amount (Company Currency)",
-   "options": "Company:company:default_currency"
-  },
-  {
-   "fieldname": "base_billed_amount",
-   "fieldtype": "Currency",
-   "label": "Base Billed Amount (Company Currency)",
-   "options": "Company:company:default_currency"
-  },
-  {
-   "default": "0",
-   "fetch_from": "item_code.is_string",
-   "fieldname": "is_string",
-   "fieldtype": "Check",
-   "label": "Is String",
-   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
