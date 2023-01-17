@@ -12,6 +12,13 @@ class RentalOrder(Document):
             frappe.set_value("Rental Quotation",
                              self.rental_quotation, "status", "Ordered")
         self.db_set("status", "Submitted")
+        pro = frappe.new_doc("Project")
+        pro.project_name = self.project_name
+        pro.rental_order = self.name
+        pro.expected_start_date = self.date
+        pro.customer = self.customer
+        pro.project_type = 'External'
+        pro.save()
         frappe.db.commit()
 
     def on_update(self):
