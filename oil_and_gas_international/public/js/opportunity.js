@@ -104,7 +104,7 @@ const create_estimation = (frm) => {
         frm.add_custom_button(__('Estimation Sheet'),
             function() {
                 frappe.model.open_mapped_doc({
-                    method: "oil_and_gas_international.oil_and_gas_international.doctype.estimation_sheet.estimation_sheet.make_estimation",
+                    method: "oil_and_gas_international.events.shared.make_estimation",
                     frm: frm
                 })
             }, __("Create"), "btn-default");

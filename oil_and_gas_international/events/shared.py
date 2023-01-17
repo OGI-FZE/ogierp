@@ -1,5 +1,27 @@
 import frappe
+from frappe.model.mapper import get_mapped_doc
 
+
+
+@frappe.whitelist()
+def make_estimation(source_name, target_doc=None):
+	doclist = get_mapped_doc("Opportunity", source_name, {
+			"Opportunity": {
+				"doctype": "Estimation Sheet",
+				"field_map": {
+					"name" : "opportunity"
+				}
+			},
+			"Opportunity Item": {
+				"doctype": "Estimation Sheet Item",
+				"field_map": {
+					"item_code": "item_code",
+					"description_2":"description_2"
+				},
+			}
+		}, target_doc)
+
+	return doclist
 
 @frappe.whitelist()
 def get_lost_and_damage_prices(item_code='TESTING'):
