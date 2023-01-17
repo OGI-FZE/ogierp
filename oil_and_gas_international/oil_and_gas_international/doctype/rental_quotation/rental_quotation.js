@@ -302,6 +302,7 @@ const add_rental_order = () => {
 						'description_2': row.description_2,
 						'description': row.description,
 						'rate': rate,
+						'customer_requirement': row.customer_requirement,
 						'item_name': row.item_name,
 						'rental_quotation': cur_doc.rental_quotation,
 						'rental_estimation': cur_doc.rental_estimation,

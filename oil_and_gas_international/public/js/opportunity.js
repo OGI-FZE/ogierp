@@ -71,6 +71,7 @@ const create_rental_estimation = (frm) => {
                             'description': row.description,
                             'item_name': row.item_name,
                             'opportunity': cur_frm.doc.opportunity,
+                            'customer_requirement': row.customer_requirement,
                         })
                         const cdt = new_row.doctype
                         const cdn = new_row.name
@@ -93,6 +94,7 @@ const create_tender = (frm) => {
                 cur_frm.doc.customer = doc.party_name;
 
                 cur_frm.doc.customer_reference = doc.customer_reference;
+                cur_frm.doc.opportunity = doc.name;
                 cur_frm.refresh()
             }
         ])
@@ -134,6 +136,7 @@ const create_rental_quotation = (frm) => {
                             'uom': row.uom,
                             'description': row.description,
                             'opportunity': cur_frm.doc.opportunity,
+                            'customer_requirement': row.customer_requirement,
                             // 'opportunity': doc.name,
                         })
                         const cdt = new_row.doctype

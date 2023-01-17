@@ -16,7 +16,8 @@ def make_estimation(source_name, target_doc=None):
 				"doctype": "Estimation Sheet Item",
 				"field_map": {
 					"item_code": "item_code",
-					"description_2":"description_2"
+					"description_2":"description_2",
+                    "customer_requirement":"customer_requirement"
 				},
 			}
 		}, target_doc)

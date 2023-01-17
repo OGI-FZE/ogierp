@@ -247,6 +247,7 @@ const add_rental_quotation = () => {
 						'standby': row.base_standby* doc.conversion_rate,
 						'redress': row.base_redress* doc.conversion_rate,
 						'post_rental_inspection_charges' : row.base_post_rental_inspection_charges* doc.conversion_rate,
+						'customer_requirement': row.customer_requirement
 			
 
 
