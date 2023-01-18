@@ -5,7 +5,8 @@ import frappe
 from frappe.model.document import Document
 
 class Tender(Document):
-	def validate(self):
+	pass
+	# def validate(self):
 		# if  self.is_new():
 		#     self.copy_from_template()
 		# else:
@@ -14,22 +15,7 @@ class Tender(Document):
 
 
 
-	def copy_from_template(self):
-		"""
-		Copy activity from template
-		# """
-		if self.template:
-			template_doc = frappe.get_doc('Tender Template',self.template)
-			for row in template_doc.activities:
-				if row.activity in self.activities:
-					pass
-				else:
-					self.append('activities', {
-						'tender_activity': row.activity,
-						'date': row.date,
-						'status': row.status,
-						'activity_type': row.activity_type,
-					})
+/
 
 		# if self.template and not frappe.db.get_all("Tender Activity", dict(tender=self.name), limit=1):
 
@@ -63,15 +49,15 @@ class Tender(Document):
 		# 		)
 			# self.save()
 
-	def create_activity_from_template(self, activity_details):
-		return frappe.get_doc(
-			dict(
-				doctype="Tender Activity",
-				name1=activity_details.name1,
-				tender=self.name,
-				status="Open",
-			)
-		).insert()
+	# def create_activity_from_template(self, activity_details):
+	# 	return frappe.get_doc(
+	# 		dict(
+	# 			doctype="Tender Activity",
+	# 			name1=activity_details.name1,
+	# 			tender=self.name,
+	# 			status="Open",
+	# 		)
+	# 	).insert()
 
-	def after_insert(self):
-		self.copy_from_template()
+	# def after_insert(self):
+	# 	self.copy_from_template()
