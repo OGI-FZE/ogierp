@@ -96,27 +96,32 @@
   {
    "fieldname": "operational_running",
    "fieldtype": "Currency",
-   "label": "Operational/Running (Customer Currency)"
+   "label": "Operational/Running (Customer Currency)",
+   "options": "currency"
   },
   {
    "fieldname": "standby",
    "fieldtype": "Currency",
-   "label": "Standby (Customer Currency)"
+   "label": "Standby (Customer Currency)",
+   "options": "currency"
   },
   {
    "fieldname": "lihdbr",
    "fieldtype": "Currency",
-   "label": "LIH/DBR (Customer Currency)"
+   "label": "LIH/DBR (Customer Currency)",
+   "options": "currency"
   },
   {
    "fieldname": "redress",
    "fieldtype": "Currency",
-   "label": "Redress (Customer Currency)"
+   "label": "Redress (Customer Currency)",
+   "options":"currency"
   },
   {
    "fieldname": "straight",
    "fieldtype": "Currency",
-   "label": "Straight (Customer Currency)"
+   "label": "Straight (Customer Currency)",
+   "options":"currency"
   },
   {
    "fieldname": "estimate_rate",
@@ -126,7 +131,8 @@
   {
    "fieldname": "post_rental_inspection_charges",
    "fieldtype": "Currency",
-   "label": "Post Rental Inspection charges (Customer Currency)"
+   "label": "Post Rental Inspection charges (Customer Currency)",
+   "options": "currency"
   },
   {
    "fieldname": "section_break_15",
