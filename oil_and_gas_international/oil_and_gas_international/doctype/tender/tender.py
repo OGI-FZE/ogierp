@@ -6,11 +6,11 @@ from frappe.model.document import Document
 
 class Tender(Document):
 	def validate(self):
-		if  self.is_new():
-		    self.copy_from_template()
-		else:
-			self.set("activities", [])
-			self.copy_from_template()
+		# if  self.is_new():
+		#     self.copy_from_template()
+		# else:
+		# 	self.set("activities", [])
+		# 	self.copy_from_template()
 
 
 
