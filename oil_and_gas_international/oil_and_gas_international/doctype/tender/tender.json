@@ -12,7 +12,6 @@
   "tender_description",
   "column_break_4",
   "date",
-  "template",
   "tender_submission_date",
   "tender_value",
   "section_break_7",
@@ -70,14 +69,7 @@
    "fieldtype": "Table",
    "label": "Activities",
    "no_copy": 1,
-   "options": "Tender Item",
-   "read_only": 1
-  },
-  {
-   "fieldname": "template",
-   "fieldtype": "Link",
-   "label": "Template",
-   "options": "Tender Template"
+   "options": "Tender Item"
   },
   {
    "default": "Today",
