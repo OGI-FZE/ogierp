@@ -15,7 +15,22 @@ class Tender(Document):
 
 
 
-/
+	# def copy_from_template(self):
+	# 	"""
+	# 	Copy activity from template
+	# 	# """
+	# 	if self.template:
+	# 		template_doc = frappe.get_doc('Tender Template',self.template)
+	# 		for row in template_doc.activities:
+	# 			if row.activity in self.activities:
+	# 				pass
+	# 			else:
+	# 				self.append('activities', {
+	# 					'tender_activity': row.activity,
+	# 					'date': row.date,
+	# 					'status': row.status,
+	# 					'activity_type': row.activity_type,
+	# 				})
 
 		# if self.template and not frappe.db.get_all("Tender Activity", dict(tender=self.name), limit=1):
 
