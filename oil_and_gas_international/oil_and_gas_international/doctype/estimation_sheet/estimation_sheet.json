@@ -180,24 +180,6 @@
    "width": "50px"
   },
   {
-   "fieldname": "amended_from",
-   "fieldtype": "Link",
-   "label": "Amended From",
-   "no_copy": 1,
-   "options": "Estimation Sheet",
-   "print_hide": 1,
-   "read_only": 1
-  },
-  {
-   "fieldname": "amended_from",
-   "fieldtype": "Link",
-   "label": "Amended From",
-   "no_copy": 1,
-   "options": "Estimation Sheet",
-   "print_hide": 1,
-   "read_only": 1
-  },
-  {
    "fieldname": "opportunity",
    "fieldtype": "Link",
    "label": "Opportunity",
@@ -213,7 +195,7 @@
  "icon": "fa fa-info-sign",
  "is_submittable": 1,
  "links": [],
- "modified": "2022-10-25 14:37:14.655062",
+ "modified": "2023-01-18 12:06:39.188997",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Estimation Sheet",
