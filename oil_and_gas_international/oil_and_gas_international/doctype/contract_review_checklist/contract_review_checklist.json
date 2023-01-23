@@ -1,55 +1,187 @@
 {
- "actions": [],
- "allow_rename": 1,
- "creation": "2023-01-17 08:50:05.175316",
- "doctype": "DocType",
- "editable_grid": 1,
- "engine": "InnoDB",
- "field_order": [
-  "enquiry_po_ref_no",
-  "customer",
-  "opportunity"
- ],
- "fields": [
-  {
-   "fieldname": "enquiry_po_ref_no",
-   "fieldtype": "Data",
-   "label": "Enquiry/ P.O Ref No"
-  },
-  {
-   "fieldname": "customer",
-   "fieldtype": "Link",
-   "label": "Customer",
-   "options": "Customer"
-  },
-  {
-   "fieldname": "opportunity",
-   "fieldtype": "Link",
-   "label": "Opportunity",
-   "options": "Opportunity"
-  }
- ],
- "index_web_pages_for_search": 1,
- "links": [],
- "modified": "2023-01-17 08:50:05.175316",
- "modified_by": "Administrator",
- "module": "Oil And Gas International",
- "name": "Contract Review Checklist",
- "owner": "Administrator",
- "permissions": [
-  {
-   "create": 1,
-   "delete": 1,
-   "email": 1,
-   "export": 1,
-   "print": 1,
-   "read": 1,
-   "report": 1,
-   "role": "System Manager",
-   "share": 1,
-   "write": 1
-  }
- ],
- "sort_field": "modified",
- "sort_order": "DESC"
-}
+    "actions": [],
+    "allow_rename": 1,
+    "autoname": "field:enquiry_no",
+    "creation": "2022-03-19 12:45:47.158132",
+    "doctype": "DocType",
+    "editable_grid": 1,
+    "engine": "InnoDB",
+    "field_order": [
+     "enquiry_no",
+     "customer",
+     "opportunity",
+     "job_description",
+     "specification",
+     "date",
+     "section_break_7",
+     "cr_stage_1",
+     "section_break_10",
+     "cr_stage_2",
+     "special_req",
+     "cr_stage_2a",
+     "stage_3_section",
+     "cr_stage_3",
+     "review_done_by_section",
+     "sales_executive",
+     "machine_shop_supervisor",
+     "column_break_18",
+     "qaqc_engineer",
+     "procurement_supervisor",
+     "amended_from"
+    ],
+    "fields": [
+     {
+      "fieldname": "enquiry_no",
+      "fieldtype": "Data",
+      "in_list_view": 1,
+      "label": "Enquiry/ P.O Ref No",
+      "reqd": 1,
+      "unique": 1
+     },
+     {
+      "fieldname": "customer",
+      "fieldtype": "Link",
+      "label": "Customer",
+      "options": "Customer"
+     },
+     {
+      "fieldname": "job_description",
+      "fieldtype": "Data",
+      "label": "Job Description"
+     },
+     {
+      "fieldname": "specification",
+      "fieldtype": "Data",
+      "label": "Applicable Specification (If any)"
+     },
+     {
+      "fieldname": "date",
+      "fieldtype": "Date",
+      "label": "Date"
+     },
+     {
+      "fieldname": "amended_from",
+      "fieldtype": "Link",
+      "label": "Amended From",
+      "no_copy": 1,
+      "options": "Contract Review Checklist",
+      "print_hide": 1,
+      "read_only": 1
+     },
+     {
+      "fieldname": "section_break_7",
+      "fieldtype": "Section Break",
+      "label": "Stage(1) Quotation/Tendering"
+     },
+     {
+      "fieldname": "section_break_10",
+      "fieldtype": "Section Break",
+      "label": "Stage(2) Receipt of Order"
+     },
+     {
+      "fieldname": "special_req",
+      "fieldtype": "Heading",
+      "label": "Any Special Requirements "
+     },
+     {
+      "fieldname": "stage_3_section",
+      "fieldtype": "Section Break",
+      "label": "Stage(3) Amendment of Order"
+     },
+     {
+      "fieldname": "review_done_by_section",
+      "fieldtype": "Section Break",
+      "label": "Review Done by"
+     },
+     {
+      "description": "Sales Executive",
+      "fieldname": "sales_executive",
+      "fieldtype": "Signature",
+      "label": "Sales Executive"
+     },
+     {
+      "fieldname": "machine_shop_supervisor",
+      "fieldtype": "Signature",
+      "label": "Machine Shop Supervisor"
+     },
+     {
+      "fieldname": "column_break_18",
+      "fieldtype": "Column Break"
+     },
+     {
+      "fieldname": "qaqc_engineer",
+      "fieldtype": "Signature",
+      "label": "QA/QC Engineer"
+     },
+     {
+      "fieldname": "procurement_supervisor",
+      "fieldtype": "Signature",
+      "label": "Procurement Supervisor"
+     },
+     {
+      "fieldname": "cr_stage_1",
+      "fieldtype": "Table",
+      "options": "Contract Review Stage1"
+     },
+     {
+      "fieldname": "cr_stage_2",
+      "fieldtype": "Table",
+      "options": "Contract Review Stage2"
+     },
+     {
+        "fieldname": "opportunity",
+        "fieldtype": "Link",
+        "label": "Opportunity",
+        "options": "Opportunity"
+     },
+     
+     {
+      "fieldname": "cr_stage_2a",
+      "fieldtype": "Table",
+      "options": "Contract Review Stage2a"
+     },
+     {
+      "fieldname": "cr_stage_3",
+      "fieldtype": "Table",
+      "options": "Contract Review Stage3"
+     }
+    ],
+    "index_web_pages_for_search": 1,
+    "is_submittable": 1,
+    "links": [],
+    "modified": "2022-03-21 16:48:02.957048",
+    "modified_by": "Administrator",
+    "module": "Oil And Gas International",
+    "name": "Contract Review Checklist",
+    "owner": "Administrator",
+    "permissions": [
+     {
+      "create": 1,
+      "delete": 1,
+      "email": 1,
+      "export": 1,
+      "print": 1,
+      "read": 1,
+      "report": 1,
+      "role": "System Manager",
+      "share": 1,
+      "write": 1
+     }
+    ],
+    "sort_field": "modified",
+    "sort_order": "DESC"
+   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
