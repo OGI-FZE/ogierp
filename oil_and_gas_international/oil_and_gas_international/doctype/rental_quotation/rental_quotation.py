@@ -7,6 +7,12 @@ from frappe.utils import today
 
 
 class RentalQuotation(Document):
+    def validate(self):
+        rate_by_qty = []
+        for row in self.items:
+            rate_by_qty.append(row.qty*row.estimate_rate)
+            total_rate_qty = sum(rate_by_qty)
+            self.total_by_month = total_rate_qty*30
     def on_submit(self):
         if self.rental_estimation:
             self.status = "Open"
