@@ -36,6 +36,7 @@ const create_contract_checklist = (frm) => {
                 cur_frm.doc.date = doc.transaction_date;
                 cur_frm.doc.customer = doc.customer;
                 cur_frm.doc.enquiry_no = doc.po_no;
+                cur_frm.doc.sales_order = doc.name;
                 cur_frm.refresh()
             }
         ])

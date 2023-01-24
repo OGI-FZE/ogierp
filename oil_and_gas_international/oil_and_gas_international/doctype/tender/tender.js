@@ -27,6 +27,7 @@ const add_tender_review = () => {
 				cur_doc.customer = doc.customer
 				cur_doc.tender_no = doc.name
 				cur_doc.division = doc.division
+				cur_doc.date = doc.date
 
 
 
