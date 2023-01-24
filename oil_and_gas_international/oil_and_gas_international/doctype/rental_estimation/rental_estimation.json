@@ -10,6 +10,7 @@
   "customer",
   "customer_name",
   "column_break_3",
+  "division",
   "date",
   "valid_till",
   "section_break_7",
@@ -29,6 +30,13 @@
   "amended_from"
  ],
  "fields": [
+  {
+        "fieldname": "division",
+        "fieldtype": "Select",
+        "in_list_view": 1,
+        "label": "Division",
+        "options":"Machine Shop Sale\nMachine Shop Repair\nInspection\ntrading\nRental"
+      },
   {
    "fieldname": "customer",
    "fieldtype": "Link",

@@ -10,12 +10,14 @@
   "naming_series",
   "type",
   "tender_description",
+  "division",
   "column_break_4",
   "date",
   "tender_submission_date",
   "tender_value",
   "section_break_7",
-  "activities"
+  "activities",
+  "amended_from"
  ],
  "fields": [
   {
@@ -26,6 +28,13 @@
    "options": "TEND-.YY.-",
    "reqd": 1
   },
+  {
+    "fieldname": "division",
+    "fieldtype": "Select",
+    "in_list_view": 1,
+    "label": "Division",
+    "options":"Machine Shop Sale\nMachine Shop Repair\nInspection\ntrading\nRental"
+   },
   {
    "allow_in_quick_entry": 1,
    "fieldname": "type",
@@ -76,16 +85,26 @@
    "fieldname": "date",
    "fieldtype": "Date",
    "label": "Date"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Tender",
+   "print_hide": 1,
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
+ "is_submittable": 1,
  "links": [
   {
    "link_doctype": "Tender Activity",
    "link_fieldname": "name1"
   }
  ],
- "modified": "2022-06-09 15:54:21.997584",
+ "modified": "2023-01-24 10:24:09.829039",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Tender",

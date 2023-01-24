@@ -59,6 +59,7 @@ const create_rental_estimation = (frm) => {
                 cur_frm.doc.date = doc.transaction_date;
                 cur_frm.doc.valid_till = doc.expected_closing;
                 cur_frm.doc.opportunity = doc.name;
+                cur_frm.doc.division = doc.division;
                 cur_frm.doc.sales_person = doc.sales_person;
                 cur_frm.doc.customer_reference = doc.customer_reference;
                 cur_frm.doc.items = []
@@ -92,7 +93,7 @@ const create_tender = (frm) => {
             () => {
                 cur_frm.doc.departments = doc.departments;
                 cur_frm.doc.customer = doc.party_name;
-
+                cur_frm.doc.division = doc.division;
                 cur_frm.doc.customer_reference = doc.customer_reference;
                 cur_frm.doc.opportunity = doc.name;
                 cur_frm.refresh()
@@ -123,9 +124,11 @@ const create_rental_quotation = (frm) => {
                 cur_frm.doc.customer_name = doc.customer_name;
                 cur_frm.doc.date = doc.transaction_date;
                 cur_frm.doc.valid_till = doc.expected_closing;
+                cur_frm.doc.division = doc.division;
                 cur_frm.doc.departments = doc.departments;
                 cur_frm.doc.sales_person = doc.sales_person;
                 cur_frm.doc.opportunity = doc.name;
+                cur_frm.doc.division = doc.division;
                 cur_frm.doc.customer_reference = doc.customer_reference
                 cur_frm.doc.items = []
                 for (let row of doc.items) {

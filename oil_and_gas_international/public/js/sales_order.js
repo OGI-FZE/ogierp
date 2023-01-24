@@ -21,7 +21,27 @@ frappe.ui.form.on("Sales Order", {
 const create_custom_buttons = (frm) => {
     create_workorder(frm)
     create_proforma(frm)
+    create_contract_checklist(frm)
+
 }
+
+const create_contract_checklist = (frm) => {
+
+    frm.add_custom_button('Contract Review Checklist', () => {
+        const doc = frm.doc;
+        frappe.run_serially([
+            () => frappe.new_doc('Contract Review Checklist'),
+            () => {
+                //cur_frm - work order doc-so
+                cur_frm.doc.date = doc.transaction_date;
+                cur_frm.doc.customer = doc.customer;
+                cur_frm.doc.enquiry_no = doc.po_no;
+                cur_frm.refresh()
+            }
+        ])
+    }, 'Create');
+}
+
 
 const create_workorder = (frm) => {
     var proj = ''

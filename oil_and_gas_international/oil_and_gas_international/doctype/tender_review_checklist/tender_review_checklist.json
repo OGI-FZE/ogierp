@@ -1,0 +1,102 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:enquiry_no",
+ "creation": "2023-01-24 09:49:29.842894",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "enquiry_no",
+  "tender_no",
+  "date",
+  "division",
+  "col_break",
+  "customer",
+  "job_description",
+  "specification",
+  "section_break_7",
+  "terms"
+ ],
+ "fields": [
+  {
+   "fieldname": "enquiry_no",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Tender Enquiry / P.O Ref No.",
+   "unique": 1
+  },
+  {
+    "fieldname": "tender_no",
+    "fieldtype": "Link",
+    "in_list_view": 1,
+    "label": "Tender No.",
+    "options":"Tender"
+   },
+   {
+    "fieldname": "division",
+    "fieldtype": "Select",
+    "in_list_view": 1,
+    "label": "Division",
+    "options":"Machine Shop Sale\nMachine Shop Repair\nInspection\ntrading\nRental"
+   },
+   {
+    "fieldname": "date",
+    "fieldtype": "Date",
+    "label": "Date"
+   },
+   {
+    "fieldname": "col_break",
+    "fieldtype": "Column Break"
+   },
+   {
+    "fieldname": "customer",
+    "fieldtype": "Link",
+    "label": "Customer",
+    "options": "Customer"
+   },
+  {
+   "fieldname": "job_description",
+   "fieldtype": "Data",
+   "label": "Job Description"
+  },
+  {
+   "fieldname": "specification",
+   "fieldtype": "Data",
+   "label": "Applicable Specification (If any)"
+  },
+  {
+   "fieldname": "section_break_7",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "terms",
+   "fieldtype": "Table",
+   "options": "Tender Review Terms"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2023-01-24 09:49:29.842894",
+ "modified_by": "Administrator",
+ "module": "Oil And Gas International",
+ "name": "Tender Review Checklist",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC"
+}

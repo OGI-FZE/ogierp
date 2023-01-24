@@ -220,6 +220,8 @@ const add_rental_quotation = () => {
 				cur_doc.opportunity = doc.opportunity
 				cur_doc.currency = doc.currency
 				cur_doc.conversion_rate = doc.conversion_rate
+				cur_doc.division = doc.division
+
 			
 
 				cur_doc.items = []

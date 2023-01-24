@@ -1,0 +1,40 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2023-01-24 09:54:21.632124",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "query",
+  "yes_or_no"
+ ],
+ "fields": [
+  {
+   "columns": 6,
+   "fieldname": "query",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Query"
+  },
+  {
+   "columns": 1,
+   "fieldname": "yes_or_no",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Choose",
+   "options": "YES\nNO\nN/A"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2023-01-24 09:54:21.632124",
+ "modified_by": "Administrator",
+ "module": "Oil And Gas International",
+ "name": "Tender Review Terms",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC"
+}

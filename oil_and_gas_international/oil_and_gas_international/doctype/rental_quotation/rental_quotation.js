@@ -286,6 +286,7 @@ const add_rental_order = () => {
 				cur_doc.currency = doc.currency
 				cur_doc.conversion_rate = doc.conversion_rate
 				cur_doc.sales_person_link = doc.sales_person
+				cur_doc.division = doc.division
 				// frappe.model.set_value('Rental Order', cur_doc.name, "sales_person_link", doc.sales_person)
 				frappe.model.set_value('Rental Order', cur_doc.name, "currency", doc.currency)
 				frappe.model.set_value('Rental Order', cur_doc.name, "conversion_rate", doc.conversion_rate)

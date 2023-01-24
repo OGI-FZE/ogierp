@@ -37,6 +37,15 @@ def make_proforma_invoice(source_name, target_doc=None):
 
 	return doclist
 
+def create_project(doc, handler=None):
+	project = frappe.new_doc("Project")
+	project.project_name = doc.name
+	project.customer = doc.customer
+	project.sales_order = doc.name
+	project.expected_start_date = doc.transaction_date
+	project.division = doc.division
+	project.save()
+	frappe.db.commit()
 # @frappe.whitelist()
 # def get_weight(docname=None):
 # 	print("\nvalidateeeee\n\n")
