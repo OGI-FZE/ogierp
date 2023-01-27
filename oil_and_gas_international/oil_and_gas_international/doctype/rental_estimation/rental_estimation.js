@@ -221,6 +221,9 @@ const add_rental_quotation = () => {
 				cur_doc.currency = doc.currency
 				cur_doc.conversion_rate = doc.conversion_rate
 				cur_doc.division = doc.division
+                cur_frm.doc.enquery_no = doc.enquery_no
+                cur_frm.doc.enquery_ref = doc.enquery_ref
+
 
 			
 
