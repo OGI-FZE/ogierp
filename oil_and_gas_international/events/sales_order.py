@@ -39,8 +39,14 @@ def make_proforma_invoice(source_name, target_doc=None):
 
 def create_project(doc, handler=None):
 	project = frappe.new_doc("Project")
-	project.project_name = doc.name
+	if doc.division == 'Inspection':
+		project.naming_series = 'OGI-.I-.MM.YY.-.####'
+	elif doc.division == 'trading':
+		project.naming_series = 'OGI-.TS-.MM.YY.-.####'
+	elif doc.division == 'Machine Shop Repair':
+	 	project.naming_series = 'OGI-.MS-.R-.MM.YY.-.###'
 	project.customer = doc.customer
+	project.project_name = project.naming_series
 	project.sales_order = doc.name
 	project.expected_start_date = doc.transaction_date
 	project.division = doc.division

@@ -116,6 +116,9 @@ doc_events = {
     },
 	"Sales Order": {
 		"on_submit": "oil_and_gas_international.events.sales_order.create_project"
+	},
+	"Project": {
+		"validate": "oil_and_gas_international.tasks.aft_project"
 	}
 }
 
