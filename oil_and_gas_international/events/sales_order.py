@@ -46,6 +46,7 @@ def create_project(doc, handler=None):
 	elif doc.division == 'Machine Shop Repair':
 	 	project.naming_series = 'OGI-.MS-.R-.MM.YY.-.###'
 	project.customer = doc.customer
+	project.department = doc.department
 	project.project_name = project.naming_series
 	project.sales_order = doc.name
 	project.expected_start_date = doc.transaction_date

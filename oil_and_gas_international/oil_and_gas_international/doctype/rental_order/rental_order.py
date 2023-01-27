@@ -16,6 +16,7 @@ class RentalOrder(Document):
         if self.division == 'Rental':
             pro.naming_series = 'OGI-.MR-.MM.YY.-.####'
         pro.project_name = self.name
+        pro.department = self.department
         pro.rental_order = self.name
         pro.expected_start_date = self.date
         pro.customer = self.customer

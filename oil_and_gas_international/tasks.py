@@ -11,7 +11,7 @@ from frappe.utils import today
 def aft_project(doc, handler=None):
 	if doc.name != doc.project_name:
 		doc.project_name = doc.name
-		
+
 
 def daily():
 	# check_re_validity()

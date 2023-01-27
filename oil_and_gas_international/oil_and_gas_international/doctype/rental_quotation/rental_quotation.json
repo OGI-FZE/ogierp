@@ -9,7 +9,6 @@
   "customer",
   "customer_name",
   "division",
-  "column_break_4",
   "company",
   "date",
   "valid_till",
@@ -51,10 +50,6 @@
    "fieldtype": "Data",
    "label": "Customer Name",
    "read_only": 1
-  },
-  {
-   "fieldname": "column_break_4",
-   "fieldtype": "Column Break"
   },
   {
    "default": "Today",
