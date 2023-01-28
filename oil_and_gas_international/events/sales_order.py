@@ -44,7 +44,7 @@ def create_project(doc, handler=None):
 	elif doc.division == 'trading':
 		project.naming_series = 'OGI-.TS-.MM.YY.-.####'
 	elif doc.division == 'Machine Shop Repair':
-	 	project.naming_series = 'OGI-.MS-.R-.MM.YY.-.###'
+	 	project.naming_series = 'OGI-.MS-.R-.MM.YY.-.####'
 	project.customer = doc.customer
 	project.department = doc.department
 	project.project_name = project.naming_series
@@ -53,6 +53,11 @@ def create_project(doc, handler=None):
 	project.division = doc.division
 	project.save()
 	frappe.db.commit()
+# OGI-.MR-.MM.YY.-.####
+# OGI-.I-.MM.YY.-.####
+# OGI-.TS-.MM.YY.-.####
+# OGI-.MS-.R-.MM.YY.-.####
+# OGI-.MS-.S-.MM.YY.-.####
 # @frappe.whitelist()
 # def get_weight(docname=None):
 # 	print("\nvalidateeeee\n\n")

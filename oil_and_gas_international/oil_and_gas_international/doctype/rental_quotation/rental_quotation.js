@@ -293,6 +293,15 @@ const add_rental_order = () => {
 				cur_doc.address = doc.address
                 cur_frm.doc.enquery_no = doc.enquery_no
                 cur_frm.doc.enquery_ref = doc.enquery_ref
+				cur_frm.doc.remarks = doc.remarks
+				cur_frm.doc.prices = doc.prices
+				cur_frm.doc.delivery_terms = doc.delivery_terms
+				cur_frm.doc.validity = doc.validity
+				cur_frm.doc.freight = doc.freight_terms
+				cur_frm.doc.notes = doc.notes
+				cur_frm.doc.credit_limit = doc.credit_limit
+				cur_frm.doc.client_terms = doc.client_terms
+
 				// frappe.model.set_value('Rental Order', cur_doc.name, "sales_person_link", doc.sales_person)
 				frappe.model.set_value('Rental Order', cur_doc.name, "currency", doc.currency)
 				frappe.model.set_value('Rental Order', cur_doc.name, "conversion_rate", doc.conversion_rate)
