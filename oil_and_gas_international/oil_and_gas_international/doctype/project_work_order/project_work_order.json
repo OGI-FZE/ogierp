@@ -23,7 +23,6 @@
   "po_number",
   "po_date",
   "section_break_16",
-  "items",
   "remarks",
   "section_break_19",
   "sales_order",
@@ -35,9 +34,7 @@
   "column_break_26",
   "sub_rental_order",
   "sub_rental_issue_note",
-  "sub_rental_receipt",
-  "amended_from",
-  "amended_from"
+  "sub_rental_receipt"
  ],
  "fields": [
   {
@@ -129,12 +126,6 @@
    "fieldtype": "Section Break"
   },
   {
-   "fieldname": "items",
-   "fieldtype": "Table",
-   "label": "Items",
-   "options": "Workorder item"
-  },
-  {
    "fieldname": "remarks",
    "fieldtype": "Long Text",
    "label": "Remarks"
@@ -199,24 +190,6 @@
    "fieldtype": "Link",
    "label": "Sub Rental Receipt",
    "options": "Sub Rental Receipt"
-  },
-  {
-   "fieldname": "amended_from",
-   "fieldtype": "Link",
-   "label": "Amended From",
-   "no_copy": 1,
-   "options": "Work_Order",
-   "print_hide": 1,
-   "read_only": 1
-  },
-  {
-   "fieldname": "amended_from",
-   "fieldtype": "Link",
-   "label": "Amended From",
-   "no_copy": 1,
-   "options": "Project Work Order",
-   "print_hide": 1,
-   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
