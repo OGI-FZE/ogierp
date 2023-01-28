@@ -99,10 +99,10 @@
    "label": "Date"
   },
   {
-   "fieldname": "departments",
-   "fieldtype": "Select",
+   "fieldname": "department",
+   "fieldtype": "Link",
    "label": "Department",
-   "options": "\nTrading\nLogistics\nInspection\nRental\nAdmin\nMS - Sale\nMS - Repair\nMS - Internal\nQA/QC"
+   "options": "Department"
   },
   {
    "fieldname": "job_completion_date",
