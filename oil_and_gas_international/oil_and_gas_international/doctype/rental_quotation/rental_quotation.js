@@ -273,7 +273,7 @@ const add_rental_order = () => {
 				const cur_doc = cur_frm.doc
 				cur_doc.customer = doc.customer
 				cur_doc.customer_name = doc.customer_name
-				cur_doc.departments = doc.departments
+				cur_doc.department = doc.departments
 				cur_doc.terms = doc.terms
 				cur_doc.terms_and_conditions_details = doc.terms_and_conditions_details
 				cur_doc.remarks = doc.remarks
@@ -355,6 +355,7 @@ const add_rental_order = () => {
 				cur_frm.refresh()
 			}
 		])
+
 	}, 'Create')
 }
 

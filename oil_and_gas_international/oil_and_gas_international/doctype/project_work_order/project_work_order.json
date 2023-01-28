@@ -1,0 +1,247 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "naming_series:",
+ "creation": "2023-01-28 09:00:53.484044",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "naming_series",
+  "party_type",
+  "party",
+  "party_name",
+  "job_number",
+  "recvd_by",
+  "job_target_date",
+  "job_start_date",
+  "column_break_9",
+  "company",
+  "date",
+  "departments",
+  "job_completion_date",
+  "po_number",
+  "po_date",
+  "section_break_16",
+  "items",
+  "remarks",
+  "section_break_19",
+  "sales_order",
+  "purchase_receipt",
+  "column_break_21",
+  "rental_order",
+  "rental_issue_note",
+  "rental_receipt",
+  "column_break_26",
+  "sub_rental_order",
+  "sub_rental_issue_note",
+  "sub_rental_receipt",
+  "amended_from",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Naming Series",
+   "options": "WO-.YYYY.-.MM.-.####"
+  },
+  {
+   "fieldname": "party_type",
+   "fieldtype": "Link",
+   "label": "Party Type",
+   "options": "DocType"
+  },
+  {
+   "depends_on": "eval:doc.party_type",
+   "fieldname": "party",
+   "fieldtype": "Dynamic Link",
+   "label": "Party",
+   "options": "party_type"
+  },
+  {
+   "depends_on": "eval:doc.party_type",
+   "fieldname": "party_name",
+   "fieldtype": "Data",
+   "label": "Party Name"
+  },
+  {
+   "fieldname": "job_number",
+   "fieldtype": "Link",
+   "label": "Job Number",
+   "options": "Project"
+  },
+  {
+   "fieldname": "recvd_by",
+   "fieldtype": "Data",
+   "label": "Job Received by"
+  },
+  {
+   "fieldname": "job_target_date",
+   "fieldtype": "Date",
+   "label": "Job Target Date"
+  },
+  {
+   "fieldname": "job_start_date",
+   "fieldtype": "Date",
+   "label": "Job Start Date"
+  },
+  {
+   "fieldname": "column_break_9",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company"
+  },
+  {
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "label": "Date"
+  },
+  {
+   "fieldname": "departments",
+   "fieldtype": "Select",
+   "label": "Department",
+   "options": "\nTrading\nLogistics\nInspection\nRental\nAdmin\nMS - Sale\nMS - Repair\nMS - Internal\nQA/QC"
+  },
+  {
+   "fieldname": "job_completion_date",
+   "fieldtype": "Date",
+   "label": "Job Completion Date"
+  },
+  {
+   "fetch_from": "rental_order.client_po_no",
+   "fieldname": "po_number",
+   "fieldtype": "Data",
+   "label": "PO Number"
+  },
+  {
+   "fetch_from": "rental_order.client_po_date",
+   "fieldname": "po_date",
+   "fieldtype": "Date",
+   "label": "PO Date"
+  },
+  {
+   "fieldname": "section_break_16",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "items",
+   "fieldtype": "Table",
+   "label": "Items",
+   "options": "Workorder item"
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Long Text",
+   "label": "Remarks"
+  },
+  {
+   "fieldname": "section_break_19",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "sales_order",
+   "fieldtype": "Link",
+   "label": "Sales Order",
+   "options": "Sales Order"
+  },
+  {
+   "fieldname": "purchase_receipt",
+   "fieldtype": "Link",
+   "label": "Purchase Receipt",
+   "options": "Purchase Receipt"
+  },
+  {
+   "fieldname": "column_break_21",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "rental_order",
+   "fieldtype": "Link",
+   "label": "Rental Order",
+   "options": "Rental Order"
+  },
+  {
+   "fieldname": "rental_issue_note",
+   "fieldtype": "Link",
+   "label": "Rental Issue Note",
+   "options": "Rental Issue Note",
+   "read_only": 1
+  },
+  {
+   "fieldname": "rental_receipt",
+   "fieldtype": "Link",
+   "label": "Rental Receipt",
+   "options": "Rental Receipt"
+  },
+  {
+   "fieldname": "column_break_26",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "sub_rental_order",
+   "fieldtype": "Link",
+   "label": "Sub Rental Order",
+   "options": "Supplier Rental Order"
+  },
+  {
+   "fieldname": "sub_rental_issue_note",
+   "fieldtype": "Link",
+   "label": "Sub Rental Issue Note",
+   "options": "Sub Rental Issue"
+  },
+  {
+   "fieldname": "sub_rental_receipt",
+   "fieldtype": "Link",
+   "label": "Sub Rental Receipt",
+   "options": "Sub Rental Receipt"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Work_Order",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Project Work Order",
+   "print_hide": 1,
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2023-01-28 09:00:53.484044",
+ "modified_by": "Administrator",
+ "module": "Oil And Gas International",
+ "name": "Project Work Order",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}
