@@ -1,0 +1,144 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2023-01-30 15:55:41.624082",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "item_no",
+  "serial_no",
+  "length",
+  "tube_condition",
+  "internal_coating",
+  "id",
+  "od",
+  "bevel_dia",
+  "srg_dia",
+  "column_break_10",
+  "srg_width",
+  "pin_connection_lenghtneck_length",
+  "pin_nose_dia",
+  "pin_cyl_dia",
+  "pin_tong_space",
+  "hardband_condition",
+  "mpi_connection",
+  "condition",
+  "slipupset_area_condition",
+  "status"
+ ],
+ "fields": [
+  {
+   "fieldname": "item_no",
+   "fieldtype": "Int",
+   "label": "Item No"
+  },
+  {
+   "fieldname": "serial_no",
+   "fieldtype": "Link",
+   "label": "Serial No",
+   "options": "Serial No"
+  },
+  {
+   "fieldname": "length",
+   "fieldtype": "Int",
+   "label": "Length"
+  },
+  {
+   "fieldname": "tube_condition",
+   "fieldtype": "Data",
+   "label": "Tube Condition"
+  },
+  {
+   "fieldname": "internal_coating",
+   "fieldtype": "Data",
+   "label": "Internal Coating"
+  },
+  {
+   "fieldname": "id",
+   "fieldtype": "Data",
+   "label": "ID"
+  },
+  {
+   "fieldname": "od",
+   "fieldtype": "Data",
+   "label": "OD"
+  },
+  {
+   "fieldname": "bevel_dia",
+   "fieldtype": "Data",
+   "label": "Bevel Dia"
+  },
+  {
+   "fieldname": "srg_dia",
+   "fieldtype": "Data",
+   "label": "SRG Dia"
+  },
+  {
+   "fieldname": "column_break_10",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "srg_width",
+   "fieldtype": "Float",
+   "label": "SRG Width"
+  },
+  {
+   "fieldname": "pin_connection_lenghtneck_length",
+   "fieldtype": "Float",
+   "label": "Pin Connection Lenght/Neck Length"
+  },
+  {
+   "fieldname": "pin_nose_dia",
+   "fieldtype": "Data",
+   "label": "Pin Nose Dia"
+  },
+  {
+   "fieldname": "pin_cyl_dia",
+   "fieldtype": "Data",
+   "label": "Pin Cyl. Dia"
+  },
+  {
+   "fieldname": "pin_tong_space",
+   "fieldtype": "Data",
+   "label": "Pin Tong Space"
+  },
+  {
+   "fieldname": "hardband_condition",
+   "fieldtype": "Data",
+   "label": "Hardband Condition"
+  },
+  {
+   "fieldname": "mpi_connection",
+   "fieldtype": "Data",
+   "label": "MPI Connection"
+  },
+  {
+   "fieldname": "condition",
+   "fieldtype": "Data",
+   "label": "Condition"
+  },
+  {
+   "fieldname": "slipupset_area_condition",
+   "fieldtype": "Data",
+   "label": "Slip/Upset Area Condition"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Validated\nFailed"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2023-01-30 16:40:28.693591",
+ "modified_by": "Administrator",
+ "module": "Oil And Gas International",
+ "name": "Heavy Weight Drill Pipe Parameters",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC"
+}
