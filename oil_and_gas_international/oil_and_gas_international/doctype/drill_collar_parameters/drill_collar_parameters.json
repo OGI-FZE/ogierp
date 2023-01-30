@@ -1,0 +1,102 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2023-01-30 12:46:21.396201",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "serial_no",
+  "length",
+  "od",
+  "id",
+  "bevel_dia",
+  "srg_dia",
+  "column_break_7",
+  "srg_width",
+  "neck_length",
+  "pin_tong_space",
+  "mpi_connection",
+  "condition",
+  "status"
+ ],
+ "fields": [
+  {
+   "fieldname": "serial_no",
+   "fieldtype": "Link",
+   "label": "Serial No",
+   "options": "Serial No"
+  },
+  {
+   "fieldname": "length",
+   "fieldtype": "Float",
+   "label": "Length"
+  },
+  {
+   "fieldname": "od",
+   "fieldtype": "Data",
+   "label": "OD"
+  },
+  {
+   "fieldname": "id",
+   "fieldtype": "Data",
+   "label": "ID"
+  },
+  {
+   "fieldname": "bevel_dia",
+   "fieldtype": "Data",
+   "label": "Bevel Dia"
+  },
+  {
+   "fieldname": "srg_dia",
+   "fieldtype": "Data",
+   "label": "SRG Dia"
+  },
+  {
+   "fieldname": "column_break_7",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "srg_width",
+   "fieldtype": "Float",
+   "label": "SRG Width"
+  },
+  {
+   "fieldname": "neck_length",
+   "fieldtype": "Float",
+   "label": "Neck Length"
+  },
+  {
+   "fieldname": "pin_tong_space",
+   "fieldtype": "Float",
+   "label": "Pin Tong Space"
+  },
+  {
+   "fieldname": "mpi_connection",
+   "fieldtype": "Data",
+   "label": "MPI Connection"
+  },
+  {
+   "fieldname": "condition",
+   "fieldtype": "Data",
+   "label": "Condition"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Validated\nFailed"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2023-01-30 12:46:21.396201",
+ "modified_by": "Administrator",
+ "module": "Oil And Gas International",
+ "name": "Drill Collar Parameters",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC"
+}
