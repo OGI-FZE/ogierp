@@ -10,12 +10,14 @@ class RentalQuotation(Document):
     def validate(self):
         address = frappe.db.sql("""select parent from `tabDynamic Link` where parenttype = 'Address' and link_name = '%s'"""% (self.customer), as_dict=1)  
         contact = frappe.db.sql("""select parent from `tabDynamic Link` where parenttype = 'Contact' and link_name = '%s'"""% (self.customer), as_dict=1)  
-        cus_add = frappe.get_doc('Address',address[0]['parent'])
-        cus_con = frappe.get_doc('Contact', contact[0]['parent'])
-        self.customer_address = address[0]['parent']
-        self.customer_contact = contact[0]['parent']
-        self.address = cus_add.address_line1 + "\n" + cus_add.city + "\n" + cus_add.country
-        self.contact = cus_con.phone + "\n" + cus_con.email_id
+        if address:
+            cus_add = frappe.get_doc('Address',address[0]['parent'])
+            self.customer_address = address[0]['parent']
+            self.address = cus_add.address_line1 + "\n" + cus_add.city + "\n" + cus_add.country
+        if contact:
+            cus_con = frappe.get_doc('Contact', contact[0]['parent'])
+            self.customer_contact = contact[0]['parent']
+            self.contact = cus_con.phone + "\n" + cus_con.email_id
         rate_by_qty = []
         for row in self.items:
             if not row.estimate_rate:
