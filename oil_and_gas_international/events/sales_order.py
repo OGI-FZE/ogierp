@@ -74,10 +74,10 @@ def fill_ro_items_table(rental_order):
 	ro = frappe.get_doc('Rental Order', rental_order)
 	data = []
 	for item in ro.items:
-		item_group = frappe.db.get_value('Item', item.item_code, 'item_group' )
+		item_category = frappe.db.get_value('Item', item.item_code, 'item_category' )
 		data.append({
 			'item_code':item.item_code,	
-			'item_group': item_group,	
+			'item_category': item_category,	
 			'item_name':item.item_name,
 			'description':item.description,
 			'description_2': item.description_2,
@@ -91,10 +91,10 @@ def fill_so_items_table(sales_order):
 	ro = frappe.get_doc('Sales Order', sales_order)
 	data = []
 	for item in ro.items:
-		item_group = frappe.db.get_value('Item', item.item_code, 'item_group' )
+		item_category = frappe.db.get_value('Item', item.item_code, 'item_category' )
 		data.append({
 			'item_code':item.item_code,	
-			'item_group': item_group,	
+			'item_category': item_category,	
 			'item_name':item.item_name,
 			'description':item.description,
 			'description_2': item.description_2,
