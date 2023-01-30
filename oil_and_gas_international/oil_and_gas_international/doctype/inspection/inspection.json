@@ -7,7 +7,7 @@
  "engine": "InnoDB",
  "field_order": [
   "item_code",
-  "item_group",
+  "item_category",
   "column_break_3",
   "warehouse",
   "amended_from"
@@ -20,10 +20,10 @@
    "options": "Item"
   },
   {
-   "fieldname": "item_group",
-   "fieldtype": "Link",
-   "label": "Item Group",
-   "options": "Item Group"
+   "fieldname": "item_category",
+   "fieldtype": "Select",
+   "label": "Item Category",
+   "options": "\nDrill Collar\nDrilling Tools\nString Stabilizer\nDrill Pipe\nHeavy Weight Drill Pipe\nNear Stabilizer\nTubing"
   },
   {
    "fieldname": "column_break_3",

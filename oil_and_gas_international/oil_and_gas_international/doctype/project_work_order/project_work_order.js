@@ -43,10 +43,7 @@ const create_inspection = (frm) => {
     frm.add_custom_button('Inspection', () => {
         const doc = frm.doc;
         frappe.run_serially([
-            () => frappe.new_doc('Inspection'),
-            () => {
-
-            }
+			frappe.throw(__("ddddddd"))
         ])
     }, 'Create');
 }
