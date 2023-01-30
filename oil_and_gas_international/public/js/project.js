@@ -50,7 +50,8 @@ const create_project_work_order = (frm) => {
 								'description': item.description,
 								'description_2': item.description_2,
 								'customer_requirement': item.customer_requirement,
-								'qty':item.qty
+								'qty':item.qty,
+								'item_group': item.item_group,
 
 							})
 							const cdt = new_row.doctype
@@ -89,7 +90,9 @@ const create_project_work_order = (frm) => {
 								'description_2': item.description_2,
 								'customer_requirement': item.customer_requirement,
 								'delivery_date':item.delivery_date,
-								'qty':item.qty
+								'qty':item.qty,
+								'item_group': item.item_group,
+
 							})
 							const cdt = new_row.doctype
 							const cdn = new_row.name
