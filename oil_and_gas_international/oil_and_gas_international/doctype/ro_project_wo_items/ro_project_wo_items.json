@@ -81,7 +81,7 @@
   {
    "fieldname": "quantity_and_rate_section",
    "fieldtype": "Section Break",
-   "label": "Quantity and Rate"
+   "label": "Quantity"
   },
   {
    "default": "1",
@@ -92,24 +92,22 @@
    "non_negative": 1,
    "reqd": 1
   },
-  {
-   "allow_on_submit": 1,
-   "fieldname": "days_of_rent",
-   "fieldtype": "Int",
-   "label": "Days Of Rent"
-  },
-  {
-   "fieldname": "column_break_9",
-   "fieldtype": "Column Break"
-  },
-  {
-   "allow_on_submit": 1,
-   "fieldname": "received_qty",
-   "fieldtype": "Float",
-   "hidden": 1,
-   "label": "Received Qty",
-   "no_copy": 1
-  },
+   {
+    "fieldname": "qty_in_warehouse",
+    "fieldtype": "Int",
+    "label": "Quantity in Warehouse",
+    "read_only":1
+   },
+   {
+    "fieldname": "column_break_4747",
+    "fieldtype": "Column Break"
+   },
+   {
+    "fieldname": "dif_qty",
+    "fieldtype": "Int",
+    "label": "Difference of Quantity",
+    "read_only":1
+   },
   {
    "allow_on_submit": 1,
    "default": "To Delivery",
@@ -118,109 +116,9 @@
    "label": "Status",
    "options": "To Delivery\nDelivered\nReturned",
    "read_only": 1
-  },
-  {
-   "fieldname": "section_break_19",
-   "fieldtype": "Section Break"
-  },
-  {
-   "fieldname": "operational_running",
-   "fieldtype": "Currency",
-   "label": "Operational/Running (Customer Currency)",
-   "options": "currency"
-  },
-  {
-   "fieldname": "standby",
-   "fieldtype": "Currency",
-   "label": "Standby (Customer Currency)",
-   "options": "currency"
-  },
-  {
-   "fieldname": "post_rental_inspection_charges",
-   "fieldtype": "Currency",
-   "label": "Post Rental Inspection charges (Customer Currency)",
-   "options": "currency"
-  },
-  {
-   "fieldname": "lihdbr",
-   "fieldtype": "Currency",
-   "label": "LIH/DBR (Customer Currency)",
-   "options": "currency"
-  },
-  {
-   "fieldname": "redress",
-   "fieldtype": "Currency",
-   "label": "Redress (Customer Currency)",
-   "options": "currency"
-  },
-  {
-   "fieldname": "straight",
-   "fieldtype": "Currency",
-   "label": "Straight (Customer Currency)",
-   "options": "currency"
-  },
-  {
-   "fieldname": "column_break_22",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "base_operational_running",
-   "fieldtype": "Currency",
-   "label": "Base Operational/Running (Company Currency)",
-   "options": "Company:company:default_currency"
-  },
-  {
-   "fieldname": "base_standby",
-   "fieldtype": "Currency",
-   "label": "Base Standby (Company Currency)",
-   "options": "Company:company:default_currency"
-  },
-  {
-   "fieldname": "base_post_rental_inspection_charges",
-   "fieldtype": "Currency",
-   "label": "Base Post Rental Inspection charges (Company Currency)",
-   "options": "Company:company:default_currency"
-  },
-  {
-   "fieldname": "base_lihdbr",
-   "fieldtype": "Currency",
-   "label": "Base LIH/DBR (Company Currency)",
-   "options": "Company:company:default_currency"
-  },
-  {
-   "fieldname": "base_redress",
-   "fieldtype": "Currency",
-   "label": "Base Redress (Company Currency)",
-   "options": "Company:company:default_currency"
-  },
-  {
-   "fieldname": "base_straight",
-   "fieldtype": "Currency",
-   "label": "Base Straight (Company Currency)",
-   "options": "Company:company:default_currency"
-  },
-  {
-   "fieldname": "section_break_18",
-   "fieldtype": "Section Break"
-  },
-  {
-   "fieldname": "column_break_33",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "rental_estimation",
-   "fieldtype": "Link",
-   "hidden": 1,
-   "label": "Rental Estimation",
-   "options": "Rental Estimation"
-  },
-  {
-   "fieldname": "rental_quotation",
-   "fieldtype": "Link",
-   "hidden": 1,
-   "label": "Rental Quotation",
-   "options": "Rental Quotation"
   }
+ 
+  
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,

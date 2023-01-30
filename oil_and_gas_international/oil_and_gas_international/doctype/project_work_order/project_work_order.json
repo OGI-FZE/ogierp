@@ -8,33 +8,23 @@
  "engine": "InnoDB",
  "field_order": [
   "naming_series",
-  "party_type",
-  "party",
-  "party_name",
-  "job_number",
-  "recvd_by",
-  "job_target_date",
-  "job_start_date",
+  "project_wo_id",
+  "customer",
+  "startdate",
+  "enddate",
   "column_break_9",
   "company",
   "date",
-  "departments",
-  "job_completion_date",
-  "po_number",
-  "po_date",
+  "department",
+  "project_reference",
   "section_break_16",
+  "items",
   "remarks",
   "section_break_19",
   "sales_order",
   "purchase_receipt",
   "column_break_21",
-  "rental_order",
-  "rental_issue_note",
-  "rental_receipt",
-  "column_break_26",
-  "sub_rental_order",
-  "sub_rental_issue_note",
-  "sub_rental_receipt"
+  "rental_order"
  ],
  "fields": [
   {
@@ -44,45 +34,28 @@
    "options": "WO-.YYYY.-.MM.-.####"
   },
   {
-   "fieldname": "party_type",
+    "fieldname": "project_wo_id",
+    "fieldtype": "Data",
+    "label": "Project Work Order ID",
+    "unique": 1
+   },
+  {
+   "fieldname": "customer",
    "fieldtype": "Link",
-   "label": "Party Type",
-   "options": "DocType"
+   "label": "Customer",
+   "options": "Customer"
   },
   {
-   "depends_on": "eval:doc.party_type",
-   "fieldname": "party",
-   "fieldtype": "Dynamic Link",
-   "label": "Party",
-   "options": "party_type"
-  },
-  {
-   "depends_on": "eval:doc.party_type",
-   "fieldname": "party_name",
-   "fieldtype": "Data",
-   "label": "Party Name"
-  },
-  {
-   "fieldname": "job_number",
-   "fieldtype": "Link",
-   "label": "Job Number",
-   "options": "Project"
-  },
-  {
-   "fieldname": "recvd_by",
-   "fieldtype": "Data",
-   "label": "Job Received by"
-  },
-  {
-   "fieldname": "job_target_date",
-   "fieldtype": "Date",
-   "label": "Job Target Date"
-  },
-  {
-   "fieldname": "job_start_date",
-   "fieldtype": "Date",
-   "label": "Job Start Date"
-  },
+    "fieldname": "startdate",
+    "fieldtype": "Date",
+    "label": "start Date"
+   },
+   {
+    "fieldname": "enddate",
+    "fieldtype": "Date",
+    "label": "End Date"
+   },
+
   {
    "fieldname": "column_break_9",
    "fieldtype": "Column Break"
@@ -105,22 +78,11 @@
    "options": "Department"
   },
   {
-   "fieldname": "job_completion_date",
-   "fieldtype": "Date",
-   "label": "Job Completion Date"
-  },
-  {
-   "fetch_from": "rental_order.client_po_no",
-   "fieldname": "po_number",
-   "fieldtype": "Data",
-   "label": "PO Number"
-  },
-  {
-   "fetch_from": "rental_order.client_po_date",
-   "fieldname": "po_date",
-   "fieldtype": "Date",
-   "label": "PO Date"
-  },
+    "fieldname": "project_reference",
+    "fieldtype": "Link",
+    "label": "Project Reference",
+    "options": "Project"
+   },
   {
    "fieldname": "section_break_16",
    "fieldtype": "Section Break"
@@ -155,41 +117,6 @@
    "fieldtype": "Link",
    "label": "Rental Order",
    "options": "Rental Order"
-  },
-  {
-   "fieldname": "rental_issue_note",
-   "fieldtype": "Link",
-   "label": "Rental Issue Note",
-   "options": "Rental Issue Note",
-   "read_only": 1
-  },
-  {
-   "fieldname": "rental_receipt",
-   "fieldtype": "Link",
-   "label": "Rental Receipt",
-   "options": "Rental Receipt"
-  },
-  {
-   "fieldname": "column_break_26",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "sub_rental_order",
-   "fieldtype": "Link",
-   "label": "Sub Rental Order",
-   "options": "Supplier Rental Order"
-  },
-  {
-   "fieldname": "sub_rental_issue_note",
-   "fieldtype": "Link",
-   "label": "Sub Rental Issue Note",
-   "options": "Sub Rental Issue"
-  },
-  {
-   "fieldname": "sub_rental_receipt",
-   "fieldtype": "Link",
-   "label": "Sub Rental Receipt",
-   "options": "Sub Rental Receipt"
   }
  ],
  "index_web_pages_for_search": 1,

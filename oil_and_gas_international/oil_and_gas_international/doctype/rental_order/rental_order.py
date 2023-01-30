@@ -20,6 +20,7 @@ class RentalOrder(Document):
         pro.rental_order = self.name
         pro.expected_start_date = self.date
         pro.customer = self.customer
+        pro.division = self.division
         pro.project_type = 'External'
         pro.save()
         frappe.db.commit()

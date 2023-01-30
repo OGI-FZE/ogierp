@@ -67,3 +67,38 @@ def create_project(doc, handler=None):
 # 			print(">>>>>>>>.weight",i.doctype,i.total_weight)
 # 			print(">>>>>>>>.stock_qty*i.weight_per_unit",i.stock_qty,i.weight_per_unit)
 # 			frappe.db.set_value(i.doctype, i.name, 'total_weight', (i.stock_qty*i.weight_per_unit));
+
+
+@frappe.whitelist()
+def fill_ro_items_table(rental_order):
+	ro = frappe.get_doc('Rental Order', rental_order)
+	data = []
+	for item in ro.items:
+		data.append({
+			'item_code':item.item_code,		
+			'item_name':item.item_name,
+			'description':item.description,
+			'description_2': item.description_2,
+			'customer_requirement': item.customer_requirement,
+			'qty': item.qty
+			})
+	return data
+
+@frappe.whitelist()
+def fill_so_items_table(sales_order):
+	ro = frappe.get_doc('Sales Order', sales_order)
+	data = []
+	for item in ro.items:
+		data.append({
+			'item_code':item.item_code,		
+			'item_name':item.item_name,
+			'description':item.description,
+			'description_2': item.description_2,
+			'customer_requirement': item.customer_requirement,
+			'delivery_date': item.delivery_date,
+			'qty': item.qty
+			})
+	return data
+
+		
+
