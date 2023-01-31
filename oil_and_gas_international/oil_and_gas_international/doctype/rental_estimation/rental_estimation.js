@@ -209,7 +209,14 @@ const add_rental_quotation = () => {
 			() => frappe.new_doc('Rental Quotation'),
 			() => {
 				const cur_doc = cur_frm.doc
-				cur_doc.customer = doc.customer
+                if (doc.estimation_to == "Customer"){
+                    cur_frm.doc.customer = doc.customer;
+                    cur_frm.doc.customer_name = doc.customer_name;
+                }
+                else {
+                    cur_frm.doc.lead = doc.lead;
+                    cur_frm.doc.lead_name = doc.lead_name;
+                }
 				cur_doc.departments = doc.departments
 				cur_doc.customer_reference = doc.customer_reference
 				cur_doc.date = doc.date
@@ -223,6 +230,7 @@ const add_rental_quotation = () => {
 				cur_doc.division = doc.division
                 cur_frm.doc.enquery_no = doc.enquery_no
                 cur_frm.doc.enquery_ref = doc.enquery_ref
+				cur_frm.doc.estimation_to = doc.estimation_to
 
 
 			

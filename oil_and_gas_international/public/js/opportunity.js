@@ -54,8 +54,15 @@ const create_rental_estimation = (frm) => {
             () => frappe.new_doc('Rental Estimation'),
             () => {
                 cur_frm.doc.departments = doc.departments;
+                if (doc.opportunity_from == "Customer"){
+                    cur_frm.doc.customer = doc.party_name;
+                    cur_frm.doc.customer_name = doc.customer_name;
+                }
+                else {
+                    cur_frm.doc.lead = doc.party_name;
+                    cur_frm.doc.lead_name = doc.lead_name;
+                }
                 cur_frm.doc.customer = doc.party_name;
-                cur_frm.doc.customer_name = doc.customer_name;
                 cur_frm.doc.date = doc.transaction_date;
                 cur_frm.doc.valid_till = doc.expected_closing;
                 cur_frm.doc.opportunity = doc.name;
@@ -65,7 +72,6 @@ const create_rental_estimation = (frm) => {
                 cur_frm.doc.enquery_no = doc.enquery_no;
                 cur_frm.doc.enquery_ref = doc.enquery_ref;
                 cur_frm.doc.estimation_to = doc.opportunity_from;
-                cur_frm.doc.lead = doc.party_name;
                 cur_frm.doc.items = []
                 for (let row of doc.items) {
                         const new_row = cur_frm.add_child('items', {
@@ -124,8 +130,14 @@ const create_rental_quotation = (frm) => {
         frappe.run_serially([
             () => frappe.new_doc('Rental Quotation'),
             () => {
-                cur_frm.doc.customer = doc.party_name;
-                cur_frm.doc.customer_name = doc.customer_name;
+                if (doc.estimation_to == "Customer"){
+                    cur_frm.doc.customer = doc.party_name;
+                    cur_frm.doc.customer_name = doc.customer_name;
+                }
+                else {
+                    cur_frm.doc.lead = doc.party_name;
+                    cur_frm.doc.lead_name = doc.customer_name;
+                }
                 cur_frm.doc.date = doc.transaction_date;
                 cur_frm.doc.valid_till = doc.expected_closing;
                 cur_frm.doc.division = doc.division;
@@ -137,7 +149,6 @@ const create_rental_quotation = (frm) => {
                 cur_frm.doc.enquery_no = doc.enquery_no
                 cur_frm.doc.enquery_ref = doc.enquery_ref
                 cur_frm.doc.estimation_to = doc.opportunity_from;
-                cur_frm.doc.lead = doc.party_name;
 
                 cur_frm.doc.items = []
                 for (let row of doc.items) {
