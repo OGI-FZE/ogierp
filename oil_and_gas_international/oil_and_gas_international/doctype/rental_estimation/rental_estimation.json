@@ -39,11 +39,15 @@
       },
   {
    "fieldname": "customer",
-   "fieldtype": "Link",
+   "fieldtype": "Dynamic Link",
    "in_list_view": 1,
    "label": "Customer",
-   "options": "Customer",
-   "reqd": 1
+   "options": "estimation_to",
+   "mandatory_depends_on": "eval:doc.estimation_to == \"Customer\"",
+   "depends_on": "eval:doc.estimation_to == \"Customer\""
+
+
+
   },
   {
    "fetch_from": "customer.customer_name",

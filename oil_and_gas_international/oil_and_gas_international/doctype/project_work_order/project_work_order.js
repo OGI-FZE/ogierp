@@ -51,7 +51,7 @@ const create_inspection = (frm) => {
 					data.push({'item_code': row.item_code,
 								'item_category': row.item_category,
 								'warehouse': doc.warehouse,
-								'qty':row.qty,
+								'qty':row.qty_in_warehouse,
 								'project': doc.project_reference})
 							}
 						}
@@ -62,7 +62,7 @@ const create_inspection = (frm) => {
 					data.push({'item_code': row.item_code,
 								'item_category': row.item_category,
 								'warehouse': doc.warehouse,
-								'qty':row.qty,
+								'qty':row.qty_in_warehouse,
 								'project': doc.project_reference})
 							}
 						}
