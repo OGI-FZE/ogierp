@@ -64,7 +64,7 @@ const create_rental_estimation = (frm) => {
                 cur_frm.doc.customer_reference = doc.customer_reference;
                 cur_frm.doc.enquery_no = doc.enquery_no;
                 cur_frm.doc.enquery_ref = doc.enquery_ref;
-                cur_frm.doc.estimation_to = doc.opportunity_from
+                cur_frm.doc.estimation_to = doc.opportunity_from;
                 cur_frm.doc.lead = doc.party_name;
                 cur_frm.doc.items = []
                 for (let row of doc.items) {
@@ -136,6 +136,8 @@ const create_rental_quotation = (frm) => {
                 cur_frm.doc.customer_reference = doc.customer_reference
                 cur_frm.doc.enquery_no = doc.enquery_no
                 cur_frm.doc.enquery_ref = doc.enquery_ref
+                cur_frm.doc.estimation_to = doc.opportunity_from;
+                cur_frm.doc.lead = doc.party_name;
 
                 cur_frm.doc.items = []
                 for (let row of doc.items) {

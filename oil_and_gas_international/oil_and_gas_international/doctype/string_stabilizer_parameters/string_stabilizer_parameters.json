@@ -1,27 +1,29 @@
 {
  "actions": [],
  "allow_rename": 1,
- "creation": "2023-01-30 15:43:07.827737",
+ "creation": "2023-01-31 14:09:41.452946",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
   "serial_no",
   "tool_description",
-  "a_length",
+  "length",
   "thread_type",
   "od",
+  "id",
+  "pin_thread_length",
   "shoulder_flatthread_cond",
-  "fishneck_length",
-  "qc_diameter",
-  "column_break_9",
-  "qc_depth",
-  "boreback_diameter",
+  "tong_space",
+  "column_break_10",
   "bevel_diameter",
-  "box_seal_width",
+  "srg_diameter",
+  "srg_length",
+  "lead",
+  "pin_neck_length",
   "reface",
   "other",
-  "box_condition",
+  "pin_condition",
   "status"
  ],
  "fields": [
@@ -37,9 +39,9 @@
    "label": "Tool Description"
   },
   {
-   "fieldname": "a_length",
-   "fieldtype": "Float",
-   "label": "A Length"
+   "fieldname": "length",
+   "fieldtype": "Int",
+   "label": "Length"
   },
   {
    "fieldname": "thread_type",
@@ -52,43 +54,49 @@
    "label": "OD"
   },
   {
+   "fieldname": "id",
+   "fieldtype": "Data",
+   "label": "ID"
+  },
+  {
+   "fieldname": "pin_thread_length",
+   "fieldtype": "Int",
+   "label": "Pin Thread Length"
+  },
+  {
    "fieldname": "shoulder_flatthread_cond",
    "fieldtype": "Data",
    "label": "Shoulder Flat/Thread Cond"
   },
   {
-   "fieldname": "fishneck_length",
-   "fieldtype": "Float",
-   "label": "Fishneck Length"
-  },
-  {
-   "fieldname": "qc_diameter",
-   "fieldtype": "Float",
-   "label": "Qc Diameter"
-  },
-  {
-   "fieldname": "column_break_9",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "qc_depth",
-   "fieldtype": "Float",
-   "label": "Qc Depth"
-  },
-  {
-   "fieldname": "boreback_diameter",
-   "fieldtype": "Float",
-   "label": "Boreback Diameter"
+   "fieldname": "tong_space",
+   "fieldtype": "Data",
+   "label": "Tong Space"
   },
   {
    "fieldname": "bevel_diameter",
-   "fieldtype": "Float",
+   "fieldtype": "Data",
    "label": "Bevel Diameter"
   },
   {
-   "fieldname": "box_seal_width",
-   "fieldtype": "Float",
-   "label": "Box Seal Width"
+   "fieldname": "srg_diameter",
+   "fieldtype": "Int",
+   "label": "SRG Diameter"
+  },
+  {
+   "fieldname": "srg_length",
+   "fieldtype": "Int",
+   "label": "SRG Length"
+  },
+  {
+   "fieldname": "lead",
+   "fieldtype": "Data",
+   "label": "Lead"
+  },
+  {
+   "fieldname": "pin_neck_length",
+   "fieldtype": "Int",
+   "label": "Pin Neck Length"
   },
   {
    "fieldname": "reface",
@@ -101,24 +109,28 @@
    "label": "Other"
   },
   {
-   "fieldname": "box_condition",
+   "fieldname": "pin_condition",
    "fieldtype": "Data",
-   "label": "Box Condition"
+   "label": "Pin Condition"
   },
   {
    "fieldname": "status",
    "fieldtype": "Select",
    "label": "Status",
    "options": "Validated\nFailed"
+  },
+  {
+   "fieldname": "column_break_10",
+   "fieldtype": "Column Break"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2023-01-31 10:18:03.104692",
+ "modified": "2023-01-31 14:22:02.518269",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
- "name": "Near Stabilizer Parameters",
+ "name": "String Stabilizer Parameters",
  "owner": "Administrator",
  "permissions": [],
  "sort_field": "modified",
