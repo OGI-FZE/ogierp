@@ -126,11 +126,17 @@ doc_events = {
 # ---------------
 scheduler_events = {
     "cron": {
+        "* * * * *": [
+            "frappe.email.queue.flush"
+        ],
+
         "daily": [
             "oil_and_gas_international.tasks.daily"
         ],
     }
 }
+
+
 
 # Testing
 # -------
