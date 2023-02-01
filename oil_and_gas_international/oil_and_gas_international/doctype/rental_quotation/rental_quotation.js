@@ -269,15 +269,15 @@ const add_rental_order = () => {
 		const doc = cur_frm.doc
 		frappe.run_serially([
 			() => frappe.new_doc('Rental Order'),
-			() => {
+			() => {				
+			if (!doc.customer){
+				frappe.throw(__("You need to convert lead to customer First to make the Rental Order"))
+			}
+			else {
 				const cur_doc = cur_frm.doc
                 if (doc.estimation_to == "Customer"){
                     cur_frm.doc.customer = doc.customer;
                     cur_frm.doc.customer_name = doc.customer_name;
-                }
-                else {
-                    cur_frm.doc.lead = doc.lead;
-                    cur_frm.doc.lead_name = doc.lead_name;
                 }
 				cur_doc.department = doc.departments
 				cur_doc.terms = doc.terms
@@ -307,7 +307,6 @@ const add_rental_order = () => {
 				cur_frm.doc.notes = doc.notes
 				cur_frm.doc.credit_limit = doc.credit_limit
 				cur_frm.doc.client_terms = doc.client_terms
-				cur_frm.doc.estimation_to = doc.estimation_to
 
 				// frappe.model.set_value('Rental Order', cur_doc.name, "sales_person_link", doc.sales_person)
 				frappe.model.set_value('Rental Order', cur_doc.name, "currency", doc.currency)
@@ -358,7 +357,7 @@ const add_rental_order = () => {
 						frappe.model.set_value(cdt, cdn, "post_rental_inspection_charges", row.post_rental_inspection_charges)
 					}, 2000);
 				}
-
+			}
 				cur_frm.refresh()
 			}
 		])
