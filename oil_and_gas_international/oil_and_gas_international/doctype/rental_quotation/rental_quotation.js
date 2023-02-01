@@ -3,6 +3,31 @@
 
 var conv_rate = [1]
 frappe.ui.form.on('Rental Quotation', {
+
+	after_workflow_action: function(frm) {
+		if (frm.doc.workflow_state == "Rejected"){
+			let d = new frappe.ui.Dialog({
+				title: 'Reason for Rejection',
+				fields: [
+					{
+						label: 'Reason',
+						fieldname: 'reason',
+						fieldtype: 'Small Text',
+						reqd: 1
+					},
+
+				],
+				primary_action_label: 'Submit',
+				primary_action(values) {
+						frm.set_value("sta", values.reason)
+						frm.save()
+						d.hide();
+				}
+			});
+			
+			d.show();
+		}
+ 	 },
 	refresh(frm) {
 		create_custom_buttons(frm)
 		var company_currency = frappe.get_doc(":Company", frm.doc.company).default_currency;
@@ -14,6 +39,7 @@ frappe.ui.form.on('Rental Quotation', {
             "operational_running","lihdbr","post_rental_inspection_charges","standby","straight","redress"
         ], customer_currency, "items");
 	},
+
 	onload(frm){
 		if(frm.doc.customer && frm.doc.__islocal){
 			frappe.db.get_value("Customer", {"name": frm.doc.customer}, "default_currency", (r) => {
@@ -22,6 +48,9 @@ frappe.ui.form.on('Rental Quotation', {
 				}
 			});
 		}
+		
+
+
 		get_conversion_rate(frm)
       	convert_rate(frm)
 	},
@@ -270,11 +299,10 @@ const add_rental_order = () => {
 		frappe.run_serially([
 			() => frappe.new_doc('Rental Order'),
 			() => {				
-			if (!doc.customer){
-				frappe.throw(__("You need to convert lead to customer First to make the Rental Order"))
-			}
-			else {
 				const cur_doc = cur_frm.doc
+				if (doc.estimation_to == "Lead"){
+					frappe.msgprint(__("You need to convert lead to customer First to make the Rental Order"))    
+                }
                 if (doc.estimation_to == "Customer"){
                     cur_frm.doc.customer = doc.customer;
                     cur_frm.doc.customer_name = doc.customer_name;
@@ -356,7 +384,6 @@ const add_rental_order = () => {
 						frappe.model.set_value(cdt, cdn, "straight", row.straight)
 						frappe.model.set_value(cdt, cdn, "post_rental_inspection_charges", row.post_rental_inspection_charges)
 					}, 2000);
-				}
 			}
 				cur_frm.refresh()
 			}
