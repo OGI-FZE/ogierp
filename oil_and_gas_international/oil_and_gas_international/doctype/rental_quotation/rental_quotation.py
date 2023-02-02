@@ -32,12 +32,11 @@ class RentalQuotation(Document):
                 self.contact = cus_con.phone + "\n" + cus_con.email_id
         rate_by_qty = []
         for row in self.items:
-            if not row.estimate_rate:
-                row.estimate_rate = 0
-            rate_by_qty.append(row.qty*row.estimate_rate)
+            rate_by_qty.append(row.qty*row.operational_running)
             total_rate_qty = sum(rate_by_qty)
             self.total_by_month = total_rate_qty*30
-            
+        print("______________________________________________________")
+        print(self.total_by_month)
     def on_submit(self): 
         if self.rental_estimation:
             self.status = "Open"
