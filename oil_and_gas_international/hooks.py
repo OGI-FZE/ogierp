@@ -391,7 +391,7 @@ fixtures = [
         "filters": [
             ["name", "in", [
                 # Item
-                'Item-item_group-label','Project-main-quick_entry'
+                'Item-item_group-label','Project-main-quick_entry','Project-naming_series-options'
             ]]
         ]
     },
