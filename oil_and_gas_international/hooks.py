@@ -352,7 +352,7 @@ fixtures = [
 
                 #Rental order
                 'Rental Order-sales_employee','Rental Order-sales_person_link',
-                'Rental Order-sales_person_name','Rental Order-departments','Rental Order-remarks','Rental Order-freight',
+                'Rental Order-sales_person_name','Rental Order-remarks','Rental Order-freight',
                 'Rental Order-client_terms','Rental Order-credit_limit','Rental Order-payment_terms','Rental Order-delivery_terms',
                 'Rental Order-prices','Rental Order-delivery_date','Rental Order-mail_id','Rental Order-contact_number','Rental Order-sales_person_details',
                 'Rental Order-client_po_date','Rental Order-client_po_no',
