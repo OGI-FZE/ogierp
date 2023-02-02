@@ -68,12 +68,42 @@ frappe.ui.form.on('Rental Order', {
 	validate(frm){
 		frm.doc.items.forEach(function(item){
 			console.log(item.base_operational_running* frm.doc.conversion_rate)
-			frappe.model.set_value(item.doctype, item.name, 'operational_running', item.base_operational_running* frm.doc.conversion_rate);
-			frappe.model.set_value(item.doctype, item.name, 'lihdbr', item.base_lihdbr* frm.doc.conversion_rate);
-			frappe.model.set_value(item.doctype, item.name, 'post_rental_inspection_charges', item.base_post_rental_inspection_charges* frm.doc.conversion_rate);
-			frappe.model.set_value(item.doctype, item.name, 'standby', item.base_standby* frm.doc.conversion_rate);
-			frappe.model.set_value(item.doctype, item.name, 'straight', item.base_straight* frm.doc.conversion_rate);
-			frappe.model.set_value(item.doctype, item.name, 'redress', item.base_redress* frm.doc.conversion_rate);
+			if (item.operational_running != 0){
+				frappe.model.set_value(item.doctype, item.name, 'base_operational_running', item.operational_running/ frm.doc.conversion_rate);
+			}
+			else {
+				frappe.model.set_value(item.doctype, item.name, 'operational_running', item.base_operational_running* frm.doc.conversion_rate);
+			}
+			if (item.lihdbr != 0){
+				frappe.model.set_value(item.doctype, item.name, 'base_lihdbr', item.lihdbr/ frm.doc.conversion_rate);
+			}
+			else {
+				frappe.model.set_value(item.doctype, item.name, 'lihdbr', item.base_lihdbr* frm.doc.conversion_rate);
+			}
+			if (item.post_rental_inspection_charges != 0){
+				frappe.model.set_value(item.doctype, item.name, 'base_post_rental_inspection_charges', item.post_rental_inspection_charges/ frm.doc.conversion_rate);
+			}
+			else {
+				frappe.model.set_value(item.doctype, item.name, 'post_rental_inspection_charges', item.base_post_rental_inspection_charges* frm.doc.conversion_rate);
+			}
+			if (item.standby != 0){
+				frappe.model.set_value(item.doctype, item.name, 'base_standby', item.standby/ frm.doc.conversion_rate);
+			}
+			else {
+				frappe.model.set_value(item.doctype, item.name, 'standby', item.base_standby* frm.doc.conversion_rate);
+			}
+			if (item.straight != 0){
+				frappe.model.set_value(item.doctype, item.name, 'base_straight', item.straight/ frm.doc.conversion_rate);
+			}
+			else {
+				frappe.model.set_value(item.doctype, item.name, 'straight', item.base_straight* frm.doc.conversion_rate);
+			}
+			if (item.redress != 0){
+				frappe.model.set_value(item.doctype, item.name, 'base_redress', item.redress/ frm.doc.conversion_rate);
+			}
+			else {
+				frappe.model.set_value(item.doctype, item.name, 'redress', item.base_redress* frm.doc.conversion_rate);
+			}
 
 		}),
   		convert_rate(frm)
