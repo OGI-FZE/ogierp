@@ -46,12 +46,18 @@ const create_inspection = (frm) => {
 			() => {
 				const data = []
 				if (doc.rental_order){
+					let qty_to_inspect;
 				for (const row of doc.rental_order_items){
-
+					if (row.qty_in_warehouse > row.qty){
+						qty_to_inspect = row.qty
+					}
+					else (
+						qty_to_inspect = row.qty_in_warehouse
+					)
 					data.push({'item_code': row.item_code,
 								'item_category': row.item_category,
 								'warehouse': doc.warehouse,
-								'qty':row.qty_in_warehouse,
+								'qty':qty_to_inspect,
 								'project': doc.project_reference,
 								'project_wo': doc.name,
 								'sales_order': doc.sales_order,
