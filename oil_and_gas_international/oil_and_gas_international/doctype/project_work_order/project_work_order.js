@@ -92,15 +92,22 @@ const create_inspection = (frm) => {
 						fieldtype: 'Table',
 						fieldname: 'items_to_inspect',
 						description: __('Select'),
-						fields: [{fieldtype: 'Link',fieldname: 'item_code',label: __('Item code'),options:'Item',in_list_view: 1}, 
-								{fieldtype: 'Data',fieldname: 'item_category',label: __('Item category'),in_list_view: 1},
-								{fieldtype: 'Link',fieldname: 'warehouse',label: __('Warehouse'),options:'Warehouse',in_list_view: 1},
-								{fieldtype: 'Link',fieldname: 'project',label: __('Project'),options:'Project',in_list_view: 0},
-								{fieldtype: 'Column Break',fieldname: 'col_bre',label: __(''),in_list_view: 0},
-								{fieldtype: 'Float',fieldname: 'qty',label: __('Quantity'),in_list_view: 1,read_only:1},
-								{fieldtype: 'Link',fieldname: 'project_wo',label: __('Project WO'),options:'Project Work Order',in_list_view: 1},
-								{fieldtype: 'Link',fieldname: 'sales_order',label: __('Sales Order'),options:'Sales Order',in_list_view: 0},
-								{fieldtype: 'Link',fieldname: 'rental_order',label: __('Rental Order'),options:'Rental Order',in_list_view: 0,read_only:1},
+						fields: [{fieldtype: 'Link',fieldname: 'item_code',label: __('Item code'),options:'Item',in_list_view: 1,
+								get_status: () => {return 'Read'}}, 
+								{fieldtype: 'Data',fieldname: 'item_category',label: __('Item category'),in_list_view: 1,
+								get_status: () => {return 'Read'}},
+								{fieldtype: 'Link',fieldname: 'warehouse',label: __('Warehouse'),options:'Warehouse',in_list_view: 1,
+								get_status: () => {return 'Read'}},
+								{fieldtype: 'Link',fieldname: 'project',label: __('Project'),options:'Project',in_list_view: 0,
+								get_status: () => {return 'Read'}},
+								{fieldtype: 'Column Break',fieldname: 'col_bre',label: __(''),in_list_view: 0,get_status: () => {return 'Read'}},
+								{fieldtype: 'Float',fieldname: 'qty',label: __('Quantity'),in_list_view: 1,get_status: () => {return 'Read'}},
+								{fieldtype: 'Link',fieldname: 'project_wo',label: __('Project WO'),options:'Project Work Order',in_list_view: 1,
+								get_status: () => {return 'Read'}},
+								{fieldtype: 'Link',fieldname: 'sales_order',label: __('Sales Order'),options:'Sales Order',in_list_view: 0,
+								get_status: () => {return 'Read'}},
+								{fieldtype: 'Link',fieldname: 'rental_order',label: __('Rental Order'),options:'Rental Order',in_list_view: 0,
+								get_status: () => {return 'Read'}},
 
 					],
 
@@ -113,7 +120,7 @@ const create_inspection = (frm) => {
 					let table = new frappe.ui.Dialog({
 						title: 'Select Items to Create WO Inspection',
 						fields: fields,
-						primary_action_label: 'Create Inspection',
+						primary_action_label: 'Generate Inspection Work Order',
 						primary_action: function() {
 							
 							var selected = {items_to_inspect: table.fields_dict.items_to_inspect.grid.get_selected_children()};
