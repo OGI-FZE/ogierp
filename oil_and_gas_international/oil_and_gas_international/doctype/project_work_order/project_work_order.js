@@ -67,19 +67,26 @@ const create_inspection = (frm) => {
 						}
 				
 				if (doc.sales_order){
-				for (const row of doc.sales_order_items){
+					let qty_to_inspect;
 
-					data.push({'item_code': row.item_code,
-								'item_category': row.item_category,
-								'warehouse': doc.warehouse,
-								'qty':row.qty_in_warehouse,
-								'project': doc.project_reference,
-								'project_wo': doc.name,
-								'sales_order': doc.sales_order,
-								'rental_order': doc.rental_order,
-								})
-							}
+					for (const row of doc.sales_order_items){
+						if (row.qty_in_warehouse > row.qty){
+							qty_to_inspect = row.qty
 						}
+						else (
+							qty_to_inspect = row.qty_in_warehouse
+						)
+						data.push({'item_code': row.item_code,
+									'item_category': row.item_category,
+									'warehouse': doc.warehouse,
+									'qty': row.qty,
+									'project': doc.project_reference,
+									'project_wo': doc.name,
+									'sales_order': doc.sales_order,
+									'rental_order': doc.rental_order,
+									})
+								}
+							}
 					const fields =	[{
 						label: 'Items to inspect',
 						fieldtype: 'Table',
@@ -93,7 +100,7 @@ const create_inspection = (frm) => {
 								{fieldtype: 'Float',fieldname: 'qty',label: __('Quantity'),in_list_view: 1,read_only:1},
 								{fieldtype: 'Link',fieldname: 'project_wo',label: __('Project WO'),options:'Project Work Order',in_list_view: 1},
 								{fieldtype: 'Link',fieldname: 'sales_order',label: __('Sales Order'),options:'Sales Order',in_list_view: 0},
-								{fieldtype: 'Link',fieldname: 'rental_order',label: __('Rental Order'),options:'Rental Order',in_list_view: 0},
+								{fieldtype: 'Link',fieldname: 'rental_order',label: __('Rental Order'),options:'Rental Order',in_list_view: 0,read_only:1},
 
 					],
 
@@ -102,8 +109,6 @@ const create_inspection = (frm) => {
 							return data
 						}
 					}]
-					console.log("____________")
-					console.log(data.length)
 					
 					let table = new frappe.ui.Dialog({
 						title: 'Select Items to Create WO Inspection',
@@ -114,7 +119,7 @@ const create_inspection = (frm) => {
 							var selected = {items_to_inspect: table.fields_dict.items_to_inspect.grid.get_selected_children()};
 							for (const idx of selected.items_to_inspect){
 								frm.call({
-									method: 'oil_and_gas_international.events.inspection.create_inspection',
+									method: 'oil_and_gas_international.oil_and_gas_international.doctype.inspection.inspection.create_wo',
 									args: {
 										"item_code" : idx.item_code,
 										"warehouse": idx.warehouse,
