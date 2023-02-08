@@ -8,8 +8,8 @@
  "field_order": [
   "jt_no",
   "serial_no",
-  "lengthfeet",
-  "od_conditionsstns",
+  "length",
+  "od_conditions_stns",
   "remaining_wall_thickness",
   "internal_coating",
   "emi",
@@ -25,67 +25,91 @@
   {
    "fieldname": "jt_no",
    "fieldtype": "Int",
-   "label": "Jt. No."
+   "label": "Jt. No.",
+   "default":0
   },
   {
    "fieldname": "serial_no",
    "fieldtype": "Link",
    "label": "Serial No",
-   "options": "Serial No"
+   "options": "Serial No",
+   "default":0
+
   },
   {
-   "fieldname": "lengthfeet",
+   "fieldname": "length",
    "fieldtype": "Int",
-   "label": "Length(feet)"
+   "label": "Length",
+   "default":0
   },
   {
-   "fieldname": "od_conditionsstns",
+   "fieldname": "od_conditions_stns",
    "fieldtype": "Data",
-   "label": "OD Conditions/STNS"
+   "label": "OD Conditions/STNS",
+   "default":0
+
   },
   {
    "fieldname": "remaining_wall_thickness",
    "fieldtype": "Int",
-   "label": "Remaining Wall Thickness"
+   "label": "Remaining Wall Thickness",
+   "default":0
+
   },
   {
    "fieldname": "internal_coating",
    "fieldtype": "Data",
-   "label": "Internal Coating"
+   "label": "Internal Coating",
+   "default":0
+
   },
   {
    "fieldname": "emi",
    "fieldtype": "Data",
-   "label": "EMI"
+   "label": "EMI",
+   "default":0
+
   },
   {
    "fieldname": "column_break_8",
-   "fieldtype": "Column Break"
+   "fieldtype": "Column Break",
+   "default":0
+
   },
   {
    "fieldname": "id",
    "fieldtype": "Data",
-   "label": "ID"
+   "label": "ID",
+   "default":0
+
   },
   {
    "fieldname": "pin_connection_length",
    "fieldtype": "Int",
-   "label": "Pin Connection Length"
+   "label": "Pin Connection Length",
+   "default":0
+
   },
   {
    "fieldname": "bevel_dia",
    "fieldtype": "Data",
-   "label": "Bevel Dia"
+   "label": "Bevel Dia",
+   "default":0
+
   },
   {
    "fieldname": "tong_space",
    "fieldtype": "Data",
-   "label": "Tong Space"
+   "label": "Pin Tong Space",
+   "default":0
+
   },
   {
    "fieldname": "pin_lead",
    "fieldtype": "Data",
-   "label": "Pin Lead"
+   "label": "Pin Lead",
+   "default":0
+
   },
   {
    "fieldname": "status",

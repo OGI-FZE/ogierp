@@ -110,11 +110,11 @@
    },
   {
    "allow_on_submit": 1,
-   "default": "To Delivery",
+   "default": "To Inspect",
    "fieldname": "status",
    "fieldtype": "Select",
    "label": "Status",
-   "options": "To Delivery\nDelivered\nReturned",
+   "options": "To Inspect\nTo Delivery\nDelivered\nReturned",
    "read_only": 1
   }
  

@@ -29,16 +29,19 @@
   },
   {
    "fieldname": "length",
+   "default": 0,
    "fieldtype": "Float",
    "label": "Length"
   },
   {
    "fieldname": "od",
+   "default": 0,
    "fieldtype": "Data",
    "label": "OD"
   },
   {
    "fieldname": "id",
+   "default": 0,
    "fieldtype": "Data",
    "label": "ID"
   },

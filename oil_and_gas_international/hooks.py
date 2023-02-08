@@ -45,6 +45,7 @@ doctype_js = {
     "Project": "public/js/project.js",
     "Quotation": "public/js/quotation.js",
     "Job Card": "public/js/Job Card.js",
+    "Work Order": "public/js/work_order.js"
 }
 # doctype_js = {"doctype" : "public/js/doctype.js"}
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
@@ -120,7 +121,10 @@ doc_events = {
 	},
 	"Project": {
 		"validate": "oil_and_gas_international.tasks.aft_project"
-	}
+	},
+    "Job Card": {
+        "on_submit": "oil_and_gas_international.events.job_card.create_job_card_against_wo",
+    }
 }
 
 # Scheduled Tasks
@@ -374,7 +378,7 @@ fixtures = [
                 #workorder
                 'Work Order Operation-reference_std','Work Order Operation-acceptance_criteria',
                 'Work Order-raw_material_details','Work Order-bar_heat_no','Work Order-acceptance_standard',
-                'Work Order-material_grade_spec','Work Order-uom','Work Order-date','Work Order-department',
+                'Work Order-material_grade_spec','Work Order-uom','Work Order-date',
                 #Quotation
                 'Quotation-aed_exchange_rate','Quotation-email','Quotation-contact','Quotation-sales_person',
                 #sales person

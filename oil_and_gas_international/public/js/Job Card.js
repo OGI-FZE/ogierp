@@ -3,7 +3,13 @@ frappe.ui.form.on("Job Card", {
         if (frm.doc.docstatus == 0) {
             add_inspection()
             }
-    }
+    },
+
+    // onload(frm) {
+        // console.log('dddddddd')
+        // frm.operation = frm.operation
+        // frm.refresh()
+    
 })
 
 const add_inspection = () => {

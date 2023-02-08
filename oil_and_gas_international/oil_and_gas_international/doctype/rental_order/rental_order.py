@@ -7,6 +7,19 @@ from erpnext.controllers.accounts_controller import get_taxes_and_charges
 
 
 class RentalOrder(Document):
+    def validate(self):
+        if self.customer:
+            address = frappe.db.sql("""select parent from `tabDynamic Link` where parenttype = 'Address' and link_name = '%s'"""% (self.customer), as_dict=1)  
+            contact = frappe.db.sql("""select parent from `tabDynamic Link` where parenttype = 'Contact' and link_name = '%s'"""% (self.customer), as_dict=1)  
+            if address:
+                cus_add = frappe.get_doc('Address',address[0]['parent'])
+                self.customer_address = address[0]['parent']
+                self.address = cus_add.address_line1 + "\n" + cus_add.city + "\n" + cus_add.country
+            if contact:
+                cus_con = frappe.get_doc('Contact', contact[0]['parent'])
+                self.customer_contact = contact[0]['parent']
+                self.contact = cus_con.phone + "\n" + cus_con.email_id
+
     def on_submit(self):
         if self.rental_quotation:
             frappe.set_value("Rental Quotation",
