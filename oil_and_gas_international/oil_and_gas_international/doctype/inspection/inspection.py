@@ -233,7 +233,7 @@ class Inspection(Document):
 					order.status == "Partially Delivered"
 					item.serial_no_accepted = self.accepted_serial_no
 					order.save()
-					frappe.db.commit()
+					frappe.db.commit() 
 			
 
 
