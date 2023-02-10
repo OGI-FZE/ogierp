@@ -6,9 +6,10 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
+  "box_connection",
   "serial_no",
   "tool_description",
-  "a_length",
+  "length",
   "thread_type",
   "od",
   "shoulder_flatthread_cond",
@@ -32,14 +33,20 @@
    "options": "Serial No"
   },
   {
+    "fieldname": "box_connection",
+    "fieldtype": "Section Break",
+    "label": "Box Connection"
+   },
+  {
    "fieldname": "tool_description",
    "fieldtype": "Data",
    "label": "Tool Description"
   },
   {
-   "fieldname": "a_length",
+   "fieldname": "length",
    "fieldtype": "Float",
-   "label": "A Length"
+   "default": 0,
+   "label": "Length"
   },
   {
    "fieldname": "thread_type",
@@ -48,6 +55,7 @@
   },
   {
    "fieldname": "od",
+   "default": 0,
    "fieldtype": "Data",
    "label": "OD"
   },
@@ -59,11 +67,13 @@
   {
    "fieldname": "fishneck_length",
    "fieldtype": "Float",
-   "label": "Fishneck Length"
+   "default": 0,
+   "label": "Fish neck Length"
   },
   {
    "fieldname": "qc_diameter",
    "fieldtype": "Float",
+   "default": 0,
    "label": "Qc Diameter"
   },
   {
@@ -72,21 +82,26 @@
   },
   {
    "fieldname": "qc_depth",
+   "default": 0,
    "fieldtype": "Float",
    "label": "Qc Depth"
+   
   },
   {
    "fieldname": "boreback_diameter",
+   "default": 0,
    "fieldtype": "Float",
    "label": "Boreback Diameter"
   },
   {
    "fieldname": "bevel_diameter",
+   "default": 0,
    "fieldtype": "Float",
    "label": "Bevel Diameter"
   },
   {
    "fieldname": "box_seal_width",
+   "default": 0,
    "fieldtype": "Float",
    "label": "Box Seal Width"
   },
@@ -109,6 +124,7 @@
    "fieldname": "status",
    "fieldtype": "Select",
    "label": "Status",
+   "read_only": 1,
    "options": "Validated\nFailed"
   }
  ],

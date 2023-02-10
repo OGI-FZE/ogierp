@@ -6,27 +6,50 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
+  "pin_connection",
   "serial_no",
   "tool_description",
   "length",
   "thread_type",
-  "od",
-  "id",
   "pin_thread_length",
   "shoulder_flatthread_cond",
-  "tong_space",
-  "column_break_10",
-  "bevel_diameter",
-  "srg_diameter",
+  "col1",
+  "bevel_dia",
+  "srg_dia",
   "srg_length",
   "lead",
   "pin_neck_length",
   "reface",
   "other",
   "pin_condition",
+  "box_connection",
+  "box_thread_type",
+  "box_od",
+  "box_shoulder_flatthread_cond",
+  "fishing_neck_length",
+  "qc_diameter",
+  "qc_depth",
+  "col3",
+  "boreback_diameter",
+  "boreback_length",
+  "box_bevel_dia",
+  "box_seal_width",
+  "box_reface",
+  "box_other",
+  "sec",
+  "remarks",
   "status"
  ],
  "fields": [
+    {
+        "fieldname": "pin_connection",
+        "fieldtype": "Section Break",
+        "label": "Pin Connection"
+ },
+ {
+    "fieldname": "sec",
+    "fieldtype": "Section Break"
+},
   {
    "fieldname": "serial_no",
    "fieldtype": "Link",
@@ -40,7 +63,7 @@
   },
   {
    "fieldname": "length",
-   "fieldtype": "Int",
+   "fieldtype": "Float",
    "label": "Length"
   },
   {
@@ -49,18 +72,17 @@
    "label": "Thread Type"
   },
   {
-   "fieldname": "od",
-   "fieldtype": "Data",
-   "label": "OD"
-  },
-  {
-   "fieldname": "id",
-   "fieldtype": "Data",
-   "label": "ID"
-  },
+    "fieldname": "col1",
+    "fieldtype": "Column Break"
+   },
+   
+    {
+    "fieldname": "col3",
+    "fieldtype": "Column Break"
+   }, 
   {
    "fieldname": "pin_thread_length",
-   "fieldtype": "Int",
+   "fieldtype": "Float",
    "label": "Pin Thread Length"
   },
   {
@@ -68,24 +90,20 @@
    "fieldtype": "Data",
    "label": "Shoulder Flat/Thread Cond"
   },
+
   {
-   "fieldname": "tong_space",
-   "fieldtype": "Data",
-   "label": "Tong Space"
+   "fieldname": "bevel_dia",
+   "fieldtype": "Float",
+   "label": "Bevel Dia"
   },
   {
-   "fieldname": "bevel_diameter",
-   "fieldtype": "Data",
-   "label": "Bevel Diameter"
-  },
-  {
-   "fieldname": "srg_diameter",
-   "fieldtype": "Int",
-   "label": "SRG Diameter"
+   "fieldname": "srg_dia",
+   "fieldtype": "Float",
+   "label": "SRG Dia"
   },
   {
    "fieldname": "srg_length",
-   "fieldtype": "Int",
+   "fieldtype": "Float",
    "label": "SRG Length"
   },
   {
@@ -95,7 +113,7 @@
   },
   {
    "fieldname": "pin_neck_length",
-   "fieldtype": "Int",
+   "fieldtype": "Float",
    "label": "Pin Neck Length"
   },
   {
@@ -117,12 +135,79 @@
    "fieldname": "status",
    "fieldtype": "Select",
    "label": "Status",
-   "options": "Validated\nFailed"
+   "options": "Validated\nFailed",
+   "read_only": 1
   },
   {
-   "fieldname": "column_break_10",
-   "fieldtype": "Column Break"
-  }
+    "fieldname": "box_connection",
+    "fieldtype": "Section Break",
+    "label": "Box Connection"
+},
+   {
+    "fieldname": "box_thread_type",
+    "fieldtype": "Data",
+    "label": "Box Thread Type"
+   },
+   {
+    "fieldname": "box_od",
+    "fieldtype": "Float",
+    "label": "Box OD"
+   },
+   {
+    "fieldname": "box_shoulder_flatthread_cond",
+    "fieldtype": "Data",
+    "label": "Box Shoulder Flat/Thread Cond"
+   },
+   {
+    "fieldname": "fishing_neck_length",
+    "fieldtype": "Float",
+    "label": "Fishing Neck Length"
+   },
+   {
+    "fieldname": "qc_diameter",
+    "fieldtype": "Float",
+    "label": "Qc Diameter"
+   },
+   {
+    "fieldname": "qc_depth",
+    "fieldtype": "Float",
+    "label": "Qc Depth"
+   },
+   {
+    "fieldname": "boreback_diameter",
+    "fieldtype": "Float",
+    "label": "Boreback Diameter"
+   },
+   {
+    "fieldname": "boreback_length",
+    "fieldtype": "Float",
+    "label": "Boreback Length"
+   },
+   {
+    "fieldname": "box_bevel_dia",
+    "fieldtype": "Float",
+    "label": "Box Bevel Dia"
+   },
+   {
+    "fieldname": "box_seal_width",
+    "fieldtype": "Float",
+    "label": "Box Seal Width"
+   },
+   {
+    "fieldname": "box_reface",
+    "fieldtype": "Data",
+    "label": "Box Reface"
+   },
+   {
+    "fieldname": "box_other",
+    "fieldtype": "Data",
+    "label": "Box Other"
+   },
+   {
+    "fieldname": "remarks",
+    "fieldtype": "Text Editor",
+    "label": "Remarks"
+   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,

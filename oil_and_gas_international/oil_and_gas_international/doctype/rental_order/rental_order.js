@@ -20,6 +20,7 @@ frappe.ui.form.on('Rental Order', {
         ], customer_currency, "items");
 	},
 	onload(frm){
+		console.log(frm.doc.status)
 		if(frm.doc.customer && frm.doc.__islocal){
 			frappe.db.get_value("Customer", {"name": frm.doc.customer}, "default_currency", (r) => {
 				if(r.default_currency){

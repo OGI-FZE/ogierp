@@ -6,6 +6,7 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
+  "pin_connection",
   "serial_no",
   "length",
   "od",
@@ -18,9 +19,38 @@
   "pin_tong_space",
   "mpi_connection",
   "condition",
+  "box_connection",
+  "box_od",
+  "box_bevel_dia",
+  "counter_bore_depth",
+  "counter_bore_dia",
+  "col2",
+  "bo_boreback_length",
+  "boreback_dia",
+  "box_mpi_connection",
+  "box_condition",
+  "recess_roove",
+  "recess_groove_od",
+  "recess_groove_elevator",
+  "col3",
+  "recess_groove_slip",
+  "recess_groove_condition",
+  "sec",
+  "remarks",
+  "col1",
   "status"
  ],
  "fields": [
+ {
+    "fieldname": "pin_connection",
+    "fieldtype": "Section Break",
+    "label": "Pin Connection"
+    },
+    {
+        "fieldname": "box_connection",
+        "fieldtype": "Section Break",
+        "label": "Box Connection"
+        },
   {
    "fieldname": "serial_no",
    "fieldtype": "Link",
@@ -48,11 +78,13 @@
   {
    "fieldname": "bevel_dia",
    "fieldtype": "Data",
+   "default": 0,
    "label": "Bevel Dia"
   },
   {
    "fieldname": "srg_dia",
    "fieldtype": "Data",
+   "default": 0,
    "label": "SRG Dia"
   },
   {
@@ -60,18 +92,32 @@
    "fieldtype": "Column Break"
   },
   {
+    "fieldname": "col1",
+    "fieldtype": "Column Break"
+   },  {
+    "fieldname": "col2",
+    "fieldtype": "Column Break"
+   },
+   {
+    "fieldname": "col3",
+    "fieldtype": "Column Break"
+   },
+  {
    "fieldname": "srg_width",
    "fieldtype": "Float",
+   "default": 0,
    "label": "SRG Width"
   },
   {
    "fieldname": "neck_length",
    "fieldtype": "Float",
+   "default": 0,
    "label": "Neck Length"
   },
   {
    "fieldname": "pin_tong_space",
    "fieldtype": "Float",
+   "default": 0,
    "label": "Pin Tong Space"
   },
   {
@@ -85,9 +131,96 @@
    "label": "Condition"
   },
   {
+    "fieldname": "box_od",
+    "default": 0,
+    "fieldtype": "Float",
+    "label": "Box OD"
+   },
+   {
+    "fieldname": "box_bevel_dia",
+    "default": 0,
+    "fieldtype": "Float",
+    "label": "Box Bevel Dia"
+   },
+   {
+    "fieldname": "counter_bore_depth",
+    "default": 0,
+    "fieldtype": "Float",
+    "label": "Counter Bore Depth/wall thickness"
+   },
+   {
+    "fieldname": "counter_bore_dia",
+    "default": 0,
+    "fieldtype": "Float",
+    "label": "Counter Bore Dia"
+   },
+   {
+    "fieldname": "bo_boreback_length",
+    "default": 0,
+    "fieldtype": "Float",
+    "label": "Bo Boreback Length"
+   },
+   {
+    "fieldname": "boreback_dia",
+    "default": 0,
+    "fieldtype": "Float",
+    "label": "Boreback Dia"
+   },
+   {
+    "fieldname": "box_mpi_connection",
+    "fieldtype": "Data",
+    "label": "Box MPI Connection"
+   },
+   {
+    "fieldname": "box_condition",
+    "fieldtype": "Data",
+    "label": "Box Condition"
+   },
+   {
+    "fieldname": "recess_roove",
+    "fieldtype": "Section Break",
+    "label": "Recess Groove"
+   },
+
+   {
+    "fieldname": "recess_groove_od",
+    "default": 0,
+    "fieldtype": "Float",
+    "label": "Recess Gr OD"
+   },
+   {
+    "fieldname": "recess_groove_elevator",
+    "default": 0,
+    "fieldtype": "Float",
+    "label": "Elevator Recess Depth"
+   },  {
+    "fieldname": "recess_groove_slip",
+    "default": 0,
+    "fieldtype": "Float",
+    "label": "Slip Recess Depth"
+   },
+   {
+    "fieldname": "recess_groove_condition",
+    "default": 0,
+    "fieldtype": "Data",
+    "label": "Recess Gr Condition"
+   },
+   {
+    "fieldname": "sec",
+    "fieldtype": "Section Break"
+   },
+   {
+    "fieldname": "remarks",
+    "fieldtype": "Text Editor",
+    "label": "Remarks"
+   },
+   
+   
+   {
    "fieldname": "status",
    "fieldtype": "Select",
    "label": "Status",
+   "read_only":1,
    "options": "Validated\nFailed"
   }
  ],

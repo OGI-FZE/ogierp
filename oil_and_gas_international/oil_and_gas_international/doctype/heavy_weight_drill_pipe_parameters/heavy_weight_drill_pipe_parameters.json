@@ -6,7 +6,7 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "item_no",
+  "pin_connection",
   "serial_no",
   "length",
   "tube_condition",
@@ -17,7 +17,7 @@
   "srg_dia",
   "column_break_10",
   "srg_width",
-  "pin_connection_lenghtneck_length",
+  "pin_connection_length",
   "pin_nose_dia",
   "pin_cyl_dia",
   "pin_tong_space",
@@ -25,14 +25,37 @@
   "mpi_connection",
   "condition",
   "slipupset_area_condition",
+  "box_connection",
+  "box_od",
+  "box_bevel_dia",
+  "counter_bore_depth",
+  "counter_bore_dia",
+  "seal_width",
+  "box_tong_space",
+  "col1",
+  "box_connection_length",
+  "boreback_dia",
+  "box_hardband_condition",
+  "heat_check",
+  "box_mpi_connection",
+  "box_condition",
+  "box_slip_area_condition",
+  "center",
+  "od_height",
+  "center_hardband_condition",
+  "body_condition",
+  "sectionbreak",
+  "remarks",
+  "col2",
   "status"
  ],
  "fields": [
-  {
-   "fieldname": "item_no",
-   "fieldtype": "Int",
-   "label": "Item No"
-  },
+    {
+        "fieldname": "pin_connection",
+        "fieldtype": "Section Break",
+        "label": "Pin Connection"
+       },
+    
   {
    "fieldname": "serial_no",
    "fieldtype": "Link",
@@ -41,7 +64,8 @@
   },
   {
    "fieldname": "length",
-   "fieldtype": "Int",
+   "fieldtype": "Float",
+   "default": 0,
    "label": "Length"
   },
   {
@@ -50,28 +74,41 @@
    "label": "Tube Condition"
   },
   {
+    "fieldname": "col1",
+    "fieldtype": "Column Break"
+   },
+   {
+    "fieldname": "col2",
+    "fieldtype": "Column Break"
+   },
+  {
    "fieldname": "internal_coating",
    "fieldtype": "Data",
+   "default": 0,
    "label": "Internal Coating"
   },
   {
    "fieldname": "id",
    "fieldtype": "Data",
+   "default": 0,
    "label": "ID"
   },
   {
    "fieldname": "od",
    "fieldtype": "Data",
+   "default": 0,
    "label": "OD"
   },
   {
    "fieldname": "bevel_dia",
    "fieldtype": "Data",
+   "default": 0,
    "label": "Bevel Dia"
   },
   {
    "fieldname": "srg_dia",
    "fieldtype": "Data",
+   "default": 0,
    "label": "SRG Dia"
   },
   {
@@ -81,26 +118,31 @@
   {
    "fieldname": "srg_width",
    "fieldtype": "Float",
+   "default": 0,
    "label": "SRG Width"
   },
   {
-   "fieldname": "pin_connection_lenghtneck_length",
+   "fieldname": "pin_connection_length",
    "fieldtype": "Float",
+   "default": 0,
    "label": "Pin Connection Lenght/Neck Length"
   },
   {
    "fieldname": "pin_nose_dia",
    "fieldtype": "Data",
+   "default": 0,
    "label": "Pin Nose Dia"
   },
   {
    "fieldname": "pin_cyl_dia",
    "fieldtype": "Data",
+   "default": 0,
    "label": "Pin Cyl. Dia"
   },
   {
    "fieldname": "pin_tong_space",
    "fieldtype": "Data",
+   "default": 0,
    "label": "Pin Tong Space"
   },
   {
@@ -124,11 +166,121 @@
    "label": "Slip/Upset Area Condition"
   },
   {
+    "fieldname": "box_connection",
+    "fieldtype": "Section Break",
+    "label": "Box Connection"
+   },
+   {
+    "fieldname": "box_od",
+    "fieldtype": "Float",
+    "default": 0,
+    "label": "Box OD"
+   },
+   {
+    "fieldname": "box_bevel_dia",
+    "fieldtype": "Float",
+    "default": 0,
+    "label": "Box Bevel Dia"
+   },
+   {
+    "fieldname": "counter_bore_depth",
+    "fieldtype": "Float",
+    "default": 0,
+    "label": "Counter Bore Depth/wall thickness"
+   },
+   {
+    "fieldname": "counter_bore_dia",
+    "fieldtype": "Float",
+    "default": 0,
+    "label": "Counter Bore Diameter"
+   },
+   {
+    "fieldname": "seal_width",
+    "fieldtype": "Float",
+    "default": 0,
+    "label": "Seal Width"
+   },
+   {
+    "fieldname": "box_tong_space",
+    "fieldtype": "Float",
+    "default": 0,
+    "label": "Box Tong Space"
+   },
+   {
+    "fieldname": "box_connection_length",
+    "fieldtype": "Float",
+    "default": 0,
+    "label": " Box Connection Length/Boreback Length"
+   },
+   {
+    "fieldname": "boreback_dia",
+    "fieldtype": "Float",
+    "default": 0,
+    "label": "Bore Back Dia"
+   },
+   {
+    "fieldname": "box_hardband_condition",
+    "fieldtype": "Data",
+    "label": "Box Hardband Condition"
+   },
+   {
+    "fieldname": "heat_check",
+    "fieldtype": "Data",
+    "label": "Heat Check"
+   },
+   {
+    "fieldname": "box_mpi_connection",
+    "fieldtype": "Data",
+    "label": "Box MPI Connection"
+   },
+   {
+    "fieldname": "box_condition",
+    "fieldtype": "Data",
+    "label": "Box Condition"
+   },
+   {
+    "fieldname": "box_slip_area_condition",
+    "fieldtype": "Data",
+    "label": "Box Slip/Upset Area Condition"
+   },
+   {
+    "fieldname": "center",
+    "fieldtype": "Section Break",
+    "label": "Center Upset"
+   },
+   {
+    "fieldname": "od_height",
+    "fieldtype": "Float",
+    "default": 0,
+    "label": "OD Height"
+   },
+   {
+    "fieldname": "center_hardband_condition",
+    "fieldtype": "Data",
+    "label": "Center Hardband Condition"
+   },
+   {
+    "fieldname": "body_condition",
+    "fieldtype": "Data",
+    "label": "Body Condition"
+   },
+   {
+    "fieldname": "sectionbreak",
+    "fieldtype": "Section Break"
+   },
+   {
+    "fieldname": "remarks",
+    "fieldtype": "Text Editor",
+    "label": "Remarks"
+   },
+  {
    "fieldname": "status",
    "fieldtype": "Select",
    "label": "Status",
+   "read_only":1,
    "options": "Validated\nFailed"
   }
+
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
