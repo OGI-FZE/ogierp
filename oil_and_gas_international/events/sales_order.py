@@ -106,3 +106,14 @@ def fill_so_items_table(sales_order):
 
 		
 
+
+
+@frappe.whitelist
+def create_field():
+	field = frappe.new_doc("Custom Field")
+	field.dt = "Drill Collar Parameters"
+	field.label = "Lentii"
+	field.fieldname = "lentii"
+	field.fieldtype = "Data"
+	field.save()
+	frpappe.db.commit()

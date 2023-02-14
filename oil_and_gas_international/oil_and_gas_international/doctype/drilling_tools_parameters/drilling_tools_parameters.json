@@ -6,111 +6,17 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "joint_no",
-  "serial_no",
-  "tool_description",
-  "lenghth_in_feet",
-  "connection_type",
-  "od",
-  "id",
-  "pin_connection_lengthneck_lenght",
-  "tong_space",
-  "column_break_10",
-  "bevel_diameter",
-  "srg_diapin_cylinder_dia",
-  "srg_width",
-  "pin_nose_dia",
-  "mpi_connection",
-  "pin_condition",
-  "status"
+  "serial_no"
  ],
  "fields": [
-  {
-   "fieldname": "joint_no",
-   "fieldtype": "Int",
-   "label": "Joint No"
-  },
+
   {
    "fieldname": "serial_no",
    "fieldtype": "Link",
    "label": "Serial No",
    "options": "Serial No"
-  },
-  {
-   "fieldname": "tool_description",
-   "fieldtype": "Data",
-   "label": "Tool Description"
-  },
-  {
-   "fieldname": "lenghth_in_feet",
-   "fieldtype": "Float",
-   "label": "Lenghth In Feet"
-  },
-  {
-   "fieldname": "connection_type",
-   "fieldtype": "Data",
-   "label": "Connection Type"
-  },
-  {
-   "fieldname": "od",
-   "fieldtype": "Data",
-   "label": "OD"
-  },
-  {
-   "fieldname": "id",
-   "fieldtype": "Data",
-   "label": "ID"
-  },
-  {
-   "fieldname": "pin_connection_lengthneck_lenght",
-   "fieldtype": "Float",
-   "label": "Pin Connection Length/Neck Lenght"
-  },
-  {
-   "fieldname": "tong_space",
-   "fieldtype": "Data",
-   "label": "Tong Space"
-  },
-  {
-   "fieldname": "bevel_diameter",
-   "fieldtype": "Float",
-   "label": "Bevel Diameter"
-  },
-  {
-   "fieldname": "srg_diapin_cylinder_dia",
-   "fieldtype": "Float",
-   "label": "SRG Dia/Pin Cylinder Dia"
-  },
-  {
-   "fieldname": "srg_width",
-   "fieldtype": "Float",
-   "label": "SRG Width"
-  },
-  {
-   "fieldname": "pin_nose_dia",
-   "fieldtype": "Float",
-   "label": "Pin Nose Dia"
-  },
-  {
-   "fieldname": "mpi_connection",
-   "fieldtype": "Data",
-   "label": "MPI connection"
-  },
-  {
-   "fieldname": "pin_condition",
-   "fieldtype": "Data",
-   "label": "Pin Condition"
-  },
-  {
-   "fieldname": "status",
-   "fieldtype": "Select",
-   "label": "Status",
-   "options": "Validated\nFailed"
-  },
-  {
-   "fieldname": "column_break_10",
-   "fieldtype": "Column Break"
   }
+ 
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,

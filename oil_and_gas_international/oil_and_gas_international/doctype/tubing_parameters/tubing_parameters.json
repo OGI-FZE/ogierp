@@ -6,92 +6,9 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "specification",
-  "description",
-  "pipe_size",
-  "pipe_grade",
-  "connection",
-  "rep_no",
-  "date",
-  "job_no",
-  "column_break_9",
-  "weight",
-  "wall",
-  "api_drift_dia",
-  "range",
-  "tool_joint",
   "status"
  ],
  "fields": [
-  {
-   "fieldname": "specification",
-   "fieldtype": "Data",
-   "label": "Specification"
-  },
-  {
-   "fieldname": "description",
-   "fieldtype": "Data",
-   "label": "Description"
-  },
-  {
-   "fieldname": "pipe_size",
-   "fieldtype": "Float",
-   "label": "Pipe Size"
-  },
-  {
-   "fieldname": "pipe_grade",
-   "fieldtype": "Data",
-   "label": "Pipe Grade"
-  },
-  {
-   "fieldname": "connection",
-   "fieldtype": "Data",
-   "label": "Connection"
-  },
-  {
-   "fieldname": "rep_no",
-   "fieldtype": "Int",
-   "label": "Rep No"
-  },
-  {
-   "fieldname": "date",
-   "fieldtype": "Date",
-   "label": "Date"
-  },
-  {
-   "fieldname": "job_no",
-   "fieldtype": "Int",
-   "label": "Job No"
-  },
-  {
-   "fieldname": "column_break_9",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "weight",
-   "fieldtype": "Int",
-   "label": "Weight"
-  },
-  {
-   "fieldname": "wall",
-   "fieldtype": "Data",
-   "label": "Wall"
-  },
-  {
-   "fieldname": "api_drift_dia",
-   "fieldtype": "Data",
-   "label": "API Drift DIA"
-  },
-  {
-   "fieldname": "range",
-   "fieldtype": "Data",
-   "label": "Range"
-  },
-  {
-   "fieldname": "tool_joint",
-   "fieldtype": "Data",
-   "label": "Tool Joint"
-  },
   {
    "fieldname": "status",
    "fieldtype": "Select",
