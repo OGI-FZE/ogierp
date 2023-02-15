@@ -1,6 +1,7 @@
 from frappe.model.document import Document, _
 import frappe
 from fractions import Fraction
+import collections
 
 
 class Inspection(Document):
@@ -19,10 +20,15 @@ class Inspection(Document):
 					  self.string_stabilizer_parameters,
 					  self.drilling_tools_parameters]
 		for parameter in parameters:
+			serial_no_list = []
 			if parameter and parameter == self.drill_collar_parameters:
 					if float(warehouse_qty) < len(parameter):
 						frappe.throw(_("You dont have all this quantity in Warehouse {}".format(self.warehouse)))
 					for serial_no in self.drill_collar_parameters:
+						serial_no_list.append(serial_no.serial_no)
+						duplicated = [sn for sn, count in collections.Counter(serial_no_list).items() if count > 1]
+						if serial_no.serial_no in duplicated:
+							frappe.throw(_("{} is duplicated, please re-check Serial No filled".format(serial_no.serial_no)))
 						check_duplicated_serial_no(serial_no.serial_no,self.work_order)
 						conditions = [not get_q_i_t_p(i,"length")['min_value'] <= to_frac(serial_no.length) <= get_q_i_t_p(i,"length")['max_value'] or
 								not get_q_i_t_p(i,"OD")['min_value'] <= to_frac(serial_no.od) <= get_q_i_t_p(i,"OD")['max_value'] or
@@ -52,6 +58,10 @@ class Inspection(Document):
 				if float(warehouse_qty) < len(parameter):
 					frappe.throw(_("You dont have all this quantity in Warehouse {}".format(self.warehouse)))
 				for serial_no in self.heavy_weight_drill_pipe_parameters:
+					serial_no_list.append(serial_no.serial_no)
+					duplicated = [sn for sn, count in collections.Counter(serial_no_list).items() if count > 1]
+					if serial_no.serial_no in duplicated:
+						frappe.throw(_("{} is duplicated, please re-check Serial No filled".format(serial_no.serial_no)))
 					check_duplicated_serial_no(serial_no.serial_no,self.work_order)
 					conditions = [not get_q_i_t_p(i,"length")['min_value'] <= to_frac(serial_no.length) <= get_q_i_t_p(i,"length")['max_value'] or
 							not get_q_i_t_p(i,"OD")['min_value'] <= to_frac(serial_no.od) <= get_q_i_t_p(i,"OD")['max_value'] or
@@ -83,6 +93,10 @@ class Inspection(Document):
 					if float(warehouse_qty) < len(parameter):
 						frappe.throw(_("You dont have all this quantity in Warehouse {}".format(self.warehouse)))
 					for serial_no in self.drill_pipe_parameters:
+						serial_no_list.append(serial_no.serial_no)
+						duplicated = [sn for sn, count in collections.Counter(serial_no_list).items() if count > 1]
+						if serial_no.serial_no in duplicated:
+							frappe.throw(_("{} is duplicated, please re-check Serial No filled".format(serial_no.serial_no)))
 						check_duplicated_serial_no(serial_no.serial_no,self.work_order)
 						conditions = [not get_q_i_t_p(i,"length")['min_value'] <= to_frac(serial_no.length) <= get_q_i_t_p(i,"length")['max_value'] or
 								not get_q_i_t_p(i,"ID")['min_value'] <= to_frac(serial_no.id) <= get_q_i_t_p(i,"ID")['max_value'] or
@@ -112,6 +126,10 @@ class Inspection(Document):
 					if float(warehouse_qty) < len(parameter):
 						frappe.throw(_("You dont have all this quantity in Warehouse {}".format(self.warehouse)))
 					for serial_no in self.string_stabilizer_parameters:
+						serial_no_list.append(serial_no.serial_no)
+						duplicated = [sn for sn, count in collections.Counter(serial_no_list).items() if count > 1]
+						if serial_no.serial_no in duplicated:
+							frappe.throw(_("{} is duplicated, please re-check Serial No filled".format(serial_no.serial_no)))
 						check_duplicated_serial_no(serial_no.serial_no,self.work_order)
 						conditions = [not get_q_i_t_p(i,"length")['min_value'] <= to_frac(serial_no.length) <= get_q_i_t_p(i,"length")['max_value'] or
 								not get_q_i_t_p(i,"OD")['min_value'] <= to_frac(serial_no.od) <= get_q_i_t_p(i,"OD")['max_value'] or
@@ -143,6 +161,10 @@ class Inspection(Document):
 					if float(warehouse_qty) < len(parameter):
 						frappe.throw(_("You dont have all this quantity in Warehouse {}".format(self.warehouse)))
 					for serial_no in self.near_stabilizer_parameters:
+						serial_no_list.append(serial_no.serial_no)
+						duplicated = [sn for sn, count in collections.Counter(serial_no_list).items() if count > 1]
+						if serial_no.serial_no in duplicated:
+							frappe.throw(_("{} is duplicated, please re-check Serial No filled".format(serial_no.serial_no)))
 						check_duplicated_serial_no(serial_no.serial_no,self.work_order)
 						conditions = [not get_q_i_t_p(i,"length")['min_value'] <= to_frac(serial_no.length) <= get_q_i_t_p(i,"length")['max_value'] or
 								not get_q_i_t_p(i,"OD")['min_value'] <= to_frac(serial_no.od) <= get_q_i_t_p(i,"OD")['max_value'] or
@@ -158,6 +180,10 @@ class Inspection(Document):
 						if float(warehouse_qty) < len(parameter):
 							frappe.throw(_("You dont have all this quantity in Warehouse {}".format(self.warehouse)))
 						for serial_no in self.drilling_tools_parameters:
+							serial_no_list.append(serial_no.serial_no)
+							duplicated = [sn for sn, count in collections.Counter(serial_no_list).items() if count > 1]
+							if serial_no.serial_no in duplicated:
+								frappe.throw(_("{} is duplicated, please re-check Serial No filled".format(serial_no.serial_no)))
 							check_duplicated_serial_no(serial_no.serial_no,self.work_order)
 							conditions = [not get_q_i_t_p(i,"length")['min_value'] <= to_frac(serial_no.length) <= get_q_i_t_p(i,"length")['max_value'] or
 									not get_q_i_t_p(i,"OD")['min_value'] <= to_frac(serial_no.od) <= get_q_i_t_p(i,"OD")['max_value'] or
@@ -412,3 +438,5 @@ def delete_cancelled_inspection_serial_no(item_code,work_order,accepted_serial_n
 				item.set("serial_no_accepted","\n".join(order_sn_no))
 				order.save()
 				frappe.db.commit()
+
+
