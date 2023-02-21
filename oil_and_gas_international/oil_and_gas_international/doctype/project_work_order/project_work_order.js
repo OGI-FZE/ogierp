@@ -90,7 +90,8 @@ const create_inspection = (frm) => {
 									'project_wo': doc.name,
 									'sales_order': doc.sales_order,
 									'rental_order': doc.rental_order,
-									'purpose': row.purpose
+									'purpose': row.purpose,
+									'for_external_inspection': row.for_customer_inspection
 									})
 								}
 							}
@@ -119,6 +120,8 @@ const create_inspection = (frm) => {
 								get_status: () => {return 'Read'}},
 								{fieldtype: 'Data',fieldname: 'purpose',label: __('Purpose'),in_list_view: 1,
 								get_status: () => {return 'Read'}},
+								{fieldtype: 'Check',fieldname: 'for_external_inspection',label: __('External Inspection'),
+								get_status: () => {return 'Read'}}
 					],
 
 						data: data,
@@ -147,7 +150,8 @@ const create_inspection = (frm) => {
 										"rental_o": idx.rental_order,
 										"qty": idx.qty,
 										"bom": idx.bom,
-										"purpose": idx.purpose
+										"purpose": idx.purpose,
+										"for_cu_ins": idx.for_external_inspection
 									},
 									freeze: true,
 									callback: function(r) {

@@ -25,11 +25,21 @@ class Inspection(Document):
 					if float(warehouse_qty) < len(parameter):
 						frappe.throw(_("You dont have all this quantity in Warehouse {}".format(self.warehouse)))
 					for serial_no in self.drill_collar_parameters:
-						serial_no_list.append(serial_no.serial_no)
+						if self.for_external_inspection:
+							serial_no_list.append(serial_no.customer_serial_no)
+						else:
+							serial_no_list.append(serial_no.serial_no)
 						duplicated = [sn for sn, count in collections.Counter(serial_no_list).items() if count > 1]
-						if serial_no.serial_no in duplicated:
-							frappe.throw(_("{} is duplicated, please re-check Serial No filled".format(serial_no.serial_no)))
-						check_duplicated_serial_no(serial_no.serial_no,self.work_order)
+						if self.for_external_inspection:
+							if serial_no.customer_serial_no in duplicated:
+								frappe.throw(_("{} is duplicated, please re-check Serial No filled".format(serial_no.customer_serial_no)))
+						else:
+							if serial_no.serial_no in duplicated:
+								frappe.throw(_("{} is duplicated, please re-check Serial No filled".format(serial_no.serial_no)))
+						if self.for_external_inspection:
+							check_duplicated_serial_no(serial_no.customer_serial_no,self.work_order)
+						else:
+							check_duplicated_serial_no(serial_no.serial_no,self.work_order)
 						conditions = [not get_q_i_t_p(i,"length")['min_value'] <= to_frac(serial_no.length) <= get_q_i_t_p(i,"length")['max_value'] or
 								not get_q_i_t_p(i,"OD")['min_value'] <= to_frac(serial_no.od) <= get_q_i_t_p(i,"OD")['max_value'] or
 								not get_q_i_t_p(i,"ID")['min_value'] <= to_frac(serial_no.id) <= get_q_i_t_p(i,"ID")['max_value'] or
@@ -58,11 +68,21 @@ class Inspection(Document):
 				if float(warehouse_qty) < len(parameter):
 					frappe.throw(_("You dont have all this quantity in Warehouse {}".format(self.warehouse)))
 				for serial_no in self.heavy_weight_drill_pipe_parameters:
-					serial_no_list.append(serial_no.serial_no)
+					if self.for_external_inspection:
+						serial_no_list.append(serial_no.customer_serial_no)
+					else:
+						serial_no_list.append(serial_no.serial_no)
 					duplicated = [sn for sn, count in collections.Counter(serial_no_list).items() if count > 1]
-					if serial_no.serial_no in duplicated:
-						frappe.throw(_("{} is duplicated, please re-check Serial No filled".format(serial_no.serial_no)))
-					check_duplicated_serial_no(serial_no.serial_no,self.work_order)
+					if self.for_external_inspection:
+						if serial_no.customer_serial_no in duplicated:
+							frappe.throw(_("{} is duplicated, please re-check Serial No filled".format(serial_no.customer_serial_no)))
+					else:
+						if serial_no.serial_no in duplicated:
+							frappe.throw(_("{} is duplicated, please re-check Serial No filled".format(serial_no.serial_no)))
+					if self.for_external_inspection:
+						check_duplicated_serial_no(serial_no.customer_serial_no,self.work_order)
+					else:
+						check_duplicated_serial_no(serial_no.serial_no,self.work_order)	
 					conditions = [not get_q_i_t_p(i,"length")['min_value'] <= to_frac(serial_no.length) <= get_q_i_t_p(i,"length")['max_value'] or
 							not get_q_i_t_p(i,"OD")['min_value'] <= to_frac(serial_no.od) <= get_q_i_t_p(i,"OD")['max_value'] or
 							not get_q_i_t_p(i,"ID")['min_value'] <= to_frac(serial_no.id) <= get_q_i_t_p(i,"ID")['max_value'] or
@@ -93,11 +113,21 @@ class Inspection(Document):
 					if float(warehouse_qty) < len(parameter):
 						frappe.throw(_("You dont have all this quantity in Warehouse {}".format(self.warehouse)))
 					for serial_no in self.drill_pipe_parameters:
-						serial_no_list.append(serial_no.serial_no)
+						if self.for_external_inspection:
+							serial_no_list.append(serial_no.customer_serial_no)
+						else:
+							serial_no_list.append(serial_no.serial_no)
 						duplicated = [sn for sn, count in collections.Counter(serial_no_list).items() if count > 1]
-						if serial_no.serial_no in duplicated:
-							frappe.throw(_("{} is duplicated, please re-check Serial No filled".format(serial_no.serial_no)))
-						check_duplicated_serial_no(serial_no.serial_no,self.work_order)
+						if self.for_external_inspection:
+							if serial_no.customer_serial_no in duplicated:
+								frappe.throw(_("{} is duplicated, please re-check Serial No filled".format(serial_no.customer_serial_no)))
+						else:
+							if serial_no.serial_no in duplicated:
+								frappe.throw(_("{} is duplicated, please re-check Serial No filled".format(serial_no.serial_no)))
+						if self.for_external_inspection:
+							check_duplicated_serial_no(serial_no.customer_serial_no,self.work_order)
+						else:
+							check_duplicated_serial_no(serial_no.serial_no,self.work_order)
 						conditions = [not get_q_i_t_p(i,"length")['min_value'] <= to_frac(serial_no.length) <= get_q_i_t_p(i,"length")['max_value'] or
 								not get_q_i_t_p(i,"ID")['min_value'] <= to_frac(serial_no.id) <= get_q_i_t_p(i,"ID")['max_value'] or
 								not get_q_i_t_p(i,"Remaining Wall Thickness")['min_value'] <= to_frac(serial_no.remaining_wall_thickness) <= get_q_i_t_p(i,"Remaining Wall Thickness")['max_value'] or
@@ -126,11 +156,21 @@ class Inspection(Document):
 					if float(warehouse_qty) < len(parameter):
 						frappe.throw(_("You dont have all this quantity in Warehouse {}".format(self.warehouse)))
 					for serial_no in self.string_stabilizer_parameters:
-						serial_no_list.append(serial_no.serial_no)
+						if self.for_external_inspection:
+							serial_no_list.append(serial_no.customer_serial_no)
+						else:
+							serial_no_list.append(serial_no.serial_no)
 						duplicated = [sn for sn, count in collections.Counter(serial_no_list).items() if count > 1]
-						if serial_no.serial_no in duplicated:
-							frappe.throw(_("{} is duplicated, please re-check Serial No filled".format(serial_no.serial_no)))
-						check_duplicated_serial_no(serial_no.serial_no,self.work_order)
+						if self.for_external_inspection:
+							if serial_no.customer_serial_no in duplicated:
+								frappe.throw(_("{} is duplicated, please re-check Serial No filled".format(serial_no.customer_serial_no)))
+						else:
+							if serial_no.serial_no in duplicated:
+								frappe.throw(_("{} is duplicated, please re-check Serial No filled".format(serial_no.serial_no)))
+						if self.for_external_inspection:
+							check_duplicated_serial_no(serial_no.customer_serial_no,self.work_order)
+						else:
+							check_duplicated_serial_no(serial_no.serial_no,self.work_order)
 						conditions = [not get_q_i_t_p(i,"length")['min_value'] <= to_frac(serial_no.length) <= get_q_i_t_p(i,"length")['max_value'] or
 								not get_q_i_t_p(i,"OD")['min_value'] <= to_frac(serial_no.od) <= get_q_i_t_p(i,"OD")['max_value'] or
 								not get_q_i_t_p(i,"ID")['min_value'] <= to_frac(serial_no.id) <= get_q_i_t_p(i,"ID")['max_value'] or
@@ -161,11 +201,22 @@ class Inspection(Document):
 					if float(warehouse_qty) < len(parameter):
 						frappe.throw(_("You dont have all this quantity in Warehouse {}".format(self.warehouse)))
 					for serial_no in self.near_stabilizer_parameters:
-						serial_no_list.append(serial_no.serial_no)
+						if self.for_external_inspection:
+							serial_no_list.append(serial_no.customer_serial_no)
+						else:
+							serial_no_list.append(serial_no.serial_no)
 						duplicated = [sn for sn, count in collections.Counter(serial_no_list).items() if count > 1]
-						if serial_no.serial_no in duplicated:
-							frappe.throw(_("{} is duplicated, please re-check Serial No filled".format(serial_no.serial_no)))
-						check_duplicated_serial_no(serial_no.serial_no,self.work_order)
+						if self.for_external_inspection:
+							if serial_no.customer_serial_no in duplicated:
+								frappe.throw(_("{} is duplicated, please re-check Serial No filled".format(serial_no.customer_serial_no)))
+						else:
+							if serial_no.serial_no in duplicated:
+								frappe.throw(_("{} is duplicated, please re-check Serial No filled".format(serial_no.serial_no)))
+						if self.for_external_inspection:
+							check_duplicated_serial_no(serial_no.customer_serial_no,self.work_order)
+						else:
+							check_duplicated_serial_no(serial_no.serial_no,self.work_order)
+						
 						conditions = [not get_q_i_t_p(i,"length")['min_value'] <= to_frac(serial_no.length) <= get_q_i_t_p(i,"length")['max_value'] or
 								not get_q_i_t_p(i,"OD")['min_value'] <= to_frac(serial_no.od) <= get_q_i_t_p(i,"OD")['max_value'] or
 								not get_q_i_t_p(i,"Fish neck Length")['min_value'] <= to_frac(serial_no.fishneck_length) <= get_q_i_t_p(i,"Fish neck Length")['max_value'] or
@@ -180,11 +231,21 @@ class Inspection(Document):
 						if float(warehouse_qty) < len(parameter):
 							frappe.throw(_("You dont have all this quantity in Warehouse {}".format(self.warehouse)))
 						for serial_no in self.drilling_tools_parameters:
-							serial_no_list.append(serial_no.serial_no)
+							if self.for_external_inspection:
+								serial_no_list.append(serial_no.customer_serial_no)
+							else:
+								serial_no_list.append(serial_no.serial_no)
 							duplicated = [sn for sn, count in collections.Counter(serial_no_list).items() if count > 1]
-							if serial_no.serial_no in duplicated:
-								frappe.throw(_("{} is duplicated, please re-check Serial No filled".format(serial_no.serial_no)))
-							check_duplicated_serial_no(serial_no.serial_no,self.work_order)
+							if self.for_external_inspection:
+								if serial_no.customer_serial_no in duplicated:
+									frappe.throw(_("{} is duplicated, please re-check Serial No filled".format(serial_no.customer_serial_no)))
+							else:
+								if serial_no.serial_no in duplicated:
+									frappe.throw(_("{} is duplicated, please re-check Serial No filled".format(serial_no.serial_no)))
+							if self.for_external_inspection:
+								check_duplicated_serial_no(serial_no.customer_serial_no,self.work_order)
+							else:
+								check_duplicated_serial_no(serial_no.serial_no,self.work_order)	
 							conditions = [not get_q_i_t_p(i,"length")['min_value'] <= to_frac(serial_no.length) <= get_q_i_t_p(i,"length")['max_value'] or
 									not get_q_i_t_p(i,"OD")['min_value'] <= to_frac(serial_no.od) <= get_q_i_t_p(i,"OD")['max_value'] or
 									not get_q_i_t_p(i,"ID")['min_value'] <= to_frac(serial_no.id) <= get_q_i_t_p(i,"ID")['max_value'] or
@@ -223,46 +284,76 @@ class Inspection(Document):
 				if parameter == self.drill_collar_parameters:
 					for serial_no in self.drill_collar_parameters:
 						if serial_no.status == "Validated":
-							accepted_sn.append(serial_no.serial_no)
+							if self.for_external_inspection:
+								accepted_sn.append(serial_no.customer_serial_no)
+							else:
+								accepted_sn.append(serial_no.serial_no)
 					self.accepted_serial_no = '\n'.join(str(sn) for sn in accepted_sn)
 					self.total_inspected = len(accepted_sn)
+					if self.total_inspected > self.pending_quantity:
+						frappe.throw(_("You overpassed the quantity required"))
 
 				if parameter == self.heavy_weight_drill_pipe_parameters:
 					for serial_no in self.heavy_weight_drill_pipe_parameters:
 						if serial_no.status == "Validated":
-							accepted_sn.append(serial_no.serial_no)
+							if self.for_external_inspection:
+								accepted_sn.append(serial_no.customer_serial_no)
+							else:
+								accepted_sn.append(serial_no.serial_no)
 					self.accepted_serial_no = '\n'.join(str(sn) for sn in accepted_sn)
 					self.total_inspected = len(accepted_sn)
+					if self.total_inspected > self.pending_quantity:
+						frappe.throw(_("You overpassed the quantity required"))
 
 				if parameter == self.string_stabilizer_parameters:
 					for serial_no in self.string_stabilizer_parameters:
 						if serial_no.status == "Validated":
-							accepted_sn.append(serial_no.serial_no)
+							if self.for_external_inspection:
+								accepted_sn.append(serial_no.customer_serial_no)
+							else:
+								accepted_sn.append(serial_no.serial_no)
 					self.accepted_serial_no = '\n'.join(str(sn) for sn in accepted_sn)
 					self.total_inspected = len(accepted_sn)
+					if self.total_inspected > self.pending_quantity:
+						frappe.throw(_("You overpassed the quantity required"))
 
 				if parameter == self.near_stabilizer_parameters:
 					for serial_no in self.near_stabilizer_parameters:
 						if serial_no.status == "Validated":
-							accepted_sn.append(serial_no.serial_no)
+							if self.for_external_inspection:
+								accepted_sn.append(serial_no.customer_serial_no)
+							else:
+								accepted_sn.append(serial_no.serial_no)
 					self.accepted_serial_no = '\n'.join(str(sn) for sn in accepted_sn)
 					self.total_inspected = len(accepted_sn)
+					if self.total_inspected > self.pending_quantity:
+						frappe.throw(_("You overpassed the quantity required"))
 
 				if parameter == self.drill_pipe_parameters:
 					for serial_no in self.drill_pipe_parameters:
 						if serial_no.status == "Validated":
-							accepted_sn.append(serial_no.serial_no)
-							self.total_inspected = len(accepted_sn)
+							if self.for_external_inspection:
+								accepted_sn.append(serial_no.customer_serial_no)
+							else:
+								accepted_sn.append(serial_no.serial_no)
+					self.total_inspected = len(accepted_sn)
 					self.accepted_serial_no = '\n'.join(str(sn) for sn in accepted_sn)
+					if self.total_inspected > self.pending_quantity:
+						frappe.throw(_("You overpassed the quantity required"))
+
 				if parameter == self.drilling_tools_parameters:
 					for serial_no in self.drilling_tools_parameters:
 						if serial_no.status == "Validated":
+							accepted_sn.append(serial_no.customer_serial_no)
+						else:
 							accepted_sn.append(serial_no.serial_no)
 					self.accepted_serial_no = '\n'.join(str(sn) for sn in accepted_sn)
 					self.total_inspected = len(accepted_sn)
+					if self.total_inspected > self.pending_quantity:
+						frappe.throw(_("You overpassed the quantity required"))
 
 
-		fill_order_serial_no(self.item_code,self.accepted_serial_no,self.work_order,self.rental_order,self.sales_order)
+		fill_order_serial_no(self.for_external_inspection,self.item_code,self.accepted_serial_no,self.work_order,self.rental_order,self.sales_order)
 
 	def on_submit(self):
 		if self.work_order:
@@ -275,7 +366,23 @@ class Inspection(Document):
 
 		
 @frappe.whitelist()
-def create_wo(qty,bom,purpose,item_code,warehouse=None,item_category=None,project=None,project_wo=None,sales_o=None,rental_o=None):
+def create_wo(qty,bom,purpose,item_code,warehouse=None,item_category=None,for_cu_ins=None,project=None,project_wo=None,sales_o=None,rental_o=None):
+	if for_cu_ins==1:
+		stock_entry = frappe.db.get_value("Stock Entry", {"sales_order": sales_o},'name')
+		stock_entry_qty = get_stock_entry_qty(stock_entry,item_code)
+		qty_wo = frappe.db.sql("""select qty
+								  from `tabWork Order` 
+								  where sales_order = "%s" 
+								  and production_item = "%s" 
+								  and status != "Cancelled" """ %(sales_o,item_code),as_dict=1) 
+		qty_list = []
+		for i in range(len(qty_wo)):   
+			qty_list.append(qty_wo[i]['qty'])
+		total_wo_qty = sum(qty_list)
+		if float(total_wo_qty) + float(qty) > float(stock_entry_qty):
+			frappe.throw(_("Cannot inspect more Item {} than Stock Entry quantity {}"
+			.format(item_code,get_stock_entry_qty(stock_entry,item_code))))
+
 	new_doc = frappe.new_doc('Work Order')
 	if float(qty) == 0:
 		frappe.throw(_("You don't have Item : {} in warehouse {}")
@@ -322,6 +429,7 @@ def create_wo(qty,bom,purpose,item_code,warehouse=None,item_category=None,projec
 	new_doc.project = project
 	new_doc.project_wo = project_wo
 	new_doc.bom_no = bom
+	new_doc.for_external_inspection = for_cu_ins
 	new_doc.save()
 	frappe.db.commit()
 	return "dddddd"
@@ -344,6 +452,12 @@ def get_rental_order_item_qty(rental_o,item_code):
     item_qty = frappe.db.sql("""select qty
                                 from `tabRental Order Item` 
                                 where item_code = "%s" and parent = "%s" """ %(item_code,rental_o), as_dict=1)
+    return item_qty[0]['qty']
+
+def get_stock_entry_qty(stock_entry,item_code):
+    item_qty = frappe.db.sql("""select qty
+                                from `tabStock Entry Detail` 
+                                where item_code = "%s" and parent = "%s" """ %(item_code,stock_entry), as_dict=1)
     return item_qty[0]['qty']
 
 def get_list():
@@ -381,7 +495,7 @@ def change_wo_qty(work_order=None,total_inspected_for_order=None,total_inspected
 
 
 @frappe.whitelist()
-def fill_order_serial_no(item_code,accepted_serial_no,work_order,rental_order,sales_order):
+def fill_order_serial_no(for_external_inspection,item_code,accepted_serial_no,work_order,rental_order,sales_order):
 	if rental_order or sales_order:
 		if rental_order:
 			order = frappe.get_doc("Rental Order", rental_order)
@@ -389,11 +503,15 @@ def fill_order_serial_no(item_code,accepted_serial_no,work_order,rental_order,sa
 			order = frappe.get_doc("Sales Order", sales_order)
 
 		for item in order.items:
+			if for_external_inspection:
+				order.set('customer_accepted_serial_no',accepted_serial_no)
+				order.save()
+				frappe.db.commit()
 			if item.item_code == item_code:
 				if len(frappe.db.get_list("Inspection",filters={"work_order":work_order,"docstatus":['!=',2]})) == 1:
 					item.set("serial_no_accepted",accepted_serial_no)
 					order.save()
-					frappe.db.commit() 
+					frappe.db.commit()
 
 				else:
 					item.serial_no_accepted = '\n'.join([item.serial_no_accepted,accepted_serial_no])
@@ -412,9 +530,8 @@ def check_duplicated_serial_no(serial_no=None,work_order=None):
 		temporary = sn[r]['accepted_serial_no'].split("\n")
 		for t in temporary:
 			sn_list.append(t)
-	if serial_no in sn_list:
-		frappe.throw(_("Serial No {} is already inspected and validated, please delete it from the table".format(serial_no)))
-
+		if serial_no in sn_list:
+			frappe.throw(_("Serial No {} is already inspected and validated, please delete it from the table".format(serial_no)))
 
 
 def delete_cancelled_inspection_serial_no(item_code,work_order,accepted_serial_no,rental_order,sales_order):
@@ -438,5 +555,6 @@ def delete_cancelled_inspection_serial_no(item_code,work_order,accepted_serial_n
 				item.set("serial_no_accepted","\n".join(order_sn_no))
 				order.save()
 				frappe.db.commit()
+
 
 

@@ -59,8 +59,8 @@
   },
   {
    "fieldname": "length",
-   "default": 0,
-   "fieldtype": "Float",
+   "fieldtype": "Data",
+   "default":0,
    "label": "Length"
   },
   {
@@ -104,20 +104,20 @@
    },
   {
    "fieldname": "srg_width",
-   "fieldtype": "Float",
-   "default": 0,
+   "fieldtype": "Data",
+   "default":0,
    "label": "SRG Width"
   },
   {
    "fieldname": "neck_length",
-   "fieldtype": "Float",
-   "default": 0,
+   "fieldtype": "Data",
+   "default":0,
    "label": "Neck Length"
   },
   {
    "fieldname": "pin_tong_space",
-   "fieldtype": "Float",
-   "default": 0,
+   "fieldtype": "Data",
+   "default":0,
    "label": "Pin Tong Space"
   },
   {
@@ -133,37 +133,37 @@
   {
     "fieldname": "box_od",
     "default": 0,
-    "fieldtype": "Float",
+    "fieldtype": "Data",
     "label": "Box OD"
    },
    {
     "fieldname": "box_bevel_dia",
     "default": 0,
-    "fieldtype": "Float",
+    "fieldtype": "Data",
     "label": "Box Bevel Dia"
    },
    {
     "fieldname": "counter_bore_depth",
-    "default": 0,
-    "fieldtype": "Float",
+    "fieldtype": "Data",
+   "default":0,
     "label": "Counter Bore Depth/wall thickness"
    },
    {
     "fieldname": "counter_bore_dia",
-    "default": 0,
-    "fieldtype": "Float",
+    "fieldtype": "Data",
+   "default":0,
     "label": "Counter Bore Dia"
    },
    {
     "fieldname": "bo_boreback_length",
     "default": 0,
-    "fieldtype": "Float",
+    "fieldtype": "Data",
     "label": "Bo Boreback Length"
    },
    {
     "fieldname": "boreback_dia",
     "default": 0,
-    "fieldtype": "Float",
+    "fieldtype": "Data",
     "label": "Boreback Dia"
    },
    {
@@ -185,18 +185,18 @@
    {
     "fieldname": "recess_groove_od",
     "default": 0,
-    "fieldtype": "Float",
+    "fieldtype": "Data",
     "label": "Recess Gr OD"
    },
    {
     "fieldname": "recess_groove_elevator",
     "default": 0,
-    "fieldtype": "Float",
+    "fieldtype": "Data",
     "label": "Elevator Recess Depth"
    },  {
     "fieldname": "recess_groove_slip",
     "default": 0,
-    "fieldtype": "Float",
+    "fieldtype": "Data",
     "label": "Slip Recess Depth"
    },
    {

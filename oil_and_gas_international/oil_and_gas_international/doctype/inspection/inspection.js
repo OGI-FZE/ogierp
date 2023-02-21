@@ -107,7 +107,3 @@ frappe.ui.form.on("Inspection", {
 	}
 	
 })
-
-
-
-

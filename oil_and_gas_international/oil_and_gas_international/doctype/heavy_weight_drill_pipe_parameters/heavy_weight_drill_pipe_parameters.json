@@ -64,7 +64,7 @@
   },
   {
    "fieldname": "length",
-   "fieldtype": "Float",
+   "fieldtype": "Data",
    "default": 0,
    "label": "Length"
   },
@@ -117,13 +117,13 @@
   },
   {
    "fieldname": "srg_width",
-   "fieldtype": "Float",
+   "fieldtype": "Data",
    "default": 0,
    "label": "SRG Width"
   },
   {
    "fieldname": "pin_connection_length",
-   "fieldtype": "Float",
+   "fieldtype": "Data",
    "default": 0,
    "label": "Pin Connection Lenght/Neck Length"
   },
@@ -172,49 +172,49 @@
    },
    {
     "fieldname": "box_od",
-    "fieldtype": "Float",
+    "fieldtype": "Data",
     "default": 0,
     "label": "Box OD"
    },
    {
     "fieldname": "box_bevel_dia",
-    "fieldtype": "Float",
+    "fieldtype": "Data",
     "default": 0,
     "label": "Box Bevel Dia"
    },
    {
     "fieldname": "counter_bore_depth",
-    "fieldtype": "Float",
+    "fieldtype": "Data",
     "default": 0,
     "label": "Counter Bore Depth/wall thickness"
    },
    {
     "fieldname": "counter_bore_dia",
-    "fieldtype": "Float",
+    "fieldtype": "Data",
     "default": 0,
     "label": "Counter Bore Diameter"
    },
    {
     "fieldname": "seal_width",
-    "fieldtype": "Float",
+    "fieldtype": "Data",
     "default": 0,
     "label": "Seal Width"
    },
    {
     "fieldname": "box_tong_space",
-    "fieldtype": "Float",
+    "fieldtype": "Data",
     "default": 0,
     "label": "Box Tong Space"
    },
    {
     "fieldname": "box_connection_length",
-    "fieldtype": "Float",
+    "fieldtype": "Data",
     "default": 0,
     "label": " Box Connection Length/Boreback Length"
    },
    {
     "fieldname": "boreback_dia",
-    "fieldtype": "Float",
+    "fieldtype": "Data",
     "default": 0,
     "label": "Bore Back Dia"
    },
@@ -250,7 +250,7 @@
    },
    {
     "fieldname": "od_height",
-    "fieldtype": "Float",
+    "fieldtype": "Data",
     "default": 0,
     "label": "OD Height"
    },

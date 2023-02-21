@@ -51,6 +51,7 @@ def create_project(doc, handler=None):
 	project.sales_order = doc.name
 	project.expected_start_date = doc.transaction_date
 	project.division = doc.division
+	project.for_external_inspection = doc.for_customer_inspection
 	project.save()
 	frappe.db.commit()
 # OGI-.MR-.MM.YY.-.####
@@ -104,16 +105,32 @@ def fill_so_items_table(sales_order):
 			})
 	return data
 
+@frappe.whitelist()
+def get_stock_entry_data(sales_order):
+	doc_name = frappe.db.get_value('Stock Entry',{'sales_order': sales_order},'name')
+	delivery_date = frappe.db.get_value('Sales Order',sales_order,'delivery_date')
+
+	se = frappe.get_doc('Stock Entry', doc_name)
+	data = []
+	for item in se.items:
+		item_category = frappe.db.get_value('Item', item.item_code, 'item_category' )
+		data.append({
+			'item_code':item.item_code,	
+			'item_category': item_category,	
+			'item_name':item.item_name,
+			'description':item.description,
+			'qty': item.qty,
+			'warehouse': item.t_warehouse,
+			'delivery_date': delivery_date,
+			'for_customer_inspection': 1,
+			'stock_entry': se.name
+			})
+	return data
+
+
+
+
 		
 
 
 
-@frappe.whitelist
-def create_field():
-	field = frappe.new_doc("Custom Field")
-	field.dt = "Drill Collar Parameters"
-	field.label = "Lentii"
-	field.fieldname = "lentii"
-	field.fieldtype = "Data"
-	field.save()
-	frpappe.db.commit()

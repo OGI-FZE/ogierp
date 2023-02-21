@@ -2,6 +2,7 @@ frappe.ui.form.on('Project', {
 	refresh(frm) {
         if (!frm.is_new()) {
             create_project_work_order(frm)
+			create_stock_entry(frm)
         }
     },
 	after_save(frm){
@@ -71,6 +72,44 @@ const create_project_work_order = (frm) => {
 						cur_frm.set_value("customer", r.customer)
 						console.log(r.customer)
 					})
+					if (doc.for_external_inspection){
+						frappe.call({
+							method:'oil_and_gas_international.events.sales_order.get_stock_entry_data',
+							args: {
+									'sales_order': doc.sales_order,
+								},
+					
+						callback: function(r) {
+							console.log(r.message.length)
+							cur_frm.doc.sales_order_items = [];
+							for (let item of r.message){
+								
+								const cur_doc = cur_frm.doc
+								
+								const new_row = cur_frm.add_child('sales_order_items',{
+									'item_name': item.item_name,
+									'description': item.description,
+									'delivery_date':item.delivery_date,
+									'qty':item.qty,
+									'item_category': item.item_category,
+									'for_customer_inspection': item.for_customer_inspection
+									//'warehouse': item.warehouse
+								})
+								const cdt = new_row.doctype
+								const cdn = new_row.name
+								frappe.model.set_value(cdt, cdn, "item_code",item.item_code )
+								frappe.model.set_value(cdt,cdn,'warehouse',item.warehouse)
+								cur_frm.set_value("stock_entry",item.stock_entry)
+
+								
+	
+							}
+							cur_frm.refresh()
+	
+						}
+					});
+					}
+					else{
 					frappe.call({
 						method:'oil_and_gas_international.events.sales_order.fill_so_items_table',
 						args: {
@@ -104,10 +143,40 @@ const create_project_work_order = (frm) => {
 
 					}
 				});
+			}
 
 
 
 				}
+            }
+        ])
+	
+    }, 'Create');
+}
+
+
+
+
+const create_stock_entry = (frm) => {
+    frm.add_custom_button('Stock Entry', () => {
+        const doc = frm.doc;
+		if (!doc.for_external_inspection){
+			frappe.throw(__("You can not receive a Material against this Project"))
+		}
+		frappe.db.get_value("Stock Entry",{"sales_order":doc.sales_order}, ["name"], (r) => {
+			// cur_frm.set_value("customer", r.customer)
+			if (r.name){
+				frappe.throw(_("You have already created a stock entry against this project"))
+			}
+		})
+		
+        frappe.run_serially([
+            () => frappe.new_doc('Stock Entry'),
+            () => {
+				cur_frm.doc.project = doc.name;
+				cur_frm.doc.sales_order = doc.sales_order;
+				cur_frm.doc.stock_entry_type = "Material Receipt"
+				cur_frm.refresh()
             }
         ])
     }, 'Create');
