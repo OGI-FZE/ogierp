@@ -469,7 +469,7 @@ def get_list():
 		if "Inspection" in d:
 			depar = d
 			print(d)
-
+ 
 @frappe.whitelist()
 def get_total_inspected(work_order= None):
 	qty = 0
