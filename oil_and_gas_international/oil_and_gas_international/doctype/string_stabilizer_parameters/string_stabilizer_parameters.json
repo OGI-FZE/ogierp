@@ -63,7 +63,8 @@
   },
   {
    "fieldname": "length",
-   "fieldtype": "Float",
+   "fieldtype": "Data",
+  "default":0,
    "label": "Length"
   },
   {
@@ -82,7 +83,8 @@
    }, 
   {
    "fieldname": "pin_thread_length",
-   "fieldtype": "Float",
+   "fieldtype": "Data",
+  "default":0,
    "label": "Pin Thread Length"
   },
   {
@@ -93,17 +95,20 @@
 
   {
    "fieldname": "bevel_dia",
-   "fieldtype": "Float",
+   "fieldtype": "Data",
+  "default":0,
    "label": "Bevel Dia"
   },
   {
    "fieldname": "srg_dia",
-   "fieldtype": "Float",
+   "fieldtype": "Data",
+  "default":0,
    "label": "SRG Dia"
   },
   {
    "fieldname": "srg_length",
-   "fieldtype": "Float",
+   "fieldtype": "Data",
+  "default":0,
    "label": "SRG Length"
   },
   {
@@ -113,7 +118,8 @@
   },
   {
    "fieldname": "pin_neck_length",
-   "fieldtype": "Float",
+   "fieldtype": "Data",
+  "default":0,
    "label": "Pin Neck Length"
   },
   {
@@ -150,7 +156,8 @@
    },
    {
     "fieldname": "box_od",
-    "fieldtype": "Float",
+    "fieldtype": "Data",
+  "default":0,
     "label": "Box OD"
    },
    {
@@ -160,37 +167,44 @@
    },
    {
     "fieldname": "fishing_neck_length",
-    "fieldtype": "Float",
+    "fieldtype": "Data",
+  "default":0,
     "label": "Fishing Neck Length"
    },
    {
     "fieldname": "qc_diameter",
-    "fieldtype": "Float",
+    "fieldtype": "Data",
+  "default":0,
     "label": "Qc Diameter"
    },
    {
     "fieldname": "qc_depth",
-    "fieldtype": "Float",
+    "fieldtype": "Data",
+  "default":0,
     "label": "Qc Depth"
    },
    {
     "fieldname": "boreback_diameter",
-    "fieldtype": "Float",
+    "fieldtype": "Data",
+  "default":0,
     "label": "Boreback Diameter"
    },
    {
     "fieldname": "boreback_length",
-    "fieldtype": "Float",
+    "fieldtype": "Data",
+  "default":0,
     "label": "Boreback Length"
    },
    {
     "fieldname": "box_bevel_dia",
-    "fieldtype": "Float",
+    "fieldtype": "Data",
+  "default":0,
     "label": "Box Bevel Dia"
    },
    {
     "fieldname": "box_seal_width",
-    "fieldtype": "Float",
+    "fieldtype": "Data",
+  "default":0,
     "label": "Box Seal Width"
    },
    {

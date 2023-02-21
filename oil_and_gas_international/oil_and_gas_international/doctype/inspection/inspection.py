@@ -225,8 +225,11 @@ class Inspection(Document):
 								not get_q_i_t_p(i,"Boreback Diameter")['min_value'] <= to_frac(serial_no.boreback_diameter) <= get_q_i_t_p(i,"Boreback Diameter")['max_value'] or
 								not get_q_i_t_p(i,"Bevel Dia")['min_value'] <= to_frac(serial_no.bevel_diameter) <= get_q_i_t_p(i,"Bevel Dia")['max_value'] or
 								not get_q_i_t_p(i,"Box Seal Width")['min_value'] <= to_frac(serial_no.box_seal_width) <= get_q_i_t_p(i,"Box Seal Width")['max_value'] 
-		
 						]
+						if conditions[0]:
+							serial_no.status = "Failed"
+						else: 
+							serial_no.status = "Validated"
 			elif parameter and parameter == self.drilling_tools_parameters:
 						if float(warehouse_qty) < len(parameter):
 							frappe.throw(_("You dont have all this quantity in Warehouse {}".format(self.warehouse)))

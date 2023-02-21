@@ -44,7 +44,7 @@
   },
   {
    "fieldname": "length",
-   "fieldtype": "Float",
+   "fieldtype": "Data",
    "default": 0,
    "label": "Length"
   },
@@ -66,13 +66,13 @@
   },
   {
    "fieldname": "fishneck_length",
-   "fieldtype": "Float",
+   "fieldtype": "Data",
    "default": 0,
    "label": "Fish neck Length"
   },
   {
    "fieldname": "qc_diameter",
-   "fieldtype": "Float",
+   "fieldtype": "Data",
    "default": 0,
    "label": "Qc Diameter"
   },
@@ -83,26 +83,26 @@
   {
    "fieldname": "qc_depth",
    "default": 0,
-   "fieldtype": "Float",
+   "fieldtype": "Data",
    "label": "Qc Depth"
    
   },
   {
    "fieldname": "boreback_diameter",
    "default": 0,
-   "fieldtype": "Float",
+   "fieldtype": "Data",
    "label": "Boreback Diameter"
   },
   {
    "fieldname": "bevel_diameter",
    "default": 0,
-   "fieldtype": "Float",
+   "fieldtype": "Data",
    "label": "Bevel Diameter"
   },
   {
    "fieldname": "box_seal_width",
    "default": 0,
-   "fieldtype": "Float",
+   "fieldtype": "Data",
    "label": "Box Seal Width"
   },
   {
