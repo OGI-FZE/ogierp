@@ -31,7 +31,7 @@ const add_inspection = () => {
                                 cur_doc.sales_order = r.sales_order
                                 cur_doc.rental_order = r.rental_order
                                 cur_doc.pending_quantity = r.qty - r.total_inspected
-                                // cur_doc.for_external_inspection = r.for_external_inspection
+                                cur_doc.for_external_inspection = r.for_external_inspection
                                 
                                 cur_frm.set_df_property('item_category', 'read_only', 1);
                                 
