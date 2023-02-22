@@ -303,7 +303,7 @@ class Inspection(Document):
 			self.total_inspected_for_order = get_total_inspected(self.work_order)
 
 	def on_cancel(self):
-		delete_cancelled_inspection_serial_no(self.item_code,self.work_order,self.accepted_serial_no,self.rental_order,self.sales_order)
+		delete_cancelled_inspection_serial_no(self.for_external_inspection,self.item_code,self.work_order,self.accepted_serial_no,self.rental_order,self.sales_order)
 
 
 
@@ -481,7 +481,7 @@ def check_duplicated_serial_no(serial_no=None,work_order=None):
 			frappe.throw(_("Serial No {} is already inspected and validated, please delete it from the table".format(serial_no)))
 
 
-def delete_cancelled_inspection_serial_no(item_code,work_order,accepted_serial_no,rental_order,sales_order):
+def delete_cancelled_inspection_serial_no(for_external_inspection,item_code,work_order,accepted_serial_no,rental_order,sales_order):
 	if work_order:
 		wo = frappe.get_doc("Work Order",work_order)
 		inspection_sn_no = accepted_serial_no.split('\n')
@@ -494,7 +494,13 @@ def delete_cancelled_inspection_serial_no(item_code,work_order,accepted_serial_n
 			order = frappe.get_doc("Rental Order", rental_order)
 		elif sales_order:
 			order = frappe.get_doc("Sales Order", sales_order)
-
+		if for_external_inspection==1:
+			order_sn_no = order.customer_accepted_serial_no.split('\n')
+			for i in inspection_sn_no:
+				order_sn_no.remove(i)
+				order.set("customer_accepted_serial_no","\n".join(order_sn_no))
+				order.save()
+				frappe.db.commit()
 		for item in order.items:
 			if item.item_code == item_code:
 				order_sn_no = item.serial_no_accepted.split('\n')
