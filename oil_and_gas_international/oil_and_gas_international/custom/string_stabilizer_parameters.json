@@ -193,7 +193,7 @@
    "columns": 0,
    "creation": "2023-02-21 10:42:19.645585",
    "default": null,
-   "depends_on": "eval:doc.for_external_inspection==1;",
+   "depends_on": "eval:doc.external_inspection==1;",
    "description": null,
    "docstatus": 0,
    "dt": "String Stabilizer Parameters",
@@ -237,7 +237,7 @@
    "reqd": 0,
    "search_index": 0,
    "translatable": 1,
-   "unique": 1,
+   "unique": 0,
    "width": null
   },
   {
@@ -309,14 +309,14 @@
    "_comments": null,
    "_liked_by": null,
    "_user_tags": null,
-   "creation": "2023-02-22 11:58:25.950498",
+   "creation": "2023-02-22 12:35:13.289522",
    "default_value": null,
    "doc_type": "String Stabilizer Parameters",
    "docstatus": 0,
    "doctype_or_field": "DocField",
    "field_name": "serial_no",
    "idx": 0,
-   "modified": "2023-02-22 11:58:25.950498",
+   "modified": "2023-02-22 12:35:13.289522",
    "modified_by": "Administrator",
    "name": "String Stabilizer Parameters-serial_no-depends_on",
    "owner": "Administrator",
@@ -326,7 +326,7 @@
    "property": "depends_on",
    "property_type": "Data",
    "row_name": null,
-   "value": "eval:doc.for_external_inspection==0;"
+   "value": "eval:doc.external_inspection==0;"
   },
   {
    "_assign": null,
