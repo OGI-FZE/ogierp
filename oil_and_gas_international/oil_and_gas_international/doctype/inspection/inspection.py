@@ -6,6 +6,8 @@ import collections
 
 class Inspection(Document):
 	def validate(self):
+		if frappe.db.get_value('Item',self.item_code,"has_serial_no") ==0:
+			self.for_external_inspection = 1
 		if self.pending_quantity == 0:
 			frappe.throw(_("All serial No are inspected"))
 		i = self.item_code
@@ -284,8 +286,7 @@ class Inspection(Document):
 
 		for parameter in parameters:
 			if parameter:
-				if parameter == self.drill_collar_parameters:
-					for serial_no in self.drill_collar_parameters:
+					for serial_no in parameter:
 						if serial_no.status == "Validated":
 							if self.for_external_inspection:
 								accepted_sn.append(serial_no.customer_serial_no)
@@ -295,67 +296,6 @@ class Inspection(Document):
 					self.total_inspected = len(accepted_sn)
 					if self.total_inspected > self.pending_quantity:
 						frappe.throw(_("You overpassed the quantity required"))
-
-				if parameter == self.heavy_weight_drill_pipe_parameters:
-					for serial_no in self.heavy_weight_drill_pipe_parameters:
-						if serial_no.status == "Validated":
-							if self.for_external_inspection:
-								accepted_sn.append(serial_no.customer_serial_no)
-							else:
-								accepted_sn.append(serial_no.serial_no)
-					self.accepted_serial_no = '\n'.join(str(sn) for sn in accepted_sn)
-					self.total_inspected = len(accepted_sn)
-					if self.total_inspected > self.pending_quantity:
-						frappe.throw(_("You overpassed the quantity required"))
-
-				if parameter == self.string_stabilizer_parameters:
-					for serial_no in self.string_stabilizer_parameters:
-						if serial_no.status == "Validated":
-							if self.for_external_inspection:
-								accepted_sn.append(serial_no.customer_serial_no)
-							else:
-								accepted_sn.append(serial_no.serial_no)
-					self.accepted_serial_no = '\n'.join(str(sn) for sn in accepted_sn)
-					self.total_inspected = len(accepted_sn)
-					if self.total_inspected > self.pending_quantity:
-						frappe.throw(_("You overpassed the quantity required"))
-
-				if parameter == self.near_stabilizer_parameters:
-					for serial_no in self.near_stabilizer_parameters:
-						if serial_no.status == "Validated":
-							if self.for_external_inspection:
-								accepted_sn.append(serial_no.customer_serial_no)
-							else:
-								accepted_sn.append(serial_no.serial_no)
-					self.accepted_serial_no = '\n'.join(str(sn) for sn in accepted_sn)
-					self.total_inspected = len(accepted_sn)
-					if self.total_inspected > self.pending_quantity:
-						frappe.throw(_("You overpassed the quantity required"))
-
-				if parameter == self.drill_pipe_parameters:
-					for serial_no in self.drill_pipe_parameters:
-						if serial_no.status == "Validated":
-							if self.for_external_inspection:
-								accepted_sn.append(serial_no.customer_serial_no)
-							else:
-								accepted_sn.append(serial_no.serial_no)
-					self.total_inspected = len(accepted_sn)
-					self.accepted_serial_no = '\n'.join(str(sn) for sn in accepted_sn)
-					if self.total_inspected > self.pending_quantity:
-						frappe.throw(_("You overpassed the quantity required"))
-
-				if parameter == self.drilling_tools_parameters:
-					for serial_no in self.drilling_tools_parameters:
-						if serial_no.status == "Validated":
-							accepted_sn.append(serial_no.customer_serial_no)
-						else:
-							accepted_sn.append(serial_no.serial_no)
-					self.accepted_serial_no = '\n'.join(str(sn) for sn in accepted_sn)
-					self.total_inspected = len(accepted_sn)
-					if self.total_inspected > self.pending_quantity:
-						frappe.throw(_("You overpassed the quantity required"))
-
-
 		fill_order_serial_no(self.for_external_inspection,self.item_code,self.accepted_serial_no,self.work_order,self.rental_order,self.sales_order)
 
 	def on_submit(self):
@@ -507,9 +447,13 @@ def fill_order_serial_no(for_external_inspection,item_code,accepted_serial_no,wo
 
 		for item in order.items:
 			if for_external_inspection:
-				order.set('customer_accepted_serial_no',accepted_serial_no)
-				order.save()
-				frappe.db.commit()
+				if order.customer_accepted_serial_no:
+					order.customer_accepted_serial_no = '\n'.join([order.customer_accepted_serial_no,accepted_serial_no])
+					order.save()
+				else:
+					order.set('customer_accepted_serial_no',accepted_serial_no)
+					order.save()
+					frappe.db.commit()
 			if item.item_code == item_code:
 				if len(frappe.db.get_list("Inspection",filters={"work_order":work_order,"docstatus":['!=',2]})) == 1:
 					item.set("serial_no_accepted",accepted_serial_no)
@@ -538,26 +482,27 @@ def check_duplicated_serial_no(serial_no=None,work_order=None):
 
 
 def delete_cancelled_inspection_serial_no(item_code,work_order,accepted_serial_no,rental_order,sales_order):
-	wo = frappe.get_doc("Work Order",work_order)
+	if work_order:
+		wo = frappe.get_doc("Work Order",work_order)
+		inspection_sn_no = accepted_serial_no.split('\n')
+		wo.pending_to_inspect += len(inspection_sn_no)
+		wo.total_inspected -= len(inspection_sn_no)
+		wo.save()
+		frappe.db.commit()
 	if rental_order or sales_order:
 		if rental_order:
 			order = frappe.get_doc("Rental Order", rental_order)
 		elif sales_order:
 			order = frappe.get_doc("Sales Order", sales_order)
 
-	inspection_sn_no = accepted_serial_no.split('\n')
-	wo.pending_to_inspect += len(inspection_sn_no)
-	wo.total_inspected -= len(inspection_sn_no)
-	wo.save()
-	frappe.db.commit()
-	for item in order.items:
-		if item.item_code == item_code:
-			order_sn_no = item.serial_no_accepted.split('\n')
-			for i in inspection_sn_no:
-				order_sn_no.remove(i)
-				item.set("serial_no_accepted","\n".join(order_sn_no))
-				order.save()
-				frappe.db.commit()
+		for item in order.items:
+			if item.item_code == item_code:
+				order_sn_no = item.serial_no_accepted.split('\n')
+				for i in inspection_sn_no:
+					order_sn_no.remove(i)
+					item.set("serial_no_accepted","\n".join(order_sn_no))
+					order.save()
+					frappe.db.commit()
 
 
 
