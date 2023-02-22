@@ -2,7 +2,7 @@ from frappe.model.document import Document, _
 import frappe
 from fractions import Fraction
 import collections
-
+from frappe.utils import now
 
 class Inspection(Document):
 	def validate(self):
@@ -373,6 +373,20 @@ def create_wo(qty,bom,purpose,item_code,warehouse=None,item_category=None,for_cu
 	new_doc.project_wo = project_wo
 	new_doc.bom_no = bom
 	new_doc.for_external_inspection = for_cu_ins
+
+	bom_doc = frappe.get_doc("BOM", bom)
+	if bom_doc.operations:
+		for operation in bom_doc.operations:
+			new_doc.append("operations",{
+				"operation" : operation.operation,
+				"bom": bom,
+				"workstation": operation.workstation,
+				"time_in_mins": operation.time_in_mins,
+				"planned_start_time": operation.operating_cost,
+				"hour_rate": operation.hour_rate,
+				"description": operation.description,
+				"planned_start_time": now()
+			})
 	new_doc.save()
 	frappe.db.commit()
 	return "dddddd"
