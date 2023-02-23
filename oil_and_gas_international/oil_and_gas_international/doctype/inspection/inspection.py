@@ -296,21 +296,32 @@ class Inspection(Document):
 					self.total_inspected = len(accepted_sn)
 					if self.total_inspected > self.pending_quantity:
 						frappe.throw(_("You overpassed the quantity required"))
-		fill_order_serial_no(self.for_external_inspection,self.item_code,self.accepted_serial_no,self.work_order,self.rental_order,self.sales_order)
+		fill_order_serial_no(self.for_external_inspection,self.item_code,self.project_work_order,self.accepted_serial_no,self.work_order,self.rental_order,self.sales_order)
 
 	def on_submit(self):
 		if self.work_order:
 			self.total_inspected_for_order = get_total_inspected(self.work_order)
 
 	def on_cancel(self):
-		delete_cancelled_inspection_serial_no(self.for_external_inspection,self.item_code,self.work_order,self.accepted_serial_no,self.rental_order,self.sales_order)
+		delete_cancelled_inspection_serial_no(self.for_external_inspection,self.project_work_order,self.item_code,self.work_order,self.accepted_serial_no,self.rental_order,self.sales_order)
 
 
 
-		
 @frappe.whitelist()
-def create_wo(qty,bom,purpose,item_code,warehouse=None,item_category=None,for_cu_ins=None,project=None,project_wo=None,sales_o=None,rental_o=None):
-	if for_cu_ins==1:
+def create_wo(for_cu_ins,qty,bom,purpose,item_code,warehouse=None,item_category=None,project=None,project_wo=None,sales_o=None,rental_o=None):
+	if not sales_o and not rental_o:
+		qty_wo = frappe.db.sql("""select qty
+								  from `tabWork Order` 
+								  where project_wo = "%s" 
+								  and production_item = "%s" 
+								  and status != "Cancelled" """ %(project_wo,item_code),as_dict=1) 
+		if qty_wo:
+			frappe.throw(_("Cannot inspect more Item {} than Project Work Order quantity {}"
+			.format(item_code,qty)))
+
+	if for_cu_ins:
+		# frappe.throw(_("Cannot inspect more Item {} than Project Work Order quantity {}"
+		# .format(item_code,qty)))
 		stock_entry = frappe.db.get_value("Stock Entry", {"sales_order": sales_o},'name')
 		stock_entry_qty = get_stock_entry_qty(stock_entry,item_code)
 		qty_wo = frappe.db.sql("""select qty
@@ -452,7 +463,7 @@ def change_wo_qty(work_order=None,total_inspected_for_order=None,total_inspected
 
 
 @frappe.whitelist()
-def fill_order_serial_no(for_external_inspection,item_code,accepted_serial_no,work_order,rental_order,sales_order):
+def fill_order_serial_no(for_external_inspection,item_code,project_work_order,accepted_serial_no,work_order,rental_order,sales_order):
 	if rental_order or sales_order:
 		if rental_order:
 			order = frappe.get_doc("Rental Order", rental_order)
@@ -477,7 +488,16 @@ def fill_order_serial_no(for_external_inspection,item_code,accepted_serial_no,wo
 				else:
 					item.serial_no_accepted = '\n'.join([item.serial_no_accepted,accepted_serial_no])
 					order.save()
-					frappe.db.commit() 
+					frappe.db.commit()
+	else:
+		pwo = frappe.get_doc("Project Work Order",project_work_order)
+		if pwo.accepted_serial_no:
+			pwo.accepted_serial_no = '\n'.join([pwo.accepted_serial_no,accepted_serial_no])
+			pwo.save()
+		else:
+			pwo.set('accepted_serial_no',accepted_serial_no)
+			pwo.save()
+			frappe.db.commit()
 
 
 
@@ -495,14 +515,13 @@ def check_duplicated_serial_no(serial_no=None,work_order=None):
 			frappe.throw(_("Serial No {} is already inspected and validated, please delete it from the table".format(serial_no)))
 
 
-def delete_cancelled_inspection_serial_no(for_external_inspection,item_code,work_order,accepted_serial_no,rental_order,sales_order):
+def delete_cancelled_inspection_serial_no(for_external_inspection,project_work_order,item_code,work_order,accepted_serial_no,rental_order,sales_order):
 	if work_order:
 		wo = frappe.get_doc("Work Order",work_order)
 		inspection_sn_no = accepted_serial_no.split('\n')
 		wo.pending_to_inspect += len(inspection_sn_no)
 		wo.total_inspected -= len(inspection_sn_no)
 		wo.save()
-		frappe.db.commit()
 	if rental_order or sales_order:
 		if rental_order:
 			order = frappe.get_doc("Rental Order", rental_order)
@@ -514,7 +533,6 @@ def delete_cancelled_inspection_serial_no(for_external_inspection,item_code,work
 				order_sn_no.remove(i)
 				order.set("customer_accepted_serial_no","\n".join(order_sn_no))
 				order.save()
-				frappe.db.commit()
 		for item in order.items:
 			if item.item_code == item_code:
 				order_sn_no = item.serial_no_accepted.split('\n')
@@ -522,7 +540,17 @@ def delete_cancelled_inspection_serial_no(for_external_inspection,item_code,work
 					order_sn_no.remove(i)
 					item.set("serial_no_accepted","\n".join(order_sn_no))
 					order.save()
-					frappe.db.commit()
+	else:
+		pwo = frappe.get_doc("Project Work Order", project_work_order)
+		order_sn_no = pwo.accepted_serial_no.split('\n')
+		for i in inspection_sn_no:
+			order_sn_no.remove(i)
+			pwo.set("accepted_serial_no","\n".join(order_sn_no))
+			pwo.save()
+
+	frappe.db.commit()
+
+			
 
 
 

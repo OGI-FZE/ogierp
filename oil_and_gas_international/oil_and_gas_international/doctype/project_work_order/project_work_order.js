@@ -36,6 +36,24 @@ frappe.ui.form.on('SO Project WO Items', {
     },
 });
 
+frappe.ui.form.on('Project WO Items', {
+	warehouse(frm,cdt,cdn) {
+		var child = locals[cdt][cdn];
+		frappe.db.get_value("Bin",{'warehouse':child.warehouse,'item_code': child.item_code}, ["actual_qty"], (r) => {
+			if (!r.actual_qty){
+				frappe.model.set_value(child.doctype,child.name,'qty_in_warehouse',0)
+				frappe.model.set_value(child.doctype,child.name,'dif_qty',child.qty_in_warehouse - child.qty)
+			}
+			else{
+				frappe.model.set_value(child.doctype,child.name,'qty_in_warehouse',r.actual_qty)
+				frappe.model.set_value(child.doctype,child.name,'dif_qty',child.qty_in_warehouse - child.qty)
+			}
+		})
+	
+		
+    },
+});
+
 
 frappe.ui.form.on('Project Work Order', {
 	refresh(frm) {
@@ -76,6 +94,28 @@ const create_inspection = (frm) => {
 				if (doc.sales_order){
 					let qty_to_inspect;
 					for (const row of doc.sales_order_items){
+						if (row.qty_in_warehouse > row.qty){
+							qty_to_inspect = row.qty
+						}
+						else {
+							qty_to_inspect = row.qty_in_warehouse
+						}
+						data.push({'item_code': row.item_code,
+									'item_category': row.item_category,
+									'warehouse': row.warehouse,
+									'qty': qty_to_inspect,
+									'project': doc.project_reference,
+									'project_wo': doc.name,
+									'sales_order': doc.sales_order,
+									'rental_order': doc.rental_order,
+									'purpose': row.purpose,
+									'for_external_inspection': row.for_customer_inspection
+									})
+								}
+							}
+				if (!doc.sales_order && !doc.rental_order){
+					let qty_to_inspect;
+					for (const row of doc.project_work_order_items){
 						if (row.qty_in_warehouse > row.qty){
 							qty_to_inspect = row.qty
 						}
