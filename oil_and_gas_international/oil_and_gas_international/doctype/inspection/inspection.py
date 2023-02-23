@@ -308,7 +308,7 @@ class Inspection(Document):
 
 
 @frappe.whitelist()
-def create_wo(for_cu_ins,qty,bom,purpose,item_code,warehouse=None,item_category=None,project=None,project_wo=None,sales_o=None,rental_o=None):
+def create_wo(qty,bom,purpose,item_code,for_cu_ins=None,warehouse=None,item_category=None,project=None,project_wo=None,sales_o=None,rental_o=None):
 	if not sales_o and not rental_o:
 		qty_wo = frappe.db.sql("""select qty
 								  from `tabWork Order` 
@@ -384,6 +384,7 @@ def create_wo(for_cu_ins,qty,bom,purpose,item_code,warehouse=None,item_category=
 	new_doc.project_wo = project_wo
 	new_doc.bom_no = bom
 	new_doc.for_external_inspection = for_cu_ins
+	new_doc.purpose = purpose
 
 	bom_doc = frappe.get_doc("BOM", bom)
 	if bom_doc.operations:

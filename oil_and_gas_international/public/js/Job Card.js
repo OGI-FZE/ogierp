@@ -1,8 +1,22 @@
 frappe.ui.form.on("Job Card", {
     refresh(frm) {
         if (frm.doc.docstatus == 0) {
-            add_inspection()
+            frappe.db.get_value("Work Order",{'name':frm.doc.work_order,'production_item':frm.doc.production_item},
+            ["purpose"], (r) => {
+                if (r.purpose == "Inspection"){
+                    add_inspection()
+                }
+            })
             }
+    },
+
+    validate(frm) {
+            frappe.db.get_value("Work Order",{'name':frm.doc.work_order,'production_item':frm.doc.production_item},
+            ["purpose"], (r) => {
+                frm.set_value("purpose",r.purpose)         
+                frm.refresh()
+            })
+            
     },
 
     // onload(frm) {
