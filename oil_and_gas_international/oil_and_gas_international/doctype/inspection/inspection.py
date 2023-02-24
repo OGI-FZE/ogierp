@@ -319,7 +319,7 @@ def create_wo(qty,bom,purpose,item_code,for_cu_ins=None,warehouse=None,item_cate
 			frappe.throw(_("Cannot inspect more Item {} than Project Work Order quantity {}"
 			.format(item_code,qty)))
 
-	if for_cu_ins:
+	if for_cu_ins == 1:
 		# frappe.throw(_("Cannot inspect more Item {} than Project Work Order quantity {}"
 		# .format(item_code,qty)))
 		stock_entry = frappe.db.get_value("Stock Entry", {"sales_order": sales_o},'name')
@@ -552,6 +552,8 @@ def delete_cancelled_inspection_serial_no(for_external_inspection,project_work_o
 	frappe.db.commit()
 
 			
+
+
 
 
 
