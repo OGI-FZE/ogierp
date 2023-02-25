@@ -16,18 +16,22 @@
  "fields": [
   {
    "fieldname": "equipment",
-   "fieldtype": "Data",
+   "fieldtype": "Link",
+   "options": "Asset",
    "label": "Equipment"
   },
   {
    "fieldname": "model",
    "fieldtype": "Data",
-   "label": "Model"
+   "label": "Model",
+   "fetch_from": "equipment.model"
   },
   {
    "fieldname": "serial_no",
    "fieldtype": "Data",
-   "label": "Serial No"
+   "label": "Serial No",
+   "fetch_from": "equipment.serial_no"
+
   },
   {
    "fieldname": "column_break_jkch3",
@@ -36,12 +40,16 @@
   {
    "fieldname": "calibration_date",
    "fieldtype": "Date",
-   "label": "Calibration Date"
+   "label": "Calibration Date",
+   "fetch_from": "equipment.calibration_date"
+
   },
   {
    "fieldname": "calibration_due_date",
    "fieldtype": "Date",
-   "label": "Calibration Due Date"
+   "label": "Calibration Due Date",
+   "fetch_from": "equipment.calibration_due_date"
+
   }
  ],
  "index_web_pages_for_search": 1,

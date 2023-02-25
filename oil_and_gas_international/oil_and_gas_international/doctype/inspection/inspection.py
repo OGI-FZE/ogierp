@@ -294,9 +294,11 @@ class Inspection(Document):
 								accepted_sn.append(serial_no.serial_no)
 					self.accepted_serial_no = '\n'.join(str(sn) for sn in accepted_sn)
 					self.total_inspected = len(accepted_sn)
+					self.failed_qty = len(parameter) - len(accepted_sn)
 					if self.total_inspected > self.pending_quantity:
 						frappe.throw(_("You overpassed the quantity required"))
-		fill_order_serial_no(self.for_external_inspection,self.item_code,self.project_work_order,self.accepted_serial_no,self.work_order,self.rental_order,self.sales_order)
+		if self.project_work_order:
+			fill_order_serial_no(self.for_external_inspection,self.item_code,self.project_work_order,self.accepted_serial_no,self.work_order,self.rental_order,self.sales_order)
 
 	def on_submit(self):
 		if self.work_order:
@@ -308,7 +310,7 @@ class Inspection(Document):
 
 
 @frappe.whitelist()
-def create_wo(qty,bom,purpose,item_code,for_cu_ins=None,warehouse=None,item_category=None,project=None,project_wo=None,sales_o=None,rental_o=None):
+def create_wo(qty,bom,purpose,item_code,for_cu_ins=0,warehouse=None,item_category=None,project=None,project_wo=None,sales_o=None,rental_o=None):
 	if not sales_o and not rental_o:
 		qty_wo = frappe.db.sql("""select qty
 								  from `tabWork Order` 
@@ -318,24 +320,22 @@ def create_wo(qty,bom,purpose,item_code,for_cu_ins=None,warehouse=None,item_cate
 		if qty_wo:
 			frappe.throw(_("Cannot inspect more Item {} than Project Work Order quantity {}"
 			.format(item_code,qty)))
-
-	if for_cu_ins == 1:
-		# frappe.throw(_("Cannot inspect more Item {} than Project Work Order quantity {}"
-		# .format(item_code,qty)))
-		stock_entry = frappe.db.get_value("Stock Entry", {"sales_order": sales_o},'name')
-		stock_entry_qty = get_stock_entry_qty(stock_entry,item_code)
-		qty_wo = frappe.db.sql("""select qty
-								  from `tabWork Order` 
-								  where sales_order = "%s" 
-								  and production_item = "%s" 
-								  and status != "Cancelled" """ %(sales_o,item_code),as_dict=1) 
-		qty_list = []
-		for i in range(len(qty_wo)):   
-			qty_list.append(qty_wo[i]['qty'])
-		total_wo_qty = sum(qty_list)
-		if float(total_wo_qty) + float(qty) > float(stock_entry_qty):
-			frappe.throw(_("Cannot inspect more Item {} than Stock Entry quantity {}"
-			.format(item_code,get_stock_entry_qty(stock_entry,item_code))))
+	pwo = frappe.get_doc("Project Work Order", project_wo)
+	if pwo.stock_entry:
+			stock_entry = frappe.db.get_value("Stock Entry", {"sales_order": sales_o},'name')
+			stock_entry_qty = get_stock_entry_qty(stock_entry,item_code)
+			qty_wo = frappe.db.sql("""select qty
+									from `tabWork Order` 
+									where sales_order = "%s" 
+									and production_item = "%s" 
+									and status != "Cancelled" """ %(sales_o,item_code),as_dict=1) 
+			qty_list = []
+			for i in range(len(qty_wo)):   
+				qty_list.append(qty_wo[i]['qty'])
+			total_wo_qty = sum(qty_list)
+			if float(total_wo_qty) + float(qty) > float(stock_entry_qty):
+				frappe.throw(_("Cannot inspect more Item {} than Stock Entry quantity {}"
+				.format(item_code,get_stock_entry_qty(stock_entry,item_code))))
 
 	new_doc = frappe.new_doc('Work Order')
 	if float(qty) == 0:
@@ -347,14 +347,21 @@ def create_wo(qty,bom,purpose,item_code,for_cu_ins=None,warehouse=None,item_cate
 								  where rental_order = "%s" 
 								  and production_item = "%s" 
 								  and status != "Cancelled" """ %(rental_o,item_code),as_dict=1)
+
 		qty_list = []
 		for i in range(len(qty_wo)):   
 			qty_list.append(qty_wo[i]['qty'])
 		total_wo_qty = sum(qty_list)
-		if float(total_wo_qty) + float(qty) > get_rental_order_item_qty(rental_o,item_code):
+		if float(total_wo_qty) + float(qty) >= get_rental_order_item_qty(rental_o,item_code):
 			frappe.throw(_("Cannot inspect more Item {} than Rental Order quantity {}"
 			.format(item_code,get_rental_order_item_qty(rental_o,item_code))))
 
+
+
+	if frappe.db.exists("Work Order",{"production_item":item_code,"qty":qty,"purpose":purpose,"project_wo":project_wo}):
+		frappe.throw(_("You have already created this work order for that purpose"))
+	if purpose == "Inspection" or purpose == "Manufacturing":
+		frappe.throw(_("You can create Work order against Manufacturing or Inspection"))
 	item_bom = frappe.db.get_value("BOM",bom,"inspection_bom")
 	if item_bom != 1 and purpose == "Inspection":
 		frappe.throw(_("You're selecting a manufacturing BOM for inspection purpose"))
@@ -427,7 +434,10 @@ def get_stock_entry_qty(stock_entry,item_code):
     item_qty = frappe.db.sql("""select qty
                                 from `tabStock Entry Detail` 
                                 where item_code = "%s" and parent = "%s" """ %(item_code,stock_entry), as_dict=1)
-    return item_qty[0]['qty']
+    if item_qty:
+    	return item_qty[0]['qty']
+    else:
+        return 0
 
 def get_list():
 	department = frappe.db.get_list('Department', pluck='name')

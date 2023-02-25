@@ -92,7 +92,9 @@ const create_project_work_order = (frm) => {
 									'delivery_date':item.delivery_date,
 									'qty':item.qty,
 									'item_category': item.item_category,
-									'for_customer_inspection': item.for_customer_inspection
+									'for_customer_inspection': item.for_customer_inspection,
+									'stock_entry': item.stock_entry
+
 									//'warehouse': item.warehouse
 								})
 								const cdt = new_row.doctype

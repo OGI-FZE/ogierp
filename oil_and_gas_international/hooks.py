@@ -106,10 +106,10 @@ override_doctype_class = {
 # Hook on document methods and events
 
 doc_events = {
-    "Asset": {
-        "on_submit": "oil_and_gas_international.events.asset.on_submit",
-        "on_cancel": "oil_and_gas_international.events.asset.remove_from_tubular"
-    },
+    # "Asset": {
+    #     "on_submit": "oil_and_gas_international.events.asset.on_submit",
+    #     "on_cancel": "oil_and_gas_international.events.asset.remove_from_tubular"
+    # },
     "Sales Invoice": {
         "on_submit": "oil_and_gas_international.events.sales_invoice.addbilledamount",
         "on_cancel": "oil_and_gas_international.events.sales_invoice.removebilledamount",
@@ -269,20 +269,6 @@ fixtures = [
                 'Item-total_assets',
                 'Item-string_details',
                 'Item-usage_status',
-
-
-
-                # Assets
-                'Asset-rental_status',
-                'Asset-rental_order',
-                'Asset-against_asset_formation',
-                'Asset-item_group',
-                'Asset-supplier_info',
-                'Asset-last_cycle_count_date',
-                'Asset-is_sub_rental_asset',
-                'Asset-sub_rental_order',
-                'Asset-currently_with',
-                'Asset-is_string_asset',
 
                 # Opportunity
                 'Opportunity-references',

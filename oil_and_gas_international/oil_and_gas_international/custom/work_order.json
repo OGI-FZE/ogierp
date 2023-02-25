@@ -693,7 +693,7 @@
    "in_preview": 0,
    "in_standard_filter": 0,
    "insert_after": "production_item",
-   "label": "Total Inspected",
+   "label": "Total Validated",
    "length": 0,
    "mandatory_depends_on": null,
    "modified": "2023-02-12 01:01:33.857560",
