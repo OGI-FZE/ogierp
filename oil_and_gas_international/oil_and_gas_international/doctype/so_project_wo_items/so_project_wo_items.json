@@ -9,7 +9,6 @@
  "field_order": [
   "item_code",
   "customer_item_code",
-  "ensure_delivery_based_on_produced_serial_no",
   "col_break1",
   "delivery_date",
   "item_name",
@@ -17,9 +16,6 @@
   "description",
   "item_group",
   "brand",
-  "image_section",
-  "image",
-  "image_view",
   "quantity_and_rate",
   "qty",
   "stock_uom",
@@ -48,7 +44,6 @@
   "base_amount",
   "pricing_rules",
   "stock_uom_rate",
-  "is_free_item",
   "grant_commission",
   "section_break_24",
   "net_rate",
@@ -111,12 +106,6 @@
    "width": "150px"
   },
   {
-   "default": "0",
-   "fieldname": "ensure_delivery_based_on_produced_serial_no",
-   "fieldtype": "Check",
-   "label": "Ensure Delivery Based on Produced Serial No"
-  },
-  {
    "fieldname": "col_break1",
    "fieldtype": "Column Break"
   },
@@ -169,25 +158,6 @@
    "options": "Brand",
    "print_hide": 1,
    "read_only": 1
-  },
-  {
-   "collapsible": 1,
-   "fieldname": "image_section",
-   "fieldtype": "Section Break",
-   "label": "Image"
-  },
-  {
-   "fieldname": "image",
-   "fieldtype": "Attach",
-   "hidden": 1,
-   "label": "Image"
-  },
-  {
-   "fieldname": "image_view",
-   "fieldtype": "Image",
-   "label": "Image View",
-   "options": "image",
-   "print_hide": 1
   },
   {
    "fieldname": "quantity_and_rate",
