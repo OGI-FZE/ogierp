@@ -180,7 +180,7 @@ const create_inspection = (frm) => {
 									'rental_order': doc.rental_order,
 									'purpose': row.purpose,
 									'for_external_inspection': row.for_customer_inspection,
-									'bom_':row.bom
+									'bom':row.bom_
 									})
 								}
 							}
