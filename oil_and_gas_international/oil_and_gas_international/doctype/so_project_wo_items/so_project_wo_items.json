@@ -204,7 +204,8 @@
    "oldfieldtype": "Currency",
    "print_width": "100px",
    "reqd": 1,
-   "width": "100px"
+   "width": "100px",
+   "read_only":0
   }
  ],
  "istable": 1,
