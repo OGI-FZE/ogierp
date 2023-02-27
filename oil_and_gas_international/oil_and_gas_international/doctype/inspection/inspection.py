@@ -360,7 +360,7 @@ def create_wo(qty,bom,purpose,item_code,for_cu_ins=0,warehouse=None,item_categor
 
 	if frappe.db.exists("Work Order",{"production_item":item_code,"qty":qty,"purpose":purpose,"project_wo":project_wo}):
 		frappe.throw(_("You have already created this work order for that purpose"))
-	if purpose == "Inspection" or purpose == "Manufacturing":
+	if not purpose == "Inspection" or not purpose == "Manufacturing":
 		frappe.throw(_("You can create Work order against Manufacturing or Inspection"))
 	item_bom = frappe.db.get_value("BOM",bom,"inspection_bom")
 	if item_bom != 1 and purpose == "Inspection":
