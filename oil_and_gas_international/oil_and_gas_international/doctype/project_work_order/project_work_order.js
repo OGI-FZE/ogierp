@@ -72,9 +72,20 @@ frappe.ui.form.on('Project WO Items', {
 				frappe.model.set_value(child.doctype,child.name,'dif_qty',child.qty_in_warehouse - child.qty)
 			}
 		})
-	
-		
-    },
+   },
+   qty(frm,cdt,cdn) {
+	var child = locals[cdt][cdn];
+	frappe.db.get_value("Bin",{'warehouse':child.warehouse,'item_code': child.item_code}, ["actual_qty"], (r) => {
+		if (!r.actual_qty){
+			frappe.model.set_value(child.doctype,child.name,'qty_in_warehouse',0)
+			frappe.model.set_value(child.doctype,child.name,'dif_qty',child.qty_in_warehouse - child.qty)
+		}
+		else{
+			frappe.model.set_value(child.doctype,child.name,'qty_in_warehouse',r.actual_qty)
+			frappe.model.set_value(child.doctype,child.name,'dif_qty',child.qty_in_warehouse - child.qty)
+		}
+	})
+},
 });
 
 
@@ -152,7 +163,9 @@ const create_inspection = (frm) => {
 									'sales_order': doc.sales_order,
 									'rental_order': doc.rental_order,
 									'purpose':row.purpose,
-									'bom': row.bom
+									'bom': row.bom,
+									'work_in_progress_warehouse': row.work_in_progress_warehouse,
+									'final_warehouse': row.final_warehouse
 									})
 								}
 						}
@@ -180,7 +193,9 @@ const create_inspection = (frm) => {
 									'rental_order': doc.rental_order,
 									'purpose': row.purpose,
 									'for_external_inspection': row.for_customer_inspection,
-									'bom':row.bom_
+									'bom':row.bom_,
+									'work_in_progress_warehouse': row.work_in_progress_warehouse,
+									'final_warehouse': row.final_warehouse
 									})
 								}
 							}
@@ -213,7 +228,9 @@ const create_inspection = (frm) => {
 									'rental_order': doc.rental_order,
 									'purpose': row.purpose,
 									'for_external_inspection': row.for_customer_inspection,
-									'bom': row.bom
+									'bom': row.bom,
+									'work_in_progress_warehouse': row.work_in_progress_warehouse,
+									'final_warehouse': row.final_warehouse
 									
 									})
 								}
@@ -244,7 +261,11 @@ const create_inspection = (frm) => {
 								{fieldtype: 'Data',fieldname: 'purpose',label: __('Purpose'),in_list_view: 1,
 								get_status: () => {return 'Read'}},
 								{fieldtype: 'Check',fieldname: 'for_external_inspection',label: __('External Inspection'),
-								get_status: () => {return 'Read'}}
+								get_status: () => {return 'Read'}},
+								{fieldtype: 'Link',fieldname: 'work_in_progress_warehouse',label: __('Work-In-Progress-Warehouse'),
+								get_status: () => {return 'Read'}},
+								{fieldtype: 'Link',fieldname: 'final_warehouse',label: __('Final Warehouse'),
+								get_status: () => {return 'Read'}},
 					],
 
 						data: data,
@@ -274,7 +295,9 @@ const create_inspection = (frm) => {
 										"qty": idx.qty,
 										"bom": idx.bom,
 										"purpose": idx.purpose,
-										"for_cu_ins": idx.for_external_inspection
+										"for_cu_ins": idx.for_external_inspection,
+										"final_warehouse": idx.final_warehouse,
+										"work_in_progress_warehouse": idx.work_in_progress_warehouse
 									},
 									freeze: true,
 									callback: function(r) {

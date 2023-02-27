@@ -310,7 +310,7 @@ class Inspection(Document):
 
 
 @frappe.whitelist()
-def create_wo(qty,bom,purpose,item_code,for_cu_ins=0,warehouse=None,item_category=None,project=None,project_wo=None,sales_o=None,rental_o=None):
+def create_wo(qty,bom,purpose,item_code,for_cu_ins=0,warehouse=None,final_warehouse=None,work_in_progress_warehouse=None,item_category=None,project=None,project_wo=None,sales_o=None,rental_o=None):
 	if not sales_o and not rental_o:
 		qty_wo = frappe.db.sql("""select qty
 								  from `tabWork Order` 
@@ -379,7 +379,11 @@ def create_wo(qty,bom,purpose,item_code,for_cu_ins=0,warehouse=None,item_categor
 				new_doc.department_ = d
 
 	new_doc.division = frappe.db.get_value("Project",project,'Division')
-	new_doc.skip_transfer = 1
+	if purpose == "Inspection":
+		new_doc.skip_transfer = 1
+	else:
+		new_doc.fg_warehouse = final_warehouse
+		new_doc.wip_warehouse = work_in_progress_warehouse
 	new_doc.date = frappe.utils.nowdate()
 	new_doc.fg_warehouse = warehouse
 	new_doc.production_item = item_code
