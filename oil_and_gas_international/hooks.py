@@ -124,6 +124,9 @@ doc_events = {
 	},
     "Job Card": {
         "on_submit": "oil_and_gas_international.events.job_card.create_job_card_against_wo",
+    },
+    "Work Order": {
+        "validate": "oil_and_gas_international.overriding.disable_generating_serial_no"
     }
 }
 

@@ -53,3 +53,16 @@ class CustomWorkOrder(WorkOrder):
 					self.validate_work_order_against_so()
 
 
+
+
+
+def disable_generating_serial_no(doc,handle=None):
+	manufacturing_settings = frappe.get_doc("Manufacturing Settings")
+	if doc.purpose == "Manufacturing":
+		manufacturing_settings.set("make_serial_no_batch_from_work_order",1)
+	elif doc.purpose == "Inspection":
+		manufacturing_settings.set("make_serial_no_batch_from_work_order",0)
+	manufacturing_settings.save()
+	frappe.db.commit()
+
+
