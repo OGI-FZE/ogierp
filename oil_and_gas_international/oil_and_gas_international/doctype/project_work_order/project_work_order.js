@@ -104,6 +104,7 @@ frappe.ui.form.on('Project Work Order', {
 			return {
 				filters: {
 				  'item': child.item_code,
+				  'purpose': child.purpose
 			}
 			}
 		}
@@ -115,6 +116,7 @@ frappe.ui.form.on('Project Work Order', {
 			return {
 				filters: {
 				  'item': child.item_code,
+				  'purpose': child.purpose
 			}
 			}
 		}
@@ -126,6 +128,7 @@ frappe.ui.form.on('Project Work Order', {
 			return {
 				filters: {
 				  'item': child.item_code,
+				  'purpose': child.purpose
 			}
 			}
 		}

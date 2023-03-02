@@ -8,7 +8,14 @@ def create_job_card_against_wo(doc,handller=None):
             qty_completed = ope.completed_qty
             operation_id = ope.name
 
+
             if qty_completed < work_order.qty:
+                # if doc.serial_no:
+                #     serial_no_list = doc.serial_no.split("\n")
+                #     wo_serial_no = work_order.serial_no.split("\n")  
+                #     for sn in serial_no_list:
+                #         unmanufactured_serial_no = wo_serial_no.remove(sn)
+                        
                 jc = frappe.new_doc('Job Card')
                 jc.update({
                     "company" : doc.company,
@@ -20,7 +27,8 @@ def create_job_card_against_wo(doc,handller=None):
                     "for_quantity" : work_order.qty - qty_completed,
                     "operation" : doc.operation,
                     "workstation" : doc.workstation,
-                    "wip_warehouse" : doc.wip_warehouse
+                    "wip_warehouse" : doc.wip_warehouse,
+                    "serial_no": unmanufactured_serial_no
                 })
                 jc.schedule_time_logs(ope)
 

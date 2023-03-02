@@ -122,12 +122,15 @@ doc_events = {
 	"Project": {
 		"validate": "oil_and_gas_international.tasks.aft_project"
 	},
-    "Job Card": {
-        "on_submit": "oil_and_gas_international.events.job_card.create_job_card_against_wo",
-    },
+    # "Job Card": {
+    #     "on_submit": "oil_and_gas_international.events.job_card.create_job_card_against_wo",
+    # },
     "Work Order": {
-        "validate": "oil_and_gas_international.overriding.disable_generating_serial_no"
-    }
+        "validate": "oil_and_gas_international.overriding.disable_generating_serial_no",
+    },
+    "Serial No": {
+        "before_save": "oil_and_gas_international.overriding.set_serial_no_parent_group",
+    },
 }
 
 # Scheduled Tasks
