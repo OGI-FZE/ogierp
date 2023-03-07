@@ -65,10 +65,11 @@ class CustomWorkOrder(WorkOrder):
 		else:
 			self.update_work_order_qty_in_so()
 
-		self.update_reserved_qty_for_production()
-		self.update_completed_qty_in_material_request()
-		self.update_planned_qty()
-		self.update_ordered_qty()
+			self.update_reserved_qty_for_production()
+			self.update_completed_qty_in_material_request()
+			self.update_planned_qty()
+			self.update_ordered_qty()
+			# self.create_job_card()
 
 
 
@@ -78,13 +79,36 @@ def disable_generating_serial_no(doc,handle=None):
 	manufacturing_settings = frappe.get_doc("Manufacturing Settings")
 	if doc.purpose == "Manufacturing":
 		manufacturing_settings.set("make_serial_no_batch_from_work_order",1)
-	elif doc.purpose == "Inspection":
+	elif doc.purpose in ["Inspection","Service"]:
 		manufacturing_settings.set("make_serial_no_batch_from_work_order",0)
 	manufacturing_settings.save()
 	frappe.db.commit()
 
-# def set_serial_no_parent_group(doc,handle=None):
-# 	pg = frappe.db.get_value("Item Group",{"name":doc.item_group},"parent_for_serial_no")
-# 	doc.parent_grozdxhfdfghaup = pg
 
+
+def accepted_serial_no_to_order(doc,handle=None):
+	wo_jc = frappe.db.get_value("Job Card", {"name":doc.reference_name}, "work_order")
+	wo = frappe.get_doc("Work Order", wo_jc)
+	if wo.sales_order:
+		order = frappe.get_doc("Sales Order", wo.sales_order)
+	elif wo.rental_order:
+		order = frappe.get_doc("Rental Order", wo.rental_order)
+
+	if doc.status == "Accepted":
+		for item in order.items:
+			if item.item_code == doc.item_code:
+				item.serial_no_accepted = "\n".join([item.serial_no_accepted,doc.item_serial_no])
+				order.save()
+				frappe.db.commit()
+
+
+def add_transfered_qty_ro_item(doc,handle=None):
+	if doc.rental_order:
+		ro = frappe.get_doc("Rental Order", doc.rental_order)
+		for item in doc.items:
+			for i in ro.items:
+				if item.item_code == i.item_code:
+					i.transfered_qty += item.qty
+					ro.save()
+					frappe.db.commit()
 

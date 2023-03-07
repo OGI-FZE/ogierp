@@ -352,21 +352,21 @@ def create_wo(qty,bom,purpose,item_code,for_cu_ins=0,warehouse=None,final_wareho
 		for i in range(len(qty_wo)):   
 			qty_list.append(qty_wo[i]['qty'])
 		total_wo_qty = sum(qty_list)
-		if float(total_wo_qty) + float(qty) >= get_rental_order_item_qty(rental_o,item_code):
-			frappe.throw(_("Cannot inspect more Item {} than Rental Order quantity {}"
-			.format(item_code,get_rental_order_item_qty(rental_o,item_code))))
+		# if float(total_wo_qty) + float(qty) >= get_rental_order_item_qty(rental_o,item_code):
+		# 	frappe.throw(_("Cannot inspect more Item {} than Rental Order quantity {}"
+		# 	.format(item_code,get_rental_order_item_qty(rental_o,item_code))))
 
 
 
 	if frappe.db.exists("Work Order",{"production_item":item_code,"qty":qty,"purpose":purpose,"project_wo":project_wo}):
 		frappe.throw(_("You have already created this work order for that purpose"))
-	if not purpose in ["Manufacturing","Inspection"]:
+	if not purpose in ["Manufacturing","Inspection","Service"]:
 		frappe.throw(_("You can create Work order against Manufacturing or Inspection"))
 	item_bom = frappe.db.get_value("BOM",bom,"inspection_bom")
-	if item_bom != 1 and purpose == "Inspection":
-		frappe.throw(_("You're selecting a manufacturing BOM for inspection purpose"))
-	elif item_bom == 1 and purpose == "Manufacturing":
-		frappe.throw(_("You're selecting an inspection BOM for manufacturing purpose"))
+	# if item_bom != 1 and purpose == "Inspection":
+	# 	frappe.throw(_("You're selecting a manufacturing BOM for inspection purpose"))
+	# elif item_bom == 1 and purpose == "Manufacturing":
+	# 	frappe.throw(_("You're selecting an inspection BOM for manufacturing purpose"))
 
 	department = frappe.db.get_list('Department', pluck='name')
 	if purpose == "Inspection":

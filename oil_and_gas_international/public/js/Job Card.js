@@ -10,14 +10,14 @@ frappe.ui.form.on("Job Card", {
             }
     },
 
-    validate(frm) {
-            frappe.db.get_value("Work Order",{'name':frm.doc.work_order,'production_item':frm.doc.production_item},
-            ["purpose"], (r) => {
-                frm.set_value("purpose",r.purpose)         
-                frm.refresh()
-            })
+    // validate(frm) {
+    //         frappe.db.get_value("Work Order",{'name':frm.doc.work_order,'production_item':frm.doc.production_item},
+    //         ["purpose"], (r) => {
+    //             frm.set_value("purpose",r.purpose)         
+    //             frm.refresh()
+    //         })
             
-    },
+    // },
 
     // onload(frm) {
         // console.log('dddddddd')

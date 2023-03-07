@@ -70,7 +70,7 @@
    "fieldname": "items",
    "fieldtype": "Table",
    "label": "Items",
-   "options": "Rental Timesheet Item",
+   "options": "Proforma Invoice Item",
    "reqd": 1
   },
   {

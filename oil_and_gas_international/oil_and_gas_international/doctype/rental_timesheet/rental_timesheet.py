@@ -6,6 +6,10 @@ from frappe.model.document import Document
 from frappe.utils import today
 
 class RentalTimesheet(Document):
+    def validate(self):
+        for row in self.items:
+            uom = frappe.get_value("Item",row.item_code,"stock_uom")
+            row.uom = uom
     def on_submit(self):
         self.set('status','To Bill')
 

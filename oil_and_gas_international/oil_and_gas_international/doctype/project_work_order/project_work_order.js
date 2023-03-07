@@ -139,7 +139,7 @@ frappe.ui.form.on('Project Work Order', {
 });
 
 const create_inspection = (frm) => {
-    frm.add_custom_button('Inspection', () => {
+    frm.add_custom_button('Route Card', () => {
         const doc = frm.doc;
         frappe.run_serially([
 			() => {
@@ -239,7 +239,7 @@ const create_inspection = (frm) => {
 								}
 							}
 					const fields =	[{
-						label: 'Items to inspect',
+						label: 'Items',
 						fieldtype: 'Table',
 						fieldname: 'items_to_inspect',
 						description: __('Select'),
@@ -278,9 +278,9 @@ const create_inspection = (frm) => {
 					}]
 					
 					let table = new frappe.ui.Dialog({
-						title: 'Select Items to Create WO Inspection',
+						title: 'Select Items to Create Route Card',
 						fields: fields,
-						primary_action_label: 'Generate Inspection Work Order',
+						primary_action_label: 'Create Route Card',
 						primary_action: function() {
 							
 							var selected = {items_to_inspect: table.fields_dict.items_to_inspect.grid.get_selected_children()};
@@ -306,8 +306,8 @@ const create_inspection = (frm) => {
 									callback: function(r) {
 										if(r.message) {
 												frappe.msgprint({
-												title: __('Work Order Inspection created'),
-												message: __('Work Order Inspection generated for the Item selected.'),
+												title: __('Route Card created'),
+												message: __('Route Card created for the item selected.'),
 												indicator: 'green'
 											});
 										}

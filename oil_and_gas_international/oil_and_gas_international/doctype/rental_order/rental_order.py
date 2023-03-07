@@ -21,10 +21,13 @@ class RentalOrder(Document):
                 self.contact = cus_con.phone + "\n" + cus_con.email_id
 
     def on_submit(self):
+        if self.start_date:
+            self.db_set("status","On Rent")
+
         if self.rental_quotation:
             frappe.set_value("Rental Quotation",
                              self.rental_quotation, "status", "Ordered")
-        self.db_set("status", "Submitted")
+        # self.db_set("status", "Submitted")
         pro = frappe.new_doc("Project")
         if self.division == 'Rental':
             pro.naming_series = 'OGI-.MR-.MM.YY.-.####'

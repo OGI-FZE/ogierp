@@ -1001,7 +1001,7 @@
    "name": "Work Order-purpose",
    "no_copy": 0,
    "non_negative": 0,
-   "options": "Inspection\nManufacturing",
+   "options": "Inspection\nManufacturing\nService",
    "owner": "Administrator",
    "parent": null,
    "parentfield": null,

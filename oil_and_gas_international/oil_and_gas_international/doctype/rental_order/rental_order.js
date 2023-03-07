@@ -268,13 +268,13 @@ const create_custom_buttons = () => {
 	if (status == 0) {
 		get_items_from_rental_quotation()
 	} else if (status == 1) {
-		add_project()
-		add_rental_issue_note()
-		add_rental_receipt()
-		add_material_request()
-		add_asset_formation()
-		add_purchase_order()
-		add_purchase_invoice()
+		add_material_transfer()
+		// add_rental_invoice()
+		// add_rental_receipt()
+		//add_material_request()
+		// add_asset_formation()
+		// add_purchase_order()
+		// add_purchase_invoice()
 		add_rental_timesheet()
 	}
 }
@@ -399,8 +399,37 @@ const add_rental_timesheet = () => {
 			() => {
 				const cur_doc = cur_frm.doc
 				cur_doc.customer = doc.customer
+				cur_doc.start_date = doc.start_date
+				cur_doc.end_date = frappe.datetime.month_end(doc.start_date) 
+				cur_doc.currency = doc.currency
+				cur_doc.conversion_rate = doc.conversion_rate
 				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "rental_order", doc.name)
+				cur_doc.items = []
+				for (const row of doc.items) {
+					const new_row = cur_frm.add_child("items", {
+						qty: row.transfered_qty,
+						serial_no_accepted: row.serial_no_accepted,
+						operational_running: row.operational_running,
+						rate: row.operational_running,
+						amount: row.operational_running*row.transfered_qty,
+						standby: row.standby,
+						post_rental_inspection_charges: row.post_rental_inspection_charges,
+						lihdbr: row.lihdbr,
+						redress: row.redress,
+						straight: row.straight,
+						description_2: row.description_2,
+						customer_requirement: row.customer_requirement
+					})
+					const cdt = new_row.doctype
+					const cdn = new_row.name
+					frappe.model.set_value(cdt, cdn, "item_code", row.item_code)
+					frappe.model.set_value(cdt, cdn, "item_name", row.item_name)
+					frappe.model.set_value(cdt, cdn, "description", row.description)
 
+				}
+
+
+				cur_frm.refresh()
 				cur_frm.refresh()
 			}
 		])
@@ -571,4 +600,79 @@ const calc_days_of_rent = (frm, cdt, cdn) => {
 		}
 		frappe.model.set_value(cdt, cdn, 'days_of_rent', difference)
 	}
+}
+
+const add_material_transfer = () => {
+	cur_frm.add_custom_button('Material Transfer', () => {
+		const doc = cur_frm.doc
+		frappe.run_serially([
+			() => frappe.new_doc('Stock Entry'),
+			() => {
+				const cur_doc = cur_frm.doc
+				frappe.model.set_value(cur_doc.doctype,cur_doc.name,"stock_entry_type","Material Transfer")
+				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "rental_order", doc.name)
+				cur_doc.items = []
+				for (const row of doc.items) {
+					let sn_qty = row.serial_no_accepted.split("\n")
+					const new_row = cur_frm.add_child("items", {
+						qty: sn_qty.length,
+						serial_no: row.serial_no_accepted
+					})
+					const cdt = new_row.doctype
+					const cdn = new_row.name
+					frappe.model.set_value(cdt, cdn, "item_code", row.item_code)
+				}
+
+				cur_frm.refresh()
+			}
+		])
+	}, 'Create')
+}
+
+const add_rental_invoice = () => {
+	cur_frm.add_custom_button('Rental Invoice', () => {
+		const doc = cur_frm.doc
+		frappe.run_serially([
+			() => frappe.new_doc('Rental Invoice'),
+			() => {
+				const cur_doc = cur_frm.doc
+				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "rental_order", doc.name)
+				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "currency", doc.currency)
+				cur_doc.customer = doc.customer
+				cur_doc.conversion_rate = doc.conversion_rate
+				cur_doc.customer_address = doc.customer_address
+				cur_doc.customer_contact = doc.customer_contact
+				cur_doc.address_display = doc.address
+				cur_doc.contact_display = doc.contact
+				cur_doc.selling_price_list = "Operational/Running"
+				cur_doc.items = []
+
+				for (const row of doc.items) {
+					let sn_qty = row.serial_no_accepted.split("\n")
+					const new_row = cur_frm.add_child("items", {
+						qty: sn_qty.length,
+						serial_no_accepted: row.serial_no_accepted,
+						operational_running: row.operational_running,
+						rate: row.operational_running,
+						amount: row.operational_running*sn_qty.length,
+						standby: row.standby,
+						post_rental_inspection_charges: row.post_rental_inspection_charges,
+						lihdbr: row.lihdbr,
+						redress: row.redress,
+						straight: row.straight,
+						description_2: row.description_2,
+						customer_requirement: row.customer_requirement
+					})
+					const cdt = new_row.doctype
+					const cdn = new_row.name
+					frappe.model.set_value(cdt, cdn, "item_code", row.item_code)
+					frappe.model.set_value(cdt, cdn, "item_name", row.item_name)
+					frappe.model.set_value(cdt, cdn, "description", row.description)
+
+				}
+
+				cur_frm.refresh()
+			}
+		])
+	}, 'Create')
 }

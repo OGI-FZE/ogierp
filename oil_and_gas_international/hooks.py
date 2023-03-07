@@ -128,9 +128,18 @@ doc_events = {
     "Work Order": {
         "validate": "oil_and_gas_international.overriding.disable_generating_serial_no",
     },
-    "Serial No": {
-        "before_save": "oil_and_gas_international.overriding.set_serial_no_parent_group",
+    "Quality Inspection": {
+        "validate": "oil_and_gas_international.overriding.accepted_serial_no_to_order",
     },
+    "Stock Entry": {
+        "on_submit": "oil_and_gas_international.overriding.update_transfered_qty_ro_item",
+ 
+    }
+
+    
+    # "Serial No": {
+    #     "before_save": "oil_and_gas_international.overriding.set_serial_no_parent_group",
+    # },
 }
 
 # Scheduled Tasks

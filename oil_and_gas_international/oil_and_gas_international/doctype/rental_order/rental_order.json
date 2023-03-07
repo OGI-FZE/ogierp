@@ -144,7 +144,7 @@
    "fieldtype": "Select",
    "label": "Status",
    "no_copy": 1,
-   "options": "Draft\nSubmitted\nCancelled\nOpen\nOn Hold\nTo Issue and Bill\nTo Return and Bill\nTo Bill\nCompleted\nCancelled\nClosed",
+   "options": "Draft\nCancelled\nOpen\nOn Rent\nTo Issue and Bill\nTo Return and Bill\nTo Bill\nCompleted\nCancelled\nClosed",
    "read_only": 1
   },
   {
