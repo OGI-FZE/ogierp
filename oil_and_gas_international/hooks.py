@@ -132,8 +132,10 @@ doc_events = {
         "validate": "oil_and_gas_international.overriding.accepted_serial_no_to_order",
     },
     "Stock Entry": {
-        "on_submit": "oil_and_gas_international.overriding.update_transfered_qty_ro_item",
- 
+        "on_submit": "oil_and_gas_international.overriding.add_transfered_qty_ro_item",
+    },
+    "Rental Order": {
+        "on_update_after_submit": "oil_and_gas_international.overriding.change_ro_status",
     }
 
     
@@ -148,6 +150,9 @@ scheduler_events = {
     "cron": {
         "* * * * *": [
             "frappe.email.queue.flush"
+        ],
+        "20 8 9 * *":[
+            "oil_and_gas_international.overriding.create_rental_timesheet"
         ],
 
         "daily": [

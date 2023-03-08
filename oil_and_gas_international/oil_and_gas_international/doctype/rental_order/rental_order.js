@@ -400,7 +400,12 @@ const add_rental_timesheet = () => {
 				const cur_doc = cur_frm.doc
 				cur_doc.customer = doc.customer
 				cur_doc.start_date = doc.start_date
-				cur_doc.end_date = frappe.datetime.month_end(doc.start_date) 
+				if (doc.end_date){
+					cur_doc.end_date = doc.end_date
+				}
+				else{
+					cur_doc.end_date = frappe.datetime.month_end(doc.start_date) 
+				}
 				cur_doc.currency = doc.currency
 				cur_doc.conversion_rate = doc.conversion_rate
 				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "rental_order", doc.name)
@@ -424,7 +429,11 @@ const add_rental_timesheet = () => {
 					const cdn = new_row.name
 					frappe.model.set_value(cdt, cdn, "item_code", row.item_code)
 					frappe.model.set_value(cdt, cdn, "item_name", row.item_name)
-					frappe.model.set_value(cdt, cdn, "description", row.description)
+					frappe.db.get_value("Item", {"item_code": row.item_code}, "stock_uom", (r) => {
+						if(r.stock_uom){
+							frappe.model.set_value(cdt, cdn, "uom", r.stock_uom)
+						}
+					});
 
 				}
 

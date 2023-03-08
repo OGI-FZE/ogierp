@@ -9,15 +9,12 @@
   "from_date",
   "column_break_2",
   "item_name",
-  "to_date",
   "description_section",
   "description",
   "quantity_and_rate_section",
   "qty",
-  "days_of_rent",
-  "column_break_9",
-  "received_qty",
-  "status",
+  "coooo",
+  "transfered_qty",
   "section_break_19",
   "operational_running",
   "standby",
@@ -50,6 +47,10 @@
    "fieldname": "column_break_2",
    "fieldtype": "Column Break"
   },
+  {
+    "fieldname": "coooo",
+    "fieldtype": "Column Break"
+   },
   {
    "fetch_from": "item_code.item_name",
    "fieldname": "item_name",
@@ -93,21 +94,10 @@
   },
   {
    "allow_on_submit": 1,
-   "fieldname": "to_date",
-   "fieldtype": "Date",
-   "label": "To Date"
-  },
-  {
-   "allow_on_submit": 1,
    "fieldname": "transfered_qty",
    "fieldtype": "Float",
-   "label": "Transfered Qty"
-  },
-  {
-   "allow_on_submit": 1,
-   "fieldname": "days_of_rent",
-   "fieldtype": "Int",
-   "label": "Days Of Rent"
+   "label": "Transfered Qty",
+   "read_only": 1
   },
   {
    "fieldname": "section_break_18",

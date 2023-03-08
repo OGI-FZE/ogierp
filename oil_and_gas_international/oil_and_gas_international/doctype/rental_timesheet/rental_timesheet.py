@@ -4,14 +4,15 @@
 import frappe
 from frappe.model.document import Document
 from frappe.utils import today
+from frappe.utils import date_diff
 
 class RentalTimesheet(Document):
     def validate(self):
+        total = 0
         for row in self.items:
-            uom = frappe.get_value("Item",row.item_code,"stock_uom")
-            row.uom = uom
-    def on_submit(self):
-        self.set('status','To Bill')
+            total += row.amount
+        self.total_days = date_diff(self.end_date,self.start_date) + 1
+        self.total_amount = total * self.total_days
 
 @frappe.whitelist()
 def get_rental_order_items_old(docname=None):

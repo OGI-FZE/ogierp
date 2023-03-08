@@ -1,5 +1,6 @@
-import frappe
+import frappe,datetime
 from frappe import _
+from dateutil import relativedelta
 from frappe.model.document import Document
 from erpnext.manufacturing.doctype.work_order.work_order import WorkOrder
 
@@ -108,7 +109,62 @@ def add_transfered_qty_ro_item(doc,handle=None):
 		for item in doc.items:
 			for i in ro.items:
 				if item.item_code == i.item_code:
-					i.transfered_qty += item.qty
+					if doc.return_from_rent:
+						i.transfered_qty -= item.qty
+					else:
+						i.transfered_qty += item.qty
 					ro.save()
 					frappe.db.commit()
 
+
+
+
+
+def create_rental_timesheet():
+	ro_list = []
+	ro = frappe.db.get_list('Rental Order',filters={'status': 'On Rent'},as_list=True)
+	for i in range(len(ro)):
+		ro_list.append(ro[i][0])
+	for r in ro_list:
+		rental_order = frappe.get_doc("Rental Order",r)
+		timesheets = frappe.db.sql("""select name,start_date from `tabRental Timesheet`
+										  where rental_order = '%s' order by start_date desc""" %(r),as_dict=1)
+		if timesheets:
+			last_ts = frappe.get_doc("Rental Timesheet",timesheets[0]['name'])
+			new_ts = frappe.new_doc("Rental Timesheet")
+			new_ts.customer = last_ts.customer
+			new_ts.rental_order = last_ts.rental_order
+			new_ts.start_date = last_ts.start_date + relativedelta.relativedelta(months=1, day=1)
+			new_ts.end_date = last_ts.end_date + relativedelta.relativedelta(months=1, day=32)
+			new_ts.currency = last_ts.currency
+			new_ts.conversion_rate = last_ts.conversion_rate
+			new_ts.price_list = last_ts.price_list
+
+			for row in last_ts.items:
+				new_ts.append("items",{
+					"item_code": row.item_code,
+					"item_name": row.item_name,
+					"serial_no_accepted": row.serial_no_accepted,
+					"description": row.description,
+					"description_2": row.description_2,
+					"customer_requirement": row.customer_requirement,
+					"qty": row.qty,
+					"rate": row.rate,
+					"uom": row.uom,
+					"operational_running": row.operational_running,
+					"amount": row.amount,
+					"standby": row.standby,
+					"post_rental_inspection_charges": row.post_rental_inspection_charges,
+					"lihdbr": row.lihdbr,
+					"redress": row.redress,
+					"straight": row.straight,
+				})
+			new_ts.save()
+			frappe.db.commit()
+			
+
+def change_ro_status(doc,handle=None):
+	if doc.end_date:
+		doc.db_set("status","Completed")
+	else:
+		doc.db_set("status","On Rent")

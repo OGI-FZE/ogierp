@@ -1,6 +1,78 @@
 // // Copyright (c) 2021, Havenir Solutions and contributors
 // // For license information, please see license.txt
 
+
+ frappe.ui.form.on('Rental Timesheet', {
+
+price_list(frm){
+    let rate = 0
+    for (const row of frm.doc.items){
+        
+        if (frm.doc.price_list == "Operational/Running"){
+            rate = row.operational_running
+        }
+        else if (frm.doc.price_list == "Standby"){
+            rate = row.standby
+        }
+        else if (frm.doc.price_list == "Post Rental Inspection charges"){
+            rate = row.post_rental_inspection_charges
+        }
+        else if  (frm.doc.price_list == "LIH/DBR"){
+            rate = row.lihdbr
+        }
+        else if (frm.doc.price_list == "Redress"){
+            rate = row.redress
+        }
+        else {
+            rate = row.straight
+        }
+        const cdt = row.doctype
+        const cdn = row.name
+        frappe.model.set_value(cdt,cdn,"rate", rate)
+
+        }            
+    },
+	currency(frm){
+		get_conversion_rate(frm)
+		var customer_currency = frm.doc.currency
+        frm.set_currency_labels(["total_amount"],customer_currency)
+		frm.set_currency_labels([
+            "operational_running","lihdbr","post_rental_inspection_charges","standby","straight","redress"
+        ], customer_currency, "items");
+    }
+})
+
+
+const get_conversion_rate = (frm) => {
+	if(frm.doc.docstatus == 0){
+		let company_currency = erpnext.get_currency(frm.doc.company);
+		frappe.call({
+			method: "erpnext.setup.utils.get_exchange_rate",
+			args: {
+				from_currency: company_currency,
+				to_currency: frm.doc.currency
+			},
+			callback: function(r) {
+				if (r.message) {
+					frm.set_value("conversion_rate",r.message)
+				}
+			}
+		});
+	}
+}
+
+frappe.ui.form.on('Proforma Invoice Item', {
+
+	rate(frm,cdt,cdn){
+		var child = locals[cdt][cdn];
+		frappe.model.set_value(cdt,cdn,"amount",child.rate*child.qty)	
+	},
+	qty(frm,cdt,cdn){
+		var child = locals[cdt][cdn];
+		frappe.model.set_value(cdt,cdn,"amount",child.rate*child.qty)	
+	}
+
+});
 // var conv_rate = [1]
 // frappe.ui.form.on('Rental Timesheet', {
 // 	rental_order(frm, cdt, cdn) {

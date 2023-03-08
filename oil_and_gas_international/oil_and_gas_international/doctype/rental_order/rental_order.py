@@ -2,12 +2,14 @@
 # For license information, please see license.txt
 
 import frappe
+from frappe import _
 from frappe.model.document import Document
 from erpnext.controllers.accounts_controller import get_taxes_and_charges
 
 
 class RentalOrder(Document):
     def validate(self):
+                
         if self.customer:
             address = frappe.db.sql("""select parent from `tabDynamic Link` where parenttype = 'Address' and link_name = '%s'"""% (self.customer), as_dict=1)  
             contact = frappe.db.sql("""select parent from `tabDynamic Link` where parenttype = 'Contact' and link_name = '%s'"""% (self.customer), as_dict=1)  
@@ -21,8 +23,10 @@ class RentalOrder(Document):
                 self.contact = cus_con.phone + "\n" + cus_con.email_id
 
     def on_submit(self):
-        if self.start_date:
+        if self.start_date and not self.end_date:
             self.db_set("status","On Rent")
+ 
+
 
         if self.rental_quotation:
             frappe.set_value("Rental Quotation",
@@ -42,7 +46,7 @@ class RentalOrder(Document):
         frappe.db.commit()
 
     def on_update(self):
-        pass
+        frappe.throw(_("ddddddddddddddddddddddddddd"))
 
     def on_cancel(self):
         self.db_set("status", "Cancelled")

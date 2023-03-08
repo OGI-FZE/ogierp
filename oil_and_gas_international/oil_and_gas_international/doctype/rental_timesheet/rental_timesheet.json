@@ -18,11 +18,15 @@
   "end_date",
   "section_break_7",
   "currency",
+  "price_list",
   "column_break_13",
   "conversion_rate",
   "section_break_15",
   "items",
+  "sec",
   "total_amount",
+  "coltotal",
+  "total_days",
   "amended_from"
  ],
  "fields": [
@@ -53,6 +57,10 @@
    "fieldname": "column_break_4",
    "fieldtype": "Column Break"
   },
+  {
+    "fieldname": "sec",
+    "fieldtype": "Section Break"
+   },
   {
    "default": "Today",
    "fieldname": "date",
@@ -129,8 +137,16 @@
    "fieldtype": "Link",
    "label": "Currency",
    "options": "Currency",
-   "reqd": 1
+   "read_only": 1
   },
+  {
+    "fieldname": "price_list",
+    "fieldtype": "Link",
+    "label": "Price List",
+    "options": "Price List",
+    "default": "Standard Selling",
+    "reqd": 1
+   },
   {
    "fieldname": "column_break_13",
    "fieldtype": "Column Break"
@@ -139,7 +155,7 @@
    "fieldname": "conversion_rate",
    "fieldtype": "Float",
    "label": "Exchange Rate",
-   "precision": "9"
+   "read_only":1
   },
   {
    "fieldname": "section_break_15",
@@ -147,9 +163,20 @@
   },
   {
    "fieldname": "total_amount",
-   "fieldtype": "Currency",
-   "label": "Total Amount"
-  }
+   "fieldtype": "Float",
+   "label": "Total Amount",
+   "read_only":1
+  },
+  {
+    "fieldname": "coltotal",
+    "fieldtype": "Column Break"
+   },
+   {
+    "fieldname": "total_days",
+    "fieldtype": "Float",
+    "label": "No of Days",
+    "read_only": 1
+   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
