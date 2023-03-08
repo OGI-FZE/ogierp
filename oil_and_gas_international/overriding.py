@@ -126,6 +126,7 @@ def create_rental_timesheet():
 	for i in range(len(ro)):
 		ro_list.append(ro[i][0])
 	for r in ro_list:
+		ro_items = []
 		rental_order = frappe.get_doc("Rental Order",r)
 		timesheets = frappe.db.sql("""select name,start_date from `tabRental Timesheet`
 										  where rental_order = '%s' order by start_date desc""" %(r),as_dict=1)
@@ -168,3 +169,5 @@ def change_ro_status(doc,handle=None):
 		doc.db_set("status","Completed")
 	else:
 		doc.db_set("status","On Rent")
+
+

@@ -44,10 +44,6 @@ class RentalOrder(Document):
         pro.project_type = 'External'
         pro.save()
         frappe.db.commit()
-
-    def on_update(self):
-        frappe.throw(_("ddddddddddddddddddddddddddd"))
-
     def on_cancel(self):
         self.db_set("status", "Cancelled")
 
@@ -84,3 +80,12 @@ def set_status():
             frappe.db.sql("""update `tabRental Issue Note` tro set tro.status='Cancelled' where tro.name='{0}'""".format(row.name))
             # frappe.set_value("Rental Order", row.name, "status", "Cancelled")
     frappe.db.commit()
+
+@frappe.whitelist()
+def get_transfered_qty(ro=None):
+    doc = frappe.get_doc("Rental Order", ro)
+    data = []
+    for item in doc.items:
+        data.append({'item_code':item.item_code,'qty':item.transfered_qty})
+    return data
+        

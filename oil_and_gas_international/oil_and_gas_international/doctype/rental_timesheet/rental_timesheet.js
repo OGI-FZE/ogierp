@@ -3,35 +3,38 @@
 
 
  frappe.ui.form.on('Rental Timesheet', {
-
-price_list(frm){
-    let rate = 0
-    for (const row of frm.doc.items){
-        
-        if (frm.doc.price_list == "Operational/Running"){
-            rate = row.operational_running
-        }
-        else if (frm.doc.price_list == "Standby"){
-            rate = row.standby
-        }
-        else if (frm.doc.price_list == "Post Rental Inspection charges"){
-            rate = row.post_rental_inspection_charges
-        }
-        else if  (frm.doc.price_list == "LIH/DBR"){
-            rate = row.lihdbr
-        }
-        else if (frm.doc.price_list == "Redress"){
-            rate = row.redress
-        }
-        else {
-            rate = row.straight
-        }
-        const cdt = row.doctype
-        const cdn = row.name
-        frappe.model.set_value(cdt,cdn,"rate", rate)
-
-        }            
+    refresh(frm){
+        add_material_transfer(frm)
     },
+
+    price_list(frm){
+        let rate = 0
+        for (const row of frm.doc.items){
+            
+            if (frm.doc.price_list == "Operational/Running"){
+                rate = row.operational_running
+            }
+            else if (frm.doc.price_list == "Standby"){
+                rate = row.standby
+            }
+            else if (frm.doc.price_list == "Post Rental Inspection charges"){
+                rate = row.post_rental_inspection_charges
+            }
+            else if  (frm.doc.price_list == "LIH/DBR"){
+                rate = row.lihdbr
+            }
+            else if (frm.doc.price_list == "Redress"){
+                rate = row.redress
+            }
+            else {
+                rate = row.straight
+            }
+            const cdt = row.doctype
+            const cdn = row.name
+            frappe.model.set_value(cdt,cdn,"rate", rate)
+
+            }            
+        },
 	currency(frm){
 		get_conversion_rate(frm)
 		var customer_currency = frm.doc.currency
@@ -73,6 +76,35 @@ frappe.ui.form.on('Proforma Invoice Item', {
 	}
 
 });
+
+// const create_custom_buttons = () => {
+// 		add_material_transfer()
+// }
+
+
+const add_material_transfer = (frm) => {
+	cur_frm.add_custom_button('Update Quantity', () =>{
+        frappe.call({
+            method: 'oil_and_gas_international.oil_and_gas_international.doctype.rental_order.rental_order.get_transfered_qty',
+            args: {
+                ro: frm.doc.rental_order,
+            },
+            callback: function(r) {
+                let data = r.message
+                console.log(data[0]['item_code'])
+                for (const d of data){
+                    console.log(d.qty,d.item_code)
+                    for (const row of frm.doc.items){
+                        if (d.item_code == row.item_code){
+                            frappe.model.set_value(row.doctype,row.name,"qty",d.qty)
+                        }
+                    }
+                }
+
+            }
+        });
+    })
+}
 // var conv_rate = [1]
 // frappe.ui.form.on('Rental Timesheet', {
 // 	rental_order(frm, cdt, cdn) {

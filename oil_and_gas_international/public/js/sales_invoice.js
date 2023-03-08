@@ -1,12 +1,12 @@
 frappe.ui.form.on("Sales Invoice", {
-    refresh(frm,cdt,cdn) {
-        frm.fields_dict["items"].grid.add_custom_button(__('Fetch Timesheet Amount'), 
-			function() {
-				rate_calc(frm);
-        });
-        frm.fields_dict["items"].grid.grid_buttons.find('.btn-custom').removeClass('btn-default').addClass('btn-primary');
+    // refresh(frm,cdt,cdn) {
+    //     frm.fields_dict["items"].grid.add_custom_button(__('Fetch Timesheet Amount'), 
+	// 		function() {
+	// 			rate_calc(frm);
+    //     });
+    //     frm.fields_dict["items"].grid.grid_buttons.find('.btn-custom').removeClass('btn-default').addClass('btn-primary');
         
-    },
+    // },
     rental_timesheet(frm, cdt, cdn) {
         if(frm.doc.rental_timesheet){
 		    get_items_from_rental_timesheet(frm, cdt, cdn)
