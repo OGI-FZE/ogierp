@@ -35,7 +35,6 @@
   "conversion_rate",
   "column_break2",
   "selling_price_list",
-  "price_list_currency",
   "sec_warehouse",
   "set_warehouse",
   "prices",
@@ -49,11 +48,25 @@
   "section_break_31",
   "column_break_33a",
   "total_qty",
+  "colll2",
   "total",
-  "column_break_108",
-  "amended_from"
+  "taxes_section",
+  "taxes_and_charges",
+  "section_break_40",
+  "taxes",
+  "colsec",
+  "Tax Amount",
+  "Grand Total"
  ],
  "fields": [
+  {
+    "fieldname":"colll2",
+    "fieldtype":"Column Break"
+  },
+  {
+    "fieldname":"colsec",
+    "fieldtype":"Section Break"
+  },
   {
    "fieldname": "customer_section",
    "fieldtype": "Section Break",
@@ -266,7 +279,7 @@
    "oldfieldtype": "Select",
    "options": "Currency",
    "print_hide": 1,
-   "reqd": 1,
+   "read_only": 1,
    "width": "100px"
   },
   {
@@ -300,17 +313,6 @@
    "print_hide": 1,
    "reqd": 1,
    "width": "100px"
-  },
-  {
-   "fieldname": "price_list_currency",
-   "fieldtype": "Link",
-   "hide_days": 1,
-   "hide_seconds": 1,
-   "label": "Price List Currency",
-   "options": "Currency",
-   "print_hide": 1,
-   "read_only": 1,
-   "reqd": 1
   },
   {
    "fieldname": "sec_warehouse",
@@ -425,30 +427,66 @@
    "label": "To Date",
    "no_copy": 1
   },
+
+  
+  
+  
+  
+  
+  
+  
+  
   {
-   "fieldname": "column_break_108",
-   "fieldtype": "Column Break",
-   "hide_days": 1,
-   "hide_seconds": 1
-  },
-  {
-   "fieldname": "amended_from",
-   "fieldtype": "Link",
-   "label": "Amended From",
-   "no_copy": 1,
-   "options": "Proforma Invoice",
-   "print_hide": 1,
-   "read_only": 1
-  },
-  {
-   "fieldname": "amended_from",
-   "fieldtype": "Link",
-   "label": "Amended From",
-   "no_copy": 1,
-   "options": "Proforma Invoice",
-   "print_hide": 1,
-   "read_only": 1
-  }
+    "fieldname": "taxes_section",
+    "fieldtype": "Section Break",
+    "hide_days": 1,
+    "hide_seconds": 1,
+    "oldfieldtype": "Section Break",
+    "options": "fa fa-money"
+   },
+   {
+    "fieldname": "taxes_and_charges",
+    "fieldtype": "Link",
+    "hide_days": 1,
+    "hide_seconds": 1,
+    "label": "Sales Taxes and Charges Template",
+    "oldfieldname": "charge",
+    "oldfieldtype": "Link",
+    "options": "Sales Taxes and Charges Template",
+    "print_hide": 1
+   },
+   {
+    "fieldname": "section_break_40",
+    "fieldtype": "Section Break",
+    "hide_days": 1,
+    "hide_seconds": 1
+   },
+   {
+    "fieldname": "taxes",
+    "fieldtype": "Table",
+    "hide_days": 1,
+    "hide_seconds": 1,
+    "label": "Sales Taxes and Charges",
+    "oldfieldname": "other_charges",
+    "oldfieldtype": "Table",
+    "options": "Sales Taxes and Charges"
+   },
+   {
+    "fieldname": "tax_amount",
+    "fieldtype": "Currency",
+    "read_only":1,
+    "options":"currency",
+    "label": "Tax Amount"
+   },
+   {
+    "fieldname": "grand_total",
+    "fieldtype": "Currency",
+    "read_only":1,
+    "options":"currency",
+    "label": "Grand Total"
+   }
+ 
+
  ],
  "icon": "fa fa-file-text",
  "is_submittable": 1,

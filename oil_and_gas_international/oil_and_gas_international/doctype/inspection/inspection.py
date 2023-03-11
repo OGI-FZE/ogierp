@@ -352,9 +352,9 @@ def create_wo(qty,bom,purpose,item_code,for_cu_ins=0,warehouse=None,final_wareho
 		for i in range(len(qty_wo)):   
 			qty_list.append(qty_wo[i]['qty'])
 		total_wo_qty = sum(qty_list)
-		# if float(total_wo_qty) + float(qty) >= get_rental_order_item_qty(rental_o,item_code):
-		# 	frappe.throw(_("Cannot inspect more Item {} than Rental Order quantity {}"
-		# 	.format(item_code,get_rental_order_item_qty(rental_o,item_code))))
+		if float(total_wo_qty) + float(qty) >= get_rental_order_item_qty(rental_o,item_code):
+			frappe.throw(_("Cannot inspect more Item {} than Rental Order quantity {}"
+			.format(item_code,get_rental_order_item_qty(rental_o,item_code))))
 
 
 

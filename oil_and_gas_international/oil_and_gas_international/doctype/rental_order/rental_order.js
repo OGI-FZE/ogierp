@@ -276,7 +276,7 @@ const create_custom_buttons = () => {
 		// add_purchase_order()
 		// add_purchase_invoice()
 		frappe.db.get_value("Rental Timesheet", {"rental_order": doc.rental_order}, "name", (r) => {
-			if(!r.name){
+			if(r.name){
 				add_rental_timesheet()
 			}
 		});
@@ -403,6 +403,7 @@ const add_rental_timesheet = () => {
 			() => frappe.new_doc('Rental Timesheet'),
 			() => {
 				const cur_doc = cur_frm.doc
+				console.log(typeof doc.start_date)
 				cur_doc.customer = doc.customer
 				cur_doc.start_date = doc.start_date
 				if (doc.end_date){
@@ -413,22 +414,30 @@ const add_rental_timesheet = () => {
 				}
 				cur_doc.currency = doc.currency
 				cur_doc.conversion_rate = doc.conversion_rate
+				cur_doc.department = doc.department
+				cur_doc.division = doc.division
+				cur_doc.price_list = "Operational/Running"
 				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "rental_order", doc.name)
 				cur_doc.items = []
+				var no_days = frappe.datetime.get_day_diff(frappe.datetime.month_end(doc.start_date),doc.start_date)+1
 				for (const row of doc.items) {
 					const new_row = cur_frm.add_child("items", {
 						qty: row.transfered_qty,
-						serial_no_accepted: row.serial_no_accepted,
+						// serial_no_accepted: row.serial_no_accepted,
 						operational_running: row.operational_running,
 						rate: row.operational_running,
-						amount: row.operational_running*row.transfered_qty,
 						standby: row.standby,
 						post_rental_inspection_charges: row.post_rental_inspection_charges,
 						lihdbr: row.lihdbr,
 						redress: row.redress,
 						straight: row.straight,
 						description_2: row.description_2,
-						customer_requirement: row.customer_requirement
+						customer_requirement: row.customer_requirement,
+						delivery_date: doc.start_date,
+						days: no_days,
+						start_date_: doc.start_date,
+						end_date: frappe.datetime.month_end(doc.start_date),
+
 					})
 					const cdt = new_row.doctype
 					const cdn = new_row.name

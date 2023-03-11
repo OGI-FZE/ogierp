@@ -330,11 +330,6 @@
    "label": "No of Days"
   },
   {
-    "fieldname": "serial_no_accepted",
-    "fieldtype": "Small Text",
-    "label": "Serial No"
-   },
-  {
     "fieldname": "standby",
     "fieldtype": "Currency",
     "label": "Stand By"

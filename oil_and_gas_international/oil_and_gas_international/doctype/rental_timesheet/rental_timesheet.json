@@ -17,7 +17,6 @@
   "end_date",
   "section_break_7",
   "currency",
-  "price_list",
   "column_break_13",
   "conversion_rate",
   "section_break_15",
@@ -122,14 +121,6 @@
    "read_only": 1
   },
   {
-    "fieldname": "price_list",
-    "fieldtype": "Link",
-    "label": "Price List",
-    "options": "Price List",
-    "default": "Standard Selling",
-    "reqd": 1
-   },
-  {
    "fieldname": "column_break_13",
    "fieldtype": "Column Break"
   },
@@ -146,6 +137,7 @@
   {
    "fieldname": "total_amount",
    "fieldtype": "Float",
+   "options":"currency",
    "label": "Total Amount",
    "read_only":1
   },

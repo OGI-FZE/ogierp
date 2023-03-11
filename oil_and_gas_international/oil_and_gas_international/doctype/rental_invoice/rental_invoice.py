@@ -5,4 +5,13 @@
 from frappe.model.document import Document
 
 class RentalInvoice(Document):
-	pass
+	def validate(self):
+		
+		if self.taxes_and_charges:
+			self.tax_amount = self.taxes[0].tax_amount
+			self.grand_total = self.tax_amount + self.total
+		else:
+			self.grand_total = self.total
+
+
+		

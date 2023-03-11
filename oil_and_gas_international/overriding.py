@@ -2,7 +2,11 @@ import frappe,datetime
 from frappe import _
 from dateutil import relativedelta
 from frappe.model.document import Document
+from erpnext.controllers.accounts_controller import get_taxes_and_charges
 from erpnext.manufacturing.doctype.work_order.work_order import WorkOrder
+from datetime import datetime
+from frappe.utils import date_diff
+
 
 
 class CustomWorkOrder(WorkOrder):
@@ -140,34 +144,92 @@ def create_rental_timesheet():
 			new_ts.currency = last_ts.currency
 			new_ts.conversion_rate = last_ts.conversion_rate
 			new_ts.price_list = last_ts.price_list
-
+			print(last_ts.name)
 			for row in last_ts.items:
-				new_ts.append("items",{
-					"item_code": row.item_code,
-					"item_name": row.item_name,
-					"serial_no_accepted": row.serial_no_accepted,
-					"description": row.description,
-					"description_2": row.description_2,
-					"customer_requirement": row.customer_requirement,
-					"qty": row.qty,
-					"rate": row.rate,
-					"uom": row.uom,
-					"operational_running": row.operational_running,
-					"amount": row.amount,
-					"standby": row.standby,
-					"post_rental_inspection_charges": row.post_rental_inspection_charges,
-					"lihdbr": row.lihdbr,
-					"redress": row.redress,
-					"straight": row.straight,
-				})
+				print(row.end_date)
+				if not row.end_date  < last_ts.end_date:
+					new_ts.append("items",{
+						"item_code": row.item_code,
+						"item_name": row.item_name,
+						# "serial_no_accepted": row.serial_no_accepted,
+						"description": row.description,
+						"description_2": row.description_2,
+						"customer_requirement": row.customer_requirement,
+						"qty": row.qty,
+						"rate": row.rate,
+						"uom": row.uom,
+						"operational_running": row.operational_running,
+						"amount": row.amount,
+						"standby": row.standby,
+						"post_rental_inspection_charges": row.post_rental_inspection_charges,
+						"lihdbr": row.lihdbr,
+						"redress": row.redress,
+						"straight": row.straight,
+						"delivery_date": last_ts.start_date + relativedelta.relativedelta(months=1, day=1),
+						"start_date_": last_ts.start_date + relativedelta.relativedelta(months=1, day=1),
+						"end_date": last_ts.end_date + relativedelta.relativedelta(months=1, day=32)
+					})
 			new_ts.save()
 			frappe.db.commit()
 			
 
 def change_ro_status(doc,handle=None):
 	if doc.end_date:
+		timesheets = frappe.db.sql("""select name,start_date from `tabRental Timesheet`
+									where rental_order = '%s' order by start_date desc""" %(doc.name),as_dict=1)
+		if timesheets:
+			last_ts = frappe.get_doc("Rental Timesheet",timesheets[0]['name'])
+			d = last_ts.end_date
+			# if not isinstance(doc.end_date, datetime.date):
+			# 	end_date = datetime.strptime(doc.end_date,"%Y-%M-%d")
+			# else:
+			# 	end_date = doc.end_date
+			if datetime.strptime(doc.end_date,"%Y-%m-%d") < datetime(d.year,d.month,d.day):
+				frappe.throw(_("End date is invalid, please set it after timesheet end date {}".format(d)))
 		doc.db_set("status","Completed")
 	else:
 		doc.db_set("status","On Rent")
 
 
+@frappe.whitelist()
+def inspect_returned_serial_no(ro=None,item_code=None,stock_entry=None,serial_no=None):
+	doc = frappe.new_doc("Inspection")
+	doc.item_code = item_code
+	doc.rental_order = ro
+	doc.stock_entry = stock_entry
+	doc.serial_no_to_inspect = serial_no
+	doc.item_category = frappe.db.get_value("Item",item_code,"item_category")
+	doc.return_from_rent = 1
+	doc.save()
+	frappe.db.commit()
+	frappe.msgprint(_("inspection {} is created against this stock entry".format(doc.name)))
+
+
+@frappe.whitelist()
+def getTax(tx=None):
+	# print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Here>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.")
+	taxes = get_taxes_and_charges('Sales Taxes and Charges Template',tx)
+	return taxes
+
+
+def set_item_rent_days(doc,handle=None):
+	
+	doc.total_amount = 0
+	for row in doc.items:
+		# if not row.start_date_ or row.end_date:
+		# 	frappe.throw(_("please set start and end date for each item"))
+		row.delivery_date = doc.start_date
+		row.days = date_diff(row.end_date,row.start_date_) + 1
+		row.amount = row.qty*row.rate*row.days
+		doc.total_amount += row.amount
+	
+
+
+def upupup(doc,handle=None):
+	for item in doc.items:
+		if item.project:
+			print(item.amount)
+			project = frappe.get_doc("Project",item.project)
+			project.total_billed_amount = 1000
+			project.save()
+			frappe.db.commit()

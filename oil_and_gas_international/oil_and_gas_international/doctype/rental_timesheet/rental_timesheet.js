@@ -4,37 +4,12 @@
 
  frappe.ui.form.on('Rental Timesheet', {
     refresh(frm){
-        add_material_transfer(frm)
-    },
-
-    price_list(frm){
-        let rate = 0
-        for (const row of frm.doc.items){
+        update_qty(frm)
+        // if (frm.doc.docstatus == 1){
+        //     create_proforma_invoice(frm)
             
-            if (frm.doc.price_list == "Operational/Running"){
-                rate = row.operational_running
-            }
-            else if (frm.doc.price_list == "Standby"){
-                rate = row.standby
-            }
-            else if (frm.doc.price_list == "Post Rental Inspection charges"){
-                rate = row.post_rental_inspection_charges
-            }
-            else if  (frm.doc.price_list == "LIH/DBR"){
-                rate = row.lihdbr
-            }
-            else if (frm.doc.price_list == "Redress"){
-                rate = row.redress
-            }
-            else {
-                rate = row.straight
-            }
-            const cdt = row.doctype
-            const cdn = row.name
-            frappe.model.set_value(cdt,cdn,"rate", rate)
-
-            }            
-        },
+        // }
+    },
 	currency(frm){
 		get_conversion_rate(frm)
 		var customer_currency = frm.doc.currency
@@ -68,12 +43,37 @@ frappe.ui.form.on('Proforma Invoice Item', {
 
 	rate(frm,cdt,cdn){
 		var child = locals[cdt][cdn];
-		frappe.model.set_value(cdt,cdn,"amount",child.rate*child.qty)	
+		frappe.model.set_value(cdt,cdn,"amount",child.rate*child.qty*child.days)	
 	},
 	qty(frm,cdt,cdn){
 		var child = locals[cdt][cdn];
-		frappe.model.set_value(cdt,cdn,"amount",child.rate*child.qty)	
-	}
+		frappe.model.set_value(cdt,cdn,"amount",child.rate*child.qty*child.days)	
+	},
+    price_list(frm,cdt,cdn){
+        let rate = 0
+		var child = locals[cdt][cdn];
+            
+            if (child.price_list == "Operational/Running"){
+                rate = child.operational_running
+            }
+            else if (child.price_list == "Standby"){
+                rate = child.standby
+            }
+            else if (child.price_list == "Post Rental Inspection charges"){
+                rate = child.post_rental_inspection_charges
+            }
+            else if  (child.price_list == "LIH/DBR"){
+                rate = child.lihdbr
+            }
+            else if (child.price_list == "Redress"){
+                rate = child.redress
+            }
+            else {
+                rate = child.straight
+            }
+            frappe.model.set_value(cdt,cdn,"rate", rate)
+
+            }
 
 });
 
@@ -82,7 +82,7 @@ frappe.ui.form.on('Proforma Invoice Item', {
 // }
 
 
-const add_material_transfer = (frm) => {
+const update_qty = (frm) => {
 	cur_frm.add_custom_button('Update Quantity', () =>{
         frappe.call({
             method: 'oil_and_gas_international.oil_and_gas_international.doctype.rental_order.rental_order.get_transfered_qty',
@@ -105,6 +105,56 @@ const add_material_transfer = (frm) => {
         });
     })
 }
+
+
+
+// const create_proforma_invoice = (frm) => {
+// 	cur_frm.add_custom_button('Proforma Invoice', () =>{
+// 		const doc = cur_frm.doc
+// 		frappe.run_serially([
+// 			() => frappe.new_doc('Rental Invoice'),
+// 			() => {
+// 				const cur_doc = cur_frm.doc
+// 				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "rental_order", doc.name)
+// 				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "currency", doc.currency)
+// 				cur_doc.customer = doc.customer
+// 				cur_doc.conversion_rate = doc.conversion_rate
+// 				cur_doc.customer_address = doc.customer_address
+// 				cur_doc.customer_contact = doc.customer_contact
+// 				cur_doc.address_display = doc.address
+// 				cur_doc.contact_display = doc.contact
+// 				cur_doc.selling_price_list = "Operational/Running"
+// 				cur_doc.items = []
+
+// 				for (const row of doc.items) {
+// 					let sn_qty = row.serial_no_accepted.split("\n")
+// 					const new_row = cur_frm.add_child("items", {
+// 						qty: sn_qty.length,
+// 						serial_no_accepted: row.serial_no_accepted,
+// 						operational_running: row.operational_running,
+// 						rate: row.operational_running,
+// 						amount: row.operational_running*sn_qty.length,
+// 						standby: row.standby,
+// 						post_rental_inspection_charges: row.post_rental_inspection_charges,
+// 						lihdbr: row.lihdbr,
+// 						redress: row.redress,
+// 						straight: row.straight,
+// 						description_2: row.description_2,
+// 						customer_requirement: row.customer_requirement
+// 					})
+// 					const cdt = new_row.doctype
+// 					const cdn = new_row.name
+// 					frappe.model.set_value(cdt, cdn, "item_code", row.item_code)
+// 					frappe.model.set_value(cdt, cdn, "item_name", row.item_name)
+// 					frappe.model.set_value(cdt, cdn, "description", row.description)
+
+// 				}
+
+// 				cur_frm.refresh()
+// 			}
+// 		])
+//     })
+// }
 // var conv_rate = [1]
 // frappe.ui.form.on('Rental Timesheet', {
 // 	rental_order(frm, cdt, cdn) {

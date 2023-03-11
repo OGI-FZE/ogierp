@@ -45,7 +45,9 @@ doctype_js = {
     "Project": "public/js/project.js",
     "Quotation": "public/js/quotation.js",
     "Job Card": "public/js/Job Card.js",
-    "Work Order": "public/js/work_order.js"
+    "Work Order": "public/js/work_order.js",
+    "Stock Entry": "public/js/stock_entry.js"
+
 }
 # doctype_js = {"doctype" : "public/js/doctype.js"}
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
@@ -112,6 +114,7 @@ doc_events = {
     # },
     "Sales Invoice": {
         "on_submit": "oil_and_gas_international.events.sales_invoice.addbilledamount",
+        # "on_submit": "oil_and_gas_international.overriding.upupup",
         "on_cancel": "oil_and_gas_international.events.sales_invoice.removebilledamount",
         "validate": "oil_and_gas_international.events.sales_invoice.get_desc",
     #     "on_submit": "oil_and_gas_international.events.sales_invoice.on_submit"
@@ -136,6 +139,10 @@ doc_events = {
     },
     "Rental Order": {
         "on_update_after_submit": "oil_and_gas_international.overriding.change_ro_status",
+    },
+    "Rental Timesheet":{
+        "before_save": "oil_and_gas_international.overriding.set_item_rent_days",
+
     }
 
     
@@ -151,7 +158,7 @@ scheduler_events = {
         "* * * * *": [
             "frappe.email.queue.flush"
         ],
-        "20 8 9 * *":[
+        "00 7 25 * *":[
             "oil_and_gas_international.overriding.create_rental_timesheet"
         ],
 
