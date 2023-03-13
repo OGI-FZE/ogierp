@@ -352,7 +352,9 @@ def create_wo(qty,bom,purpose,item_code,for_cu_ins=0,warehouse=None,final_wareho
 		for i in range(len(qty_wo)):   
 			qty_list.append(qty_wo[i]['qty'])
 		total_wo_qty = sum(qty_list)
-		if float(total_wo_qty) + float(qty) >= get_rental_order_item_qty(rental_o,item_code):
+		if pwo.for_returned_material:
+			pass
+		elif float(total_wo_qty) + float(qty) > get_rental_order_item_qty(rental_o,item_code):
 			frappe.throw(_("Cannot inspect more Item {} than Rental Order quantity {}"
 			.format(item_code,get_rental_order_item_qty(rental_o,item_code))))
 
@@ -396,6 +398,7 @@ def create_wo(qty,bom,purpose,item_code,for_cu_ins=0,warehouse=None,final_wareho
 	new_doc.bom_no = bom
 	new_doc.for_external_inspection = for_cu_ins
 	new_doc.purpose = purpose
+	new_doc.for_returned_material = pwo.for_returned_material
 
 	bom_doc = frappe.get_doc("BOM", bom)
 	if bom_doc.operations:

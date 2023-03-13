@@ -275,11 +275,9 @@ const create_custom_buttons = () => {
 		// add_asset_formation()
 		// add_purchase_order()
 		// add_purchase_invoice()
-		frappe.db.get_value("Rental Timesheet", {"rental_order": doc.rental_order}, "name", (r) => {
-			if(r.name){
-				add_rental_timesheet()
-			}
-		});
+		
+		add_rental_timesheet()
+	
 		
 	}
 }

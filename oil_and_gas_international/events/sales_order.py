@@ -85,7 +85,8 @@ def fill_ro_items_table(rental_order):
 			'description':item.description,
 			'description_2': item.description_2,
 			'customer_requirement': item.customer_requirement,
-			'qty': item.qty
+			'qty': item.qty,
+			'returned_qty': item.transfered_qty
 			})
 	return data
 

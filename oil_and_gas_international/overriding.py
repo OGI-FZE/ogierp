@@ -133,7 +133,8 @@ def create_rental_timesheet():
 		ro_items = []
 		rental_order = frappe.get_doc("Rental Order",r)
 		timesheets = frappe.db.sql("""select name,start_date from `tabRental Timesheet`
-										  where rental_order = '%s' order by start_date desc""" %(r),as_dict=1)
+										  where rental_order = '%s' 
+										  order by start_date desc""" %(r),as_dict=1)
 		if timesheets:
 			last_ts = frappe.get_doc("Rental Timesheet",timesheets[0]['name'])
 			new_ts = frappe.new_doc("Rental Timesheet")
@@ -225,11 +226,11 @@ def set_item_rent_days(doc,handle=None):
 	
 
 
-def upupup(doc,handle=None):
-	for item in doc.items:
-		if item.project:
-			print(item.amount)
-			project = frappe.get_doc("Project",item.project)
-			project.total_billed_amount = 1000
-			project.save()
-			frappe.db.commit()
+def get_income_expense_accounts(item=None,company=None):
+	item = frappe.get_doc("Item",item)
+	income_account = item.item_defaults[0].income_account
+	expense_account = item.item_defaults[0].expense_account
+	if expense_account == None:
+		expense_account = frappe.db.get_value("Company",company,"default_expense_account")
+	return income_account,expense_account
+

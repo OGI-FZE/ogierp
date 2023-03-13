@@ -33,7 +33,8 @@ const add_inspection = () => {
                             () => frappe.new_doc('Inspection'),
                             () => {
                             frappe.db.get_value("Work Order",{'name':doc.work_order,'production_item':doc.production_item},
-                            ["project_wo","project","qty","fg_warehouse","total_inspected","sales_order","pending_to_inspect","rental_order","item_category"], (r) => {
+                            ["project_wo","project","qty","fg_warehouse","total_inspected","sales_order","pending_to_inspect",
+                            "rental_order","for_returned_material","item_category"], (r) => {
                                 const cur_doc = cur_frm.doc
                                 cur_doc.item_code = doc.production_item
                                 cur_doc.quantity = r.qty
@@ -45,6 +46,7 @@ const add_inspection = () => {
                                 cur_doc.sales_order = r.sales_order
                                 cur_doc.rental_order = r.rental_order
                                 cur_doc.pending_quantity = r.qty - r.total_inspected
+                                cur_doc.return_from_rent = r.for_returned_material
                                 // cur_doc.for_external_inspection = doc.for_external_inspection
                                 
                                 cur_frm.set_df_property('item_category', 'read_only', 1);

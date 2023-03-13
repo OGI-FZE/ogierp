@@ -38,7 +38,7 @@ class RentalTimesheet(Document):
                     if not item.stopped_qty:
                         item.stopped_qty = 0
                     if row.item_code == item.item_code:
-                        item.stopped_qty += row.qty
+                        item.stop_qty += row.qty
         ro.save()
         frappe.db.commit()
                 

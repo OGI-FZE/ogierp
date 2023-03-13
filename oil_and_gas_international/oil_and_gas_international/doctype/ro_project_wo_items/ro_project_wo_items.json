@@ -12,6 +12,7 @@
   "description",
   "quantity_and_rate_section",
   "qty",
+  "returned_qty",
   "days_of_rent",
   "column_break_9",
   "received_qty",
@@ -79,6 +80,14 @@
    "non_negative": 1,
    "reqd": 1
   },
+  {
+    "fieldname": "returned_qty",
+    "fieldtype": "Int",
+    "in_list_view": 1,
+    "label": "Returned Qty",
+    "read_only": 1,
+    "hidden": 1
+   },
    {
     "fieldname": "qty_in_warehouse",
     "fieldtype": "Int",

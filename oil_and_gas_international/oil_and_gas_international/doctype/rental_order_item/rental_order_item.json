@@ -15,6 +15,7 @@
   "qty",
   "coooo",
   "transfered_qty",
+  "stop_qty",
   "section_break_19",
   "operational_running",
   "standby",
@@ -99,6 +100,13 @@
    "label": "Transfered Qty",
    "read_only": 1
   },
+  {
+    "allow_on_submit": 1,
+    "fieldname": "stop_qty",
+    "fieldtype": "Float",
+    "label": "Stopped Qty",
+    "read_only": 1
+   },
   {
    "fieldname": "section_break_18",
    "fieldtype": "Section Break"

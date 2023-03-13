@@ -40,12 +40,10 @@ const create_project_work_order = (frm) => {
 								},
 					
 					callback: function(r) {
-						console.log(r.message.length)
 						cur_frm.doc.rental_order_items = [];
 						for (let item of r.message){
 							
 							const cur_doc = cur_frm.doc
-							
 							const new_row = cur_frm.add_child('rental_order_items',{
 								'item_name': item.item_name,
 								'description': item.description,
@@ -53,6 +51,7 @@ const create_project_work_order = (frm) => {
 								'customer_requirement': item.customer_requirement,
 								'qty':item.qty,
 								'item_category': item.item_category,
+								'returned_qty': item.returned_qty
 
 							})
 							const cdt = new_row.doctype

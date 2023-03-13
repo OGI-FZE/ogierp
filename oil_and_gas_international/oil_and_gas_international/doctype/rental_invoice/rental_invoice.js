@@ -105,19 +105,31 @@ const add_sales_invoice = () => {
 				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "currency", doc.currency)
 				cur_doc.customer = doc.customer
 				cur_doc.conversion_rate = doc.conversion_rate
+				cur_doc.against_rental_order = 1
+				cur_doc.department = doc.department
+				cur_doc.division = doc.division
+				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "taxes_and_charges", doc.taxes_and_charges)
 				// cur_doc.ignore_pricing_rule = 1
 				cur_doc.items = []
 
 				for (const row of doc.items) {
 					const new_row = cur_frm.add_child("items", {
+						item_code:row.item_code,
+						item_name:row.item_name,
+						description:row.description,
 						qty: row.qty,
+						rate:row.rate*row.days,
+						uom:row.uom,
+						income_account:row.income_account,
+						expense_account:row.expense_account
 					})
+				
 					const cdt = new_row.doctype
 					const cdn = new_row.name
-					frappe.model.set_value(cdt, cdn, "item_code", row.item_code)
-					frappe.model.set_value(cdt, cdn, "rate", row.rate)
-					frappe.model.set_value(cdt, cdn, "item_name", row.item_name)
-					frappe.model.set_value(cdt, cdn, "description", row.description)
+
+					// frappe.model.set_value(cdt, cdn, "rate", row.rate)
+					// frappe.model.set_value(cdt, cdn, "item_name", row.item_name)
+					// frappe.model.set_value(cdt, cdn, "description", row.description)
 
 				}
 				cur_frm.refresh()
