@@ -1,8 +1,8 @@
 frappe.ui.form.on('Stock Entry', {
 	refresh(frm) {
-        if (frm.doc.return_from_rent && frm.doc.docstatus == 1){
-            create_inspection(frm)
-        }
+        // if (frm.doc.return_from_rent && frm.doc.docstatus == 1){
+        //     create_inspection(frm)
+        // }
     }
 });
 

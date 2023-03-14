@@ -215,7 +215,7 @@ const get_conversion_rate = (frm) => {
 // Rental Order Item
 frappe.ui.form.on('Rental Order Item', {
 	item_code(frm, cdt, cdn) {
-		// calculate_lost_and_damage_price(frm, cdt, cdn)
+		calculate_lost_and_damage_price(frm, cdt, cdn)
 	},
 
 	from_date(frm, cdt, cdn) {
@@ -575,34 +575,34 @@ const calc_total_qty = (frm) => {
 
 // Rental Order Item
 
-// const calculate_lost_and_damage_price = (frm, cdt, cdn) => {
-// 	const row = locals[cdt][cdn]
-// 	const item_code = row.item_code
+const calculate_lost_and_damage_price = (frm, cdt, cdn) => {
+	const row = locals[cdt][cdn]
+	const item_code = row.item_code
 
-// 	frappe.call({
-// 		method: "oil_and_gas_international.events.shared.get_lost_and_damage_prices",
-// 		args: {
-// 			item_code
-// 		},
-// 		callback(r) {
-// 			const data = r.message
-// 			row.operational_running = data[0]
-// 			row.standby = data[1]
-// 			row.lihdbr = data[2]
-// 			row.redress = data[3]
-// 			row.straight = data[4]
-// 			row.post_rental_inspection_charges = data[5]
-// 			// row.base_operational_running = data[0]
-// 			// row.base_standby = data[1]
-// 			// row.base_lihdbr = data[2]
-// 			// row.base_redress = data[3]
-// 			// row.base_straight = data[4]
-// 			// row.base_post_rental_inspection_charges = data[5]
-// 			frm.refresh()
-// 		}
-// 	})
-// 	convert_base_rate(frm)
-// }
+	frappe.call({
+		method: "oil_and_gas_international.events.shared.get_lost_and_damage_prices",
+		args: {
+			item_code
+		},
+		callback(r) {
+			const data = r.message
+			row.base_operational_running = data[0]
+			row.base_standby = data[1]
+			row.base_lihdbr = data[2]
+			row.base_redress = data[3]
+			row.base_straight = data[4]
+			row.post_rental_inspection_charges = data[5]
+			// row.base_operational_running = data[0]
+			// row.base_standby = data[1]
+			// row.base_lihdbr = data[2]
+			// row.base_redress = data[3]
+			// row.base_straight = data[4]
+			// row.base_post_rental_inspection_charges = data[5]
+			frm.refresh()
+		}
+	})
+	convert_base_rate(frm)
+}
 
 
 
