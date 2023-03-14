@@ -76,6 +76,7 @@ class RentalTimesheet(Document):
                 "lihdbr": row.lihdbr,
                 "redress": row.redress,
                 "straight": row.straight,
+                "description":row.description,
                 "description_2": row.description_2,
                 "customer_requirement": row.customer_requirement,
                 "days": row.days,

@@ -215,7 +215,12 @@ const get_conversion_rate = (frm) => {
 // Rental Order Item
 frappe.ui.form.on('Rental Order Item', {
 	item_code(frm, cdt, cdn) {
-		calculate_lost_and_damage_price(frm, cdt, cdn)
+		var child = locals[cdt][cdn]
+		frappe.db.get_value("Item", {"item_code": child.item_code}, "description", (r) => {
+			if(r.description){
+				frappe.model.set_value(cdt, cdn, "description", r.description)
+			}
+		});		calculate_lost_and_damage_price(frm, cdt, cdn)
 	},
 
 	from_date(frm, cdt, cdn) {
@@ -430,6 +435,7 @@ const add_rental_timesheet = () => {
 						redress: row.redress,
 						straight: row.straight,
 						description_2: row.description_2,
+						description:row.description,
 						customer_requirement: row.customer_requirement,
 						delivery_date: doc.start_date,
 						days: no_days,

@@ -68,7 +68,5 @@ def on_submit(doc, method=None):
                 "Rental Timesheet Item", row.rental_timesheet_item, "is_billed", 1)
 
 def get_desc(doc,method=None):
-    if doc.rental_timesheet and doc.items:
-        for item in doc.items:
-            item.description = item.details
+    pass
 

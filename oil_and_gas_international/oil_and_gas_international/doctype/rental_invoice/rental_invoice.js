@@ -119,8 +119,8 @@ const add_sales_invoice = () => {
 					const new_row = cur_frm.add_child("items", {
 						item_code:row.item_code,
 						item_name:row.item_name,
-						description:row.description,
 						qty: row.qty,
+						description:row.description,
 						rate:row.rate*row.days,
 						uom:row.uom,
 						income_account:row.income_account,
