@@ -113,10 +113,7 @@ def add_transfered_qty_ro_item(doc,handle=None):
 		for item in doc.items:
 			for i in ro.items:
 				if item.item_code == i.item_code:
-					if doc.return_from_rent:
-						i.transfered_qty -= item.qty
-					else:
-						i.transfered_qty += item.qty
+					i.transfered_qty += item.qty
 					ro.save()
 					frappe.db.commit()
 
