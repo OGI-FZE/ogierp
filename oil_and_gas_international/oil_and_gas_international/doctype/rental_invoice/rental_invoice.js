@@ -101,13 +101,16 @@ const add_sales_invoice = () => {
 			() => frappe.new_doc('Sales Invoice'),
 			() => {
 				const cur_doc = cur_frm.doc
-				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "rental_order", doc.name)
+				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "rental_order", doc.rental_order)
+				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "rental_invoice", doc.name)
+
 				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "currency", doc.currency)
 				cur_doc.customer = doc.customer
 				cur_doc.conversion_rate = doc.conversion_rate
 				cur_doc.against_rental_order = 1
 				cur_doc.department = doc.department
 				cur_doc.division = doc.division
+				cur_doc.rental_timesheet = doc.rental_timesheet
 				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "taxes_and_charges", doc.taxes_and_charges)
 				// cur_doc.ignore_pricing_rule = 1
 				cur_doc.items = []
