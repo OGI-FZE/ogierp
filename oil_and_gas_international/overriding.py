@@ -245,5 +245,6 @@ def wo_qty_for_returned_item(rental_order=None,item_code=None):
 def check_rental_wo_qty(doc,handle=None):
 	for item in doc.rental_order_items:
 		wo_qty = wo_qty_for_returned_item(doc.rental_order,item.item_code)
-		if float(wo_qty) + (item.qty) > item.returned_qty:
-			frappe.throw(_("you overpassed quantity"))
+		if doc.for_returned_material:
+			if float(wo_qty) + (item.qty) > item.returned_qty:
+				frappe.throw(_("you overpassed quantity"))

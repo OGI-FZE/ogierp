@@ -29,7 +29,7 @@ const create_project_work_order = (frm) => {
 				cur_frm.doc.date = frappe.datetime.nowdate()
 				if (doc.rental_order){
 					const ro_items = []
-					frappe.db.get_value("Rental Order", doc.sales_order, ["customer"], (r) => {
+					frappe.db.get_value("Rental Order", doc.rental_order, ["customer"], (r) => {
 						cur_frm.set_value("customer", r.customer)
 						console.log(r.customer)
 					})
