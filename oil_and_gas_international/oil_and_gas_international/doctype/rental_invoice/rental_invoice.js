@@ -124,6 +124,7 @@ const add_sales_invoice = () => {
 						start_date:row.start_date_,
 						end_date:row.end_date,
 						rate:row.rate*row.days,
+						days:row.days,
 						uom:row.uom,
 						income_account:row.income_account,
 						expense_account:row.expense_account
