@@ -144,8 +144,7 @@ def create_rental_timesheet():
 			new_ts.price_list = last_ts.price_list
 			print(last_ts.name)
 			for row in last_ts.items:
-				print(row.end_date)
-				if not row.end_date  < last_ts.end_date:
+				if not row.stop_rent:
 					new_ts.append("items",{
 						"item_code": row.item_code,
 						"item_name": row.item_name,
@@ -216,7 +215,10 @@ def set_item_rent_days(doc,handle=None):
 	for row in doc.items:
 		# if not row.start_date_ or row.end_date:
 		# 	frappe.throw(_("please set start and end date for each item"))
-		row.delivery_date = doc.start_date
+		if doc.doctype == 'Rental Invoice':
+			row.delivery_date = doc.from_date
+		else:
+			row.delivery_date = doc.start_date
 		row.days = date_diff(row.end_date,row.start_date_) + 1
 		row.amount = row.qty*row.rate*row.days
 		doc.total_amount += row.amount
@@ -231,3 +233,17 @@ def get_income_expense_accounts(item=None,company=None):
 		expense_account = frappe.db.get_value("Company",company,"default_expense_account")
 	return income_account,expense_account
 
+@frappe.whitelist()
+def wo_qty_for_returned_item(rental_order=None,item_code=None):
+	qty = frappe.db.sql("""select sum(qty) as qty
+			from `tabWork Order`
+			where rental_order='%s' and for_returned_material= 1
+			and production_item ='%s' """ %(rental_order,item_code), as_dict=1)
+	return qty[0].qty or 0
+
+
+def check_rental_wo_qty(doc,handle=None):
+	for item in doc.rental_order_items:
+		wo_qty = wo_qty_for_returned_item(doc.rental_order,item.item_code)
+		if float(wo_qty) + (item.qty) > item.returned_qty:
+			frappe.throw(_("you overpassed quantity"))

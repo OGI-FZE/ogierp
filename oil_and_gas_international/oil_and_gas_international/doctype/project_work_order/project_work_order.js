@@ -90,12 +90,19 @@ frappe.ui.form.on('Project WO Items', {
 
 
 frappe.ui.form.on('Project Work Order', {
+
 	for_returned_material(frm) {
 		frm.doc.rental_order_items.forEach(function(child){
-			if (frm.doc.for_returned_material==1){
-				frappe.model.set_value(child.doctype,child.name,'qty',child.returned_qty)
-			}
+					if(r.message) {
+						if (frm.doc.for_returned_material==1){
+							frappe.model.set_value(child.doctype,child.name,'qty',child.returned_qty)
+						}
+					}
+
 		})
+
+
+
 	},
 	refresh(frm) {
 		if (frm.doc.docstatus == 1) {

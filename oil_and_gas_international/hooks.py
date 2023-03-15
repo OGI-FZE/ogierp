@@ -142,8 +142,15 @@ doc_events = {
     },
     "Rental Timesheet":{
         "before_save": "oil_and_gas_international.overriding.set_item_rent_days",
+    },
+    "Project Work Order":{
+        "before_save": "oil_and_gas_international.overriding.check_rental_wo_qty",
+    },
+    "Rental Invoice":{
+        "before_save": "oil_and_gas_international.overriding.set_item_rent_days",
+    },
 
-    }
+
 
     
     # "Serial No": {
