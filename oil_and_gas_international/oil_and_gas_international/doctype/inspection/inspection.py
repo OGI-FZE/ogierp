@@ -20,7 +20,8 @@ class Inspection(Document):
 					  self.drill_pipe_parameters,
 					  self.near_stabilizer_parameters,
 					  self.string_stabilizer_parameters,
-					  self.drilling_tools_parameters]
+					  self.drilling_tools_parameters,
+					  self.tubing_parameters]
 		for parameter in parameters:
 			serial_no_list = []
 			if parameter and parameter == self.drill_collar_parameters:
@@ -274,6 +275,35 @@ class Inspection(Document):
 							else: 
 								serial_no.status = "Validated"
 
+			elif parameter and parameter == self.tubing_parameters:
+						if float(warehouse_qty) < len(parameter):
+							frappe.throw(_("You dont have all this quantity in Warehouse {}".format(self.warehouse)))
+						for serial_no in self.tubing_parameters:
+							if self.for_external_inspection:
+								serial_no_list.append(serial_no.customer_serial_no)
+							else:
+								serial_no_list.append(serial_no.serial_no)
+							duplicated = [sn for sn, count in collections.Counter(serial_no_list).items() if count > 1]
+							if self.for_external_inspection:
+								if serial_no.customer_serial_no in duplicated:
+									frappe.throw(_("{} is duplicated, please re-check Serial No filled".format(serial_no.customer_serial_no)))
+							else:
+								if serial_no.serial_no in duplicated:
+									frappe.throw(_("{} is duplicated, please re-check Serial No filled".format(serial_no.serial_no)))
+							if self.for_external_inspection:
+								check_duplicated_serial_no(serial_no.customer_serial_no,self.work_order)
+							else:
+								check_duplicated_serial_no(serial_no.serial_no,self.work_order)	
+							conditions = [not get_q_i_t_p(i,"Pipe Size")['min_value'] <= to_frac(serial_no.pipe_size) <= get_q_i_t_p(i,"Pipe Size")['max_value'] or
+									not get_q_i_t_p(i,"Weight")['min_value'] <= to_frac(serial_no.weight) <= get_q_i_t_p(i,"Weight")['max_value'] or
+									not get_q_i_t_p(i,"Wall")['min_value'] <= to_frac(serial_no.wall) <= get_q_i_t_p(i,"Wall")['max_value'] or
+									not get_q_i_t_p(i,"API drift dia")['min_value'] <= to_frac(serial_no.wall) <= get_q_i_t_p(i,"API drift dia")['max_value'] or
+									not get_q_i_t_p(i,"Range")['min_value'] <= to_frac(serial_no.range) <= get_q_i_t_p(i,"Range")['max_value'] 
+							]
+							if conditions[0]:
+								serial_no.status = "Failed"
+							else: 
+								serial_no.status = "Validated"
 
 	def before_submit(self):
 		accepted_sn = []
