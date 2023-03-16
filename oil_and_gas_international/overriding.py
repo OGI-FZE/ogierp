@@ -248,3 +248,4 @@ def check_rental_wo_qty(doc,handle=None):
 		if doc.for_returned_material:
 			if float(wo_qty) + (item.qty) > item.returned_qty:
 				frappe.throw(_("you overpassed quantity"))
+ 
