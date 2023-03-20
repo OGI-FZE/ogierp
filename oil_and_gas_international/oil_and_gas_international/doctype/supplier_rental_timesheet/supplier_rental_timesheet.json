@@ -9,8 +9,8 @@
   "supplier",
   "supplier_name",
   "supplier_rental_order",
-  "project",
-  "status",
+  "department",
+  "division",
   "column_break_4",
   "date",
   "company",
@@ -49,14 +49,6 @@
    "reqd": 1
   },
   {
-   "allow_on_submit": 1,
-   "fieldname": "status",
-   "fieldtype": "Select",
-   "label": "Status",
-   "options": "Draft\nTo Bill\nCompleted",
-   "read_only": 1
-  },
-  {
    "fieldname": "column_break_4",
    "fieldtype": "Column Break"
   },
@@ -85,7 +77,7 @@
    "fieldname": "items",
    "fieldtype": "Table",
    "label": "Items",
-   "options": "Supplier Rental Timesheet Item",
+   "options": "Subrent Timesheet",
    "reqd": 1
   },
   {
@@ -128,11 +120,17 @@
    "label": "End Date"
   },
   {
-   "fieldname": "project",
+   "fieldname": "department",
    "fieldtype": "Link",
-   "label": "Project",
-   "options": "Project"
+   "label": "Department",
+   "options": "Department"
   },
+  {
+    "fieldname": "division",
+    "fieldtype": "Select",
+    "label": "Division",
+    "options":"Machine Shop Sale\nMachine Shop Repair\nInspection\ntrading\nRental"
+},
   {
    "fieldname": "total_amount",
    "fieldtype": "Currency",

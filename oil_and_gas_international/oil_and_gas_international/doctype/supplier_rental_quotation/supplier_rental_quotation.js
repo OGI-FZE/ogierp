@@ -3,15 +3,15 @@
 
 var conv_rate = [1]
 frappe.ui.form.on('Supplier Rental Quotation', {
-	setup: function (frm) {
-		frm.set_query("item_code", "items", function(doc, cdt, cdn) {
-			return {
-				filters: {
-					is_fixed_asset: 1,
-				}
-			}
-		})
-	},
+	// setup: function (frm) {
+	// 	frm.set_query("item_code", "items", function(doc, cdt, cdn) {
+	// 		return {
+	// 			filters: {
+	// 				is_fixed_asset: 1,
+	// 			}
+	// 		}
+	// 	})
+	// },
 	refresh(frm) {
 		create_custom_buttons(frm)
 		var company_currency = frappe.get_doc(":Company", frm.doc.company).default_currency;
@@ -34,16 +34,16 @@ frappe.ui.form.on('Supplier Rental Quotation', {
 		get_conversion_rate(frm)
       	convert_rate(frm)
 	},
-	supplier(frm){
-		if(frm.doc.supplier){
-			frappe.db.get_value("Supplier", {"name": frm.doc.supplier}, "default_currency", (r) => {
-				if(r.default_currency){
-					frm.set_value("currency", r.default_currency)
-				}
-			});
-		}
-		get_conversion_rate(frm)
-	},
+	// supplier(frm){
+	// 	if(frm.doc.supplier){
+	// 		frappe.db.get_value("Supplier", {"name": frm.doc.supplier}, "default_currency", (r) => {
+	// 			if(r.default_currency){
+	// 				frm.set_value("currency", r.default_currency)
+	// 			}
+	// 		});
+	// 	}
+	// 	get_conversion_rate(frm)
+	// },
 	currency(frm){
 		get_conversion_rate(frm)
 		var billing_currency = frm.doc.currency
@@ -56,29 +56,71 @@ frappe.ui.form.on('Supplier Rental Quotation', {
     	convert_rate(frm)
   	},
   	validate(frm){
+		frm.doc.items.forEach(function(item){
+			console.log(item.base_operational_running* frm.doc.conversion_rate)
+			if (item.operational_running != 0){
+				frappe.model.set_value(item.doctype, item.name, 'base_operational_running', item.operational_running/ frm.doc.conversion_rate);
+			}
+			else {
+				frappe.model.set_value(item.doctype, item.name, 'operational_running', item.base_operational_running* frm.doc.conversion_rate);
+			}
+			if (item.lihdbr != 0){
+				frappe.model.set_value(item.doctype, item.name, 'base_lihdbr', item.lihdbr/ frm.doc.conversion_rate);
+			}
+			else {
+				frappe.model.set_value(item.doctype, item.name, 'lihdbr', item.base_lihdbr* frm.doc.conversion_rate);
+			}
+			if (item.post_rental_inspection_charges != 0){
+				frappe.model.set_value(item.doctype, item.name, 'base_post_rental_inspection_charges', item.post_rental_inspection_charges/ frm.doc.conversion_rate);
+			}
+			else {
+				frappe.model.set_value(item.doctype, item.name, 'post_rental_inspection_charges', item.base_post_rental_inspection_charges* frm.doc.conversion_rate);
+			}
+			if (item.standby != 0){
+				frappe.model.set_value(item.doctype, item.name, 'base_standby', item.standby/ frm.doc.conversion_rate);
+			}
+			else {
+				frappe.model.set_value(item.doctype, item.name, 'standby', item.base_standby* frm.doc.conversion_rate);
+			}
+			if (item.straight != 0){
+				frappe.model.set_value(item.doctype, item.name, 'base_straight', item.straight/ frm.doc.conversion_rate);
+			}
+			else {
+				frappe.model.set_value(item.doctype, item.name, 'straight', item.base_straight* frm.doc.conversion_rate);
+			}
+			if (item.redress != 0){
+				frappe.model.set_value(item.doctype, item.name, 'base_redress', item.redress/ frm.doc.conversion_rate);
+			}
+			else {
+				frappe.model.set_value(item.doctype, item.name, 'redress', item.base_redress* frm.doc.conversion_rate);
+			}
+
+		}),
   		convert_rate(frm)
   	}
 });
 
 const convert_rate = function(frm){
-  if(frm.doc.items && frm.doc.docstatus!=1){
-    conv_rate.push(frm.doc.conversion_rate)
-      for(let row of frm.doc.items){
-        var converted_op_rate = (row.base_operational_running)*conv_rate[conv_rate.length-1]
-        frappe.model.set_value(row.doctype,row.name,'operational_running',converted_op_rate)
-        var converted_lihdbr_rate = (row.base_lihdbr)*conv_rate[conv_rate.length-1]
-        frappe.model.set_value(row.doctype,row.name,'lihdbr',converted_lihdbr_rate)
-        var converted_pr_rate = (row.base_post_rental_inspection_charges)*conv_rate[conv_rate.length-1]
-        frappe.model.set_value(row.doctype,row.name,'post_rental_inspection_charges',converted_pr_rate)
-        var converted_standby_rate = (row.base_standby)*conv_rate[conv_rate.length-1]
-        frappe.model.set_value(row.doctype,row.name,'standby',converted_standby_rate)
-        var converted_straight_rate = (row.base_straight)*conv_rate[conv_rate.length-1]
-        frappe.model.set_value(row.doctype,row.name,'straight',converted_straight_rate)
-        var converted_redress_rate = (row.base_redress)*conv_rate[conv_rate.length-1]
-        frappe.model.set_value(row.doctype,row.name,'redress',converted_redress_rate)
-      }
+	if(frm.doc.items && frm.doc.docstatus!=1){
+	  conv_rate.push(frm.doc.conversion_rate)
+		for(let row of frm.doc.items){
+		  var converted_op_rate = (row.operational_running)*conv_rate[conv_rate.length-1]
+		  // frappe.model.set_value(row.doctype,row.name,'base_operational_running',converted_op_rate)
+		  var converted_lihdbr_rate = (row.lihdbr)*conv_rate[conv_rate.length-1]
+		  // frappe.model.set_value(row.doctype,row.name,'base_lihdbr',converted_lihdbr_rate)
+		  var converted_pr_rate = (row.post_rental_inspection_charges)*conv_rate[conv_rate.length-1]
+		  // frappe.model.set_value(row.doctype,row.name,'base_post_rental_inspection_charges',converted_pr_rate)
+		  var converted_standby_rate = (row.standby)*conv_rate[conv_rate.length-1]
+		  // frappe.model.set_value(row.doctype,row.name,'base_standby',converted_standby_rate)
+		  var converted_straight_rate = (row.straight)*conv_rate[conv_rate.length-1]
+		  // frappe.model.set_value(row.doctype,row.name,'base_straight',converted_straight_rate)
+		  var converted_redress_rate = (row.redress)*conv_rate[conv_rate.length-1]
+		  // frappe.model.set_value(row.doctype,row.name,'base_redress',converted_redress_rate)
+		  var converted_base_total_amount = (row.total_amount)*conv_rate[conv_rate.length-1]
+		  // frappe.model.set_value(row.doctype,row.name,'base_total_amount',converted_base_total_amount)
+		}
+	}
   }
-}
 
 const get_conversion_rate = (frm) => {
 	let company_currency = erpnext.get_currency(frm.doc.company);
@@ -130,7 +172,6 @@ const add_supplier_rental_order = () => {
 
 					const new_row = cur_frm.add_child('items', {
 						'rate': rate,
-						'asset_location': row.asset_location,
 						'supplier_rental_quotation': doc.name,
 					})
 					const cdt = new_row.doctype
@@ -143,6 +184,7 @@ const add_supplier_rental_order = () => {
 						frappe.model.set_value(cdt, cdn, "standby", row.standby)
 						frappe.model.set_value(cdt, cdn, "redress", row.redress)
 						frappe.model.set_value(cdt, cdn, "straight", row.straight)
+						frappe.model.set_value(cdt, cdn, "base_post_rental_inspection_charges", row.post_rental_inspection_charges)
 						frappe.model.set_value(cdt, cdn, "base_operational_running", row.base_operational_running)
 						frappe.model.set_value(cdt, cdn, "base_lihdbr", row.base_lihdbr)
 						frappe.model.set_value(cdt, cdn, "base_standby", row.base_standby)
@@ -192,27 +234,28 @@ const calculate_lost_and_damage_price = (frm, cdt, cdn) => {
 	const item_code = row.item_code
 
 	frappe.call({
-		method: "oil_and_gas_international.events.shared.get_lost_and_damage_prices",
+		method: "oil_and_gas_international.events.shared.get_buying_prices",
 		args: {
 			item_code
 		},
 		callback(r) {
 			const data = r.message
-			row.operational_running = data[0]
-			row.standby = data[1]
-			row.lihdbr = data[2]
-			row.redress = data[3]
-			row.straight = data[4]
-			row.post_rental_inspection_charges = data[5]
 			row.base_operational_running = data[0]
 			row.base_standby = data[1]
 			row.base_lihdbr = data[2]
 			row.base_redress = data[3]
 			row.base_straight = data[4]
 			row.base_post_rental_inspection_charges = data[5]
+			// row.base_operational_running = data[0]
+			// row.base_standby = data[1]
+			// row.base_lihdbr = data[2]
+			// row.base_redress = data[3]
+			// row.base_straight = data[4]
+			// row.base_post_rental_inspection_charges = data[5]
 			frm.refresh()
 		}
 	})
+	// convert_base_rate(frm)
 }
 
 
@@ -220,4 +263,27 @@ const calc_amount = (frm, cdt, cdn) => {
 	const row = locals[cdt][cdn]
 	if (row.qty && row.rate)
 		frappe.model.set_value(cdt, cdn, 'amount', row.qty * row.rate)
+}
+
+
+const convert_base_rate = function(frm){
+  if(frm.doc.items && frm.doc.docstatus!=1){
+    conv_rate.push(frm.doc.conversion_rate)
+      for(let row of frm.doc.items){
+        var converted_op_rate = (row.base_operational_running)*conv_rate[conv_rate.length-1]
+        frappe.model.set_value(row.doctype,row.name,'operational_running',converted_op_rate)
+        var converted_lihdbr_rate = (row.base_lihdbr)*conv_rate[conv_rate.length-1]
+        frappe.model.set_value(row.doctype,row.name,'lihdbr',converted_lihdbr_rate)
+        var converted_pr_rate = (row.base_post_rental_inspection_charges)*conv_rate[conv_rate.length-1]
+        frappe.model.set_value(row.doctype,row.name,'post_rental_inspection_charges',converted_pr_rate)
+        var converted_standby_rate = (row.base_standby)*conv_rate[conv_rate.length-1]
+        frappe.model.set_value(row.doctype,row.name,'standby',converted_standby_rate)
+        var converted_straight_rate = (row.base_straight)*conv_rate[conv_rate.length-1]
+        frappe.model.set_value(row.doctype,row.name,'straight',converted_straight_rate)
+        var converted_redress_rate = (row.base_redress)*conv_rate[conv_rate.length-1]
+        frappe.model.set_value(row.doctype,row.name,'redress',converted_redress_rate)
+        var converted_base_total_amount = (row.total_amount)*conv_rate[conv_rate.length-1]
+        frappe.model.set_value(row.doctype,row.name,'base_total_amount',converted_base_total_amount)
+      }
+  }
 }

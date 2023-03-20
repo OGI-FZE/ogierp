@@ -10,13 +10,14 @@
   "item_name",
   "description_section",
   "description",
+  "description_2",
+  "colbre",
   "image_section",
   "image_attachment",
   "quantity_and_rate_section",
   "qty",
   "column_break_10",
   "estimate_rate",
-  "asset_location",
   "section_break_13",
   "operational_running",
   "lihdbr",
@@ -64,6 +65,15 @@
    "label": "Description"
   },
   {
+    "fieldname": "description_2",
+    "fieldtype": "Text Editor",
+    "label": "Description_2"
+   },
+   {
+    "fieldname": "colbre",
+    "fieldtype": "Column Break"
+   },
+  {
    "collapsible": 1,
    "fieldname": "image_section",
    "fieldtype": "Section Break",
@@ -91,11 +101,13 @@
   {
    "fieldname": "operational_running",
    "fieldtype": "Currency",
+   "default":0,
    "label": "Operational/Running (Billing Currency)"
   },
   {
    "fieldname": "lihdbr",
    "fieldtype": "Currency",
+   "default":0,
    "label": "LIH/DBR (Billing Currency)"
   },
   {
@@ -109,31 +121,27 @@
    "read_only": 1
   },
   {
-   "fieldname": "asset_location",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "Asset Location",
-   "options": "Location",
-   "reqd": 1
-  },
-  {
    "fieldname": "standby",
+   "default":0,
    "fieldtype": "Currency",
    "label": "Standby (Billing Currency)"
   },
   {
    "fieldname": "redress",
+   "default":0,
    "fieldtype": "Currency",
    "label": "Redress (Billing Currency)"
   },
   {
    "fieldname": "straight",
    "fieldtype": "Currency",
+   "default":0,
    "label": "Straight (Billing Currency)"
   },
   {
    "fieldname": "post_rental_inspection_charges",
    "fieldtype": "Currency",
+   "default":0,
    "label": "Post Rental Inspection charges (Billing Currency)"
   },
   {

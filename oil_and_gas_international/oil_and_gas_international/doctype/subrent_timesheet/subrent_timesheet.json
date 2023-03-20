@@ -1,0 +1,338 @@
+{
+ "actions": [],
+ "autoname": "hash",
+ "creation": "2023-03-20 10:09:53.837958",
+ "doctype": "DocType",
+ "document_type": "Document",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "item_code",
+  "days",
+  "col_break1",
+  "delivery_date",
+  "item_name",
+  "section_break_5",
+  "description",
+  "colcolcol",
+  "description_2",
+  "quantity_and_rate",
+  "qty",
+  "col_break2",
+  "uom",
+  "stock_qty",
+  "section_break_16",
+  "column_break_19",
+  "section_break_simple1",
+  "rate",
+  "amount",
+  "col_break3",
+  "section_break_24",
+  "column_break_27",
+  "drop_ship_section",
+  "delivered_by_supplier",
+  "supplier",
+  "item_weight_details",
+  "total_weight",
+  "column_break_21",
+  "warehouse_and_reference",
+  "target_warehouse",
+  "prevdoc_docname",
+  "col_break4",
+  "blanket_order",
+  "blanket_order_rate",
+  "secsec",
+  "operational_running",
+  "standby",
+  "post_rental_inspection_charges",
+  "colooo",
+  "lihdbr",
+  "redress",
+  "straight"
+ ],
+ "fields": [
+  {
+   "bold": 1,
+   "columns": 3,
+   "fieldname": "item_code",
+   "fieldtype": "Link",
+   "in_global_search": 1,
+   "in_list_view": 1,
+   "label": "Item Code",
+   "oldfieldname": "item_code",
+   "oldfieldtype": "Link",
+   "options": "Item",
+   "print_width": "150px",
+   "reqd": 1,
+   "width": "150px"
+  },
+  {
+   "fieldname": "days",
+   "fieldtype": "Int",
+   "label": "No of Days"
+  },
+  {
+   "fieldname": "col_break1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "allow_on_submit": 1,
+   "columns": 1,
+   "depends_on": "eval: !parent.skip_delivery_note",
+   "fieldname": "delivery_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Delivery Date",
+   "no_copy": 1,
+   "print_hide": 1
+  },
+  {
+   "fetch_from": "item_code.item_name",
+   "fieldname": "item_name",
+   "fieldtype": "Data",
+   "in_global_search": 1,
+   "label": "Item Name",
+   "oldfieldname": "item_name",
+   "oldfieldtype": "Data",
+   "print_hide": 1,
+   "print_width": "150",
+   "reqd": 1,
+   "width": "150"
+  },
+  {
+   "fieldname": "section_break_5",
+   "fieldtype": "Section Break",
+   "label": "Description"
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Text Editor",
+   "label": "Description",
+   "oldfieldname": "description",
+   "oldfieldtype": "Small Text",
+   "print_width": "300px",
+   "width": "300px"
+  },
+  {
+   "fieldname": "description_2",
+   "fieldtype": "Text Editor",
+   "label": "Description 2",
+   "width": "300px"
+  },
+  {
+   "fieldname": "colcolcol",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "quantity_and_rate",
+   "fieldtype": "Section Break",
+   "label": "Quantity and Rate"
+  },
+  {
+   "columns": 1,
+   "fieldname": "qty",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Quantity",
+   "reqd": 1,
+   "width": "100px"
+  },
+  {
+   "fieldname": "col_break2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "item_code.stock_uom",
+   "fieldname": "uom",
+   "fieldtype": "Link",
+   "label": "UOM",
+   "options": "UOM"
+  },
+  {
+   "fieldname": "stock_qty",
+   "fieldtype": "Float",
+   "label": "Qty as per Stock UOM",
+   "no_copy": 1,
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_16",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_19",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_simple1",
+   "fieldtype": "Section Break",
+   "precision": "2"
+  },
+  {
+   "columns": 1,
+   "depends_on": "eval: doc.type != \"\"",
+   "fieldname": "rate",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Rate",
+   "oldfieldname": "export_rate",
+   "oldfieldtype": "Currency",
+   "options": "currency",
+   "print_width": "100px",
+   "width": "100px"
+  },
+  {
+   "columns": 1,
+   "fieldname": "amount",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Amount",
+   "oldfieldname": "export_amount",
+   "oldfieldtype": "Currency",
+   "options": "currency",
+   "print_width": "100px",
+   "read_only": 1,
+   "width": "100px"
+  },
+  {
+   "fieldname": "col_break3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_24",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_27",
+   "fieldtype": "Column Break"
+  },
+  {
+   "collapsible": 1,
+   "collapsible_depends_on": "eval:doc.delivered_by_supplier==1||doc.supplier",
+   "fieldname": "drop_ship_section",
+   "fieldtype": "Section Break",
+   "label": "Drop Ship",
+   "print_hide": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "delivered_by_supplier",
+   "fieldtype": "Check",
+   "label": "Supplier delivers to Customer",
+   "print_hide": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "supplier",
+   "fieldtype": "Link",
+   "label": "Supplier",
+   "options": "Supplier",
+   "print_hide": 1
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "item_weight_details",
+   "fieldtype": "Section Break",
+   "label": "Item Weight Details"
+  },
+  {
+   "fieldname": "total_weight",
+   "fieldtype": "Float",
+   "label": "Total Weight",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_21",
+   "fieldtype": "Column Break",
+   "print_hide": 1
+  },
+  {
+   "fieldname": "warehouse_and_reference",
+   "fieldtype": "Section Break",
+   "label": "Warehouse and Reference"
+  },
+  {
+   "fieldname": "prevdoc_docname",
+   "fieldtype": "Link",
+   "label": "Quotation",
+   "no_copy": 1,
+   "oldfieldname": "prevdoc_docname",
+   "oldfieldtype": "Link",
+   "options": "Quotation",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "col_break4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.against_blanket_order",
+   "fieldname": "blanket_order",
+   "fieldtype": "Link",
+   "label": "Blanket Order",
+   "no_copy": 1,
+   "options": "Blanket Order"
+  },
+  {
+   "depends_on": "eval:doc.against_blanket_order",
+   "fieldname": "blanket_order_rate",
+   "fieldtype": "Currency",
+   "label": "Blanket Order Rate",
+   "no_copy": 1,
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "secsec",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "operational_running",
+   "fieldtype": "Currency",
+   "label": "Operational/Running"
+  },
+  {
+   "fieldname": "standby",
+   "fieldtype": "Currency",
+   "label": "Stand By"
+  },
+  {
+   "fieldname": "post_rental_inspection_charges",
+   "fieldtype": "Currency",
+   "label": "Post Rental Inspection Charges"
+  },
+  {
+   "fieldname": "colooo",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "lihdbr",
+   "fieldtype": "Currency",
+   "label": "LIH/DBR"
+  },
+  {
+   "fieldname": "redress",
+   "fieldtype": "Currency",
+   "label": "Redress"
+  },
+  {
+   "fieldname": "straight",
+   "fieldtype": "Currency",
+   "label": "Straight"
+  }
+ ],
+ "istable": 1,
+ "links": [],
+ "modified": "2023-03-20 10:09:53.837958",
+ "modified_by": "Administrator",
+ "module": "Oil And Gas International",
+ "name": "Subrent Timesheet",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

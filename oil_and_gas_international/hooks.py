@@ -114,11 +114,9 @@ doc_events = {
     # },
     "Sales Invoice": {
         "on_submit": "oil_and_gas_international.events.sales_invoice.addbilledamount",
-        # "on_submit": "oil_and_gas_international.overriding.upupup",
         "on_cancel": "oil_and_gas_international.events.sales_invoice.removebilledamount",
         "validate": "oil_and_gas_international.events.sales_invoice.get_desc",
-    #     "on_submit": "oil_and_gas_international.events.sales_invoice.on_submit"
-    },
+        },
 	"Sales Order": {
 		"on_submit": "oil_and_gas_international.events.sales_order.create_project"
 	},
@@ -136,6 +134,7 @@ doc_events = {
     },
     "Stock Entry": {
         "on_submit": "oil_and_gas_international.overriding.add_transfered_qty_ro_item",
+        "on_submit": "oil_and_gas_international.overriding.update_serial_no"
     },
     "Rental Order": {
         "on_update_after_submit": "oil_and_gas_international.overriding.change_ro_status",
@@ -149,6 +148,15 @@ doc_events = {
     "Rental Invoice":{
         "before_save": "oil_and_gas_international.overriding.set_item_rent_days",
     },
+    "Supplier Rental Order":{
+        "on_update_after_submit": "oil_and_gas_international.overriding.change_subro_status",
+    },
+    "Supplier Rental Timesheet":{
+        "before_save": "oil_and_gas_international.overriding.set_item_rent_days"
+    },
+    "Sub Rental Invoice":{
+        "before_save": "oil_and_gas_international.overriding.set_item_rent_days",
+    }
 
 
 
@@ -166,7 +174,8 @@ scheduler_events = {
             "frappe.email.queue.flush"
         ],
         "00 7 25 * *":[
-            "oil_and_gas_international.overriding.create_rental_timesheet"
+            "oil_and_gas_international.overriding.create_rental_timesheet",
+            "oil_and_gas_international.overriding.create_sub_rental_timesheet"
         ],
 
         "daily": [
@@ -379,7 +388,7 @@ fixtures = [
                 'Rental Order-sales_employee','Rental Order-sales_person_link',
                 'Rental Order-sales_person_name','Rental Order-remarks','Rental Order-freight',
                 'Rental Order-client_terms','Rental Order-credit_limit','Rental Order-payment_terms','Rental Order-delivery_terms',
-                'Rental Order-prices','Rental Order-delivery_date','Rental Order-mail_id','Rental Order-contact_number','Rental Order-sales_person_details',
+                'Rental Order-prices','Rental Order-mail_id','Rental Order-contact_number','Rental Order-sales_person_details',
                 'Rental Order-client_po_date','Rental Order-client_po_no',
 
                 #Rental quotation

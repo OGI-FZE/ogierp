@@ -8,8 +8,7 @@ from erpnext.controllers.accounts_controller import get_taxes_and_charges
 
 
 class RentalOrder(Document):
-    def validate(self):
-                
+    def validate(self):   
         if self.customer:
             address = frappe.db.sql("""select parent from `tabDynamic Link` where parenttype = 'Address' and link_name = '%s'"""% (self.customer), as_dict=1)  
             contact = frappe.db.sql("""select parent from `tabDynamic Link` where parenttype = 'Contact' and link_name = '%s'"""% (self.customer), as_dict=1)  

@@ -3,7 +3,7 @@
 
 import frappe
 from frappe.model.document import Document
-
+from oil_and_gas_international.overriding import get_pricing_rule
 class SupplierRentalQuotation(Document):
 	def on_cancel(self):
 		self.status = "Canceled"

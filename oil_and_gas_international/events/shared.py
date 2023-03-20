@@ -25,7 +25,7 @@ def make_estimation(source_name, target_doc=None):
 	return doclist
 
 @frappe.whitelist()
-def get_lost_and_damage_prices(item_code='TESTING'):
+def get_lost_and_damage_prices(item_code=None):
     if not item_code:
         return 0, 0
 
@@ -75,6 +75,59 @@ def get_lost_and_damage_prices(item_code='TESTING'):
         }, "price_list_rate")
 
     return oprunning, standby , lihdbr, redress, straight, post_rental_inspection_charges
+
+@frappe.whitelist()
+def get_buying_prices(item_code=None):
+    if not item_code:
+        return 0, 0
+
+    lihdbr = 0
+    oprunning = 0
+    standby = 0
+    redress = 0
+    straight = 0
+    post_rental_inspection_charges = 0
+
+    rd_settings = frappe.get_single("Rental Division Settings")
+
+    if rd_settings.rent_lih_dbr:
+        lihdbr = frappe.get_value("Item Price", {
+            "price_list": rd_settings.rent_lih_dbr,
+            "item_code": item_code
+        }, "price_list_rate")
+
+    if rd_settings.rent_operational_running:
+        oprunning = frappe.get_value("Item Price", {
+            "price_list": rd_settings.rent_operational_running,
+            "item_code": item_code
+        }, "price_list_rate")
+
+    if rd_settings.rent_standby:
+        standby = frappe.get_value("Item Price", {
+            "price_list": rd_settings.rent_standby,
+            "item_code": item_code
+        }, "price_list_rate")
+
+    if rd_settings.rent_redress:
+        redress = frappe.get_value("Item Price", {
+            "price_list": rd_settings.rent_redress,
+            "item_code": item_code
+        }, "price_list_rate")
+
+    if rd_settings.rent_straight:
+        straight = frappe.get_value("Item Price", {
+            "price_list": rd_settings.rent_straight,
+            "item_code": item_code
+        }, "price_list_rate")
+
+    if rd_settings.rent_post_rental_inspection_charges:
+        post_rental_inspection_charges = frappe.get_value("Item Price", {
+            "price_list": rd_settings.rent_post_rental_inspection_charges,
+            "item_code": item_code
+        }, "price_list_rate")
+
+    return oprunning, standby , lihdbr, redress, straight, post_rental_inspection_charges
+
 
 @frappe.whitelist()
 def get_sales_person_details(sp = None):

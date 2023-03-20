@@ -12,18 +12,14 @@
   "column_break_4",
   "company",
   "date",
-  "valid_till",
-  "rate_type",
+  "department",
+  "division",
   "section_break_7",
   "currency",
   "column_break_11",
   "conversion_rate",
   "section_break_13",
   "items",
-  "print_settings_section",
-  "letter_head",
-  "column_break_12",
-  "print_heading",
   "more_information_section",
   "status",
   "amended_from"
@@ -37,6 +33,18 @@
    "options": "Supplier",
    "reqd": 1
   },
+  {
+    "fieldname": "department",
+    "fieldtype": "Link",
+    "label": "Department",
+    "options": "Department"
+   },
+   {
+    "fieldname": "division",
+    "fieldtype": "Select",
+    "label": "Division",
+    "options": "Machine Shop Sale\nMachine Shop Repair\nInspection\ntrading\nRental"
+   },
   {
    "fetch_from": "supplier.supplier_name",
    "fieldname": "supplier_name",
@@ -57,21 +65,6 @@
    "reqd": 1
   },
   {
-   "fieldname": "valid_till",
-   "fieldtype": "Date",
-   "in_list_view": 1,
-   "label": "Valid Till",
-   "reqd": 1
-  },
-  {
-   "fieldname": "rate_type",
-   "fieldtype": "Select",
-   "in_list_view": 1,
-   "label": "Rate Type",
-   "options": "Per Day\nPer Hour\nPer Month",
-   "reqd": 1
-  },
-  {
    "fieldname": "section_break_7",
    "fieldtype": "Section Break",
    "label": "Currency"
@@ -82,28 +75,6 @@
    "label": "Items",
    "options": "Supplier Rental Quotation Item",
    "reqd": 1
-  },
-  {
-   "fieldname": "print_settings_section",
-   "fieldtype": "Section Break",
-   "label": "Print Settings"
-  },
-  {
-   "allow_on_submit": 1,
-   "fieldname": "letter_head",
-   "fieldtype": "Link",
-   "label": "Letter Head",
-   "options": "Letter Head"
-  },
-  {
-   "fieldname": "column_break_12",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "print_heading",
-   "fieldtype": "Link",
-   "label": "Print Heading",
-   "options": "Print Heading"
   },
   {
    "fieldname": "more_information_section",

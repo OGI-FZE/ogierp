@@ -297,7 +297,7 @@ class Inspection(Document):
 							conditions = [not get_q_i_t_p(i,"Pipe Size")['min_value'] <= to_frac(serial_no.pipe_size) <= get_q_i_t_p(i,"Pipe Size")['max_value'] or
 									not get_q_i_t_p(i,"Weight")['min_value'] <= to_frac(serial_no.weight) <= get_q_i_t_p(i,"Weight")['max_value'] or
 									not get_q_i_t_p(i,"Wall")['min_value'] <= to_frac(serial_no.wall) <= get_q_i_t_p(i,"Wall")['max_value'] or
-									not get_q_i_t_p(i,"API drift dia")['min_value'] <= to_frac(serial_no.wall) <= get_q_i_t_p(i,"API drift dia")['max_value'] or
+									not get_q_i_t_p(i,"API drift dia")['min_value'] <= to_frac(serial_no.api_drift_dia) <= get_q_i_t_p(i,"API drift dia")['max_value'] or
 									not get_q_i_t_p(i,"Range")['min_value'] <= to_frac(serial_no.range) <= get_q_i_t_p(i,"Range")['max_value'] 
 							]
 							if conditions[0]:
@@ -312,7 +312,8 @@ class Inspection(Document):
 					  self.drill_pipe_parameters,
 					  self.near_stabilizer_parameters,
 					  self.string_stabilizer_parameters,
-					  self.drilling_tools_parameters]
+					  self.drilling_tools_parameters,
+					  self.tubing_parameters]
 
 		for parameter in parameters:
 			if parameter:
@@ -392,7 +393,7 @@ def create_wo(qty,bom,purpose,item_code,for_cu_ins=0,warehouse=None,final_wareho
 
 	if frappe.db.exists("Work Order",{"production_item":item_code,"qty":qty,"purpose":purpose,"project_wo":project_wo}):
 		frappe.throw(_("You have already created this work order for that purpose"))
-	if not purpose in ["Manufacturing","Inspection","Service"]:
+	if not purpose in ["Manufacturing","Inspection","Service","Sub rent"]:
 		frappe.throw(_("You can create Work order against Manufacturing or Inspection"))
 	item_bom = frappe.db.get_value("BOM",bom,"inspection_bom")
 	# if item_bom != 1 and purpose == "Inspection":
@@ -411,7 +412,7 @@ def create_wo(qty,bom,purpose,item_code,for_cu_ins=0,warehouse=None,final_wareho
 				new_doc.department_ = d
 
 	new_doc.division = frappe.db.get_value("Project",project,'Division')
-	if purpose == "Inspection":
+	if purpose in ['Inspection','Sub rent']:
 		new_doc.skip_transfer = 1
 	else:
 		new_doc.fg_warehouse = final_warehouse
@@ -556,11 +557,12 @@ def check_duplicated_serial_no(serial_no=None,work_order=None):
 	sn_list = []
 	print(sn)
 	for r in range(len(sn)):
-		temporary = sn[r]['accepted_serial_no'].split("\n")
-		for t in temporary:
-			sn_list.append(t)
-		if serial_no in sn_list:
-			frappe.throw(_("Serial No {} is already inspected and validated, please delete it from the table".format(serial_no)))
+		if sn[r]['accepted_serial_no']:
+			temporary = sn[r]['accepted_serial_no'].split("\n")
+			for t in temporary:
+				sn_list.append(t)
+			if serial_no in sn_list:
+				frappe.throw(_("Serial No {} is already inspected and validated, please delete it from the table".format(serial_no)))
 
 
 def delete_cancelled_inspection_serial_no(for_external_inspection,project_work_order,item_code,work_order,accepted_serial_no,rental_order,sales_order):

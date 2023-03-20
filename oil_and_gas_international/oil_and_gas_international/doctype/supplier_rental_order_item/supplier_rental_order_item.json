@@ -6,24 +6,17 @@
  "engine": "InnoDB",
  "field_order": [
   "item_code",
-  "from_date",
   "uom",
   "column_break_2",
   "item_name",
-  "to_date",
-  "unit_price",
   "description_section",
   "description",
+  "colbre",
+  "description_2",
   "quantity_and_rate_section",
   "qty",
-  "days_of_rent",
-  "delivered_qty",
   "column_break_9",
-  "asset_location",
-  "assets",
-  "get_assets",
-  "received_qty",
-  "status",
+  "stopped_qty",
   "section_break_19",
   "operational_running",
   "standby",
@@ -39,11 +32,7 @@
   "base_redress",
   "base_straight",
   "section_break_18",
-  "total_amount",
-  "billed_amount",
-  "column_break_33",
-  "base_total_amount",
-  "base_billed_amount"
+  "column_break_33"
  ],
  "fields": [
   {
@@ -52,13 +41,6 @@
    "in_list_view": 1,
    "label": "Item Code",
    "options": "Item",
-   "reqd": 1
-  },
-  {
-   "fieldname": "from_date",
-   "fieldtype": "Date",
-   "in_list_view": 1,
-   "label": "From Date",
    "reqd": 1
   },
   {
@@ -72,12 +54,6 @@
    "label": "Item Name"
   },
   {
-   "allow_on_submit": 1,
-   "fieldname": "to_date",
-   "fieldtype": "Date",
-   "label": "To Date"
-  },
-  {
    "collapsible": 1,
    "fieldname": "description_section",
    "fieldtype": "Section Break",
@@ -89,6 +65,15 @@
    "fieldtype": "Text Editor",
    "label": "Description"
   },
+  {
+    "fieldname": "description_2",
+    "fieldtype": "Text Editor",
+    "label": "Description 2"
+   },
+   {
+    "fieldname": "colbre",
+    "fieldtype": "Column Break"
+   },
   {
    "fieldname": "quantity_and_rate_section",
    "fieldtype": "Section Break",
@@ -104,46 +89,15 @@
    "reqd": 1
   },
   {
-   "allow_on_submit": 1,
-   "fieldname": "days_of_rent",
-   "fieldtype": "Int",
-   "label": "Days Of Rent"
-  },
-  {
-   "allow_on_submit": 1,
-   "default": "0",
-   "fieldname": "delivered_qty",
-   "fieldtype": "Float",
-   "label": "Delivered Qty",
-   "no_copy": 1
-  },
-  {
    "fieldname": "column_break_9",
    "fieldtype": "Column Break"
   },
-  {
-   "fieldname": "asset_location",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "Asset Location",
-   "options": "Location",
-   "reqd": 1
-  },
+
   {
    "allow_on_submit": 1,
-   "fieldname": "received_qty",
+   "fieldname": "stopped_qty",
    "fieldtype": "Float",
-   "label": "Received Qty",
-   "no_copy": 1
-  },
-  {
-   "allow_on_submit": 1,
-   "default": "To Receive",
-   "fieldname": "status",
-   "fieldtype": "Select",
-   "label": "Status",
-   "no_copy": 1,
-   "options": "To Receive\nReceived\nDelivered",
+   "label": "Stopped Qty",
    "read_only": 1
   },
   {
@@ -152,11 +106,13 @@
   },
   {
    "fieldname": "operational_running",
+   "default":0,
    "fieldtype": "Currency",
    "label": "Operational/Running (Billing Currency)"
   },
   {
    "fieldname": "standby",
+   "default":0,
    "fieldtype": "Currency",
    "label": "Standby (Billing Currency)"
   },
@@ -166,16 +122,19 @@
   },
   {
    "fieldname": "lihdbr",
+   "default":0,
    "fieldtype": "Currency",
    "label": "LIH/DBR (Billing Currency)"
   },
   {
    "fieldname": "redress",
+   "default":0,
    "fieldtype": "Currency",
    "label": "Redress (Billing Currency)"
   },
   {
    "fieldname": "straight",
+   "default":0,
    "fieldtype": "Currency",
    "label": "Straight (Billing Currency)"
   },
@@ -184,21 +143,8 @@
    "fieldtype": "Section Break"
   },
   {
-   "allow_on_submit": 1,
-   "fieldname": "total_amount",
-   "fieldtype": "Currency",
-   "label": "Total Amount (Billing Currency)",
-   "read_only": 1
-  },
-  {
-   "allow_on_submit": 1,
-   "fieldname": "billed_amount",
-   "fieldtype": "Currency",
-   "label": "Billed Amount (Billing Currency)",
-   "read_only": 1
-  },
-  {
    "fieldname": "post_rental_inspection_charges",
+   "default":0,
    "fieldtype": "Currency",
    "label": "Post Rental Inspection charges (Billing Currency)"
   },
@@ -243,39 +189,13 @@
    "fieldtype": "Column Break"
   },
   {
-   "fieldname": "base_total_amount",
-   "fieldtype": "Currency",
-   "label": "Base Total Amount (Company Currency)",
-   "options": "Company:company:default_currency"
-  },
-  {
-   "fieldname": "base_billed_amount",
-   "fieldtype": "Currency",
-   "label": "Base Billed Amount (Company Currency)",
-   "options": "Company:company:default_currency"
-  },
-  {
-   "fieldname": "assets",
-   "fieldtype": "Small Text",
-   "label": "Assets"
-  },
-  {
-   "fieldname": "get_assets",
-   "fieldtype": "Button",
-   "label": "Get Assets"
-  },
-  {
    "fetch_from": "item_code.stock_uom",
    "fieldname": "uom",
    "fieldtype": "Link",
    "label": "UOM",
    "options": "UOM"
-  },
-  {
-   "fieldname": "unit_price",
-   "fieldtype": "Currency",
-   "label": "Unit Price"
   }
+
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,

@@ -276,11 +276,10 @@ const create_custom_buttons = () => {
 		add_material_transfer()
 		// add_rental_invoice()
 		// add_rental_receipt()
-		//add_material_request()
+		// add_material_request()
 		// add_asset_formation()
 		// add_purchase_order()
 		// add_purchase_invoice()
-		
 		add_rental_timesheet()
 	
 		
@@ -597,7 +596,7 @@ const calculate_lost_and_damage_price = (frm, cdt, cdn) => {
 			row.base_lihdbr = data[2]
 			row.base_redress = data[3]
 			row.base_straight = data[4]
-			row.post_rental_inspection_charges = data[5]
+			row.base_post_rental_inspection_charges = data[5]
 			// row.base_operational_running = data[0]
 			// row.base_standby = data[1]
 			// row.base_lihdbr = data[2]

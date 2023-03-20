@@ -107,6 +107,9 @@ frappe.ui.form.on('Project Work Order', {
 	refresh(frm) {
 		if (frm.doc.docstatus == 1) {
 			create_inspection(frm)
+			add_material_request(frm)
+			add_subrent_quotation(frm)
+			add_subrent_order(frm)
 		}
     },
 
@@ -338,4 +341,102 @@ const create_inspection = (frm) => {
     }, 'Create');
 }
 
+
+const add_material_request = () => {
+	cur_frm.add_custom_button('Material Request', () => {
+		const doc = cur_frm.doc
+		frappe.run_serially([
+			() => frappe.new_doc('Material Request'),
+			() => {
+				const cur_doc = cur_frm.doc
+				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "rental_order", doc.rental_order)
+				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "department", doc.department)
+				
+				cur_doc.items = []
+				for (const row of doc.rental_order_items) {
+					if (row.purpose == "Sub rent"){
+						const new_row = cur_frm.add_child("items", {
+							item_code:row.item_code,
+							qty:row.qty
+						})
+						const cdt = new_row.doctype
+						const cdn = new_row.name
+						frappe.model.set_value(cdt.doctype, cdn.name, "item_code", row.item_code)
+
+					}
+
+
+				}
+
+				cur_frm.refresh()
+			}
+		])
+	}, 'Create')
+}
+
+
+const add_subrent_quotation = () => {
+	cur_frm.add_custom_button('Sub Rent Quotation', () => {
+		const doc = cur_frm.doc
+		frappe.run_serially([
+			() => frappe.new_doc('Supplier Rental Quotation'),
+			() => {
+				const cur_doc = cur_frm.doc
+				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "rental_order", doc.rental_order)
+				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "department", doc.department)
+				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "division", doc.division)
+				
+				cur_doc.items = []
+				for (const row of doc.rental_order_items) {
+					if (row.purpose == "Sub rent"){
+						const new_row = cur_frm.add_child("items", {
+							qty:row.qty
+						})
+						const cdt = new_row.doctype
+						const cdn = new_row.name
+						frappe.model.set_value(cdt, cdn, "item_code", row.item_code)
+
+					}
+
+
+				}
+
+				cur_frm.refresh()
+			}
+		])
+	}, 'Create')
+}
+
+const add_subrent_order = () => {
+	cur_frm.add_custom_button('Sub Rent Order', () => {
+		const doc = cur_frm.doc
+		frappe.run_serially([
+			() => frappe.new_doc('Supplier Rental Order'),
+			() => {
+				const cur_doc = cur_frm.doc
+				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "rental_order", doc.rental_order)
+				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "department", doc.department)
+				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "division", doc.division)
+				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "project", doc.project_reference)
+				
+				cur_doc.items = []
+				for (const row of doc.rental_order_items) {
+					if (row.purpose == "Sub rent"){
+						const new_row = cur_frm.add_child("items", {
+							qty:row.qty
+						})
+						const cdt = new_row.doctype
+						const cdn = new_row.name
+						frappe.model.set_value(cdt, cdn, "item_code", row.item_code)
+
+					}
+
+
+				}
+
+				cur_frm.refresh()
+			}
+		])
+	}, 'Create')
+}
 

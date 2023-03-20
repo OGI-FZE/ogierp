@@ -40,7 +40,6 @@ const get_conversion_rate = (frm) => {
 }
 
 frappe.ui.form.on('Proforma Invoice Item', {
-
 	rate(frm,cdt,cdn){
 		var child = locals[cdt][cdn];
 		frappe.model.set_value(cdt,cdn,"amount",child.rate*child.qty*child.days)	
@@ -52,26 +51,36 @@ frappe.ui.form.on('Proforma Invoice Item', {
     price_list(frm,cdt,cdn){
         let rate = 0
 		var child = locals[cdt][cdn];
+        frappe.call({
+            method: 'oil_and_gas_international.overriding.get_rental_settings',
+            args: {},
+            callback: function(r) {
+                console.log(")))))))))))))))))))))")
+                console.log(r.message.redress)
+                if (child.price_list == r.message.operationel){
+                    rate = child.operational_running
+                }
+                else if (child.price_list == r.message.standby){
+                    rate = child.standby
+                }
+                else if (child.price_list == r.message.post_rental_inspection_charges){
+                    rate = child.post_rental_inspection_charges
+                }
+                else if  (child.price_list == r.message.lihdbr){
+                    rate = child.lihdbr
+                }
+                else if (child.price_list == r.message.redress){
+                    rate = child.redress
+                }
+                else {
+                    rate = child.straight
+                }
+                frappe.model.set_value(cdt,cdn,"rate", rate)
+
+            }
+        });
             
-            if (child.price_list == "Operational/Running"){
-                rate = child.operational_running
-            }
-            else if (child.price_list == "Standby"){
-                rate = child.standby
-            }
-            else if (child.price_list == "Post Rental Inspection charges"){
-                rate = child.post_rental_inspection_charges
-            }
-            else if  (child.price_list == "LIH/DBR"){
-                rate = child.lihdbr
-            }
-            else if (child.price_list == "Redress"){
-                rate = child.redress
-            }
-            else {
-                rate = child.straight
-            }
-            frappe.model.set_value(cdt,cdn,"rate", rate)
+
 
             }
 

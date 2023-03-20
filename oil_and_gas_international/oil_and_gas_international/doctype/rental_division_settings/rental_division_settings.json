@@ -6,19 +6,41 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
+  "sec2",
   "operational_running",
   "lih_dbr",
   "straight",
   "column_break_2",
   "standby",
   "redress",
-  "post_rental_inspection_charges"
+  "post_rental_inspection_charges",
+  "sec",
+  "rent_operational_running",
+  "rent_lih_dbr",
+  "rent_straight",
+  "column_break_22",
+  "rent_standby",
+  "rent_redress",
+  "rent_post_rental_inspection_charges"
+
  ],
  "fields": [
   {
    "fieldname": "column_break_2",
    "fieldtype": "Column Break"
   },
+  {
+    "fieldname": "sec",
+    "fieldtype": "Section Break",
+    "label": "Supplier Prices"
+
+   },
+   {
+    "fieldname": "sec2",
+    "fieldtype": "Section Break",
+    "label": "Customer Prices"
+
+   },
   {
    "fieldname": "lih_dbr",
    "fieldtype": "Link",
@@ -54,7 +76,47 @@
    "fieldtype": "Link",
    "label": "Post Rental Inspection charges",
    "options": "Price List"
-  }
+  },
+  {
+    "fieldname": "column_break_22",
+    "fieldtype": "Column Break"
+   },
+   {
+    "fieldname": "rent_lih_dbr",
+    "fieldtype": "Link",
+    "label": "Rent LIH/DBR",
+    "options": "Price List"
+   },
+   {
+    "fieldname": "rent_operational_running",
+    "fieldtype": "Link",
+    "label": "Rent Operational/Running",
+    "options": "Price List"
+   },
+   {
+    "fieldname": "rent_standby",
+    "fieldtype": "Link",
+    "label": "Rent Standby",
+    "options": "Price List"
+   },
+   {
+    "fieldname": "rent_redress",
+    "fieldtype": "Link",
+    "label": "Rent Redress",
+    "options": "Price List"
+   },
+   {
+    "fieldname": "rent_straight",
+    "fieldtype": "Link",
+    "label": "Rent Straight",
+    "options": "Price List"
+   },
+   {
+    "fieldname": "rent_post_rental_inspection_charges",
+    "fieldtype": "Link",
+    "label": "Rent Post Rental Inspection charges",
+    "options": "Price List"
+   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,

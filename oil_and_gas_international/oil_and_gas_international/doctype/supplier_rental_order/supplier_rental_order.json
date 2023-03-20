@@ -16,12 +16,16 @@
   "date",
   "departments",
   "requested_by",
+  "sedate",
+  "start_date",
+  "coldate",
+  "end_date",
   "address_and_contact_section",
-  "address_html",
+  "supplier_address",
+  "address_display",
   "column_break_13",
-  "contact_person",
-  "contact_number",
-  "email_address",
+  "supplier_contact",
+  "contact_display",
   "section_break_6",
   "currency",
   "column_break_8",
@@ -31,11 +35,7 @@
   "section_break_8",
   "total_qty",
   "column_break_10",
-  "total",
-  "taxes_and_charges_section",
-  "taxes",
   "section_break_14",
-  "grand_total",
   "terms_and_conditions_section",
   "terms",
   "terms_and_conditions_details",
@@ -48,6 +48,7 @@
   "timesheets_billed",
   "references_section",
   "supplier_rental_quotation",
+  "rental_order",
   "amended_from"
  ],
  "fields": [
@@ -67,6 +68,40 @@
    "label": "Supplier Name",
    "read_only": 1
   },
+  {
+    "fieldname": "contact_display",
+    "fieldtype": "Small Text",
+    "label": "Contact Display",
+    "read_only": 1
+   },
+   {
+    "fieldname": "address_display",
+    "fieldtype": "Small Text",
+    "label": "Address Display",
+    "read_only": 1
+   },
+   {
+    "fieldname": "sedate",
+    "fieldtype": "Section Break",
+    "label": "Start & End Date",
+    "read_only": 1
+   },
+   {
+    "fieldname": "start_date",
+    "fieldtype": "Date",
+    "label": "Start Date",
+    "allow_on_submit": 1
+   },
+   {
+    "fieldname": "coldate",
+    "fieldtype": "Column Break"
+   },
+   {
+    "fieldname": "end_date",
+    "fieldtype": "Date",
+    "label": "End Date",
+    "allow_on_submit": 1
+   },
   {
    "fieldname": "column_break_3",
    "fieldtype": "Column Break"
@@ -113,30 +148,8 @@
    "fieldtype": "Column Break"
   },
   {
-   "fieldname": "total",
-   "fieldtype": "Float",
-   "label": "Total"
-  },
-  {
-   "fieldname": "taxes_and_charges_section",
-   "fieldtype": "Section Break",
-   "label": "Taxes and Charges"
-  },
-  {
-   "fieldname": "taxes",
-   "fieldtype": "Table",
-   "label": "Taxes",
-   "options": "Sales Taxes and Charges"
-  },
-  {
    "fieldname": "section_break_14",
    "fieldtype": "Section Break"
-  },
-  {
-   "fieldname": "grand_total",
-   "fieldtype": "Currency",
-   "label": "Grand Total",
-   "read_only": 1
   },
   {
    "fieldname": "terms_and_conditions_section",
@@ -166,7 +179,7 @@
    "fieldname": "status",
    "fieldtype": "Select",
    "label": "Status",
-   "options": "Draft\nOpen\nOn Hold\nTo Issue and Bill\nTo Return and Bill\nTo Bill\nCompleted\nCancelled\nClosed"
+   "options": "Draft\nOn Rent\nCompleted\n"
   },
   {
    "fieldname": "percentage_delivered",
@@ -217,6 +230,12 @@
    "options": "Supplier Rental Quotation"
   },
   {
+    "fieldname": "rental_order",
+    "fieldtype": "Link",
+    "label": "Rental Order",
+    "options": "Rental Order"
+   },
+  {
    "fieldname": "currency",
    "fieldtype": "Link",
    "label": "Currency",
@@ -238,20 +257,15 @@
   },
   {
    "fieldname": "departments",
-   "fieldtype": "Select",
+   "fieldtype": "Link",
    "label": "Department",
-   "options": "\nTrading\nLogistics\nInspection\nRental\nAdmin\nMS - Sale\nMS - Repair\nMS - Internal\nQA/QC"
+   "options": "Department"
   },
   {
    "fieldname": "project",
    "fieldtype": "Link",
-   "label": "Job Number",
+   "label": "Project",
    "options": "Project"
-  },
-  {
-   "fieldname": "items_required_date",
-   "fieldtype": "Date",
-   "label": "Items Required Date"
   },
   {
    "fieldname": "requested_by",
@@ -270,7 +284,7 @@
    "label": "Address and Contact"
   },
   {
-   "fieldname": "address_html",
+   "fieldname": "supplier_address",
    "fieldtype": "Link",
    "label": "Address",
    "options": "Address"
@@ -280,20 +294,12 @@
    "fieldtype": "Column Break"
   },
   {
-   "fieldname": "contact_person",
-   "fieldtype": "Data",
-   "label": "Contact Person"
-  },
-  {
-   "fieldname": "contact_number",
-   "fieldtype": "Data",
-   "label": "Contact Number"
-  },
-  {
-   "fieldname": "email_address",
-   "fieldtype": "Data",
-   "label": "Email Address"
-  }
+   "fieldname": "supplier_contact",
+   "fieldtype": "Link",
+   "label": "Contact",
+   "options": "Contact"
+
+}
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,

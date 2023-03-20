@@ -215,10 +215,11 @@ def set_item_rent_days(doc,handle=None):
 	for row in doc.items:
 		# if not row.start_date_ or row.end_date:
 		# 	frappe.throw(_("please set start and end date for each item"))
-		if doc.doctype == 'Rental Invoice':
+		if doc.doctype in ['Sub Rental Invoice','Rental Invoice']:
 			row.delivery_date = doc.from_date
 		else:
 			row.delivery_date = doc.start_date
+	
 		row.days = date_diff(row.end_date,row.start_date_) + 1
 		row.amount = row.qty*row.rate*row.days
 		doc.total_amount += row.amount
@@ -249,3 +250,151 @@ def check_rental_wo_qty(doc,handle=None):
 			if float(wo_qty) + (item.qty) > item.returned_qty:
 				frappe.throw(_("you overpassed quantity"))
  
+
+
+
+def get_pricing_rule(item_code=None):
+    pr_list = []
+    pricing_rules = frappe.db.sql("""select parent from `tabPricing Rule Item Code` where item_code = '%s'""" %(item_code))
+    for pr in pricing_rules:
+        pr_list.append(pr[0])
+    return pr_list
+
+
+@frappe.whitelist()
+def get_rental_settings():
+    settings = frappe.get_doc("Rental Division Settings")
+    operationel = settings.operational_running
+    lih_dbr = settings.lih_dbr
+    straight = settings.straight
+    standby = settings.standby
+    redress = settings.redress
+    post_rental_inspection_charges = settings.post_rental_inspection_charges
+    return {"operationel":operationel,
+            "lih_dbr":lih_dbr,
+            "straight":straight,
+            "standby":standby,
+            "redress":redress,
+            "post_rental_inspection_charges":post_rental_inspection_charges}
+
+
+@frappe.whitelist()
+def get_subrental_settings():
+    settings = frappe.get_doc("Rental Division Settings")
+    operationel = settings.rent_operational_running
+    lih_dbr = settings.rent_lih_dbr
+    straight = settings.rent_straight
+    standby = settings.rent_standby
+    redress = settings.rent_redress
+    post_rental_inspection_charges = settings.rent_post_rental_inspection_charges
+    return {"operationel":operationel,
+            "lih_dbr":lih_dbr,
+            "straight":straight,
+            "standby":standby,
+            "redress":redress,
+            "post_rental_inspection_charges":post_rental_inspection_charges}
+
+
+
+# def apply_pricing_rule(doc,handle=None):
+#     for item in doc.items:
+#         pr_list = get_pricing_rule(item.item_code)
+#         for pr in pr_list:
+#             buying = frappe.db.get_value("Price List",pr,"buying")
+#             customer = frappe.db.get_value("Price List",pr,"customer")
+#             if buying == 1 and customer == doc.customer:
+#                 selected_pr = frappe.get_doc("Price List", pr)
+#                 if selected_pr.valid_from < doc.date < selected_pr.valid_upto:
+#                     if min_qty != 0 and max_qty !=0:
+#                         if selected_pr.rate_or_discount == "Discount Percentage":
+#                             if selected_pr.for_price_list == get_rental_settings()['operationel']:
+#                                 item.base_operational_running = item.base_operationnel_running*discount_percentage/100
+#                             if selected_pr.for_price_list == get_rental_settings()['lih_dbr']:
+#                                 item.base_lihdbr = item.base_lihdbr*discount_percentage/100
+#                             if selected_pr.for_price_list == get_rental_settings()['base_post_rental_inspection_charges']:
+#                                 item.base_post_rental_inspection_charges = item.base_post_rental_inspection_charges*discount_percentage/100
+#                             if selected_pr.for_price_list == get_rental_settings()['base_standby']:
+#                                 item.base_standby = item.base_standby*discount_percentage/100
+#                             if selected_pr.for_price_list == get_rental_settings()['base_straight']:
+#                                 item.base_straight = item.base_straight*discount_percentage/100
+#                             if selected_pr.for_price_list == get_rental_settings()['operationel']:
+#                                 item.base_redress = item.base_redress*discount_percentage/100
+
+
+
+def update_serial_no(doc,handle=None):
+	if not doc.need_inspection and doc.stock_entry_type == "Material Receipt" and doc.sub_rental_order: 
+		ro = frappe.get_doc("Rental Order",doc.rental_order)
+		for roitem in ro.items:
+			for item in doc.items:
+				if roitem.item_code == item.item_code:
+					roitem.serial_no_accepted = "\n".join([roitem.serial_no_accepted,item.serial_no])
+					ro.save()
+					frappe.db.commit()
+
+
+
+
+
+def change_subro_status(doc,handle=None):
+	if doc.end_date:
+		timesheets = frappe.db.sql("""select name,start_date from `tabSupplier Rental Timesheet`
+									where supplier_rental_order = '%s' order by start_date desc""" %(doc.name),as_dict=1)
+		if timesheets:
+			last_ts = frappe.get_doc("Rental Timesheet",timesheets[0]['name'])
+			d = last_ts.end_date
+			# if not isinstance(doc.end_date, datetime.date):
+			# 	end_date = datetime.strptime(doc.end_date,"%Y-%M-%d")
+			# else:
+			# 	end_date = doc.end_date
+			if datetime.strptime(doc.end_date,"%Y-%m-%d") < datetime(d.year,d.month,d.day):
+				frappe.throw(_("End date is invalid, please set it after timesheet end date {}".format(d)))
+		doc.db_set("status","Completed")
+	else:
+		doc.db_set("status","On Rent")
+
+
+def create_sub_rental_timesheet():
+	ro_list = []
+	ro = frappe.db.get_list('Supplier Rental Order',filters={'status': 'On Rent'},as_list=True)
+	for i in range(len(ro)):
+		ro_list.append(ro[i][0])
+	for r in ro_list:
+		ro_items = []
+		rental_order = frappe.get_doc("Supplier Rental Order",r)
+		timesheets = frappe.db.sql("""select name,start_date from `tabSupplier Rental Timesheet`
+										  where supplier_rental_order = '%s' 
+										  order by start_date desc""" %(r),as_dict=1)
+		if timesheets:
+			last_ts = frappe.get_doc("Supplier Rental Timesheet",timesheets[0]['name'])
+			new_ts = frappe.new_doc("Supplier Rental Timesheet")
+			new_ts.supplier = last_ts.supplier
+			new_ts.supplier_rental_order = last_ts.supplier_rental_order
+			new_ts.start_date = last_ts.start_date + relativedelta.relativedelta(months=1, day=1)
+			new_ts.end_date = last_ts.end_date + relativedelta.relativedelta(months=1, day=32)
+			new_ts.currency = last_ts.currency
+			new_ts.conversion_rate = last_ts.conversion_rate
+			print(last_ts.name)
+			for row in last_ts.items:
+				if not row.stop_rent:
+					new_ts.append("items",{
+						"item_code": row.item_code,
+						"item_name": row.item_name,
+						"description": row.description,
+						"qty": row.qty,
+						"rate": row.rate,
+						"uom": row.uom,
+						"price_list": row.price_list,
+						"operational_running": row.operational_running,
+						"amount": row.amount,
+						"standby": row.standby,
+						"post_rental_inspection_charges": row.post_rental_inspection_charges,
+						"lihdbr": row.lihdbr,
+						"redress": row.redress,
+						"straight": row.straight,
+						"delivery_date": last_ts.start_date + relativedelta.relativedelta(months=1, day=1),
+						"start_date_": last_ts.start_date + relativedelta.relativedelta(months=1, day=1),
+						"end_date": last_ts.end_date + relativedelta.relativedelta(months=1, day=32)
+					})
+			new_ts.save()
+			frappe.db.commit()
