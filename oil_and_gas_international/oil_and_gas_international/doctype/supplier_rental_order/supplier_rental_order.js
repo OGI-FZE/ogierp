@@ -400,29 +400,46 @@ const calc_days_of_rent = (frm, cdt, cdn) => {
 const add_material_receipt = () => {
 	cur_frm.add_custom_button('Material Receipt', () => {
 		const doc = cur_frm.doc
-		frappe.run_serially([
-			() => frappe.new_doc('Stock Entry'),
-			() => {
-				const cur_doc = cur_frm.doc
-				frappe.model.set_value(cur_doc.doctype,cur_doc.name,"stock_entry_type","Material Receipt")
-				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "sub_rental_order", doc.name)
-				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "from_supplier", doc.supplier)
-				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "rental_order", doc.rental_order)
-				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "sub_rental_order", doc.name)
-
-				cur_doc.items = []
-				for (const row of doc.items) {
-					const new_row = cur_frm.add_child("items", {
-						qty: row.qty,
-					})
-					const cdt = new_row.doctype
-					const cdn = new_row.name
-					frappe.model.set_value(cdt, cdn, "item_code", row.item_code)
+		cur_frm.call({
+			method: 'oil_and_gas_international.overriding.check_material_receipt_existence',
+			args: {
+				"rental_order" : doc.rental_order,
+				"sub_rental_order": doc.sub_rental_order,
+				"supplier": doc.supplier,
+			},
+			freeze: true,
+			callback: function(r) {
+				if(r.message == "False") {
+					frappe.run_serially([
+						() => frappe.new_doc('Stock Entry'),
+						() => {
+							const cur_doc = cur_frm.doc
+							frappe.model.set_value(cur_doc.doctype,cur_doc.name,"stock_entry_type","Material Receipt")
+							frappe.model.set_value(cur_doc.doctype, cur_doc.name, "sub_rental_order", doc.name)
+							frappe.model.set_value(cur_doc.doctype, cur_doc.name, "from_supplier", doc.supplier)
+							frappe.model.set_value(cur_doc.doctype, cur_doc.name, "rental_order", doc.rental_order)
+							frappe.model.set_value(cur_doc.doctype, cur_doc.name, "sub_rental_order", doc.name)
+			
+							cur_doc.items = []
+							for (const row of doc.items) {
+								const new_row = cur_frm.add_child("items", {
+									qty: row.qty,
+								})
+								const cdt = new_row.doctype
+								const cdn = new_row.name
+								frappe.model.set_value(cdt, cdn, "item_code", row.item_code)
+							}
+			
+							cur_frm.refresh()
+						}
+					])
 				}
-
-				cur_frm.refresh()
+				else{
+					frappe.throw(__("Material Receipt Already created"))
+				}
 			}
-		])
+		});
+
 	}, 'Create')
 }
 

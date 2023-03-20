@@ -410,33 +410,48 @@ const add_subrent_quotation = () => {
 const add_subrent_order = () => {
 	cur_frm.add_custom_button('Sub Rent Order', () => {
 		const doc = cur_frm.doc
-		frappe.run_serially([
-			() => frappe.new_doc('Supplier Rental Order'),
-			() => {
-				const cur_doc = cur_frm.doc
-				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "rental_order", doc.rental_order)
-				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "department", doc.department)
-				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "division", doc.division)
-				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "project", doc.project_reference)
-				
-				cur_doc.items = []
-				for (const row of doc.rental_order_items) {
-					if (row.purpose == "Sub rent"){
-						const new_row = cur_frm.add_child("items", {
-							qty:row.qty
-						})
-						const cdt = new_row.doctype
-						const cdn = new_row.name
-						frappe.model.set_value(cdt, cdn, "item_code", row.item_code)
-
-					}
-
-
+		cur_frm.call({
+			method: 'oil_and_gas_international.overriding.check_subrent_order_existence',
+			args: {
+				"rental_order" : doc.rental_order,
+			},
+			freeze: true,
+			callback: function(r) {
+				if(r.message == "False") {
+					frappe.run_serially([
+						() => frappe.new_doc('Supplier Rental Order'),
+						() => {
+							const cur_doc = cur_frm.doc
+							frappe.model.set_value(cur_doc.doctype, cur_doc.name, "rental_order", doc.rental_order)
+							frappe.model.set_value(cur_doc.doctype, cur_doc.name, "department", doc.department)
+							frappe.model.set_value(cur_doc.doctype, cur_doc.name, "division", doc.division)
+							frappe.model.set_value(cur_doc.doctype, cur_doc.name, "project", doc.project_reference)
+							
+							cur_doc.items = []
+							for (const row of doc.rental_order_items) {
+								if (row.purpose == "Sub rent"){
+									const new_row = cur_frm.add_child("items", {
+										qty:row.qty
+									})
+									const cdt = new_row.doctype
+									const cdn = new_row.name
+									frappe.model.set_value(cdt, cdn, "item_code", row.item_code)
+			
+								}
+			
+			
+							}
+			
+							cur_frm.refresh()
+						}
+					])
 				}
-
-				cur_frm.refresh()
+				else{
+					frappe.throw(__("Sub Rental Order Already created"))
+				}
 			}
-		])
+		});
+
 	}, 'Create')
 }
 

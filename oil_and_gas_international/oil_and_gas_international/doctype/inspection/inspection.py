@@ -529,15 +529,18 @@ def fill_order_serial_no(for_external_inspection,item_code,project_work_order,ac
 					order.save()
 					frappe.db.commit()
 			if item.item_code == item_code:
-				if len(frappe.db.get_list("Inspection",filters={"work_order":work_order,"docstatus":['!=',2]})) == 1:
-					item.set("serial_no_accepted",accepted_serial_no)
-					order.save()
-					frappe.db.commit()
+				# if len(frappe.db.get_list("Inspection",filters={"work_order":work_order,"docstatus":['!=',2]})) == 1:
+				# 	item.set("serial_no_accepted",accepted_serial_no)
+				# 	order.save()
+				# 	frappe.db.commit()
 
+				# else:
+				if not item.serial_no_accepted:
+					item.set("serial_no_accepted",accepted_serial_no)
 				else:
 					item.serial_no_accepted = '\n'.join([item.serial_no_accepted,accepted_serial_no])
-					order.save()
-					frappe.db.commit()
+				order.save()
+				frappe.db.commit()
 	else:
 		pwo = frappe.get_doc("Project Work Order",project_work_order)
 		if pwo.accepted_serial_no:

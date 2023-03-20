@@ -398,3 +398,19 @@ def create_sub_rental_timesheet():
 					})
 			new_ts.save()
 			frappe.db.commit()
+
+@frappe.whitelist()
+def check_subrent_order_existence(rental_order=None):
+	exists = False
+	if frappe.db.exists("Supplier Rental Order", {"rental_order": rental_order}):
+		exists = True
+	return exists
+
+
+@frappe.whitelist()
+def check_material_receipt_existence(rental_order=None,sub_rental_order=None,supplier=None):
+	exists = False
+	if frappe.db.exists("Stock Entry", {"rental_order": rental_order,"sub_rental_order": sub_rental_order,supplier:"supplier"}):
+		exists = True
+	return exists
+
