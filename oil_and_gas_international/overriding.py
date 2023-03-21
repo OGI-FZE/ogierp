@@ -117,6 +117,8 @@ def add_transfered_qty_ro_item(doc,handle=None):
 					ro.save()
 					frappe.db.commit()
 
+	doc.update_serial_no()
+
 
 
 
@@ -328,9 +330,10 @@ def update_serial_no(doc,handle=None):
 		for roitem in ro.items:
 			for item in doc.items:
 				if roitem.item_code == item.item_code:
-					roitem.serial_no_accepted = "\n".join([roitem.serial_no_accepted,item.serial_no])
-					ro.save()
-					frappe.db.commit()
+					if item.serial_no:
+						roitem.serial_no_accepted = "\n".join([roitem.serial_no_accepted,item.serial_no])
+						ro.save()
+						frappe.db.commit()
 
 
 
@@ -401,16 +404,16 @@ def create_sub_rental_timesheet():
 
 @frappe.whitelist()
 def check_subrent_order_existence(rental_order=None):
-	exists = False
-	if frappe.db.exists("Supplier Rental Order", {"rental_order": rental_order}):
-		exists = True
+	exists = "False"
+	if frappe.db.exists("Supplier Rental Order", {"rental_order": "OGI-RO-03-2023-0313"}):
+		exists = "True"
 	return exists
 
 
 @frappe.whitelist()
 def check_material_receipt_existence(rental_order=None,sub_rental_order=None,supplier=None):
-	exists = False
+	exists = "False"
 	if frappe.db.exists("Stock Entry", {"rental_order": rental_order,"sub_rental_order": sub_rental_order,supplier:"supplier"}):
-		exists = True
+		exists = "True"
 	return exists
 

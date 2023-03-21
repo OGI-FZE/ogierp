@@ -49,7 +49,6 @@ class SupplierRentalTimesheet(Document):
         reninv.currency = self.currency
         reninv.sub_rental_timesheet = self.name
         reninv.conversion_rate = self.conversion_rate
-        reninv.delivery_date = self.items[0].delivery_date
         reninv.total = self.total_amount
         reninv.from_date = self.start_date
         reninv.to_date = self.end_date

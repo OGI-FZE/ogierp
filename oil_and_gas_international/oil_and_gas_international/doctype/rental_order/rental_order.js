@@ -639,14 +639,26 @@ const add_material_transfer = () => {
 				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "rental_order", doc.name)
 				cur_doc.items = []
 				for (const row of doc.items) {
-					let sn_qty = row.serial_no_accepted.split("\n")
-					const new_row = cur_frm.add_child("items", {
-						qty: sn_qty.length,
-						serial_no: row.serial_no_accepted
-					})
-					const cdt = new_row.doctype
-					const cdn = new_row.name
-					frappe.model.set_value(cdt, cdn, "item_code", row.item_code)
+					if (row.serial_no_accepted){
+						let sn_qty = row.serial_no_accepted.split("\n")
+						const new_row = cur_frm.add_child("items", {
+							qty: sn_qty.length,
+							serial_no: row.serial_no_accepted
+						})
+						const cdt = new_row.doctype
+						const cdn = new_row.name
+						frappe.model.set_value(cdt, cdn, "item_code", row.item_code)
+					}
+					else {
+						const new_row = cur_frm.add_child("items", {
+							qty: row.qty,
+						})
+						const cdt = new_row.doctype
+						const cdn = new_row.name
+						frappe.model.set_value(cdt, cdn, "item_code", row.item_code)
+						
+					}
+
 				}
 
 				cur_frm.refresh()

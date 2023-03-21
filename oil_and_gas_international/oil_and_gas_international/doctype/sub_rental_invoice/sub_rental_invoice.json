@@ -18,7 +18,6 @@
   "column_break1",
   "company",
   "transaction_date",
-  "delivery_date",
   "division",
   "start_end",
   "from_date",
@@ -162,15 +161,6 @@
    "no_copy": 1,
    "oldfieldname": "transaction_date",
    "oldfieldtype": "Date",
-   "reqd": 1,
-   "search_index": 1,
-   "width": "160px"
-  },
-  {
-   "fieldname": "delivery_date",
-   "fieldtype": "Date",
-   "label": "Delivery Date",
-   "no_copy": 1,
    "reqd": 1,
    "search_index": 1,
    "width": "160px"

@@ -409,7 +409,7 @@ const add_material_receipt = () => {
 			},
 			freeze: true,
 			callback: function(r) {
-				if(r.message == "False") {
+				if(r.message == "True") {
 					frappe.run_serially([
 						() => frappe.new_doc('Stock Entry'),
 						() => {
