@@ -301,7 +301,7 @@ def get_subrental_settings():
     redress = settings.rent_redress
     post_rental_inspection_charges = settings.rent_post_rental_inspection_charges
     return {"operationel":operationel,
-            "lih_dbr":lih_dbr,
+            "lihdbr":lih_dbr,
             "straight":straight,
             "standby":standby,
             "redress":redress,
