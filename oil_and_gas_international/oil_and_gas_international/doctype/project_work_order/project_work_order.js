@@ -356,7 +356,6 @@ const add_material_request = () => {
 				for (const row of doc.rental_order_items) {
 					if (row.purpose == "Sub rent"){
 						const new_row = cur_frm.add_child("items", {
-							item_code:row.item_code,
 							qty:row.qty
 						})
 						const cdt = new_row.doctype
