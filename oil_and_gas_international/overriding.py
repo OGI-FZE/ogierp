@@ -117,7 +117,7 @@ def add_transfered_qty_ro_item(doc,handle=None):
 					ro.save()
 					frappe.db.commit()
 
-	doc.update_serial_no()
+	update_serial_no(doc.need_inspection,doc.stock_entry_type,doc.sub_rental_order,doc.rental_order)
 
 
 
@@ -324,7 +324,7 @@ def get_subrental_settings():
 
 
 
-def update_serial_no(doc,handle=None):
+def update_serial_no(need_inspection=None,stock_entry_type=None,sub_rental_order=None,rental_order=None):
 	if not doc.need_inspection and doc.stock_entry_type == "Material Receipt" and doc.sub_rental_order: 
 		ro = frappe.get_doc("Rental Order",doc.rental_order)
 		for roitem in ro.items:
