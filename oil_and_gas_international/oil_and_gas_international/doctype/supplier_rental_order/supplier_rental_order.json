@@ -39,8 +39,6 @@
   "terms_and_conditions_section",
   "terms",
   "terms_and_conditions_details",
-  "billing_and_delivery_status_section",
-  "status",
   "percentage_delivered",
   "percentage_received",
   "column_break_23",
@@ -167,19 +165,6 @@
    "fieldname": "terms_and_conditions_details",
    "fieldtype": "Text Editor",
    "label": "Terms and Conditions Details"
-  },
-  {
-   "collapsible": 1,
-   "fieldname": "billing_and_delivery_status_section",
-   "fieldtype": "Section Break",
-   "label": "Billing and Delivery Status"
-  },
-  {
-   "allow_on_submit": 1,
-   "fieldname": "status",
-   "fieldtype": "Select",
-   "label": "Status",
-   "options": "Draft\nOn Rent\nCompleted\n"
   },
   {
    "fieldname": "percentage_delivered",

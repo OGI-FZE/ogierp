@@ -21,7 +21,6 @@
   "section_break_13",
   "items",
   "more_information_section",
-  "status",
   "amended_from"
  ],
  "fields": [
@@ -80,13 +79,6 @@
    "fieldname": "more_information_section",
    "fieldtype": "Section Break",
    "label": "More Information"
-  },
-  {
-   "allow_on_submit": 1,
-   "fieldname": "status",
-   "fieldtype": "Select",
-   "label": "Status",
-   "options": "Draft\nOpen\nOrdered\nLost\nCanceled\nExpired"
   },
   {
    "fieldname": "amended_from",

@@ -158,6 +158,7 @@ const add_supplier_rental_order = () => {
 				cur_doc.supplier_rental_quotation = doc.name
 				cur_doc.currency = doc.currency
 				cur_doc.conversion_rate = doc.conversion_rate
+				cur_doc.rental_order = doc.rental_order
 
 				// frappe.model.set_value('Supplier Rental Order', cur_doc.name, "currency", doc.currency)
 				// frappe.model.set_value('Supplier Rental Order', cur_doc.name, "conversion_rate", doc.conversion_rate)

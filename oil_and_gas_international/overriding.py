@@ -409,10 +409,3 @@ def check_subrent_order_existence(rental_order=None):
 	return exists
 
 
-@frappe.whitelist()
-def check_material_receipt_existence(rental_order=None,sub_rental_order=None,supplier=None):
-	exists = "False"
-	if frappe.db.exists("Stock Entry", {"rental_order": rental_order,"sub_rental_order": sub_rental_order,"supplier":supplier}):
-		exists = "True"
-	return exists
-

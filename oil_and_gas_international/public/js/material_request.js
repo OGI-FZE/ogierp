@@ -82,6 +82,7 @@ const sub_rent_quotation = () => {
 			() => frappe.new_doc('Supplier Rental Quotation'),
 			() => {
                 const cur_doc = cur_frm.doc
+                cur_doc.rental_order = doc.rental_order
 				cur_doc.items = []
 				for (const row of doc.items) {
                     
