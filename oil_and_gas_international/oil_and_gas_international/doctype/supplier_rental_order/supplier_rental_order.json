@@ -167,6 +167,20 @@
    "label": "Terms and Conditions Details"
   },
   {
+   "collapsible": 1,
+   "fieldname": "billing_and_delivery_status_section",
+   "fieldtype": "Section Break",
+   "label": "Billing and Delivery Status"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Draft\nOn Rent\nCompleted\n",
+   "read_only":1
+  },
+  {
    "fieldname": "percentage_delivered",
    "fieldtype": "Percent",
    "label": "Percentage Delivered",
