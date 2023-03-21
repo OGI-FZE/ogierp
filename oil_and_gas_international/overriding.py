@@ -121,8 +121,10 @@ def add_transfered_qty_ro_item(doc,handle=None):
 		for roitem in ro.items:
 			for item in doc.items:
 				if roitem.item_code == item.item_code:
-					if item.serial_no:
+					if item.serial_no and roitem.serial_no_accepted:
 						roitem.serial_no_accepted = "\n".join([roitem.serial_no_accepted,item.serial_no])
+					elif not roitem.serial_no_accepted:
+						roitem.serial_no_accepted = item.serial_no
 						ro.save()
 						frappe.db.commit()
 
