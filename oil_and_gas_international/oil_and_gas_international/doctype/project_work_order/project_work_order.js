@@ -356,11 +356,11 @@ const add_material_request = () => {
 				for (const row of doc.rental_order_items) {
 					if (row.purpose == "Sub rent"){
 						const new_row = cur_frm.add_child("items", {
-							qty:row.qty
+							qty:row.qty,
 						})
 						const cdt = new_row.doctype
 						const cdn = new_row.name
-						frappe.model.set_value(cdt.doctype, cdn.name, "item_code", row.item_code)
+						frappe.model.set_value(cdt, cdn, "item_code", row.item_code)
 
 					}
 
@@ -389,7 +389,7 @@ const add_subrent_quotation = () => {
 				for (const row of doc.rental_order_items) {
 					if (row.purpose == "Sub rent"){
 						const new_row = cur_frm.add_child("items", {
-							qty:row.qty
+							item_code:row.item_code
 						})
 						const cdt = new_row.doctype
 						const cdn = new_row.name
