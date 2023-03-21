@@ -435,7 +435,7 @@ const add_material_receipt = () => {
 					])
 				}
 				else{
-					frappe.throw(__("Material Receipt Already created"))
+					frappe.throw(("Material Receipt Already created"))
 				}
 			}
 		});

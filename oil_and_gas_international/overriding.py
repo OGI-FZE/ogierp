@@ -108,8 +108,8 @@ def accepted_serial_no_to_order(doc,handle=None):
 
 
 def add_transfered_qty_ro_item(doc,handle=None):
-	if doc.rental_order:
-		ro = frappe.get_doc("Rental Order", doc.rental_order)
+	ro = frappe.get_doc("Rental Order",doc.rental_order)
+	if doc.rental_order and doc.stock_entry_type =="Material Transfer":
 		for item in doc.items:
 			for i in ro.items:
 				if item.item_code == i.item_code:
@@ -117,7 +117,16 @@ def add_transfered_qty_ro_item(doc,handle=None):
 					ro.save()
 					frappe.db.commit()
 
-	update_serial_no(doc.need_inspection,doc.stock_entry_type,doc.sub_rental_order,doc.rental_order)
+	if not doc.need_inspection and doc.stock_entry_type == "Material Receipt" and doc.sub_rental_order: 
+		for roitem in ro.items:
+			for item in doc.items:
+				if roitem.item_code == item.item_code:
+					if item.serial_no:
+						roitem.serial_no_accepted = "\n".join([roitem.serial_no_accepted,item.serial_no])
+						ro.save()
+						frappe.db.commit()
+
+
 
 
 
@@ -324,16 +333,6 @@ def get_subrental_settings():
 
 
 
-def update_serial_no(need_inspection=None,stock_entry_type=None,sub_rental_order=None,rental_order=None):
-	if not doc.need_inspection and doc.stock_entry_type == "Material Receipt" and doc.sub_rental_order: 
-		ro = frappe.get_doc("Rental Order",doc.rental_order)
-		for roitem in ro.items:
-			for item in doc.items:
-				if roitem.item_code == item.item_code:
-					if item.serial_no:
-						roitem.serial_no_accepted = "\n".join([roitem.serial_no_accepted,item.serial_no])
-						ro.save()
-						frappe.db.commit()
 
 
 
