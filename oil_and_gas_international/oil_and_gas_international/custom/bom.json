@@ -101,7 +101,7 @@
    "name": "BOM-purpose",
    "no_copy": 0,
    "non_negative": 0,
-   "options": "Inspection\nManufacturing\nService",
+   "options": "Inspection\nManufacturing\nService\nSub rent",
    "owner": "Administrator",
    "parent": null,
    "parentfield": null,
