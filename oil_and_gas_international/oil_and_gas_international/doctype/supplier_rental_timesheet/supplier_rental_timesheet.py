@@ -20,6 +20,8 @@ class SupplierRentalTimesheet(Document):
             total += row.amount
         self.total_days = date_diff(self.end_date,self.start_date) + 1
         self.total_amount = total
+        project = frappe.db.get_value("Project",{"rental_order":self.rental_order},"name")
+        self.project = project
     def on_submit(self):
         self.update_subro_items_stopped_qty()
         self.generate_subrental_invoice()

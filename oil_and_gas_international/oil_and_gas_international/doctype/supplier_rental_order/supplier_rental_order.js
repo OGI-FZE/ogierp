@@ -163,7 +163,7 @@ const create_custom_buttons = () => {
 		get_items_from_supplier_rental_quotation()
 	} else if (status == 1) {
 		add_sub_rental_receipt()
-		add_sub_rental_timesheet()
+		// add_sub_rental_timesheet()
 		add_sub_rental_issue_note()
 	}
 }
@@ -460,7 +460,7 @@ const add_subrental_timesheet = () => {
 				cur_doc.supplier = doc.supplier
 				cur_doc.supplier_rental_order = doc.name
 				cur_doc.price_list = "Operational/Running"
-				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "rental_order", doc.name)
+				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "rental_order", doc.rental_order)
 				cur_doc.items = []
 				var no_days = frappe.datetime.get_day_diff(frappe.datetime.month_end(doc.start_date),doc.start_date)+1
 				for (const row of doc.items) {

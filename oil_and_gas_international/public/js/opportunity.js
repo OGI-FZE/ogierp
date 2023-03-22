@@ -95,6 +95,28 @@ const create_rental_estimation = (frm) => {
     }, 'Create');
 }
 
+const create_rfq = (frm) => {
+    frm.add_custom_button('Request For Quotation', () => {
+        const doc = frm.doc;
+        frappe.run_serially([
+            () => frappe.new_doc('Request For Quotation'),
+            () => {
+                cur_frm.doc.items = []
+                for (let row of doc.items) {
+                        const new_row = cur_frm.add_child('items', {
+                            'qty': row.qty,
+                        })
+                        const cdt = new_row.doctype
+                        const cdn = new_row.name
+                        frappe.model.set_value(cdt, cdn, "item_code", row.item_code)
+                }
+
+                cur_frm.refresh()
+            }
+        ])
+    }, 'Create');
+}
+
 const create_tender = (frm) => {
     frm.add_custom_button('Tender', () => {
         const doc = frm.doc;
