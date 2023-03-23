@@ -35,7 +35,7 @@ class RentalTimesheet(Document):
     def update_ro_items_stopped_qty(self):
         ro = frappe.get_doc("Rental Order",self.rental_order)
         for row in self.items:
-            if self.stop_rent:
+            if row.stop_rent:
                 for item in ro.items:
                     if not item.stopped_qty:
                         item.stopped_qty = 0
