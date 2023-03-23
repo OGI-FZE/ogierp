@@ -154,7 +154,7 @@ def create_rental_timesheet():
 			new_ts.end_date = last_ts.end_date + relativedelta.relativedelta(months=1, day=32)
 			new_ts.currency = last_ts.currency
 			new_ts.conversion_rate = last_ts.conversion_rate
-			new_ts.price_list = last_ts.price_list
+			# new_ts.price_list = last_ts.price_list
 			print(last_ts.name)
 			for row in last_ts.items:
 				if not row.stop_rent:
