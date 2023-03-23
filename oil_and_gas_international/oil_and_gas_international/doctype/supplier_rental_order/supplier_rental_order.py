@@ -6,6 +6,9 @@ from frappe.model.document import Document
 
 class SupplierRentalOrder(Document):
     def validate(self):
+        if self.rental_order:
+            project = frappe.db.get_value("Project",{"rental_order":self.rental_order},"name")
+            self.project = project
         if self.supplier:
             address = frappe.db.sql("""select parent from `tabDynamic Link` where parenttype = 'Address' and link_name = '%s'"""% (self.supplier), as_dict=1)  
             contact = frappe.db.sql("""select parent from `tabDynamic Link` where parenttype = 'Contact' and link_name = '%s'"""% (self.supplier), as_dict=1)  
@@ -22,10 +25,7 @@ class SupplierRentalOrder(Document):
             self.db_set("status","On Rent")
  
 
-        # if self.supplier_rental_quotation:
-        #     self.status = "Open"
-        #     frappe.set_value("Supplier Rental Quotation", self.supplier_rental_quotation, "status", "Ordered")
-        # frappe.db.commit()
+
 
     @frappe.whitelist()
     def get_supplier_rental_quotation_items(docname=None):

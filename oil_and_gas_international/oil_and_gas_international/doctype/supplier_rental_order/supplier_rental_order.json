@@ -10,12 +10,11 @@
   "supplier_name",
   "project",
   "items_required_date",
-  "purchase_red_no",
+  "division",
   "column_break_3",
   "company",
   "date",
   "departments",
-  "requested_by",
   "sedate",
   "start_date",
   "coldate",
@@ -267,14 +266,10 @@
    "options": "Project"
   },
   {
-   "fieldname": "requested_by",
-   "fieldtype": "Data",
-   "label": "Requested By"
-  },
-  {
-   "fieldname": "purchase_red_no",
-   "fieldtype": "Data",
-   "label": "Purchase Red. No"
+   "fieldname": "division",
+   "fieldtype": "Select",
+   "label": "Division",
+   "options": "Machine Shop Sale\nMachine Shop Repair\nInspection\ntrading\nRental"
   },
   {
    "collapsible": 1,

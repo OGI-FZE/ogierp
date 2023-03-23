@@ -43,6 +43,7 @@ frappe.ui.form.on("Opportunity", {
 const create_custom_buttons = (frm) => {
     create_estimation(frm)
     create_rental_estimation(frm)
+    create_rfq(frm)
     create_rental_quotation(frm)
     create_tender(frm)
 }
@@ -99,7 +100,7 @@ const create_rfq = (frm) => {
     frm.add_custom_button('Request For Quotation', () => {
         const doc = frm.doc;
         frappe.run_serially([
-            () => frappe.new_doc('Request For Quotation'),
+            () => frappe.new_doc('Request for Quotation'),
             () => {
                 cur_frm.doc.items = []
                 for (let row of doc.items) {
