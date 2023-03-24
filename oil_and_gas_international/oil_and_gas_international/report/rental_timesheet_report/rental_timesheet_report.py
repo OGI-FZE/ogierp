@@ -34,11 +34,13 @@ def get_data(filters):
 		  `tabSubrent Timesheet` AS st ON
 		  st.parent = srt.name
         WHERE
-          rt.docstatus=0 AND rt.rental_order = srt.rental_order AND 
-		  srt.docstatus = 0
+          rt.docstatus=1 AND rt.rental_order = srt.rental_order AND
+		  srt.docstatus = 1 AND rt.end_date = srt.end_date AND
+		  rt.project = srt.project AND pii.item_code = st.item_code
 		'''
+	if filters.customer:
+		query = f"{query} AND rt.customer='{filters.customer}'"
 	data= frappe.db.sql(f"{query}", as_dict=True)
-	print(data)
 	return data
 
 def get_columns(filters):
@@ -79,7 +81,7 @@ def get_columns(filters):
 		{
 	  'fieldname': 'rental_end_date',
 	  'label': _('Rental End Date'),
-	  'fieldtype': 'Data',
+	  'fieldtype': 'Date',
 	  'width': 150
 	},
 		{
@@ -121,19 +123,19 @@ def get_columns(filters):
 	},
 	{
 	  'fieldname': 'rental_days',
-	  'label': _('No of days rental'),
+	  'label': _('No of days (Rental)'),
 	  'fieldtype': 'float',
 	  'width': 150
 	},
 	{
 	  'fieldname': 'sub_rental_days',
-	  'label': _('No of days Sub rental'),
+	  'label': _('No of days (Sub Rental)'),
 	  'fieldtype': 'float',
 	  'width': 150
 	},
 	{
 	  'fieldname': 'rental_revenue',
-	  'label': _('rental revenue'),
+	  'label': _('Rental revenue'),
 	  'fieldtype': 'Data',
 	  'width': 150
 	},
