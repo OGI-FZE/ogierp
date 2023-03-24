@@ -126,11 +126,11 @@
    "options": "Department"
   },
   {
-    "fieldname": "division",
-    "fieldtype": "Select",
-    "label": "Division",
-    "options":"Machine Shop Sale\nMachine Shop Repair\nInspection\ntrading\nRental"
-},
+   "fieldname": "division",
+   "fieldtype": "Select",
+   "label": "Division",
+   "options": "Machine Shop Sale\nMachine Shop Repair\nInspection\ntrading\nRental"
+  },
   {
    "fieldname": "total_amount",
    "fieldtype": "Currency",
@@ -140,7 +140,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2022-05-07 16:16:23.422279",
+ "modified": "2023-03-23 14:28:27.370486",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Supplier Rental Timesheet",
