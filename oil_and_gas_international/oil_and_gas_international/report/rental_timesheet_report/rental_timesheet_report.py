@@ -41,126 +41,50 @@ def get_data(filters):
     if filters.customer:
         query = f"{query} AND rt.customer='{filters.customer}'"
     data= frappe.db.sql(f"{query}", as_dict=True)
-    for record in check_sub_rental_timesheet_existence():
+    for record in put_missed_sub_rental_timesheet_items()['subrental_additional']:
         data.append(record)
-        data.sort(key = lambda x:x['rental_start_date'])
+    for record in put_missed_sub_rental_timesheet_items()['rental_timesheet_additional']:
+        data.append(record)
 
+    data.sort(key = lambda x:x['rental_start_date'])
     return data
 
 def get_columns(filters):
   columns = [
-    {
-      'fieldname': 'project',
-      'label': _('Project'),
-      'fieldtype': 'Link',
-      'options':'Project',
-      'width': 150
-    },
-    {
-      'fieldname': 'customer',
-      'label': _('Customer'),
-      'fieldtype': 'Link',
-      'options':'Customer',
-      'width': 150
-    },
-    {
-      'fieldname': 'item_description',
-      'label': _('Item Description'),
-      'fieldtype': 'Link',
-      'options':'Item',
-      'width': 150
-    },
-        {
-      'fieldname': 'qty',
-      'label': _('Quantity'),
-      'fieldtype': 'Data',
-      'width': 150
-    },
-    {
-      'fieldname': 'rental_start_date',
-      'label': _('Rental Start Date'),
-      'fieldtype': 'Date',
-      'width': 150
-    },
-        {
-      'fieldname': 'rental_end_date',
-      'label': _('Rental End Date'),
-      'fieldtype': 'Date',
-      'width': 150
-    },
-        {
-      'fieldname': 'daily_rental_rate',
-      'label': _('Daily Rental Rate'),
-      'fieldtype': 'float',
-      'width': 150
-    },
-    {
-      'fieldname': 'daily_rental_total',
-      'label': _('Daily Rental Total'),
-      'fieldtype': 'float',
-      'width': 150
-    },
-    {
-      'fieldname': 'supplier',
-      'label': _('Supplier'),
-      'fieldtype': 'Link',
-      'options':'Supplier',
-      'width': 150
-    },
-    {
-      'fieldname': 'sub_rental_rate',
-      'label': _('Sub Rental Rate'),
-      'fieldtype': 'float',
-      'width': 150
-    },
-    {
-      'fieldname': 'sub_rental_total',
-      'label': _('Sub Rental Total'),
-      'fieldtype': 'float',
-      'width': 150
-    },
-    {
-      'fieldname': 'gp',
-      'label': _('GP'),
-      'fieldtype': 'float',
-      'width': 150
-    },
-    {
-      'fieldname': 'rental_days',
-      'label': _('No of days (Rental)'),
-      'fieldtype': 'float',
-      'width': 150
-    },
-    {
-      'fieldname': 'sub_rental_days',
-      'label': _('No of days (Sub Rental)'),
-      'fieldtype': 'float',
-      'width': 150
-    },
-    {
-      'fieldname': 'rental_revenue',
-      'label': _('Rental revenue'),
-      'fieldtype': 'Data',
-      'width': 150
-    },
+    {'fieldname': 'project','label': _('Project'),'fieldtype': 'Link','options':'Project','width': 150},
+    {'fieldname': 'customer','label': _('Customer'),'fieldtype': 'Link','options':'Customer','width': 150},
+    {'fieldname': 'item_description','label': _('Item Description'),'fieldtype': 'Link','options':'Item','width': 150},
+    {'fieldname': 'qty','label': _('Quantity'),'fieldtype': 'Data','width': 150},
+    {'fieldname': 'rental_start_date','label': _('Rental Start Date'),'fieldtype': 'Date','width': 150},
+    {'fieldname': 'rental_end_date','label': _('Rental End Date'),'fieldtype': 'Date','width': 150},
+    {'fieldname': 'daily_rental_rate','label': _('Daily Rental Rate'),'fieldtype': 'float','width': 150},
+    {'fieldname': 'daily_rental_total','label': _('Daily Rental Total'),'fieldtype': 'float','width': 150},
+    {'fieldname': 'supplier','label': _('Supplier'),'fieldtype': 'Link','options':'Supplier','width': 150},
+    {'fieldname': 'sub_rental_rate','label': _('Sub Rental Rate'),'fieldtype': 'float','width': 150},
+    {'fieldname': 'sub_rental_total','label': _('Sub Rental Total'),'fieldtype': 'float','width': 150},
+    {'fieldname': 'gp','label': _('GP'),'fieldtype': 'float','width': 150},
+    {'fieldname': 'rental_days','label': _('No of days (Rental)'),'fieldtype': 'float','width': 150},
+    {'fieldname': 'sub_rental_days','label': _('No of days (Sub Rental)'),'fieldtype': 'float','width': 150},
+    {'fieldname': 'rental_revenue','label': _('Rental revenue'),'fieldtype': 'Data','width': 150},
   ]
   return columns
 
 
 
 
-def check_sub_rental_timesheet_existence():
+def put_missed_sub_rental_timesheet_items():
     rental_order = frappe.db.sql("""select name from `tabRental Order`""",as_dict=1)
     ro_list = []
-    additionnal = []
+    subrental_additional = []
+    rental_timesheet_additional = []
     for ro in rental_order:
         ro_list.append(ro['name'])
     for ro in ro_list:
         rental_timesheet = frappe.db.get_list("Rental Timesheet",{"rental_order":ro},pluck='name')
         for rt in rental_timesheet:
+            rental_t = frappe.get_doc("Rental Timesheet", rt)
             end_date_str = frappe.db.get_value("Rental Timesheet",rt,"end_date")
             if not frappe.db.exists("Supplier Rental Timesheet",{"rental_order":ro,"end_date":end_date_str}):
-                rental_t = frappe.get_doc("Rental Timesheet", rt)
                 print(rental_t)
                 for item in rental_t.items:
                 
@@ -170,7 +94,7 @@ def check_sub_rental_timesheet_existence():
                                     "item_description": item.item_code,
                                     "qty": item.qty,
                                     "rental_start_date": item.start_date_,
-                                    "rental_end_date": item.end_date,
+                                    "rental_end_date": " ",
                                     "daily_rental_rate": item.rate,
                                     "daily_rental_total": item.rate * item.qty,
                                     "supplier": " ",
@@ -180,10 +104,30 @@ def check_sub_rental_timesheet_existence():
                                     "rental_days": item.days,
                                     "sub_rental_days": " "
                     }
-                    additionnal.append(additionnal_data)
-    return additionnal
+                    subrental_additional.append(additionnal_data)
+            else:
+                supplier_rt = frappe.get_doc("Supplier Rental Timesheet",{"rental_order":ro,"end_date":end_date_str})
+                for item in rental_t.items:
+                    for sitem in supplier_rt.items:
+                        if not item.item_code == sitem.item_code:
+                            additionnal_data =  {
+                                            "project": rental_t.project,
+                                            "customer":rental_t.customer,
+                                            "item_description": item.item_code,
+                                            "qty": item.qty,
+                                            "rental_start_date": item.start_date_,
+                                            "rental_end_date": " ",
+                                            "daily_rental_rate": item.rate,
+                                            "daily_rental_total": item.rate * item.qty,
+                                            "supplier": " ",
+                                            "sub_rental_rate": " ",
+                                            "sub_rental_total": " ",
+                                            "gp": item.rate*item.qty,
+                                            "rental_days": item.days,
+                                            "sub_rental_days": " "
+                            }
+                            rental_timesheet_additional.append(additionnal_data)
 
 
-
-
+    return {'subrental_additional':subrental_additional,'rental_timesheet_additional':rental_timesheet_additional}
 
