@@ -43,7 +43,7 @@ def get_data(filters):
     data= frappe.db.sql(f"{query}", as_dict=True)
     for record in check_sub_rental_timesheet_existence():
         data.append(record)
-    # data.append(check_sub_rental_timesheet_existence())
+        data.sort(key = lambda x:x['rental_start_date'])
 
     return data
 
@@ -184,21 +184,6 @@ def check_sub_rental_timesheet_existence():
     return additionnal
 
 
-
-
-
-                  # {"project": "OGI-MR-0323-0020",
-                  #  "customer": "- -",
-                  #  "item_description": "Oli Serial item",
-                  #  "qty": 2.0,
-                  #  "rental_start_date": "2023-03-14",
-                  #  "rental_end_date": "2023-03-20",
-                  #  "daily_rental_rate": 5.0,
-                  #  "daily_rental_total": 10.0,
-                  #  "supplier": "AAA", "sub_rental_rate": 3.0,
-                  #  "sub_rental_total": 6.0, "gp": 4.0,
-                  #  "rental_days": 7,
-                  #  "sub_rental_days": 31}
 
 
 
