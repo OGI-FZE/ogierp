@@ -10,7 +10,7 @@ frappe.query_reports["Rental Timesheet Report"] = {
 			'fieldtype':'Link',
 			'options':'Customer',
 			'width':100,
-			}
+			},
 
 	]
 };
