@@ -25,7 +25,8 @@ def get_data(filters):
 				pii.qty*st.rate as sub_rental_total,
 				(pii.rate*pii.qty)-(pii.qty*st.rate) as gp,
 				pii.days as rental_days,
-				st.days as sub_rental_days
+				st.days as sub_rental_days,
+				pii.rate*pii.qty*pii.days as rental_revenue
 
 				FROM
 				`tabRental Timesheet` AS rt LEFT JOIN
@@ -112,7 +113,8 @@ def put_missed_sub_rental_timesheet_items():
 									"sub_rental_total": " ",
 									"gp": item.rate*item.qty,
 									"rental_days": item.days,
-									"sub_rental_days": " "
+									"sub_rental_days": " ",
+									"rental_revenue": item.rate*item.qty*item.days
 					}
 					subrental_additional.append(additionnal_data)
 			else:
@@ -137,7 +139,9 @@ def put_missed_sub_rental_timesheet_items():
 											"sub_rental_total": " ",
 											"gp": item.rate*item.qty,
 											"rental_days": item.days,
-											"sub_rental_days": " "
+											"sub_rental_days": " ",
+											"rental_revenue": item.rate*item.qty*item.days
+
 							}
 							rental_timesheet_additional.append(additionnal_data)
 
