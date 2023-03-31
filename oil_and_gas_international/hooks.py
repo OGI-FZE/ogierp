@@ -175,12 +175,13 @@ scheduler_events = {
         ],
         "00 7 25 * *":[
             "oil_and_gas_international.overriding.create_rental_timesheet",
+        ],
+        "30 7 25 * *":[
             "oil_and_gas_international.overriding.create_sub_rental_timesheet"
-        ],
-
-        "daily": [
-            "oil_and_gas_international.tasks.daily"
-        ],
+        ]
+        # "daily": [
+        #     "oil_and_gas_international.tasks.daily"
+        # ],
     }
 }
 

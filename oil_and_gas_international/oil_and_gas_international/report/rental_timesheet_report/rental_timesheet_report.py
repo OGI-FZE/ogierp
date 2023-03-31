@@ -51,18 +51,21 @@ def get_data(filters):
 
 	data_filtered = data
 	counter = 0
-	if filters.customer:
-		data_filtered = []
-		while counter < len(data):
-			if data[counter]['customer'] == filters.customer:
-				data_filtered.append(data[counter])
-			counter +=1
-	if filters.start_date:
-		data_filtered = []
-		while counter < len(data):
-			# sd = datetime.strptime(filters.start_date, "%Y-%m-%d").date()
-			if data[counter]['start_date'] == filters.start_date:
-				data_filtered.append(data[counter])
+	# if filters.customer:
+	# 	data_filtered = []
+	# 	while counter < len(data):
+	# 		if data[counter]['customer'] == filters.customer:
+	# 			data_filtered.append(data[counter])
+	# 		counter +=1
+	if filters.customer and not filters.start_date:
+		data_filtered = [d for d in data_filtered if d['customer'] == filters.customer]
+
+	elif filters.start_date and not filters.customer:
+		sd = datetime.strptime(filters.start_date, "%Y-%m-%d").date()
+		data_filtered = [d for d in data_filtered if d['start_date'] == sd]
+	elif filters.customer and filters.start_date:
+		sd = datetime.strptime(filters.start_date, "%Y-%m-%d").date()
+		data_filtered = [d for d in data_filtered if d['start_date'] == sd and d['customer'] == filters.customer]
 
 	data_filtered.sort(key = lambda x:x['rental_start_date'])
 	return data_filtered
