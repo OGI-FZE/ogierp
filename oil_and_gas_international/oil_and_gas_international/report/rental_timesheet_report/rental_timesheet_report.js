@@ -5,10 +5,16 @@
 frappe.query_reports["Rental Timesheet Report"] = {
 	"filters": [
 		{
-			'fieldname':'customer',
-			'label':__('Customer'),
-			'fieldtype':'Link',
-			'options':'Customer',
+		'fieldname':'customer',
+		'label':__('Customer'),
+		'fieldtype':'Link',
+		'options':'Customer',
+		'width':100,
+		},
+		{
+			'fieldname':'start_date',
+			'label':__('Start date'),
+			'fieldtype':'Date',
 			'width':100,
 			},
 

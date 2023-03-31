@@ -12,6 +12,8 @@ def get_data(filters):
 	query = f'''
 				SELECT
 				rt.project as project,
+				rt.start_date,
+				rt.end_date,
 				rt.name as rental_timesheet,
 				rt.customer as customer,
 				pii.item_code as item_description,
@@ -48,21 +50,29 @@ def get_data(filters):
 		data.append(record)
 
 	data_filtered = data
+	counter = 0
 	if filters.customer:
-		counter = 0
+		data_filtered = []
 		while counter < len(data):
-			if data[counter]['customer'] != filters.customer:
-				data_filtered = data.remove(data[counter])
-			counter +=1	
+			if data[counter]['customer'] == filters.customer:
+				data_filtered.append(data[counter])
+			counter +=1
+	if filters.start_date:
+		data_filtered = []
+		while counter < len(data):
+			# sd = datetime.strptime(filters.start_date, "%Y-%m-%d").date()
+			if data[counter]['start_date'] == filters.start_date:
+				data_filtered.append(data[counter])
 
-	data.sort(key = lambda x:x['rental_start_date'])
+	data_filtered.sort(key = lambda x:x['rental_start_date'])
 	return data_filtered
 
 def get_columns(filters):
   columns = [
 	{'fieldname': 'project','label': _('Project'),'fieldtype': 'Link','options':'Project','width': 150},
 	{'fieldname': 'rental_timesheet','label': _('Rental Timesheet'),'fieldtype': 'Link','options':'Rental Timesheet','width': 150},
-
+	{'fieldname': 'start_date','label': _('Start date'),'fieldtype': 'Date','width': 150},
+	{'fieldname': 'end_date','label': _('End date'),'fieldtype': 'Date','width': 150},
 	{'fieldname': 'customer','label': _('Customer'),'fieldtype': 'Link','options':'Customer','width': 150},
 	{'fieldname': 'item_description','label': _('Item Description'),'fieldtype': 'Link','options':'Item','width': 150},
 	{'fieldname': 'qty','label': _('Quantity'),'fieldtype': 'Data','width': 150},
@@ -101,6 +111,8 @@ def put_missed_sub_rental_timesheet_items():
 					additionnal_data =  {
 									"project": rental_t.project,
 									"rental_timesheet": rental_t.name,
+									"start_date": rental_t.start_date,
+									"end_date": rental_t.end_date,
 									"customer":rental_t.customer,
 									"item_description": item.item_code,
 									"qty": item.qty,
@@ -127,6 +139,8 @@ def put_missed_sub_rental_timesheet_items():
 							additionnal_data =  {
 											"project": rental_t.project,
 											"rental_timesheet": rental_t.name,
+											"start_date": rental_t.start_date,
+											"start_date": rental_t.start_date,
 											"customer":rental_t.customer,
 											"item_description": item.item_code,
 											"qty": item.qty,
