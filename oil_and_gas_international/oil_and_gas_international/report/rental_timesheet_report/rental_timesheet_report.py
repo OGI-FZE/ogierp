@@ -74,8 +74,8 @@ def get_columns(filters):
   columns = [
 	{'fieldname': 'project','label': _('Project'),'fieldtype': 'Link','options':'Project','width': 150},
 	{'fieldname': 'rental_timesheet','label': _('Rental Timesheet'),'fieldtype': 'Link','options':'Rental Timesheet','width': 150},
-	{'fieldname': 'start_date','label': _('Start date'),'fieldtype': 'Date','width': 150},
-	{'fieldname': 'end_date','label': _('End date'),'fieldtype': 'Date','width': 150},
+	{'fieldname': 'start_date','label': _('Start date'),'fieldtype': 'Date','hidden':1,'width': 150},
+	{'fieldname': 'end_date','label': _('End date'),'fieldtype': 'Date','hidden':1,'width': 150},
 	{'fieldname': 'customer','label': _('Customer'),'fieldtype': 'Link','options':'Customer','width': 150},
 	{'fieldname': 'item_description','label': _('Item Description'),'fieldtype': 'Link','options':'Item','width': 150},
 	{'fieldname': 'qty','label': _('Quantity'),'fieldtype': 'Data','width': 150},
