@@ -334,7 +334,7 @@ const add_rental_order = () => {
 				const cur_doc = cur_frm.doc
 				if (doc.estimation_to == "Lead"){
 					frappe.db.get_value("Customer", {"lead_name": doc.lead}, "name", (r) => {
-						if(r.from_lead){
+						if(r.lead_name){
 							frappe.model.set_value('Rental Order',cur_doc.name,"customer", r.lead_name)
 						}
 						else{
