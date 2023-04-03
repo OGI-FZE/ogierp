@@ -333,7 +333,14 @@ const add_rental_order = () => {
 			() => {				
 				const cur_doc = cur_frm.doc
 				if (doc.estimation_to == "Lead"){
-					frappe.msgprint(__("You need to convert lead to customer First to make the Rental Order"))    
+					frappe.db.get_value("Customer", {"from_lead": frm.doc.lead}, "name", (r) => {
+						if(r.default_currency){
+							frm.set_value("customer", r.from_lead)
+						}
+						else{
+							frappe.msgprint(__("You need to convert lead to customer First to make the Rental Order"))    
+						}
+					});
                 }
                 if (doc.estimation_to == "Customer"){
                     cur_frm.doc.customer = doc.customer;

@@ -420,6 +420,8 @@ def create_wo(qty,bom,purpose,item_code,for_cu_ins=0,warehouse=None,final_wareho
 	new_doc.date = frappe.utils.nowdate()
 	new_doc.fg_warehouse = warehouse
 	new_doc.production_item = item_code
+	new_doc.item_name = frappe.db.get_value("Item",item_code,'item_name')
+	new_doc.item_description = frappe.db.get_value("Item",item_code,'description')
 	new_doc.item_category = item_category
 	new_doc.qty = float(qty)
 	new_doc.sales_order = sales_o
