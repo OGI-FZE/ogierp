@@ -318,7 +318,6 @@ fixtures = [
                 'Opportunity-references',
                 'Opportunity-rental_estimation',
                 'Opportunity-sales_person',
-                'Opportunity-departments',
 
                 # Opportunity Item
 

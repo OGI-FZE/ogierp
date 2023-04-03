@@ -73,6 +73,7 @@ const create_rental_estimation = (frm) => {
                 cur_frm.doc.enquery_no = doc.enquery_no;
                 cur_frm.doc.enquery_ref = doc.enquery_ref;
                 cur_frm.doc.estimation_to = doc.opportunity_from;
+                cur_frm.doc.departments = doc.department
                 cur_frm.doc.items = []
                 for (let row of doc.items) {
                         const new_row = cur_frm.add_child('items', {
@@ -103,6 +104,7 @@ const create_rfq = (frm) => {
             () => frappe.new_doc('Request for Quotation'),
             () => {
                 cur_frm.doc.items = []
+                cur_frm.doc.department = doc.department
                 for (let row of doc.items) {
                         const new_row = cur_frm.add_child('items', {
                             'qty': row.qty,
@@ -124,7 +126,7 @@ const create_tender = (frm) => {
         frappe.run_serially([
             () => frappe.new_doc('Tender'),
             () => {
-                cur_frm.doc.departments = doc.departments;
+                cur_frm.doc.department = doc.department;
                 cur_frm.doc.customer = doc.party_name;
                 cur_frm.doc.division = doc.division;
                 cur_frm.doc.customer_reference = doc.customer_reference;
@@ -164,7 +166,7 @@ const create_rental_quotation = (frm) => {
                 cur_frm.doc.date = doc.transaction_date;
                 cur_frm.doc.valid_till = doc.expected_closing;
                 cur_frm.doc.division = doc.division;
-                cur_frm.doc.departments = doc.departments;
+                cur_frm.doc.departments = doc.department;
                 cur_frm.doc.sales_person = doc.sales_person;
                 cur_frm.doc.opportunity = doc.name;
                 cur_frm.doc.division = doc.division;
