@@ -335,7 +335,7 @@ const add_rental_order = () => {
 				if (doc.estimation_to == "Lead"){
 					frappe.db.get_value("Customer", {"from_lead": frm.doc.lead}, "name", (r) => {
 						if(r.default_currency){
-							frm.set_value("customer", r.from_lead)
+							frappe.model.set_value(frm.doc.doctype,frm.doc.name,"customer", r.from_lead)
 						}
 						else{
 							frappe.msgprint(__("You need to convert lead to customer First to make the Rental Order"))    
