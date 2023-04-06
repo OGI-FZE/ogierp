@@ -128,7 +128,7 @@ doc_events = {
     #     "on_submit": "oil_and_gas_international.events.job_card.create_job_card_against_wo",
     # },
     "Work Order": {
-        "validate": "oil_and_gas_international.overriding.disable_generating_serial_no",
+        "on_submit": "oil_and_gas_international.overriding.disable_generating_serial_no",
     },
     "Quality Inspection": {
         "validate": "oil_and_gas_international.overriding.accepted_serial_no_to_order",

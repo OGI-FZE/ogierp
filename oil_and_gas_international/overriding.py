@@ -84,7 +84,7 @@ def disable_generating_serial_no(doc,handle=None):
 	manufacturing_settings = frappe.get_doc("Manufacturing Settings")
 	if doc.purpose == "Manufacturing":
 		manufacturing_settings.set("make_serial_no_batch_from_work_order",1)
-	elif doc.purpose in ["Inspection","Service"]:
+	elif doc.purpose in ["Inspection","Sub rent","Service"]:
 		manufacturing_settings.set("make_serial_no_batch_from_work_order",0)
 	manufacturing_settings.save()
 	frappe.db.commit()

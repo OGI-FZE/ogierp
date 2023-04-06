@@ -412,7 +412,7 @@ def create_wo(qty,bom,purpose,item_code,for_cu_ins=0,warehouse=None,final_wareho
 				new_doc.department_ = d
 
 	new_doc.division = frappe.db.get_value("Project",project,'Division')
-	if purpose in ['Inspection','Sub rent']:
+	if purpose in ['Inspection','Sub rent','Service']:
 		new_doc.skip_transfer = 1
 	else:
 		new_doc.fg_warehouse = final_warehouse
