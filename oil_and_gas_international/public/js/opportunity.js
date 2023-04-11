@@ -126,6 +126,16 @@ const create_tender = (frm) => {
         frappe.run_serially([
             () => frappe.new_doc('Tender'),
             () => {
+                if (doc.opportunity_from == "Lead"){
+					frappe.db.get_value("Customer", {"lead_name": doc.party_name}, "name", (r) => {
+						if(r.name){
+							frappe.model.set_value('Tender',cur_doc.name,"customer", r.name)
+						}
+						else{
+							frappe.msgprint(__("convert lead to customer to create tender"))    
+						}
+					});
+                }
                 cur_frm.doc.department = doc.department;
                 cur_frm.doc.customer = doc.party_name;
                 cur_frm.doc.division = doc.division;
