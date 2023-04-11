@@ -1,0 +1,328 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2023-04-11 14:14:32.780834",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_ytt9a",
+  "sop_type",
+  "preface",
+  "scope",
+  "purpose",
+  "procedure",
+  "health_and_safety",
+  "final_inspection",
+  "column_break_ht5d9",
+  "receipt_of_goods",
+  "references_publications",
+  "referenced_documents",
+  "references_and_specifications",
+  "responsibility",
+  "revision_history",
+  "ms_sop_section",
+  "setting_up_machine",
+  "in_process_inspection",
+  "application_of_benchmark",
+  "final_inspection_and_gauging",
+  "coating_and_protection",
+  "marking_of_new_product",
+  "documentation",
+  "equipment",
+  "column_break_bdsry",
+  "chemicals_used_in_process",
+  "phosphating_procedure",
+  "operator_safety_practises",
+  "msds_instructions",
+  "health_safety_and_environment",
+  "procedure_issue_receipt",
+  "referenced_publications",
+  "appendices",
+  "preparation_of_the_working_area",
+  "welding_sop_section",
+  "accident_control_and_safety",
+  "procedure_for_hardfacing_with_crush_carbide_composite_rod_hf",
+  "storage",
+  "issue_of_stock",
+  "preparation",
+  "processe",
+  "definition_and_abbreviations",
+  "column_break_aerre",
+  "fabrication_foreman",
+  "weld_procedures_and_welder_qualification",
+  "abbreviation",
+  "baking",
+  "rebaking_procedure",
+  "application"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_ytt9a",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "preface",
+   "fieldtype": "Text",
+   "label": "Preface"
+  },
+  {
+   "fieldname": "scope",
+   "fieldtype": "Text",
+   "label": "Scope"
+  },
+  {
+   "fieldname": "purpose",
+   "fieldtype": "Text",
+   "label": "Purpose"
+  },
+  {
+   "fieldname": "procedure",
+   "fieldtype": "Text",
+   "label": "Procedure"
+  },
+  {
+   "fieldname": "health_and_safety",
+   "fieldtype": "Text",
+   "label": "Health And Safety"
+  },
+  {
+   "fieldname": "final_inspection",
+   "fieldtype": "Text",
+   "label": "Final Inspection"
+  },
+  {
+   "fieldname": "column_break_ht5d9",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "receipt_of_goods",
+   "fieldtype": "Text",
+   "label": "Receipt Of Goods"
+  },
+  {
+   "fieldname": "referenced_publications",
+   "fieldtype": "Text",
+   "label": "Referenced Publications"
+  },
+  {
+   "fieldname": "referenced_documents",
+   "fieldtype": "Text",
+   "label": "Referenced Documents"
+  },
+  {
+   "fieldname": "references_and_specifications",
+   "fieldtype": "Text",
+   "label": "References and Specifications"
+  },
+  {
+   "fieldname": "responsibility",
+   "fieldtype": "Text",
+   "label": "Responsibility"
+  },
+  {
+   "fieldname": "revision_history",
+   "fieldtype": "Text",
+   "label": "Revision History"
+  },
+  {
+   "fieldname": "sop_type",
+   "fieldtype": "Select",
+   "label": "SOP Type",
+   "options": "MS SOP\nWelding SOP"
+  },
+  {
+   "fieldname": "references_publications",
+   "fieldtype": "Text",
+   "label": "Referenced Publications"
+  },
+  {
+   "depends_on": "eval:doc.sop_type==\"MS SOP\"",
+   "fieldname": "ms_sop_section",
+   "fieldtype": "Section Break",
+   "label": "MS SOP"
+  },
+  {
+   "fieldname": "setting_up_machine",
+   "fieldtype": "Text",
+   "label": "Setting Up Machine"
+  },
+  {
+   "fieldname": "in_process_inspection",
+   "fieldtype": "Text",
+   "label": "In Process Inspection"
+  },
+  {
+   "fieldname": "application_of_benchmark",
+   "fieldtype": "Text",
+   "label": "Application Of Benchmark"
+  },
+  {
+   "fieldname": "final_inspection_and_gauging",
+   "fieldtype": "Text",
+   "label": "Final Inspection And Gauging"
+  },
+  {
+   "fieldname": "coating_and_protection",
+   "fieldtype": "Text",
+   "label": "Coating And Protection"
+  },
+  {
+   "fieldname": "marking_of_new_product",
+   "fieldtype": "Text",
+   "label": "Marking Of New Product"
+  },
+  {
+   "fieldname": "documentation",
+   "fieldtype": "Text",
+   "label": "Documentation"
+  },
+  {
+   "fieldname": "equipment",
+   "fieldtype": "Text",
+   "label": "Equipment"
+  },
+  {
+   "fieldname": "chemicals_used_in_process",
+   "fieldtype": "Text",
+   "label": "Chemicals Used In Process"
+  },
+  {
+   "fieldname": "phosphating_procedure",
+   "fieldtype": "Text",
+   "label": "Phosphating Procedure"
+  },
+  {
+   "fieldname": "operator_safety_practises",
+   "fieldtype": "Text",
+   "label": "Operator Safety Practises"
+  },
+  {
+   "fieldname": "msds_instructions",
+   "fieldtype": "Text",
+   "label": "Msds Instructions"
+  },
+  {
+   "fieldname": "health_safety_and_environment",
+   "fieldtype": "Text",
+   "label": "Health, Safety And Environment"
+  },
+  {
+   "fieldname": "procedure_issue_receipt",
+   "fieldtype": "Text",
+   "label": "Procedure Issue Receipt"
+  },
+  {
+   "fieldname": "appendices",
+   "fieldtype": "Text",
+   "label": "Appendices"
+  },
+  {
+   "fieldname": "preparation_of_the_working_area",
+   "fieldtype": "Text",
+   "label": "Preparation Of The Working Area"
+  },
+  {
+   "fieldname": "column_break_bdsry",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.sop_type==\"Welding SOP\"",
+   "fieldname": "welding_sop_section",
+   "fieldtype": "Section Break",
+   "label": "Welding SOP"
+  },
+  {
+   "fieldname": "accident_control_and_safety",
+   "fieldtype": "Text",
+   "label": "Accident Control and Safety"
+  },
+  {
+   "fieldname": "procedure_for_hardfacing_with_crush_carbide_composite_rod_hf",
+   "fieldtype": "Text",
+   "label": "Procedure For Hardfacing With Crush Carbide Composite Rod Hf "
+  },
+  {
+   "fieldname": "storage",
+   "fieldtype": "Text",
+   "label": "Storage"
+  },
+  {
+   "fieldname": "issue_of_stock",
+   "fieldtype": "Text",
+   "label": "Issue Of Stock"
+  },
+  {
+   "fieldname": "preparation",
+   "fieldtype": "Text",
+   "label": "Preparation"
+  },
+  {
+   "fieldname": "processe",
+   "fieldtype": "Text",
+   "label": "Processe"
+  },
+  {
+   "fieldname": "definition_and_abbreviations",
+   "fieldtype": "Text",
+   "label": "Definition and Abbreviations"
+  },
+  {
+   "fieldname": "fabrication_foreman",
+   "fieldtype": "Text",
+   "label": "Fabrication Foreman"
+  },
+  {
+   "fieldname": "weld_procedures_and_welder_qualification",
+   "fieldtype": "Text",
+   "label": "Weld Procedures And Welder Qualification"
+  },
+  {
+   "fieldname": "abbreviation",
+   "fieldtype": "Text",
+   "label": "Abbreviation"
+  },
+  {
+   "fieldname": "baking",
+   "fieldtype": "Text",
+   "label": "Baking"
+  },
+  {
+   "fieldname": "rebaking_procedure",
+   "fieldtype": "Text",
+   "label": "ReBaking Procedure"
+  },
+  {
+   "fieldname": "application",
+   "fieldtype": "Text",
+   "label": "Application"
+  },
+  {
+   "fieldname": "column_break_aerre",
+   "fieldtype": "Column Break"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2023-04-11 14:27:36.335105",
+ "modified_by": "Administrator",
+ "module": "Oil And Gas International",
+ "name": "SOP",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC"
+}

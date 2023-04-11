@@ -1,0 +1,334 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2023-04-11 12:48:34.606088",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "purpose",
+  "scope",
+  "responsibility",
+  "procedure",
+  "external_records",
+  "retention_period_for_records",
+  "references",
+  "revision_history",
+  "processe",
+  "procedure_controls",
+  "terms_and_definitions",
+  "abbreviation",
+  "description",
+  "validation_record",
+  "equipment",
+  "chemicals_used_in_process",
+  "phosphating_procedure",
+  "final_inspection",
+  "operator_safety_practises",
+  "msds_instructions",
+  "referenced_publications",
+  "preface",
+  "health_and_safety",
+  "receipt_of_goods",
+  "storage",
+  "recording",
+  "issue_of_stock",
+  "applicable_documents",
+  "material_requirement",
+  "column_break_tklw7",
+  "mechanical_properties",
+  "processeing",
+  "non_destructive_testing",
+  "weld_requirements",
+  "material_traceability",
+  "certification",
+  "applications",
+  "associated_materials",
+  "reference_standards",
+  "material_properties",
+  "melting_practice_and_hot_work_practice",
+  "heat_treatment_furnace_calibrations_and_certification",
+  "surface_volumetric_nde_weld_repair_requirements",
+  "thread_form_and_dimensions",
+  "application",
+  "referanced_documents",
+  "accident_control_safety",
+  "definition_and_abbreviations",
+  "fabrication_foreman",
+  "weld_procedures_and_welder_qualification"
+ ],
+ "fields": [
+  {
+   "fieldname": "scope",
+   "fieldtype": "Text",
+   "label": "Scope"
+  },
+  {
+   "fieldname": "responsibility",
+   "fieldtype": "Text",
+   "label": "Responsibility"
+  },
+  {
+   "fieldname": "terms_and_definitions",
+   "fieldtype": "Text",
+   "label": "Terms And Definitions"
+  },
+  {
+   "fieldname": "abbreviation",
+   "fieldtype": "Text",
+   "label": "Abbreviation"
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Text",
+   "label": "Description"
+  },
+  {
+   "fieldname": "validation_record",
+   "fieldtype": "Text",
+   "label": "Validation Record"
+  },
+  {
+   "fieldname": "equipment",
+   "fieldtype": "Text",
+   "label": "Equipment"
+  },
+  {
+   "fieldname": "chemicals_used_in_process",
+   "fieldtype": "Text",
+   "label": "Chemicals Used In Process"
+  },
+  {
+   "fieldname": "phosphating_procedure",
+   "fieldtype": "Text",
+   "label": "Phosphating Procedure"
+  },
+  {
+   "fieldname": "final_inspection",
+   "fieldtype": "Text",
+   "label": "Final Inspection"
+  },
+  {
+   "fieldname": "operator_safety_practises",
+   "fieldtype": "Text",
+   "label": "Operator Safety Practises"
+  },
+  {
+   "fieldname": "msds_instructions",
+   "fieldtype": "Text",
+   "label": "Msds Instructions"
+  },
+  {
+   "fieldname": "referenced_publications",
+   "fieldtype": "Text",
+   "label": "Referenced Publications"
+  },
+  {
+   "fieldname": "preface",
+   "fieldtype": "Text",
+   "label": "Preface"
+  },
+  {
+   "fieldname": "health_and_safety",
+   "fieldtype": "Text",
+   "label": "Health And Safety"
+  },
+  {
+   "fieldname": "receipt_of_goods",
+   "fieldtype": "Text",
+   "label": "Receipt Of Goods"
+  },
+  {
+   "fieldname": "storage",
+   "fieldtype": "Text",
+   "label": "Storage"
+  },
+  {
+   "fieldname": "recording",
+   "fieldtype": "Text",
+   "label": "Recording"
+  },
+  {
+   "fieldname": "issue_of_stock",
+   "fieldtype": "Text",
+   "label": "Issue Of Stock"
+  },
+  {
+   "fieldname": "applicable_documents",
+   "fieldtype": "Text",
+   "label": "Applicable Documents"
+  },
+  {
+   "fieldname": "material_requirement",
+   "fieldtype": "Text",
+   "label": "Material Requirement"
+  },
+  {
+   "fieldname": "mechanical_properties",
+   "fieldtype": "Text",
+   "label": "Mechanical Properties"
+  },
+  {
+   "fieldname": "processeing",
+   "fieldtype": "Text",
+   "label": "Processeing"
+  },
+  {
+   "fieldname": "non_destructive_testing",
+   "fieldtype": "Text",
+   "label": "Non Destructive Testing"
+  },
+  {
+   "fieldname": "weld_requirements",
+   "fieldtype": "Text",
+   "label": "Weld Requirements"
+  },
+  {
+   "fieldname": "material_traceability",
+   "fieldtype": "Text",
+   "label": "Material Traceability"
+  },
+  {
+   "fieldname": "certification",
+   "fieldtype": "Text",
+   "label": "Certification"
+  },
+  {
+   "fieldname": "applications",
+   "fieldtype": "Text",
+   "label": "Applications"
+  },
+  {
+   "fieldname": "associated_materials",
+   "fieldtype": "Text",
+   "label": "Associated Materials"
+  },
+  {
+   "fieldname": "reference_standards",
+   "fieldtype": "Text",
+   "label": "Reference Standards"
+  },
+  {
+   "fieldname": "material_properties",
+   "fieldtype": "Text",
+   "label": "Material Properties"
+  },
+  {
+   "fieldname": "melting_practice_and_hot_work_practice",
+   "fieldtype": "Text",
+   "label": "Melting Practice and Hot Work Practice"
+  },
+  {
+   "fieldname": "heat_treatment_furnace_calibrations_and_certification",
+   "fieldtype": "Text",
+   "label": "Heat Treatment, Furnace Calibrations And Certification"
+  },
+  {
+   "fieldname": "thread_form_and_dimensions",
+   "fieldtype": "Text",
+   "label": "Thread Form And Dimensions"
+  },
+  {
+   "fieldname": "application",
+   "fieldtype": "Text",
+   "label": "Application"
+  },
+  {
+   "fieldname": "referanced_documents",
+   "fieldtype": "Text",
+   "label": "Referanced Documents"
+  },
+  {
+   "fieldname": "definition_and_abbreviations",
+   "fieldtype": "Text",
+   "label": "Definition and Abbreviations"
+  },
+  {
+   "fieldname": "surface_volumetric_nde_weld_repair_requirements",
+   "fieldtype": "Text",
+   "label": "Surface Volumetric Nde Weld Repair Requirements"
+  },
+  {
+   "fieldname": "accident_control_safety",
+   "fieldtype": "Text",
+   "label": "Accident Control Safety"
+  },
+  {
+   "fieldname": "fabrication_foreman",
+   "fieldtype": "Text",
+   "label": "Fabrication Foreman"
+  },
+  {
+   "fieldname": "weld_procedures_and_welder_qualification",
+   "fieldtype": "Text",
+   "label": "Weld Procedures And Welder Qualification"
+  },
+  {
+   "fieldname": "purpose",
+   "fieldtype": "Text",
+   "label": "Purpose"
+  },
+  {
+   "fieldname": "procedure",
+   "fieldtype": "Text",
+   "label": "Procedure"
+  },
+  {
+   "fieldname": "external_records",
+   "fieldtype": "Text",
+   "label": "External Records"
+  },
+  {
+   "fieldname": "retention_period_for_records",
+   "fieldtype": "Text",
+   "label": "Retention Period For Records"
+  },
+  {
+   "fieldname": "references",
+   "fieldtype": "Text",
+   "label": "References"
+  },
+  {
+   "fieldname": "revision_history",
+   "fieldtype": "Text",
+   "label": "Revision History"
+  },
+  {
+   "fieldname": "processe",
+   "fieldtype": "Text",
+   "label": "Processe"
+  },
+  {
+   "fieldname": "procedure_controls",
+   "fieldtype": "Text",
+   "label": "Procedure Controls"
+  },
+  {
+   "fieldname": "column_break_tklw7",
+   "fieldtype": "Column Break"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2023-04-11 13:20:19.930012",
+ "modified_by": "Administrator",
+ "module": "Oil And Gas International",
+ "name": "Procedure",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC"
+}
