@@ -129,7 +129,7 @@ const create_tender = (frm) => {
                 if (doc.opportunity_from == "Lead"){
 					frappe.db.get_value("Customer", {"lead_name": doc.party_name}, "name", (r) => {
 						if(r.name){
-							frappe.model.set_value('Tender',cur_doc.name,"customer", r.name)
+							frappe.model.set_value('Tender',cur_frm.doc.name,"customer", r.name)
 						}
 						else{
 							frappe.msgprint(__("convert lead to customer to create tender"))    
