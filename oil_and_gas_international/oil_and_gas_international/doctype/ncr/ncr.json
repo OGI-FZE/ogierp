@@ -1,0 +1,232 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:ncr",
+ "creation": "2023-04-13 05:32:07.055556",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "ncr",
+  "date",
+  "h_and_s",
+  "env",
+  "audit",
+  "raised_by",
+  "ai_r_no",
+  "hsea_no",
+  "column_break_unimi",
+  "ncr_type",
+  "ncr_against",
+  "party",
+  "supplier",
+  "customer",
+  "other",
+  "safety_alert",
+  "accident__incident",
+  "customer_complaint",
+  "nc_raise_date",
+  "section_break_lieqo",
+  "details_of_non_conformance",
+  "brief_description_of_productservice",
+  "root_cause",
+  "section_break_4oqzc",
+  "action_completed_to_correct_existing_non_conformance",
+  "immediate_response",
+  "column_break_32zqo",
+  "remarks",
+  "notes",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "ncr",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "NCR",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "label": "Date"
+  },
+  {
+   "fieldname": "h_and_s",
+   "fieldtype": "Data",
+   "label": "H and S"
+  },
+  {
+   "fieldname": "env",
+   "fieldtype": "Data",
+   "label": "Env"
+  },
+  {
+   "fieldname": "audit",
+   "fieldtype": "Data",
+   "label": "Audit"
+  },
+  {
+   "fieldname": "raised_by",
+   "fieldtype": "Link",
+   "label": "Raised By",
+   "options": "Employee"
+  },
+  {
+   "fieldname": "ncr_type",
+   "fieldtype": "Select",
+   "label": "NCR Type",
+   "options": "Internal\nExternal"
+  },
+  {
+   "fieldname": "safety_alert",
+   "fieldtype": "Data",
+   "label": "Safety Alert"
+  },
+  {
+   "fieldname": "accident__incident",
+   "fieldtype": "Data",
+   "label": "Accident / Incident"
+  },
+  {
+   "fieldname": "customer_complaint",
+   "fieldtype": "Data",
+   "label": "Customer Complaint"
+  },
+  {
+   "fieldname": "other",
+   "fieldtype": "Data",
+   "label": "Other"
+  },
+  {
+   "fieldname": "hsea_no",
+   "fieldtype": "Data",
+   "label": "HSE/A No"
+  },
+  {
+   "fieldname": "ai_r_no",
+   "fieldtype": "Data",
+   "label": "A/I R No"
+  },
+  {
+   "fieldname": "nc_raise_date",
+   "fieldtype": "Date",
+   "label": "NC Raise Date"
+  },
+  {
+   "fieldname": "details_of_non_conformance",
+   "fieldtype": "Text Editor",
+   "label": "DETAILS OF NON CONFORMANCE"
+  },
+  {
+   "fieldname": "brief_description_of_productservice",
+   "fieldtype": "Data",
+   "label": "Brief Description of Product/Service"
+  },
+  {
+   "fieldname": "root_cause",
+   "fieldtype": "Text Editor",
+   "label": "Root Cause"
+  },
+  {
+   "fieldname": "action_completed_to_correct_existing_non_conformance",
+   "fieldtype": "Data",
+   "label": "ACTION COMPLETED TO CORRECT EXISTING NON CONFORMANCE"
+  },
+  {
+   "fieldname": "immediate_response",
+   "fieldtype": "Data",
+   "label": "Immediate Response"
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Data",
+   "label": "Remarks"
+  },
+  {
+   "fieldname": "notes",
+   "fieldtype": "Data",
+   "label": "Notes"
+  },
+  {
+   "fieldname": "column_break_unimi",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "NCR",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_lieqo",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "section_break_4oqzc",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_32zqo",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "ncr_against",
+   "fieldtype": "Link",
+   "label": "NCR Against",
+   "options": "DocType"
+  },
+  {
+   "depends_on": "eval:doc.ncr_against == 'Employee'",
+   "fieldname": "party",
+   "fieldtype": "Dynamic Link",
+   "label": "Employee",
+   "mandatory_depends_on": "eval:doc.ncr_against == 'Employee'",
+   "options": "ncr_against"
+  },
+  {
+   "depends_on": "eval:doc.ncr_against == 'Supplier'",
+   "fieldname": "supplier",
+   "fieldtype": "Dynamic Link",
+   "label": "Supplier",
+   "mandatory_depends_on": "eval:doc.ncr_against == 'Supplier'",
+   "options": "ncr_against"
+  },
+  {
+   "depends_on": "eval:doc.ncr_against == 'Customer'",
+   "fieldname": "customer",
+   "fieldtype": "Dynamic Link",
+   "label": "Customer",
+   "mandatory_depends_on": "eval:doc.ncr_against == 'Customer'",
+   "options": "ncr_against"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2023-04-13 09:40:58.918790",
+ "modified_by": "Administrator",
+ "module": "Oil And Gas International",
+ "name": "NCR",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC"
+}
