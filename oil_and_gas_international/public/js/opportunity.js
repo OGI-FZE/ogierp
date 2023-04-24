@@ -165,7 +165,7 @@ const create_rental_quotation = (frm) => {
         frappe.run_serially([
             () => frappe.new_doc('Rental Quotation'),
             () => {
-                if (doc.estimation_to == "Customer"){
+                if (doc.opportunity_from == "Customer"){
                     cur_frm.doc.customer = doc.party_name;
                     cur_frm.doc.customer_name = doc.customer_name;
                 }
