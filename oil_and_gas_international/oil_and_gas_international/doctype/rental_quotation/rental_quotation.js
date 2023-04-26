@@ -41,16 +41,6 @@ frappe.ui.form.on('Rental Quotation', {
 	},
 
 	onload(frm){
-		if (frm.doc.customer){
-			frappe.call({
-				method: 'oil_and_gas_international.doctype.rental_quotation.rental_quotation.fetch_address_contact',
-				args: {
-					document: frm.doc.name,
-				},
-				callback: function(r) {
-				}
-			});
-		}
 		if(frm.doc.customer && frm.doc.__islocal){
 			frappe.db.get_value("Customer", {"name": frm.doc.customer}, "default_currency", (r) => {
 				if(r.default_currency){
