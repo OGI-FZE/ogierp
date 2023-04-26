@@ -2,7 +2,7 @@
 # For license information, please see license.txt
 
 # import frappe
-from frappe.model.document import Document
+from frappe.utils.nestedset import NestedSet
 
-class Procedure(Document):
+class SOP(NestedSet):
 	pass

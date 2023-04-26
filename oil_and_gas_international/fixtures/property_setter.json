@@ -31,6 +31,6 @@
   "property": "options",
   "property_type": "Select",
   "row_name": null,
-  "value": "OGI-.MR-.MM.YY.-.####\nOGI-.I-.MM.YY.-.####\nOGI-.TS-.MM.YY.-.####\nOGI-.MS-.R-.MM.YY.-.####\nOGI-.MS-.S-.MM.YY.-.####"
+  "value": "OGI-.R-.MM.YY.-.####\nOGI-.I-.MM.YY.-.####\nOGI-.TS-.MM.YY.-.####\nOGI-.MS-.R-.MM.YY.-.####\nOGI-.MS-.S-.MM.YY.-.####"
  }
 ]

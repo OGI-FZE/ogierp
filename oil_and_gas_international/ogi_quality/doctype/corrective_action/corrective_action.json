@@ -1,0 +1,238 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2023-04-13 06:05:59.226316",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "car",
+  "date",
+  "h_and_s",
+  "env",
+  "audit",
+  "column_break_mv3x2",
+  "audit_no",
+  "raised_by",
+  "scheduled_completion_date",
+  "actual_date_of_completion",
+  "section_break_nwnyi",
+  "corrective_action",
+  "preventive_action",
+  "section_break_a0qcj",
+  "list_out_risks_and_opportunities",
+  "action_plan_to_prevent_potential_non_conformance",
+  "safety_alert",
+  "accident__incident",
+  "customer_complaint",
+  "other",
+  "hsea_no",
+  "ai_r_no",
+  "nc_raise_date",
+  "column_break_ajzov",
+  "ncr",
+  "accepted_by",
+  "mr",
+  "area_manager",
+  "verification_of_effectiveness",
+  "effective_date",
+  "remarks",
+  "notes",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "car",
+   "fieldtype": "Data",
+   "label": "CAR"
+  },
+  {
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "label": "Date"
+  },
+  {
+   "fieldname": "h_and_s",
+   "fieldtype": "Data",
+   "label": "H and S"
+  },
+  {
+   "fieldname": "env",
+   "fieldtype": "Data",
+   "label": "Env"
+  },
+  {
+   "fieldname": "audit",
+   "fieldtype": "Data",
+   "label": "Audit"
+  },
+  {
+   "fieldname": "column_break_mv3x2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "audit_no",
+   "fieldtype": "Data",
+   "label": "Audit No"
+  },
+  {
+   "fieldname": "raised_by",
+   "fieldtype": "Data",
+   "label": "Raised By"
+  },
+  {
+   "fieldname": "scheduled_completion_date",
+   "fieldtype": "Link",
+   "label": "Scheduled Completion Date  ",
+   "options": "Employee"
+  },
+  {
+   "fieldname": "actual_date_of_completion",
+   "fieldtype": "Data",
+   "label": "Actual Date Of Completion"
+  },
+  {
+   "fieldname": "section_break_nwnyi",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "corrective_action",
+   "fieldtype": "Text Editor",
+   "label": "Corrective Action"
+  },
+  {
+   "fieldname": "preventive_action",
+   "fieldtype": "Text Editor",
+   "label": "Preventive Action"
+  },
+  {
+   "fieldname": "section_break_a0qcj",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "list_out_risks_and_opportunities",
+   "fieldtype": "Data",
+   "label": "List out Risks and Opportunities "
+  },
+  {
+   "fieldname": "action_plan_to_prevent_potential_non_conformance",
+   "fieldtype": "Data",
+   "label": "ACTION PLAN TO PREVENT POTENTIAL NON CONFORMANCE"
+  },
+  {
+   "fieldname": "safety_alert",
+   "fieldtype": "Data",
+   "label": "Safety Alert"
+  },
+  {
+   "fieldname": "accident__incident",
+   "fieldtype": "Data",
+   "label": "Accident / Incident"
+  },
+  {
+   "fieldname": "customer_complaint",
+   "fieldtype": "Data",
+   "label": "Customer Complaint"
+  },
+  {
+   "fieldname": "other",
+   "fieldtype": "Data",
+   "label": "Other"
+  },
+  {
+   "fieldname": "hsea_no",
+   "fieldtype": "Data",
+   "label": "HSE/A No"
+  },
+  {
+   "fieldname": "ai_r_no",
+   "fieldtype": "Data",
+   "label": "A/I R No"
+  },
+  {
+   "fieldname": "nc_raise_date",
+   "fieldtype": "Date",
+   "label": "NC Raise Date"
+  },
+  {
+   "fieldname": "column_break_ajzov",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "ncr",
+   "fieldtype": "Link",
+   "label": "NCR",
+   "options": "NCR"
+  },
+  {
+   "fieldname": "accepted_by",
+   "fieldtype": "Select",
+   "label": "Accepted by    ",
+   "options": "Yes\nNo"
+  },
+  {
+   "fieldname": "mr",
+   "fieldtype": "Select",
+   "label": "MR",
+   "options": "Yes\nNo"
+  },
+  {
+   "fieldname": "area_manager",
+   "fieldtype": "Data",
+   "label": "Area Manager "
+  },
+  {
+   "fieldname": "verification_of_effectiveness",
+   "fieldtype": "Data",
+   "label": "VERIFICATION OF EFFECTIVENESS"
+  },
+  {
+   "fieldname": "effective_date",
+   "fieldtype": "Date",
+   "label": "Effective Date "
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Data",
+   "label": "Remarks"
+  },
+  {
+   "fieldname": "notes",
+   "fieldtype": "Data",
+   "label": "Notes"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Corrective Action",
+   "print_hide": 1,
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2023-04-26 14:26:50.575330",
+ "modified_by": "Administrator",
+ "module": "OGI Quality",
+ "name": "Corrective Action",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC"
+}

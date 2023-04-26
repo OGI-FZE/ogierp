@@ -4,5 +4,5 @@
 # import frappe
 import unittest
 
-class TestProcedure(unittest.TestCase):
+class TestQualityProcedureHeading(unittest.TestCase):
 	pass

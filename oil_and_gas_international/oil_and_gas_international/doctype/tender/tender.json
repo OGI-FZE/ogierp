@@ -8,6 +8,9 @@
  "engine": "InnoDB",
  "field_order": [
   "naming_series",
+  "tender_against",
+  "customer",
+  "lead",
   "type",
   "tender_description",
   "division",
@@ -29,12 +32,12 @@
    "reqd": 1
   },
   {
-    "fieldname": "division",
-    "fieldtype": "Select",
-    "in_list_view": 1,
-    "label": "Division",
-    "options":"Machine Shop Sale\nMachine Shop Repair\nInspection\ntrading\nRental"
-   },
+   "fieldname": "division",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Division",
+   "options": "Machine Shop Sale\nMachine Shop Repair\nInspection\ntrading\nRental"
+  },
   {
    "allow_in_quick_entry": 1,
    "fieldname": "type",
@@ -94,6 +97,26 @@
    "options": "Tender",
    "print_hide": 1,
    "read_only": 1
+  },
+  {
+   "fieldname": "tender_against",
+   "fieldtype": "Select",
+   "label": "Tender against",
+   "options": "Customer\nLead"
+  },
+  {
+   "depends_on": "eval:doc.tender_against==\"Customer\"",
+   "fieldname": "customer",
+   "fieldtype": "Dynamic Link",
+   "label": "Customer",
+   "options": "tender_against"
+  },
+  {
+   "depends_on": "eval:doc.tender_against==\"Lead\"",
+   "fieldname": "lead",
+   "fieldtype": "Dynamic Link",
+   "label": "Lead",
+   "options": "tender_against"
   }
  ],
  "index_web_pages_for_search": 1,
@@ -104,7 +127,7 @@
    "link_fieldname": "name1"
   }
  ],
- "modified": "2023-01-24 10:24:09.829039",
+ "modified": "2023-04-26 12:13:28.701879",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Tender",
