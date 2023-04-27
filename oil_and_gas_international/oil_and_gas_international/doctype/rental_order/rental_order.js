@@ -9,6 +9,8 @@ frappe.ui.form.on('Rental Order', {
 	// },
 
 	refresh(frm) {
+		frappe.dynamic_link = {doc: frm.doc, fieldname: 'customer', doctype: 'Customer'}
+		
 		create_custom_buttons(frm)
 		var company_currency = frappe.get_doc(":Company", frm.doc.company).default_currency;
 		frm.set_currency_labels([
@@ -19,8 +21,13 @@ frappe.ui.form.on('Rental Order', {
             "operational_running","lihdbr","post_rental_inspection_charges","standby","straight","redress","total_amount"
         ], customer_currency, "items");
 	},
+	setup(frm){
+		frm.set_query('customer_address',erpnext.queries.address_query)
+		frm.set_query('customer_contact',erpnext.queries.contact_query)
+	
+		
+	},
 	onload(frm){
-		console.log(frm.doc.status)
 		if(frm.doc.customer && frm.doc.__islocal){
 			frappe.db.get_value("Customer", {"name": frm.doc.customer}, "default_currency", (r) => {
 				if(r.default_currency){
@@ -68,7 +75,6 @@ frappe.ui.form.on('Rental Order', {
 	},
 	validate(frm){
 		frm.doc.items.forEach(function(item){
-			console.log(item.base_operational_running* frm.doc.conversion_rate)
 			if (item.operational_running != 0){
 				frappe.model.set_value(item.doctype, item.name, 'base_operational_running', item.operational_running/ frm.doc.conversion_rate);
 			}
@@ -405,7 +411,6 @@ const add_rental_timesheet = () => {
 			() => frappe.new_doc('Rental Timesheet'),
 			() => {
 				const cur_doc = cur_frm.doc
-				console.log(typeof doc.start_date)
 				cur_doc.customer = doc.customer
 				cur_doc.start_date = doc.start_date
 				if (doc.end_date){
@@ -714,3 +719,10 @@ const add_rental_invoice = () => {
 		])
 	}, 'Create')
 }
+
+
+
+
+
+
+

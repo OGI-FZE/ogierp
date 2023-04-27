@@ -29,6 +29,12 @@ frappe.ui.form.on('Rental Quotation', {
 		}
  	 },
 	refresh(frm) {
+		if (frm.doc.customer){
+			frappe.dynamic_link = {doc: frm.doc, fieldname: 'customer', doctype: 'Customer'}
+		}
+		else if (frm.doc.lead){
+			frappe.dynamic_link = {doc: frm.doc, fieldname: 'lead', doctype: 'Lead'}
+		}
 		create_custom_buttons(frm)
 		var company_currency = frappe.get_doc(":Company", frm.doc.company).default_currency;
 		frm.set_currency_labels([
@@ -39,7 +45,12 @@ frappe.ui.form.on('Rental Quotation', {
             "operational_running","lihdbr","post_rental_inspection_charges","standby","straight","redress"
         ], customer_currency, "items");
 	},
+	setup(frm){
+		frm.set_query('customer_address',erpnext.queries.address_query)
+		frm.set_query('customer_contact',erpnext.queries.contact_query)
+		
 
+	},
 	onload(frm){
 		if(frm.doc.customer && frm.doc.__islocal){
 			frappe.db.get_value("Customer", {"name": frm.doc.customer}, "default_currency", (r) => {
