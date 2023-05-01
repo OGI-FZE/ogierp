@@ -93,18 +93,20 @@ def disable_generating_serial_no(doc,handle=None):
 
 def accepted_serial_no_to_order(doc,handle=None):
 	wo_jc = frappe.db.get_value("Job Card", {"name":doc.reference_name}, "work_order")
-	wo = frappe.get_doc("Work Order", wo_jc)
-	if wo.sales_order:
-		order = frappe.get_doc("Sales Order", wo.sales_order)
-	elif wo.rental_order:
-		order = frappe.get_doc("Rental Order", wo.rental_order)
+	if wo_jc:
+		wo = frappe.get_doc("Work Order", wo_jc)
+		if wo:
+			if wo.sales_order:
+				order = frappe.get_doc("Sales Order", wo.sales_order)
+			elif wo.rental_order:
+				order = frappe.get_doc("Rental Order", wo.rental_order)
 
-	if doc.status == "Accepted":
-		for item in order.items:
-			if item.item_code == doc.item_code:
-				item.serial_no_accepted = "\n".join([item.serial_no_accepted,doc.item_serial_no])
-				order.save()
-				frappe.db.commit()
+			if doc.status == "Accepted":
+				for item in order.items:
+					if item.item_code == doc.item_code:
+						item.serial_no_accepted = "\n".join([item.serial_no_accepted,doc.item_serial_no])
+						order.save()
+						frappe.db.commit()
 
 
 def add_transfered_qty_ro_item(doc,handle=None):
