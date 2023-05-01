@@ -23,10 +23,20 @@ class RentalQuotation(Document):
                 cus_con = frappe.get_doc('Contact', contact[0]['parent'])
                 if not self.customer_contact:
                     self.customer_contact = contact[0]['parent']
-                    self.contact = cus_con.phone + "\n" + cus_con.email_id
+                    if cus_con.email_ids and cus_con.phone_nos:
+                        self.contact = cus_con.phone_nos[0].phone + "\n" + cus_con.email_ids[0].email_id
+                    elif cus_con.phone_nos:
+                        self.contact = cus_con.phone_nos[0].phone
+                    elif cus_con.email_ids:
+                        self.contact = cus_con.email_ids[0].email_id
                 else:
                     sec = frappe.get_doc('Contact',self.customer_contact)
-                    self.contact = sec.phone + "\n" + sec.email_id
+                    if sec.email_ids and sec.phone_nos:
+                        self.contact = sec.phone_nos[0].phone + "\n" + sec.email_ids[0].email_id
+                    elif sec.phone_nos:
+                        self.contact = sec.phone_nos[0].phone
+                    elif sec.email_ids:
+                        self.contact = sec.email_ids[0].email_id
         elif self.lead:
             address = frappe.db.sql("""select parent from `tabDynamic Link` where parenttype = 'Address' and link_name = '%s'"""% (self.lead), as_dict=1)  
             contact = frappe.db.sql("""select parent from `tabDynamic Link` where parenttype = 'Contact' and link_name = '%s'"""% (self.lead), as_dict=1)  
@@ -42,10 +52,20 @@ class RentalQuotation(Document):
                 cus_con = frappe.get_doc('Contact', contact[0]['parent'])
                 if not self.customer_contact:
                     self.customer_contact = contact[0]['parent']
-                    self.contact = cus_con.phone + "\n" + cus_con.email_id
+                    if cus_con.email_ids and cus_con.phone_nos:
+                        self.contact = cus_con.phone_nos[0].phone + "\n" + cus_con.email_ids[0].email_id
+                    elif cus_con.phone_nos:
+                        self.contact = cus_con.phone_nos[0].phone
+                    else:
+                        self.contact = cus_con.email_ids[0].email_id
                 else:
                     sec = frappe.get_doc('Contact',self.customer_contact)
-                    self.contact = sec.phone + "\n" + sec.email_id
+                    if sec.email_ids and sec.phone_nos:
+                        self.contact = sec.phone_nos[0].phone + "\n" + sec.email_ids[0].email_id
+                    elif sec.phone_nos:
+                        self.contact = sec.phone_nos[0].phone
+                    elif sec.email_ids:
+                        self.contact = sec.email_ids[0].email_id
         rate_by_qty = []
         for row in self.items:
             if not row.operational_running:
