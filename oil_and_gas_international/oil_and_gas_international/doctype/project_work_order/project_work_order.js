@@ -93,11 +93,22 @@ frappe.ui.form.on('Project Work Order', {
 
 	for_returned_material(frm) {
 		frm.doc.rental_order_items.forEach(function(child){
+			frm.call({
+				method: 'oil_and_gas_international.overriding.get_transferred_qty',
+				args: {
+					"item_code" : child.item_code,
+					"ro": frm.doc.rental_order
+
+				},
+				callback: function(r) {
 					if(r.message) {
-						if (frm.doc.for_returned_material==1){
-							frappe.model.set_value(child.doctype,child.name,'qty',child.returned_qty)
-						}
+						frappe.model.set_value(child.doctype,child.name,'qty',r.message)
 					}
+					else {
+						frappe.model.set_value(child.doctype,child.name,'qty',0)
+					}
+			}
+			});
 
 		})
 

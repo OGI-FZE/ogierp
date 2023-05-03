@@ -414,3 +414,8 @@ def check_subrent_order_existence(rental_order=None):
 	return exists
 
 
+@frappe.whitelist()
+def get_transferred_qty(ro="OGI-RO-04-2023-0370",item_code="Oli Serial item"):
+	qty = frappe.db.sql("""select transfered_qty from `tabRental Order Item` where item_code = "%s" and 
+						parent="%s" """ %(item_code,ro),as_dict=1)
+	return qty[0]['transfered_qty']
