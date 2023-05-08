@@ -1,16 +1,14 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "field:quality_procedure_name",
- "creation": "2023-04-26 14:24:16.461547",
+ "creation": "2023-05-08 12:46:04.222172",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "quality_procedure_name",
+  "sop",
   "process_owner",
   "process_owner_full_name",
-  "department",
   "section_break_3",
   "processes",
   "sb_00",
@@ -18,14 +16,15 @@
   "is_group",
   "rgt",
   "lft",
-  "old_parent"
+  "old_parent",
+  "amended_from"
  ],
  "fields": [
   {
-   "fieldname": "quality_procedure_name",
+   "fieldname": "sop",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "Quality Procedure",
+   "label": "SOP",
    "reqd": 1,
    "unique": 1
   },
@@ -42,12 +41,6 @@
    "hidden": 1,
    "label": "Process Owner Full Name",
    "print_hide": 1
-  },
-  {
-   "fieldname": "department",
-   "fieldtype": "Link",
-   "label": "Department",
-   "options": "Department"
   },
   {
    "fieldname": "section_break_3",
@@ -68,7 +61,7 @@
    "fieldname": "parent_quality_procedure",
    "fieldtype": "Link",
    "label": "Parent Procedure",
-   "options": "Quality Procedure"
+   "options": "SOP"
   },
   {
    "default": "0",
@@ -97,32 +90,21 @@
    "hidden": 1,
    "label": "old_parent",
    "read_only": 1
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "SOP",
+   "print_hide": 1,
+   "read_only": 1
   }
  ],
+ "is_submittable": 1,
  "is_tree": 1,
- "links": [
-  {
-   "group": "Reviews",
-   "link_doctype": "Quality Review",
-   "link_fieldname": "procedure"
-  },
-  {
-   "group": "Goals",
-   "link_doctype": "Quality Goal",
-   "link_fieldname": "procedure"
-  },
-  {
-   "group": "Actions",
-   "link_doctype": "Quality Action",
-   "link_fieldname": "procedure"
-  },
-  {
-   "group": "Actions",
-   "link_doctype": "Non Conformance",
-   "link_fieldname": "procedure"
-  }
- ],
- "modified": "2023-04-26 14:24:16.461547",
+ "links": [],
+ "modified": "2023-05-08 12:46:17.662012",
  "modified_by": "Administrator",
  "module": "OGI Quality",
  "name": "SOP",
