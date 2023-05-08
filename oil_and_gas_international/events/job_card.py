@@ -7,7 +7,7 @@ def create_job_card_against_wo(doc,handller=None):
         if ope.operation == doc.operation:
             qty_completed = ope.completed_qty
             operation_id = ope.name
-
+ 
 
             if qty_completed < work_order.qty:
                 # if doc.serial_no:
