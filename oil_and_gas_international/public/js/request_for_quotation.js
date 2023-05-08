@@ -79,6 +79,8 @@ const sub_rent_quotation = (frm,args) => {
                     
 					const new_row = cur_frm.add_child("items", {
 						qty: row.qty,
+                        description: row.description,
+                        description_2: row.description_2
 						// serial_no_accepted: row.serial_no_accepted,
 
 					})

@@ -9,7 +9,9 @@ frappe.ui.form.on("Opportunity", {
 		frm.doc.items.forEach(function(item){
             frappe.db.get_value("Item", item.item_code, "description", (r) => {
                 console.log(r.description)
-                frappe.model.set_value(item.doctype, item.name, 'description_2',r.description);
+                if (!item.description_2){
+                    frappe.model.set_value(item.doctype, item.name, 'description_2',r.description);
+                }
 
             })
 		})
@@ -108,9 +110,12 @@ const create_rfq = (frm) => {
                 for (let row of doc.items) {
                         const new_row = cur_frm.add_child('items', {
                             'qty': row.qty,
+                            'description': row.description,
+                            'description_2': row.description_2
                         })
                         const cdt = new_row.doctype
                         const cdn = new_row.name
+                        row.
                         frappe.model.set_value(cdt, cdn, "item_code", row.item_code)
                 }
 
