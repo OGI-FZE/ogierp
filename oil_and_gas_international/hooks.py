@@ -131,7 +131,7 @@ doc_events = {
         "on_submit": "oil_and_gas_international.overriding.disable_generating_serial_no",
     },
     "Quality Inspection": {
-        "validate": "oil_and_gas_international.overriding.accepted_serial_no_to_order",
+        "on_submit": "oil_and_gas_international.overriding.accepted_serial_no_to_order",
     },
     "Stock Entry": {
         "on_submit": "oil_and_gas_international.overriding.add_transfered_qty_ro_item",
