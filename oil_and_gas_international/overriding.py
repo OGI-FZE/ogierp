@@ -101,7 +101,7 @@ def accepted_serial_no_to_order(doc,handle=None):
 			elif wo.rental_order:
 				order = frappe.get_doc("Rental Order", wo.rental_order)
 
-			if doc.status == "Accepted":
+			if doc.status == "Accepted" and doc.inspection_type == "Outgoing":
 				for item in order.items:
 					if item.item_code == doc.item_code:
 						if doc.item_serial_no:
@@ -420,3 +420,20 @@ def get_transferred_qty(ro="OGI-RO-04-2023-0370",item_code="Oli Serial item"):
 	qty = frappe.db.sql("""select transfered_qty from `tabRental Order Item` where item_code = "%s" and 
 						parent="%s" """ %(item_code,ro),as_dict=1)
 	return qty[0]['transfered_qty']
+
+
+@frappe.whitelist()
+def get_item_description_from_so_items(doc,handler=None):
+	if doc.sales_order:
+		soi_desc = frappe.db.sql("""select description
+										   from `tabSales Order Item`
+										   where parent = "%s" and item_code="%s" """ %(doc.sales_order,doc.production_item),
+										   as_dict=1)
+		doc.item_description = soi_desc[0]['description']
+
+	elif doc.rental_order:
+		roi_desc = frappe.db.sql("""select description
+										   from `tabRental Order Item`
+										   where parent = "%s" and item_code="%s" """ %(doc.rental_order,doc.production_item),
+										   as_dict=1)
+		doc.item_description = roi_desc[0]['description']

@@ -119,7 +119,7 @@ doc_events = {
         "validate": "oil_and_gas_international.events.sales_invoice.get_desc",
         },
 	"Sales Order": {
-		"on_submit": "oil_and_gas_international.events.sales_order.create_project"
+		"on_submit": "oil_and_gas_international.events.sales_order.create_project",
 	},
 	"Project": {
 		"validate": "oil_and_gas_international.tasks.aft_project"
@@ -129,6 +129,8 @@ doc_events = {
     # },
     "Work Order": {
         "on_submit": "oil_and_gas_international.overriding.disable_generating_serial_no",
+        "validate": "oil_and_gas_international.overriding.get_item_description_from_so_items"
+
     },
     "Quality Inspection": {
         "on_submit": "oil_and_gas_international.overriding.accepted_serial_no_to_order",
