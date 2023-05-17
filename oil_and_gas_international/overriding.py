@@ -89,7 +89,7 @@ def disable_generating_serial_no(doc,handle=None):
 	manufacturing_settings.save()
 	frappe.db.commit()
 
-
+ 
 
 def accepted_serial_no_to_order(doc,handle=None):
 	wo_jc = frappe.db.get_value("Job Card", {"name":doc.reference_name}, "work_order")
