@@ -137,6 +137,7 @@ doc_events = {
     },
     "Stock Entry": {
         "on_submit": "oil_and_gas_international.overriding.add_transfered_qty_ro_item",
+        "on_cancel": "oil_and_gas_international.overriding.reduce_transfered_qty",
     },
     "Rental Order": {
         "on_update_after_submit": "oil_and_gas_international.overriding.change_ro_status",

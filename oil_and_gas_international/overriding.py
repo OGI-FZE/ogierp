@@ -134,7 +134,15 @@ def add_transfered_qty_ro_item(doc,handle=None):
 						ro.save()
 						frappe.db.commit()
 
-
+def reduce_transfered_qty(doc,handle=None):
+	if doc.rental_order and doc.stock_entry_type =="Material Transfer":
+		ro = frappe.get_doc ("Rental Order", doc.rental_order)
+		for item in doc.items:
+			for i in ro.items:
+				if item.item_code == i.item_code:
+					i.transfered_qty -= item.qty
+					ro.save()
+					frappe.db.commit()
 
 
 
