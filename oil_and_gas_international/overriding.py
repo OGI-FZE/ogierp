@@ -105,7 +105,7 @@ def accepted_serial_no_to_order(doc,handle=None):
 				for item in order.items:
 					if item.item_code == doc.item_code:
 						if doc.item_serial_no:
-							item.serial_no_accepted = "\n".join([item.serial_no_accepted,doc.item_serial_no])
+							item.serial_no_accepted = item.serial_no_accepted + "\n" + doc.item_serial_no
 							order.save()
 							frappe.db.commit()
 
