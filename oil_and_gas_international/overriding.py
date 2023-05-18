@@ -103,7 +103,7 @@ def accepted_serial_no_to_order(doc,handle=None):
 
 			if doc.status == "Accepted" and doc.inspection_type == "Outgoing":
 				for item in order.items:
-					if item.item_code == doc.item_code and doc.item_serial_no::
+					if item.item_code == doc.item_code and doc.item_serial_no:
 						if item.serial_no_accepted:
 							item.serial_no_accepted = "\n".join([item.serial_no_accepted,doc.item_serial_no])
 						else:
