@@ -204,11 +204,7 @@ def change_ro_status(doc,handle=None):
 		if timesheets:
 			last_ts = frappe.get_doc("Rental Timesheet",timesheets[0]['name'])
 			d = last_ts.end_date
-			# if not isinstance(doc.end_date, datetime.date):
-			# 	end_date = datetime.strptime(doc.end_date,"%Y-%M-%d")
-			# else:
-			# 	end_date = doc.end_date
-			if datetime.strptime(doc.end_date,"%Y-%m-%d") < datetime(d.year,d.month,d.day):
+			if datetime.strptime(str(doc.end_date),"%Y-%m-%d") < datetime(d.year,d.month,d.day):
 				frappe.throw(_("End date is invalid, please set it after timesheet end date {}".format(d)))
 		doc.db_set("status","Completed")
 	else:
