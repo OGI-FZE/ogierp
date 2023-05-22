@@ -56,7 +56,7 @@ class RentalQuotation(Document):
                         self.contact = cus_con.phone_nos[0].phone + "\n" + cus_con.email_ids[0].email_id
                     elif cus_con.phone_nos:
                         self.contact = cus_con.phone_nos[0].phone
-                    else:
+                    elif cus_con.email_ids:
                         self.contact = cus_con.email_ids[0].email_id
                 else:
                     sec = frappe.get_doc('Contact',self.customer_contact)
