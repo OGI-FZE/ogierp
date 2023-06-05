@@ -50,8 +50,6 @@ class RentalOrder(Document):
                              self.rental_quotation, "status", "Ordered")
         # self.db_set("status", "Submitted")
         pro = frappe.new_doc("Project")
-        if self.division == 'Rental':
-            pro.naming_series = 'OGI-.R-.MM.YY.-.####'
         pro.project_name = self.name
         pro.department = self.department
         pro.rental_order = self.name
