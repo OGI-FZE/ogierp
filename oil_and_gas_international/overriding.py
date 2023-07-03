@@ -443,3 +443,17 @@ def get_item_description_from_so_items(doc,handler=None):
 										   where parent = "%s" and item_code="%s" """ %(doc.rental_order,doc.production_item),
 										   as_dict=1)
 		doc.item_description = roi_desc[0]['description']
+
+
+
+@frappe.whitelist()
+def set_rate(item="Oli Serial item",price_list="Standard Selling"):
+	rate = frappe.db.sql(
+			"""select price_list_rate from `tabItem Price` where item_code = %s and
+			   price_list = %s """,
+			 (item,price_list), as_dict = 1)
+	if rate:
+		return rate[0]['price_list_rate']
+	else:
+		return 0
+

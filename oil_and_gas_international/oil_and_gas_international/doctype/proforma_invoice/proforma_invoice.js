@@ -1,145 +1,97 @@
-// Copyright (c) 2022, Havenir Solutions and contributors
+// Copyright (c) 2023, Havenir Solutions and contributors
 // For license information, please see license.txt
 
 frappe.ui.form.on('Proforma Invoice', {
-	refresh: function(frm) {
+	refresh(frm){
 		if(frm.doc.docstatus==1){
-			add_sales_invoice()
+			add_sales_invoice(frm)
 		}
-		else{
-			frm.trigger('calculate_amount');
-		}
-	},
-    rental_timesheet(frm, cdt, cdn) {
-        if(frm.doc.rental_timesheet){
-		    get_items_from_rental_timesheet(frm, cdt, cdn)
-        }
-	},
-	calculate_amount: function (frm){
-		console.log("Caluculatinggg")
-		let doc = frm.doc;
-		let total_qty = 0;
-		let net_total = 0;
-		for (let i in doc.items){
-			total_qty += doc.items[i].qty;
-			net_total += doc.items[i].amount; 
-			console.log("totals in loop",total_qty,net_total)     
-		}
-		console.log("totals",total_qty,net_total)
-		frm.refresh_field('items');
-		frm.set_value('total_qty', total_qty);
-		frm.set_value('net_total', net_total);
-		frm.set_value('total', net_total);
-	},
-	taxes_and_charges:function(frm){
-		if(frm.doc.taxes_and_charges){
-			frappe.call({
-				method: "oil_and_gas_international.oil_and_gas_international.doctype.proforma_invoice.proforma_invoice.getTax",
-				args: {
-					tx:frm.doc.taxes_and_charges
-				},
-				callback(res){
-					res.message.forEach(tax => {
-						let row = frm.add_child('taxes', {
-							'charge_type': tax.charge_type, 
-							'account_head': tax.account_head, 
-							'description': tax.account_head, 
-							'cost_center': tax.cost_center, 
-							'rate': tax.rate, 
-							'tax_amount': tax.tax_amount, 
-							'total': tax.total, 
-							'tax_amount_after_discount_amount': tax.tax_amount_after_discount_amount, 
-							'base_tax_amount': tax.base_tax_amount, 
-							'base_total': tax.base_total, 
-							'base_tax_amount_after_discount_amount': tax.base_tax_amount_after_discount_amount, 
+    },
+	validate(frm){
+		var customer_currency = frm.doc.currency
+        // frm.set_currency_labels(["tax_amount","grand_total"],customer_currency)
+		frm.set_currency_labels([
+            "operational_running","lihdbr","post_rental_inspection_charges","standby","straight","redress"
+        ], customer_currency, "items");
+    },
 
-						})
-					})
+	taxes_and_charges(frm){
+		frappe.call({
+            method: 'oil_and_gas_international.overriding.getTax',
+            args: {
+                tx: frm.doc.taxes_and_charges,
+            },
+            callback: function(r) {
+				frm.add_child("taxes",{
+					"charge_type": r.message[0]["charge_type"],
+					"account_head": r.message[0]["account_head"],
+					"rate": r.message[0]["rate"],
+					"tax_amount": (frm.doc.total*r.message[0]['rate'])/100,
+					"total": (frm.doc.total + (frm.doc.total*r.message[0]['rate'])/100),
+					"description": r.message[0]["description"]
+					
+
+
+				})
+				frm.refresh_field('taxes')
+                        }
+        })
+     },
+			
+
+	delivery_date(frm){
+		for (const row of frm.doc.items){
+			frappe.model.set_value(row.doctype,row.name,"delivery_date",frm.doc.delivery_date)
+		}
+	},
+
+	selling_price_list(frm){
+		for (const row of frm.doc.items){
+			const cdt = row.doctype
+			const cdn = row.name
+			frappe.call({
+				method: "oil_and_gas_international.overriding.set_rate",
+				args:{"item":row.item_code,
+					  "price_list": frm.doc.selling_price_list},
+	
+				callback: function(r) {
+					frappe.model.set_value(cdt,cdn,"rate",r.message)	
 				}
 			});
-			frm.refresh_field('taxes');
+			
 		}
-		frm.refresh_field('taxes');
+
+				
+				
 	}
+
 });
+
 
 frappe.ui.form.on('Proforma Invoice Item', {
-	qty:function(frm,cdt,cdn){
-		var d = locals[cdt][cdn]
-		frappe.model.set_value(cdt, cdn, "net_total", d.amount)
-		frm.trigger('calculate_amount');
-	},
+	item_code(frm,cdt,cdn){
+		var child = locals[cdt][cdn];
+		frappe.call({
+			method: "oil_and_gas_international.overriding.set_rate",
+			args:{"item":child.item_code,
+				  "price_list": frm.doc.selling_price_list},
 
-	rate:function(frm,cdt,cdn){
-		var d = locals[cdt][cdn]
-		frappe.model.set_value(cdt, cdn, "net_total", d.amount)
-		frm.trigger('calculate_amount');
+			callback: function(r) {
+				frappe.model.set_value(cdt,cdn,"rate",r.message)	
+			}
+		});
+	},
+	rate(frm,cdt,cdn){
+		var child = locals[cdt][cdn];
+		frappe.model.set_value(cdt,cdn,"amount",child.rate*child.qty)	
+	},
+	qty(frm,cdt,cdn){
+		var child = locals[cdt][cdn];
+		frappe.model.set_value(cdt,cdn,"amount",child.rate*child.qty)	
 	}
+
 });
 
-
-const get_items_from_rental_timesheet = (frm, cdt, cdn) => {
-	const rental_timesheet = frm.doc.rental_timesheet
-	frappe.call({
-		method: "oil_and_gas_international.events.sales_invoice.get_rental_timesheet_items",
-		args: { docname: rental_timesheet },
-		async: false,
-		callback(res) {
-			const data = res.message
-			console.log(data)
-			if (!data) return
-			frm.doc.items = []
-			for (const row of data) {
-                const new_row = cur_frm.add_child("items", {
-                    qty: 1,
-                    asset_item:row.item_code,
-                    rental_order:row.rental_order,
-                    rental_order_item:row.rental_order_item,
-                    days:row.days,
-                    asset_qty:row.qty,
-                    stock_qty:1
-                })
-                const cdt = new_row.doctype
-                const cdn = new_row.name
-                frappe.model.set_value(cdt, cdn, "item_code",'Asset Rent Item')
-                frappe.model.set_value(cdt, cdn, "item_name",'Asset Rent Item')
-                frappe.model.set_value(cdt, cdn, "uom",'Nos')
-                frappe.model.set_value(cdt, cdn, "stock_uom",'Nos')
-                frappe.model.set_value(cdt, cdn, "conversion_factor",1)
-                var item_name = ''
-                var item_grp = ''
-                let desc = ""
-                if(row.item_code) {desc += row.item_name+"\n"}
-                if(row.operational_running_days){
-                	desc += "Operational/Running  " 
-                	frappe.model.set_value(cdt, cdn, "unit_price",row.operational_running)
-                }
-                if(row.standby_days){
-                	desc += "Standby  "
-                	frappe.model.set_value(cdt, cdn, "unit_price",row.standby)
-                }
-                if(row.straight_days){
-                	desc += "Straight  "
-                	frappe.model.set_value(cdt, cdn, "unit_price",row.straight)
-                }
-                if(row.timesheet_start_date && row.timesheet_end_date) {desc += ("\nRental period: "+ row.timesheet_start_date +" to "+row.timesheet_end_date)}
-                setTimeout(function(){
-                    frappe.model.set_value(cdt, cdn, "price_list_rate",row.amount)
-                    frappe.model.set_value(cdt, cdn, "rate",row.amount)
-                    frappe.model.set_value(cdt, cdn, "amount",row.amount)
-                    frappe.model.set_value(cdt, cdn, "net_rate",row.amount)
-                    frappe.model.set_value(cdt, cdn, "net_amount",row.amount)
-                    frappe.model.set_value(cdt, cdn, "details",desc)
-                    frappe.model.set_value(cdt, cdn, "child_category",row.item_group)
-                    frappe.model.set_value(cdt, cdn, "description",desc)
-                }, 2000);           
-				
-			}
-
-			cur_frm.refresh()
-		}
-	})
-}
 
 const add_sales_invoice = () => {
 	cur_frm.add_custom_button('Sales Invoice', () => {
@@ -148,40 +100,45 @@ const add_sales_invoice = () => {
 			() => frappe.new_doc('Sales Invoice'),
 			() => {
 				const cur_doc = cur_frm.doc
-				cur_doc.customer = doc.customer
-				// cur_doc.rental_timesheet = doc.name
-				cur_doc.rental_order = doc.rental_order
-				cur_doc.departments = doc.departments
-				cur_doc.currency = doc.currency
-				cur_doc.conversion_rate = doc.conversion_rate
-				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "rental_timesheet", doc.rental_timesheet)
+				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "rental_order", doc.rental_order)
+				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "rental_invoice", doc.name)
+
 				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "currency", doc.currency)
+				cur_doc.customer = doc.customer
+				cur_doc.conversion_rate = doc.conversion_rate
+				cur_doc.against_rental_order = 1
+				cur_doc.department = doc.department
+				cur_doc.division = doc.division
+				cur_doc.rental_timesheet = doc.rental_timesheet
+				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "taxes_and_charges", doc.taxes_and_charges)
+				// cur_doc.ignore_pricing_rule = 1
 				cur_doc.items = []
-				console.log("itemss",doc.items)
+
 				for (const row of doc.items) {
-					console.log("qty",row.qty)
 					const new_row = cur_frm.add_child("items", {
-						qty: row.qty,
-						asset_item:row.item_code,
-						rental_order:row.rental_order,
-						rental_order_item:row.rental_order_item,
-						assets:row.assets,
 						item_code:row.item_code,
-						item_name:row.item_name
+						item_name:row.item_name,
+						qty: row.qty,
+						description:row.description,
+						start_date:row.start_date_,
+						end_date:row.end_date,
+						rate:row.rate*row.days,
+						days:row.days,
+						uom:row.uom,
+						income_account:row.income_account,
+						expense_account:row.expense_account
 					})
-					console.log("new_row",new_row)
+				
 					const cdt = new_row.doctype
 					const cdn = new_row.name
-					// frappe.model.set_value(cdt, cdn, "item_code",'Asset Rent Item')
-					// frappe.model.set_value(cdt, cdn, "item_name",'Asset Rent Item')
-					setTimeout(function(){
-						frappe.model.set_value(cdt, cdn, "price_list_rate",row.amount)
-						frappe.model.set_value(cdt, cdn, "rate",row.amount)
-						frappe.model.set_value(cdt, cdn, "amount",row.amount)
-					}, 2000);
-				}
 
+					// frappe.model.set_value(cdt, cdn, "rate", row.rate)
+					// frappe.model.set_value(cdt, cdn, "item_name", row.item_name)
+					// frappe.model.set_value(cdt, cdn, "description", row.description)
+
+				}
 				cur_frm.refresh()
+				
 			}
 		])
 	}, 'Create')
