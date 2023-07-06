@@ -4,7 +4,7 @@
 frappe.ui.form.on('Proforma Invoice', {
 	refresh(frm){
 		if(frm.doc.docstatus==1){
-			add_sales_invoice(frm)
+			// add_sales_invoice(frm)
 		}
     },
 	validate(frm){
