@@ -76,7 +76,7 @@ const add_packing_slip = () => {
 		const doc = cur_frm.doc
 		frappe.run_serially([
 			() => frappe.new_doc('OGI Packing Slip'),
-			() => {
+			() => { 
 				const cur_doc = cur_frm.doc
 				cur_doc.items = []
                 cur_doc.stock_entry = doc.name
