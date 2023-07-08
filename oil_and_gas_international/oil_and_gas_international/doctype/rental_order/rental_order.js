@@ -279,7 +279,7 @@ const create_custom_buttons = () => {
 	// if (status == 0) {
 	// 	get_items_from_rental_quotation()
 	console.log(doc.status)
-	add_packing_slip()
+	// add_packing_slip()
     if (doc.status != "Completed") {
 		add_material_transfer()
 		// add_rental_invoice()
