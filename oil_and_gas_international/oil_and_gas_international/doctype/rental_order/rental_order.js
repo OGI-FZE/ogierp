@@ -276,9 +276,11 @@ const create_custom_buttons = () => {
 	const doc = cur_frm.doc
 	const status = doc.docstatus
 
-	if (status == 0) {
-		get_items_from_rental_quotation()
-	} else if (status == 1) {
+	// if (status == 0) {
+	// 	get_items_from_rental_quotation()
+	console.log(doc.status)
+	add_packing_slip()
+    if (doc.status != "Completed") {
 		add_material_transfer()
 		// add_rental_invoice()
 		// add_rental_receipt()
@@ -287,6 +289,7 @@ const create_custom_buttons = () => {
 		// add_purchase_order()
 		// add_purchase_invoice()
 		add_rental_timesheet()
+		
 	
 		
 	}
@@ -721,7 +724,68 @@ const add_rental_invoice = () => {
 }
 
 
+const add_packing_slip = () => {
+	cur_frm.add_custom_button('Packing Slip', () => {
+		const doc = cur_frm.doc
+		frappe.run_serially([
+			() => frappe.new_doc('Packing Slip'),
+			() => {
+				const cur_doc = cur_frm.doc
+				cur_doc.customer = doc.customer
+				cur_doc.start_date = doc.start_date
+				if (doc.end_date){
+					cur_doc.end_date = doc.end_date
+				}
+				else{
+					cur_doc.end_date = frappe.datetime.month_end(doc.start_date) 
+				}
+				cur_doc.currency = doc.currency
+				cur_doc.conversion_rate = doc.conversion_rate
+				cur_doc.department = doc.department
+				cur_doc.division = doc.division
+				cur_doc.price_list = "Operational/Running"
+				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "rental_order", doc.name)
+				cur_doc.items = []
+				var no_days = frappe.datetime.get_day_diff(frappe.datetime.month_end(doc.start_date),doc.start_date)+1
+				for (const row of doc.items) {
+					const new_row = cur_frm.add_child("items", {
+						qty: row.transfered_qty,
+						// serial_no_accepted: row.serial_no_accepted,
+						operational_running: row.operational_running,
+						rate: row.operational_running,
+						standby: row.standby,
+						post_rental_inspection_charges: row.post_rental_inspection_charges,
+						lihdbr: row.lihdbr,
+						redress: row.redress,
+						straight: row.straight,
+						description_2: row.description_2,
+						description:row.description,
+						customer_requirement: row.customer_requirement,
+						delivery_date: doc.start_date,
+						days: no_days,
+						start_date_: doc.start_date,
+						end_date: frappe.datetime.month_end(doc.start_date),
 
+					})
+					const cdt = new_row.doctype
+					const cdn = new_row.name
+					frappe.model.set_value(cdt, cdn, "item_code", row.item_code)
+					frappe.model.set_value(cdt, cdn, "item_name", row.item_name)
+					frappe.db.get_value("Item", {"item_code": row.item_code}, "stock_uom", (r) => {
+						if(r.stock_uom){
+							frappe.model.set_value(cdt, cdn, "uom", r.stock_uom)
+						}
+					});
+
+				}
+
+
+				cur_frm.refresh()
+				cur_frm.refresh()
+			}
+		])
+	}, 'Create')
+}
 
 
 
