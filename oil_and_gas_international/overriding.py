@@ -118,7 +118,7 @@ def add_transfered_qty_ro_item(doc,handle=None):
 	if doc.rental_order and doc.stock_entry_type =="Material Transfer":
 		for item in doc.items:
 			for i in ro.items:
-				if item.item_code == i.item_code:
+				if item.item_code == i.item_code and item.id_name == i.name:
 					i.transfered_qty += item.qty
 					ro.save()
 					frappe.db.commit()
@@ -126,7 +126,7 @@ def add_transfered_qty_ro_item(doc,handle=None):
 	if not doc.need_inspection and doc.stock_entry_type == "Material Receipt" and doc.sub_rental_order: 
 		for roitem in ro.items:
 			for item in doc.items:
-				if roitem.item_code == item.item_code:
+				if roitem.item_code == item.item_code and roitem.name == item.id_name:
 					if item.serial_no and roitem.serial_no_accepted:
 						roitem.serial_no_accepted = "\n".join([roitem.serial_no_accepted,item.serial_no])
 					elif not roitem.serial_no_accepted:
@@ -139,7 +139,7 @@ def reduce_transfered_qty(doc,handle=None):
 		ro = frappe.get_doc ("Rental Order", doc.rental_order)
 		for item in doc.items:
 			for i in ro.items:
-				if item.item_code == i.item_code:
+				if item.item_code == i.item_code and i.name == item.id_name:
 					i.transfered_qty -= item.qty
 					ro.save()
 					frappe.db.commit()

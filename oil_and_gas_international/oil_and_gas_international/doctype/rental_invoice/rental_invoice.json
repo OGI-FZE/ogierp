@@ -20,6 +20,7 @@
   "transaction_date",
   "delivery_date",
   "division",
+  "project",
   "start_end",
   "from_date",
   "colcol",
@@ -36,10 +37,7 @@
   "column_break2",
   "selling_price_list",
   "sec_warehouse",
-  "set_warehouse",
-  "prices",
   "items_section",
-  "scan_barcode",
   "items",
   "packing_list",
   "packed_items",
@@ -55,17 +53,18 @@
   "section_break_40",
   "taxes",
   "colsec",
-  "Tax Amount",
-  "Grand Total"
+  "tax_amount",
+  "grand_total",
+  "amended_from"
  ],
  "fields": [
   {
-    "fieldname":"colll2",
-    "fieldtype":"Column Break"
+   "fieldname": "colll2",
+   "fieldtype": "Column Break"
   },
   {
-    "fieldname":"colsec",
-    "fieldtype":"Section Break"
+   "fieldname": "colsec",
+   "fieldtype": "Section Break"
   },
   {
    "fieldname": "customer_section",
@@ -75,31 +74,31 @@
    "options": "fa fa-user"
   },
   {
-    "fieldname": "colcol",
-    "fieldtype": "Column Break",
-    "hide_days": 1,
-    "hide_seconds": 1
-   },
+   "fieldname": "colcol",
+   "fieldtype": "Column Break",
+   "hide_days": 1,
+   "hide_seconds": 1
+  },
   {
-    "fieldname": "start_end",
-    "fieldtype": "Section Break",
-    "hide_days": 1,
-    "label": "Start & End Date",
-    "hide_seconds": 1,
-    "options": "fa fa-user"
-   },
-   {
-    "fieldname": "department",
-    "fieldtype": "Link",
-    "options": "Department",
-    "label": "Department"
-   },
-   {
-    "fieldname": "division",
-    "fieldtype": "Select",
-    "options": "Machine Shop Sale\nMachine Shop Repair\nInspection\nTrading\nRental",
-    "label": "Division"
-   },
+   "fieldname": "start_end",
+   "fieldtype": "Section Break",
+   "hide_days": 1,
+   "hide_seconds": 1,
+   "label": "Start & End Date",
+   "options": "fa fa-user"
+  },
+  {
+   "fieldname": "department",
+   "fieldtype": "Link",
+   "label": "Department",
+   "options": "Department"
+  },
+  {
+   "fieldname": "division",
+   "fieldtype": "Select",
+   "label": "Division",
+   "options": "Machine Shop Sale\nMachine Shop Repair\nInspection\nTrading\nRental"
+  },
   {
    "fieldname": "column_break0",
    "fieldtype": "Column Break",
@@ -198,14 +197,14 @@
    "width": "160px"
   },
   {
-    "fieldname": "delivery_date",
-    "fieldtype": "Date",
-    "label": "Delivery Date",
-    "no_copy": 1,
-    "reqd": 1,
-    "search_index": 1,
-    "width": "160px"
-   },
+   "fieldname": "delivery_date",
+   "fieldtype": "Date",
+   "label": "Delivery Date",
+   "no_copy": 1,
+   "reqd": 1,
+   "search_index": 1,
+   "width": "160px"
+  },
   {
    "collapsible": 1,
    "depends_on": "customer",
@@ -217,48 +216,39 @@
    "options": "fa fa-bullhorn"
   },
   {
-    "collapsible": 1,
-    "fieldname": "customer_address",
-    "fieldtype": "Link",
-    "hide_days": 1,
-    "hide_seconds": 1,
-    "label": "Customer Address",
-    "options": "Address",
-    "read_only": 1
-   },
-   {
-    "collapsible": 1,
-    "fieldname": "address_display",
-    "fieldtype": "Small Text",
-    "hide_days": 1,
-    "read_only": 1
-   },
-   {
-    "fieldname": "colcol2",
-    "fieldtype": "Column Break"
-   },
-   {
-    "fieldname": "customer_contact",
-    "fieldtype": "Link",
-    "label": "Customer Contact",
-    "options": "Contact",
-    "read_only": 1
-   },
-   {
-    "collapsible": 1,
-    "fieldname": "contact_display",
-    "fieldtype": "Small Text",
-    "read_only": 1
-   },
-
-
-
-
-
-
-
-
-
+   "collapsible": 1,
+   "fieldname": "customer_address",
+   "fieldtype": "Link",
+   "hide_days": 1,
+   "hide_seconds": 1,
+   "label": "Customer Address",
+   "options": "Address",
+   "read_only": 1
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "address_display",
+   "fieldtype": "Small Text",
+   "hide_days": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "colcol2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "customer_contact",
+   "fieldtype": "Link",
+   "label": "Customer Contact",
+   "options": "Contact",
+   "read_only": 1
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "contact_display",
+   "fieldtype": "Small Text",
+   "read_only": 1
+  },
   {
    "collapsible": 1,
    "fieldname": "currency_and_price_list",
@@ -283,6 +273,7 @@
    "width": "100px"
   },
   {
+   "default": "1",
    "description": "Rate at which customer's currency is converted to company's base currency",
    "fieldname": "conversion_rate",
    "fieldtype": "Float",
@@ -291,8 +282,7 @@
    "oldfieldname": "conversion_rate",
    "oldfieldtype": "Currency",
    "precision": "9",
-   "read_only": 1,
-   "default": 1
+   "read_only": 1
   },
   {
    "fieldname": "column_break2",
@@ -328,7 +318,6 @@
    "oldfieldtype": "Section Break",
    "options": "fa fa-shopping-cart"
   },
-
   {
    "allow_bulk_edit": 1,
    "fieldname": "items",
@@ -427,71 +416,75 @@
    "label": "To Date",
    "no_copy": 1
   },
-
-  
-  
-  
-  
-  
-  
-  
-  
   {
-    "fieldname": "taxes_section",
-    "fieldtype": "Section Break",
-    "hide_days": 1,
-    "hide_seconds": 1,
-    "oldfieldtype": "Section Break",
-    "options": "fa fa-money"
-   },
-   {
-    "fieldname": "taxes_and_charges",
-    "fieldtype": "Link",
-    "hide_days": 1,
-    "hide_seconds": 1,
-    "label": "Sales Taxes and Charges Template",
-    "oldfieldname": "charge",
-    "oldfieldtype": "Link",
-    "options": "Sales Taxes and Charges Template",
-    "print_hide": 1
-   },
-   {
-    "fieldname": "section_break_40",
-    "fieldtype": "Section Break",
-    "hide_days": 1,
-    "hide_seconds": 1
-   },
-   {
-    "fieldname": "taxes",
-    "fieldtype": "Table",
-    "hide_days": 1,
-    "hide_seconds": 1,
-    "label": "Sales Taxes and Charges",
-    "oldfieldname": "other_charges",
-    "oldfieldtype": "Table",
-    "options": "Sales Taxes and Charges"
-   },
-   {
-    "fieldname": "tax_amount",
-    "fieldtype": "Currency",
-    "read_only":1,
-    "options":"currency",
-    "label": "Tax Amount"
-   },
-   {
-    "fieldname": "grand_total",
-    "fieldtype": "Currency",
-    "read_only":1,
-    "options":"currency",
-    "label": "Grand Total"
-   }
- 
-
+   "fieldname": "taxes_section",
+   "fieldtype": "Section Break",
+   "hide_days": 1,
+   "hide_seconds": 1,
+   "oldfieldtype": "Section Break",
+   "options": "fa fa-money"
+  },
+  {
+   "fieldname": "taxes_and_charges",
+   "fieldtype": "Link",
+   "hide_days": 1,
+   "hide_seconds": 1,
+   "label": "Sales Taxes and Charges Template",
+   "oldfieldname": "charge",
+   "oldfieldtype": "Link",
+   "options": "Sales Taxes and Charges Template",
+   "print_hide": 1
+  },
+  {
+   "fieldname": "section_break_40",
+   "fieldtype": "Section Break",
+   "hide_days": 1,
+   "hide_seconds": 1
+  },
+  {
+   "fieldname": "taxes",
+   "fieldtype": "Table",
+   "hide_days": 1,
+   "hide_seconds": 1,
+   "label": "Sales Taxes and Charges",
+   "oldfieldname": "other_charges",
+   "oldfieldtype": "Table",
+   "options": "Sales Taxes and Charges"
+  },
+  {
+   "fieldname": "tax_amount",
+   "fieldtype": "Currency",
+   "label": "Tax Amount",
+   "options": "currency",
+   "read_only": 1
+  },
+  {
+   "fieldname": "grand_total",
+   "fieldtype": "Currency",
+   "label": "Grand Total",
+   "options": "currency",
+   "read_only": 1
+  },
+  {
+   "fieldname": "project",
+   "fieldtype": "Link",
+   "label": "Project",
+   "options": "Project"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Rental Invoice",
+   "print_hide": 1,
+   "read_only": 1
+  }
  ],
  "icon": "fa fa-file-text",
  "is_submittable": 1,
  "links": [],
- "modified": "2023-03-06 12:37:09.594690",
+ "modified": "2023-07-11 12:40:06.827203",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Rental Invoice",

@@ -651,7 +651,8 @@ const add_material_transfer = () => {
 						let sn_qty = row.serial_no_accepted.split("\n")
 						const new_row = cur_frm.add_child("items", {
 							qty: sn_qty.length,
-							serial_no: row.serial_no_accepted
+							serial_no: row.serial_no_accepted,
+							id_name: row.name
 						})
 						const cdt = new_row.doctype
 						const cdn = new_row.name
@@ -660,6 +661,7 @@ const add_material_transfer = () => {
 					else {
 						const new_row = cur_frm.add_child("items", {
 							qty: row.qty,
+							id_name: row.name
 						})
 						const cdt = new_row.doctype
 						const cdn = new_row.name

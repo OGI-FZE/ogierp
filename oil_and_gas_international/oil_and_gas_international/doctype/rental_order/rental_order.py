@@ -51,6 +51,7 @@ class RentalOrder(Document):
         # self.db_set("status", "Submitted")
         pro = frappe.new_doc("Project")
         pro.project_name = self.name
+        pro.company = self.company
         pro.department = self.department
         pro.rental_order = self.name
         pro.expected_start_date = self.date

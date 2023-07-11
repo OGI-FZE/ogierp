@@ -49,6 +49,7 @@ class RentalTimesheet(Document):
         reninv.customer = self.customer
         reninv.company = self.company
         reninv.date = self.date
+        reninv.project = self.project
         reninv.rental_timesheet = self.name
         reninv.rental_order = self.rental_order
         reninv.division = self.division
