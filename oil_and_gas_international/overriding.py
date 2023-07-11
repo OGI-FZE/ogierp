@@ -115,7 +115,7 @@ def accepted_serial_no_to_order(doc,handle=None):
 def add_transfered_qty_ro_item(doc,handle=None):
 	if doc.rental_order:
 		ro = frappe.get_doc("Rental Order",doc.rental_order)
-	if doc.rental_order and doc.stock_entry_type =="Material Transfer":
+	if doc.rental_order and doc.stock_entry_type =="Material Transfer for Rental":
 		for item in doc.items:
 			for i in ro.items:
 				if item.item_code == i.item_code and item.id_name == i.name:
