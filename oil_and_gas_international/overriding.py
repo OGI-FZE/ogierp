@@ -83,10 +83,14 @@ class CustomWorkOrder(WorkOrder):
 def disable_generating_serial_no(doc,handle=None):
 	manufacturing_settings = frappe.get_doc("Manufacturing Settings")
 	if doc.purpose == "Manufacturing":
-		manufacturing_settings.set("make_serial_no_batch_from_work_order",1)
-	elif doc.purpose in ["Inspection","Sub rent","Service"]:
-		manufacturing_settings.set("make_serial_no_batch_from_work_order",0)
-	manufacturing_settings.save()
+		manufacturing_settings.db_set('make_serial_no_batch_from_work_order',1)
+		# manufacturing_settings.save()
+	elif doc.purpose == "Inspection":
+		print("__________")
+		print(doc.purpose)
+		manufacturing_settings.db_set('make_serial_no_batch_from_work_order',0)
+		# manufacturing_settings.save()
+	
 	frappe.db.commit()
 
  
@@ -443,6 +447,16 @@ def get_item_description_from_so_items(doc,handler=None):
 										   where parent = "%s" and item_code="%s" """ %(doc.rental_order,doc.production_item),
 										   as_dict=1)
 		doc.item_description = roi_desc[0]['description']
+
+
+	#for generating serial nos
+	manufacturing_settings = frappe.get_doc("Manufacturing Settings")
+	if doc.purpose == "Manufacturing":
+		manufacturing_settings.db_set('make_serial_no_batch_from_work_order',1)
+	elif doc.purpose in ["Inspection","Sub rent","Service"]:
+		manufacturing_settings.db_set('make_serial_no_batch_from_work_order',0)
+	
+	frappe.db.commit()
 
 
 
