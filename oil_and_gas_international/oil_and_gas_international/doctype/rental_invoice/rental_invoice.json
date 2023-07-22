@@ -15,6 +15,7 @@
   "customer_name",
   "rental_order",
   "department",
+  "territory",
   "column_break1",
   "company",
   "transaction_date",
@@ -479,12 +480,19 @@
    "options": "Rental Invoice",
    "print_hide": 1,
    "read_only": 1
+  },
+  {
+   "fetch_from": "customer.territory",
+   "fieldname": "territory",
+   "fieldtype": "Data",
+   "label": "Territory",
+   "read_only": 1
   }
  ],
  "icon": "fa fa-file-text",
  "is_submittable": 1,
  "links": [],
- "modified": "2023-07-11 12:40:06.827203",
+ "modified": "2023-07-22 12:00:37.136583",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Rental Invoice",
