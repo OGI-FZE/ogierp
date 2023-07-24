@@ -471,3 +471,12 @@ def set_rate(item=None,price_list=None):
 	else:
 		return 0
 
+
+
+def cancel_se():
+	se = frappe.get_doc("Stock Entry","OGI-OSE-0021")
+	se.cancel()
+	frappe.db.commit()
+
+def enqueue_long_job():
+	frappe.enqueue('oil_and_gas_international.overriding.cancel_se')
