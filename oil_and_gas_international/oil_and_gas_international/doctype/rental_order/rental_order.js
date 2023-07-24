@@ -645,6 +645,10 @@ const add_material_transfer = () => {
 				const cur_doc = cur_frm.doc
 				frappe.model.set_value(cur_doc.doctype,cur_doc.name,"stock_entry_type","Material Transfer")
 				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "rental_order", doc.name)
+				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "customer", doc.customer)
+				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "address", doc.address)
+				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "contact", doc.contact)
+
 				cur_doc.items = []
 				for (const row of doc.items) {
 					if (row.serial_no_accepted){
