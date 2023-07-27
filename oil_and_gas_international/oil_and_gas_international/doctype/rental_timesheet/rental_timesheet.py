@@ -37,7 +37,7 @@ class RentalTimesheet(Document):
         for row in self.items:
             if row.stop_rent:
                 for item in ro.items:
-                    if not item.stopped_qty:
+                    if not item.stop_qty:
                         item.stopped_qty = 0
                     if row.item_code == item.item_code:
                         item.stop_qty += row.qty
