@@ -99,10 +99,10 @@ class Analytics(object):
 		value_field = "base_net_total as value_field"
 
 		def combine_dict(d1, d2):
-		    return {
-		        k: list(d[k] for d in (d1, d2) if k in d)
-		        for k in set(d1.keys()) | set(d2.keys())
-		    }
+			return {
+				k: list(d[k] for d in (d1, d2) if k in d)
+				for k in set(d1.keys()) | set(d2.keys())
+			}
 
 		# def combine_dict(d1, d2, d3):
 		#     return {
@@ -114,15 +114,6 @@ class Analytics(object):
 		self.entity_periodic_data = combine_dict(self.so_periodic_data,self.si_periodic_data)
 		for t in self.entity_periodic_data:
 			self.entity_periodic_data[t] = reduce(lambda a, b: dict(a, **b), self.entity_periodic_data[t])
-
-		# print("so\n\n",self.so_periodic_data)
-		# print("si\n",self.si_periodic_data)
-		# print("noforecast\n",self.no_forecast_data)
-		# print("entity_periodic_data...........\n",self.entity_periodic_data)
-
-		# self.entity_periodic_data.update(self.no_forecast_data)
-
-		# print("entity_periodic_data...........\n",self.entity_periodic_data)
 
 		for entity, period_data in iteritems(self.entity_periodic_data):
 			i=0
@@ -154,12 +145,9 @@ class Analytics(object):
 					row.setdefault(all_forecasted, 0.0)
 
 			self.data.append(row)
-		# 	print("\nrow",row)
-		# print("data",self.data)
 
 		# self.data.append(self.no_forecast_data.copy())
 
-		# print("data",self.data)
 
 		# for r in self.no_forecast:
 		# 	self.data.append(r)
@@ -177,17 +165,17 @@ class Analytics(object):
 			if(row.customer):
 				conditions += " and so.customer = '{0}'".format(row.customer)
 
-			if(row.country):
-				conditions += " and so.territory = '{0}'".format(row.country)
+			# if(row.country):
+			# 	conditions += " and so.territory = '{0}'".format(row.country)
 
 			if(row.division):
-				conditions += " and so.departments = '{0}'".format(row.division)
+				conditions += " and so.division = '{0}'".format(row.division)
 
-			if(row.item_group):
-				conditions += " and soi.item_group = '{0}'".format(row.item_group)
+			# if(row.item_group):
+			# 	conditions += " and soi.item_group = '{0}'".format(row.item_group)
 
-			if(row.sales_person):
-				conditions += " and st.sales_person = '{0}'".format(row.sales_person)
+			# if(row.sales_person):
+			# 	conditions += " and st.sales_person = '{0}'".format(row.sales_person)
 
 
 			return conditions
@@ -196,33 +184,54 @@ class Analytics(object):
 			conditions = get_conditions(f_row)
 
 			so_entries = frappe.db.sql("""
-				select so.customer,so.departments as division,so.territory as country,soi.item_group,st.sales_person, so.base_net_total as value_field, so.transaction_date
-				from `tabSales Order Item` soi , `tabSales Order` so
-				left join `tabSales Team` st on so.name=st.parent 
-				where so.name = soi.parent and so.docstatus = 1 and so.transaction_date between '{0}' and '{1}' {2}
+				select so.customer, so.division, sum(so.grand_total) as value_field, so.transaction_date
+				from `tabSales Order` so
+				where so.docstatus = 1 and so.transaction_date between '{0}' and '{1}' {2}
+			    Group By so.customer, so.division
 				""".format(frappe.defaults.get_user_default("year_start_date"), frappe.defaults.get_user_default("year_end_date"),conditions),as_dict=1)
-
+			
+			self.rental_entries = frappe.db.sql("""
+				select so.customer, so.division, sum(so.total_amount) as value_field, so.date
+				from `tabRental Timesheet` so
+				where so.docstatus = 1 and so.date between '{0}' and '{1}' {2}
+			    Group By so.customer, so.division
+				""".format(frappe.defaults.get_user_default("year_start_date"), frappe.defaults.get_user_default("year_end_date"),conditions),as_dict=1)
+			
 			if so_entries:
 				for so in so_entries:
 					self.so_entries.append(so)
-
+			for so in self.so_entries:
+				for rt in self.rental_entries:
+					if so.get('customer') == rt.get('customer') and so.get('division') == rt.get('division'):
+						so['value_field'] = so.get('value_field') + rt.get('value_field')
+			
 			si_entries = frappe.db.sql("""
-				select so.customer,so.departments as division,so.territory as country,soi.item_group,st.sales_person, so.base_net_total as value_field, so.posting_date
-				from `tabSales Invoice Item` soi , `tabSales Invoice` so
-				left join `tabSales Team` st on so.name=st.parent 
-				where so.name = soi.parent and so.docstatus = 1 and so.posting_date between '{0}' and '{1}' {2}
+				select so.customer,so.division as division, sum(so.grand_total) as value_field, so.posting_date
+				from `tabSales Invoice` so
+				where so.docstatus = 1 and so.against_rental_order = 0 and so.posting_date between '{0}' and '{1}' {2}
+			    Group By so.customer, so.division
 				""".format(frappe.defaults.get_user_default("year_start_date"), frappe.defaults.get_user_default("year_end_date"),conditions),as_dict=1)
-
+			
+			self.rental_inv = frappe.db.sql("""
+				select so.customer,so.division as division, sum(so.grand_total) as value_field, so.transaction_date
+				from `tabRental Invoice` so
+				where so.docstatus = 1 and so.transaction_date between '{0}' and '{1}' {2}
+				Group By so.customer, so.division
+				""".format(frappe.defaults.get_user_default("year_start_date"), frappe.defaults.get_user_default("year_end_date"),conditions),as_dict=1)
+			
 			if si_entries:
 				for si in si_entries:
 					self.si_entries.append(si)
+			for si in self.si_entries:
+				for rv in self.rental_inv:
+					if si.get('customer') == rv.get('customer') and si.get('division') == rv.get('division'):
+						si['value_field'] = si.get('value_field') + rv.get('value_field')
 
 			if not so_entries and not si_entries:
 				self.no_forecast.append(f_row)
 
 
 
-		# print("\n\nso_entries",so_entries)
 
 		self.get_periodic_data()
 
@@ -258,7 +267,6 @@ class Analytics(object):
 				dic.setdefault(m_no_forecasted, 0.0)
 				dic[m_no_forecasted] += flt(f[m_no_forecasted])
 
-			# print("///////self.no_forecast_data",dic)
 			self.data.append(dic)
 
 				# M_no_forecasted = m + " " + self.filters.fiscal_year

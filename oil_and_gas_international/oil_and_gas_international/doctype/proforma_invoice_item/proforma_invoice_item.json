@@ -9,6 +9,7 @@
  "field_order": [
   "item_code",
   "days",
+  "item_group",
   "col_break1",
   "delivery_date",
   "item_name",
@@ -342,11 +343,17 @@
    "fieldname": "straight",
    "fieldtype": "Currency",
    "label": "Straight"
+  },
+  {
+   "fetch_from": "item_code.item_group",
+   "fieldname": "item_group",
+   "fieldtype": "Data",
+   "label": "Item Group"
   }
  ],
  "istable": 1,
  "links": [],
- "modified": "2023-07-06 14:10:11.287632",
+ "modified": "2023-07-26 12:10:16.998235",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Proforma Invoice Item",
