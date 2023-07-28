@@ -6,6 +6,7 @@ from frappe import _, scrub
 from frappe.utils import add_days, add_to_date, flt, getdate
 from six import iteritems
 from functools import reduce
+import json
 
 from erpnext.accounts.utils import get_fiscal_year
 
@@ -180,55 +181,62 @@ class Analytics(object):
 
 			return conditions
 
-		for f_row in self.forecast_data:
-			conditions = get_conditions(f_row)
-
-			so_entries = frappe.db.sql("""
-				select so.customer, so.division, sum(so.grand_total) as value_field, so.transaction_date
-				from `tabSales Order` so
-				where so.docstatus = 1 and so.transaction_date between '{0}' and '{1}' {2}
-			    Group By so.customer, so.division
-				""".format(frappe.defaults.get_user_default("year_start_date"), frappe.defaults.get_user_default("year_end_date"),conditions),as_dict=1)
-			
-			self.rental_entries = frappe.db.sql("""
-				select so.customer, so.division, sum(so.total_amount) as value_field, so.date
-				from `tabRental Timesheet` so
-				where so.docstatus = 1 and so.date between '{0}' and '{1}' {2}
-			    Group By so.customer, so.division
-				""".format(frappe.defaults.get_user_default("year_start_date"), frappe.defaults.get_user_default("year_end_date"),conditions),as_dict=1)
-			
-			if so_entries:
-				for so in so_entries:
-					self.so_entries.append(so)
-			for so in self.so_entries:
-				for rt in self.rental_entries:
-					if so.get('customer') == rt.get('customer') and so.get('division') == rt.get('division'):
-						so['value_field'] = so.get('value_field') + rt.get('value_field')
-			
-			si_entries = frappe.db.sql("""
-				select so.customer,so.division as division, sum(so.grand_total) as value_field, so.posting_date
-				from `tabSales Invoice` so
-				where so.docstatus = 1 and so.against_rental_order = 0 and so.posting_date between '{0}' and '{1}' {2}
-			    Group By so.customer, so.division
-				""".format(frappe.defaults.get_user_default("year_start_date"), frappe.defaults.get_user_default("year_end_date"),conditions),as_dict=1)
-			
-			self.rental_inv = frappe.db.sql("""
-				select so.customer,so.division as division, sum(so.grand_total) as value_field, so.transaction_date
-				from `tabRental Invoice` so
-				where so.docstatus = 1 and so.transaction_date between '{0}' and '{1}' {2}
-				Group By so.customer, so.division
-				""".format(frappe.defaults.get_user_default("year_start_date"), frappe.defaults.get_user_default("year_end_date"),conditions),as_dict=1)
-			
-			if si_entries:
-				for si in si_entries:
-					self.si_entries.append(si)
-			for si in self.si_entries:
-				for rv in self.rental_inv:
-					if si.get('customer') == rv.get('customer') and si.get('division') == rv.get('division'):
-						si['value_field'] = si.get('value_field') + rv.get('value_field')
-
-			if not so_entries and not si_entries:
-				self.no_forecast.append(f_row)
+		# for f_row in self.forecast_data:
+		# 	conditions = get_conditions(f_row)
+		data =[]
+		order_data = []
+		invoice_data = []
+		so_entries = frappe.db.sql("""
+			select so.customer, so.division, sum(so.grand_total) as value_field, so.transaction_date
+			from `tabSales Order` so
+			where so.docstatus = 1 and so.transaction_date between '{0}' and '{1}'
+			Group By so.customer, so.division
+			""".format(frappe.defaults.get_user_default("year_start_date"), frappe.defaults.get_user_default("year_end_date")),as_dict=1)
+		
+		
+		self.rental_entries = frappe.db.sql("""
+			select so.customer, so.division, sum(so.total_amount) as value_field, so.date
+			from `tabRental Timesheet` so
+			where so.docstatus = 1 and so.date between '{0}' and '{1}'
+			Group By so.customer, so.division
+			""".format(frappe.defaults.get_user_default("year_start_date"), frappe.defaults.get_user_default("year_end_date")),as_dict=1)
+		if so_entries:
+			for so in so_entries:
+				self.so_entries.append(so)
+		for s in self.so_entries:
+			for r in self.rental_entries:
+				if s.get('customer') == r.get('customer') and s.get('division') == r.get('division'):
+						order_data.append({'customer':s.get('customer'),'division':s.get('division'),'forecast':0,'so':(s.get('value_field')) + (r.get('value_field')),'si':0})
+				elif s.get('customer') != r.get('customer') and s.get('division') != r.get('division'):
+					order_data.append({'customer':s.get('customer'),'division':s.get('division'),'forecast':0,'so':s.get('value_field'),'si':0})
+					order_data.append({'customer':r.get('customer'),'div':r.get('division'),'forecast':0,'so':s.get('value_field'),'si':0})
+		
+		si_entries = frappe.db.sql("""
+			select so.customer,so.division as division, sum(so.grand_total) as value_field, so.posting_date
+			from `tabSales Invoice` so
+			where so.docstatus = 1 and so.against_rental_order = 0 and so.posting_date between '{0}' and '{1}'
+			Group By so.customer, so.division
+			""".format(frappe.defaults.get_user_default("year_start_date"), frappe.defaults.get_user_default("year_end_date")),as_dict=1)
+		
+		self.rental_inv = frappe.db.sql("""
+			select so.customer,so.division as division, sum(so.grand_total) as value_field, so.transaction_date
+			from `tabRental Invoice` so
+			where so.docstatus = 1 and so.transaction_date between '{0}' and '{1}'
+			Group By so.customer, so.division
+			""".format(frappe.defaults.get_user_default("year_start_date"), frappe.defaults.get_user_default("year_end_date")),as_dict=1)
+		
+		if si_entries:
+			for si in si_entries:
+				self.si_entries.append(si)
+		for s in self.si_entries:
+			for r in self.rental_inv:
+				if s.get('customer') == r.get('customer') and s.get('division') == r.get('division'):
+						invoice_data.append({'customer':s.get('customer'),'division':s.get('division'),'forecast':0,'so':(s.get('value_field')) + (r.get('value_field')),'si':0})
+				elif s.get('customer') != r.get('customer') and s.get('division') != r.get('division'):
+					invoice_data.append({'customer':s.get('customer'),'division':s.get('division'),'forecast':0,'so':0,'si':s.get('value_field')})
+					invoice_data.append({'customer':r.get('customer'),'div':r.get('division'),'forecast':0,'so':0,'si':r.get('value_field')})
+		# 	if not so_entries and not si_entries:
+		# 		self.no_forecast.append(f_row)
 
 
 
