@@ -23,7 +23,8 @@ def get_data(filters):
 			rate as rate,
 			total as total,
 			company as company,
-			posting_date as date
+			posting_date as date,
+			fiscal_year as fiscal_year
 		FROM
 			`tabStock Forecasting` as sf
 		WHERE
@@ -36,6 +37,9 @@ def get_data(filters):
 	if filters.from_date and filters.to_date:
 		query = f"{query} AND posting_date BETWEEN '{filters.from_date}' AND '{filters.to_date}'"
 
+	if filters.fiscal_year:
+		query = f"{query} AND fiscal_year = '{filters.fiscal_year}'"
+
 	sql_data = frappe.db.sql(query, as_dict=True)
 	
 	item_group_query = f"""
@@ -47,7 +51,8 @@ def get_data(filters):
 			rate as rate,
 			total as total,
 			company as company,
-			posting_date as date
+			posting_date as date,
+			fiscal_year as fiscal_year
 		FROM
 			`tabStock Forecasting` as sf
 		WHERE
@@ -58,32 +63,47 @@ def get_data(filters):
 		query = f"{item_group_query} AND company={frappe.db.escape(filters.company)}'"
 
 	if filters.from_date and filters.to_date:
-		query = f"{query} AND posting_date BETWEEN '{filters.from_date}' AND '{filters.to_date}'"
+		query = f"{item_group_query} AND posting_date BETWEEN '{filters.from_date}' AND '{filters.to_date}'"
+
+	if filters.fiscal_year:
+		query = f"{item_group_query} AND fiscal_year = '{filters.fiscal_year}'"
 
 	item_group_data = frappe.db.sql(item_group_query, as_dict=True)
 
 	data = {}
 	for i in sql_data:
+		item_code = i['description']
+		company = i['company']
+		stock_quantity = get_quantity(item_code, company)
+		i.update({"stock_qty": stock_quantity[0].get("actual_qty"), "company": company})
 		data.setdefault(i['item_group'], []).append(i)
 
 	result = []
-	if data:
-		for j in data:
-			for item in data[j]:
-				item_code = item['description']
-				company = item['company']
-				stock_quantity = get_quantity(item_code, company)
-				item.update({"stock_qty": stock_quantity[0].get("actual_qty"), "company": company})		
+	if data:						
 		for d in data:
 			if d:
 				group_row = {}
 				group_row['trunk'] = d or ''
 				group_row['indent'] = 0
+				group_row['item_group'] = ""
+				group_row['stock_qty'] = 0
 				result.append(group_row)
 				for i in data[d]:
 					i['trunk'] = i['description']
 					i['indent'] = 1
 					result.append(i)
+	groups = frappe.utils.unique([group.get("item_group") for group in result])
+
+	for group in item_group_data:
+		if not group['description'] in groups:
+			result.append({
+				'trunk': group['description'],
+				'indent': 0,
+				'plan_qty': group['plan_qty'],
+				'rate': group['rate'],
+				'total': group['total'],
+			})
+		
 	for res in result:
 		if res['indent'] == 0:
 			for group in item_group_data:
@@ -91,7 +111,6 @@ def get_data(filters):
 					res['plan_qty'] = group['plan_qty']
 					res['rate'] = group['rate']
 					res['total'] = group['total']
-	
 	return result
 
 def get_columns(filters):

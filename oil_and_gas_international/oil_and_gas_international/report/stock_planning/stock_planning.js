@@ -23,5 +23,12 @@ frappe.query_reports["Stock Planning"] = {
 			'fieldtype':'Date',
 			'width':100,
 		},
+		{
+			'fieldname':'fiscal_year',
+			'label':__('Fiscal Year'),
+			'fieldtype':'Link',
+			'options':'Fiscal Year',
+			'width':100,
+		},
 	]
 };
