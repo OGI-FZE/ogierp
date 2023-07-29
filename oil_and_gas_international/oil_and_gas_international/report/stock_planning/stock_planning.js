@@ -8,6 +8,7 @@ frappe.query_reports["Stock Planning"] = {
 			'fieldname':'company',
 			'label':__('Company'),
 			'fieldtype':'Link',
+			'reqd':1,
 			'options':'Company',
 			'width':100,
 		},

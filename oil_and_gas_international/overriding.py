@@ -480,3 +480,4 @@ def cancel_se():
 
 def enqueue_long_job():
 	frappe.enqueue('oil_and_gas_international.overriding.cancel_se')
+

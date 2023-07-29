@@ -32,7 +32,7 @@ def get_data(filters):
 		"""
 
 	if filters.company:
-		query = f"{query} AND company={frappe.db.escape(filters.company)}'"
+		query = f"{query} AND company={frappe.db.escape(filters.company)}"
 
 	if filters.from_date and filters.to_date:
 		query = f"{query} AND posting_date BETWEEN '{filters.from_date}' AND '{filters.to_date}'"
@@ -56,30 +56,30 @@ def get_data(filters):
 		FROM
 			`tabStock Forecasting` as sf
 		WHERE
-			forcast_type = "Item Group"
-		"""
+			forcast_type = "Item Group" AND company = "%s"
+		""" %(filters.company)
 
-	if filters.company:
-		query = f"{item_group_query} AND company={frappe.db.escape(filters.company)}'"
 
 	if filters.from_date and filters.to_date:
-		query = f"{item_group_query} AND posting_date BETWEEN '{filters.from_date}' AND '{filters.to_date}'"
+		item_group_query = f"{item_group_query} AND posting_date BETWEEN '{filters.from_date}' AND '{filters.to_date}'"
 
 	if filters.fiscal_year:
-		query = f"{item_group_query} AND fiscal_year = '{filters.fiscal_year}'"
+		item_group_query = f"{item_group_query} AND fiscal_year = '{filters.fiscal_year}'"
 
 	item_group_data = frappe.db.sql(item_group_query, as_dict=True)
 
 	data = {}
+	print("\n \n \n")
 	for i in sql_data:
 		item_code = i['description']
 		company = i['company']
-		stock_quantity = get_quantity(item_code, company)
+		stock_quantity = get_quantity(item_code, company) 
 		i.update({"stock_qty": stock_quantity[0].get("actual_qty"), "company": company})
 		data.setdefault(i['item_group'], []).append(i)
 
 	result = []
-	if data:						
+	if data:	
+		print(data)					
 		for d in data:
 			if d:
 				group_row = {}
@@ -95,10 +95,12 @@ def get_data(filters):
 	groups = frappe.utils.unique([group.get("item_group") for group in result])
 
 	for group in item_group_data:
+		print(item_group_data)
 		if not group['description'] in groups:
 			result.append({
 				'trunk': group['description'],
 				'indent': 0,
+				'stock_qty':get_group_qty(group['description'],filters.company),
 				'plan_qty': group['plan_qty'],
 				'rate': group['rate'],
 				'total': group['total'],
@@ -144,13 +146,13 @@ def get_columns(filters):
 		{
 			'fieldname': 'rate',
 			'label': _('Rate'),
-			'fieldtype': 'Float',
+			'fieldtype': 'Currency',
 			'width': 100
 		},
 		{
 			'fieldname': 'total',
 			'label': _('Total'),
-			'fieldtype': 'Float',
+			'fieldtype': 'Currency',
 			'width': 100
 		},
 		
@@ -174,3 +176,22 @@ def get_quantity(item_code, company):
 		"""
 	actual_quantity = frappe.db.sql(f"{sql}", as_dict=True)
 	return actual_quantity
+
+
+
+
+
+
+
+def get_group_qty(item_group,company):
+	actual_qty = frappe.db.sql(
+			"""
+			SELECT sum(actual_qty) as qty,item_code,warehouse 
+			FROM `tabBin` b
+			LEFT JOIN (SELECT name,item_group from `tabItem`) as i ON b.item_code = i.name
+			LEFT JOIN (SELECT name,company from `tabWarehouse`) as w ON b.warehouse = w.name
+			WHERE i.item_group = '%s' and w.company = "%s"
+			""" %(item_group,company),as_dict=True)
+
+
+	return actual_qty[0]['qty']
