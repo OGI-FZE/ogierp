@@ -87,6 +87,10 @@ def get_data(filters):
 				group_row['indent'] = 0
 				group_row['item_group'] = ""
 				group_row['stock_qty'] = 0
+				group_row['plan_qty'] = 0
+				group_row['rate'] = 0
+				group_row['total'] = 0
+
 				result.append(group_row)
 				for i in data[d]:
 					i['trunk'] = i['description']
@@ -98,7 +102,7 @@ def get_data(filters):
 		print(item_group_data)
 		if not group['description'] in groups:
 			result.append({
-				'trunk': group['description'],
+				'trunk': "Various of {}".format(group['description']),
 				'indent': 0,
 				'stock_qty':get_group_qty(group['description'],filters.company),
 				'plan_qty': group['plan_qty'],
@@ -110,9 +114,9 @@ def get_data(filters):
 		if res['indent'] == 0:
 			for group in item_group_data:
 				if res['trunk'] == group['description']:
-					res['plan_qty'] = group['plan_qty']
-					res['rate'] = group['rate']
-					res['total'] = group['total']
+					res['plan_qty'] = 222
+					res['rate'] = 222
+					res['total'] = 222
 	return result
 
 def get_columns(filters):
