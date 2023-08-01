@@ -11,6 +11,7 @@
   "rental_order",
   "project",
   "territory",
+  "division",
   "column_break_4",
   "date",
   "company",
@@ -163,6 +164,13 @@
    "fieldname": "territory",
    "fieldtype": "Data",
    "label": "Territory"
+  },
+  {
+   "fieldname": "division",
+   "fieldtype": "Select",
+   "label": "Division",
+   "options": "Machine Shop Sale\nMachine Shop Repair\nInspection\nTrading\nRental",
+   "translatable": 1
   }
  ],
  "index_web_pages_for_search": 1,
@@ -173,7 +181,7 @@
    "link_fieldname": "rental_timesheet"
   }
  ],
- "modified": "2023-07-21 11:54:16.900279",
+ "modified": "2023-07-31 16:46:44.392896",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Rental Timesheet",
