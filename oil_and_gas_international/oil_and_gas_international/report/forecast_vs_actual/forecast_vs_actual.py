@@ -197,7 +197,7 @@ class Analytics(object):
 			where 
 				so.docstatus = 1 and so.transaction_date between '{0}' and '{1}'
 			Group By 
-				so.customer, so.division
+				so.customer, so.division, month(so.transaction_date)
 			""".format(frappe.defaults.get_user_default("year_start_date"), frappe.defaults.get_user_default("year_end_date")),as_dict=1)
 		
 		
@@ -215,17 +215,18 @@ class Analytics(object):
 			where
 				rt.docstatus = 1 and rt.date between '{0}' and '{1}'
 			Group By 
-				rt.customer, rt.division
+				rt.customer, rt.division, month(rt.date)
 			""".format(frappe.defaults.get_user_default("year_start_date"), frappe.defaults.get_user_default("year_end_date")),as_dict=1)
 
 		so_entries = []
 		for s in self.so_entries:
 			for r in rental_entries:
-				if s.get('customer') == r.get('customer') and s.get('division') == r.get('division'):
+				if s.get('customer') == r.get('customer') and s.get('division') == r.get('division') and s.get('transaction_date').month == r.get('transaction_date').month:
 					s["value_field"] = flt(s.get('value_field', 0)) + flt(r.get('value_field', 0))
-				elif (s.get('customer') == r.get('customer') and s.get('division') != r.get('division')) or (s.get('customer') != r.get('customer') and s.get('division') == r.get('division')):
-					r_in_so = [d for d in self.so_entries if d['customer'] == r.get('customer') and d['division'] == r.get('division')]
-					if r_in_so and len(r_in_so) == 0 and not r in so_entries:
+				else:
+				# elif (s.get('customer') == r.get('customer') and s.get('division') != r.get('division')) or (s.get('customer') != r.get('customer') and s.get('division') == r.get('division')):
+					r_in_so = [d for d in self.so_entries if d['customer'] == r.get('customer') and d['division'] == r.get('division') and d.get('transaction_date').month == r.get('transaction_date').month]
+					if len(r_in_so) == 0 and not r in so_entries:
 						so_entries.append(r)
 					
 		if len(so_entries):
@@ -269,11 +270,11 @@ class Analytics(object):
 
 		for s in self.si_entries:
 			for r in self.rental_inv:
-				if s.get('customer') == r.get('customer') and s.get('division') == r.get('division'):
+				if s.get('customer') == r.get('customer') and s.get('division') == r.get('division') and s.get('posting_date').month == r.get('posting_date').month:
 					s["value_field"] = flt(s.get('value_field', 0)) + flt(r.get('value_field', 0))
-
-				elif (s.get('customer') == r.get('customer') and s.get('division') != r.get('division')) or (s.get('customer') != r.get('customer') and s.get('division') == r.get('division')):
-					r_in_si = [d for d in self.si_entries if d['customer'] == r.get('customer') and d['division'] == r.get('division')]
+				else:
+				# elif (s.get('customer') == r.get('customer') and s.get('division') != r.get('division')) or (s.get('customer') != r.get('customer') and s.get('division') == r.get('division')):
+					r_in_si = [d for d in self.si_entries if d['customer'] == r.get('customer') and d['division'] == r.get('division') and d.get('posting_date').month == r.get('posting_date').month]
 					if len(r_in_si) == 0 and not r in si_entries:
 						si_entries.append(r)
 
@@ -325,7 +326,7 @@ class Analytics(object):
 				si.get("item_group"),
 			)][period] += flt(si.get("value_field"))
 
-		for f in self.no_forecast:
+		for f in self.forecast_entries:
 			dic = frappe._dict()
 			for m in self.months:
 				dic['customer'] = f.customer
@@ -367,7 +368,6 @@ class Analytics(object):
 				WHERE tft.parent='{1}' and tft.docstatus = 1""".format(self.filters.fiscal_year,latest),as_dict=1)
 			if self.forecast_entries: 
 				self.forecast_data = self.forecast_entries
-			print("\n\n\n\nforecast_entries", self.forecast_data)
 
 
 	def get_period_so(self, posting_date):
