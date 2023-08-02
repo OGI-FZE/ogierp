@@ -182,11 +182,6 @@ def get_quantity(item_code, company):
 	return actual_quantity
 
 
-
-
-
-
-
 def get_group_qty(item_group,company):
 	actual_qty = frappe.db.sql(
 			"""
