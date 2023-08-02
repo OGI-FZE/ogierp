@@ -373,12 +373,12 @@ class Analytics(object):
 
 
 	def get_period_so(self, posting_date):
-		period = "SO" + " " + str(self.months[posting_date.month - 1]) + " " + str(posting_date.year)
+		period = "Order" + " " + str(self.months[posting_date.month - 1]) + " " + str(posting_date.year)
 
 		return period
 
 	def get_period_si(self, posting_date):
-		period = "SI" + " " + str(self.months[posting_date.month - 1]) + " " + str(posting_date.year)
+		period = "Invoice" + " " + str(self.months[posting_date.month - 1]) + " " + str(posting_date.year)
 		
 		return period
 
