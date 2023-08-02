@@ -86,7 +86,7 @@ class Analytics(object):
 			self.columns.append(
 					{"label": _(period), "fieldname": scrub(period), "fieldtype": "Float", "width": 120}
 				)
-			for pp in ["SO","SI"]:
+			for pp in ["Order","Invoice"]:
 				self.columns.append(
 					{"label": pp + " " +_(period), "fieldname": scrub(pp + " " +period), "fieldtype": "Float", "width": 120}
 				)	
@@ -190,7 +190,7 @@ class Analytics(object):
 				sum(so.grand_total) as value_field, 
 				so.transaction_date,
 				'' as sales_person,
-				'' as country,
+				so.territory as country,
 				'' as item_group
 			from 
 				`tabSales Order` so
@@ -208,10 +208,11 @@ class Analytics(object):
 				sum(rt.total_amount) as value_field,
 				rt.date as transaction_date,
 				'' as sales_person,
-				'' as country,
+				c.territory as country,
 				'' as item_group
 			from
-				`tabRental Timesheet` rt
+				`tabRental Timesheet` rt left join
+				`tabCustomer` as c on rt.customer = c.name
 			where
 				rt.docstatus = 1 and rt.date between '{0}' and '{1}'
 			Group By 
@@ -239,7 +240,7 @@ class Analytics(object):
 				sum(si.grand_total) as value_field,
 				si.posting_date,
 				'' as sales_person,
-				'' as country,
+				si.territory as country,
 				'' as item_group
 			from
 				`tabSales Invoice` si
@@ -256,10 +257,11 @@ class Analytics(object):
 				sum(ri.grand_total) as value_field,
 				ri.transaction_date as posting_date,
 				'' as sales_person,
-				'' as country,
+				c.territory as country,
 				'' as item_group
 			from
-				`tabRental Invoice` ri
+				`tabRental Invoice` ri left join 
+				`tabCustomer` as c on ri.customer = c.name
 			where
 				ri.docstatus = 1 and ri.transaction_date between '{0}' and '{1}'
 			Group By
