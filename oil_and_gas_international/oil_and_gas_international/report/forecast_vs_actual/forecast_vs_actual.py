@@ -51,6 +51,12 @@ class Analytics(object):
 				"width":200
 			},
 			{
+				"label": 'Customer Name',
+				"fieldname": "customer_name",
+				"fieldtype": "Data",
+				"width":200
+			},
+			{
 				"label": 'Country',
 				"options": 'Country',
 				"fieldname": "country",
@@ -86,9 +92,9 @@ class Analytics(object):
 			self.columns.append(
 					{"label": _(period), "fieldname": scrub(period), "fieldtype": "Float", "width": 120}
 				)
-			for pp in ["Order","Invoice"]:
+			for pp in ["SO","SI"]:
 				self.columns.append(
-					{"label": pp + " " +_(period), "fieldname": scrub(pp + " " +period), "fieldtype": "Float", "width": 120}
+					{"label": pp + " " +_(period), "fieldname": scrub(pp + " " + period), "fieldtype": "Float", "width": 120}
 				)	
 
 	def get_data(self):
@@ -118,25 +124,25 @@ class Analytics(object):
 		for entity, period_data in iteritems(self.entity_periodic_data):
 			i=0
 			row = {}
-			for index in ['customer','country','sales_person','division','item_group']:
+			for index in ['customer', 'customer_name', 'country','sales_person','division','item_group']:
 				row.update({
 					index: entity[i],
 				})
 				i +=1
 
 			for d in self.forecast_data:
-				if d["customer"] == row["customer"] and d["country"] == row["country"] and d["sales_person"] == row["sales_person"] and d["division"] == row["division"] and d["item_group"] == row["item_group"]:
+				if d["customer"] == row["customer"] and d["customer_name"] == row["customer_name"] and d["country"] == row["country"] and d["sales_person"] == row["sales_person"] and d["division"] == row["division"] and d["item_group"] == row["item_group"]:
 					for k,v in d.items():
-						if k not in ['customer','country','sales_person','division','item_group']:
+						if k not in ['customer', 'customer_name', 'country','sales_person','division','item_group']:
 							row[k] = v
 				
 			for end_date in self.periodic_daterange:
 				so_period = self.get_period_so(end_date)
-				so_amount = flt(period_data.get(so_period, 0.0))
+				so_amount = flt(period_data.get(so_period, 0.0)) or 0.0
 				row[scrub(so_period)] = so_amount
 
 				si_period = self.get_period_si(end_date)
-				si_amount = flt(period_data.get(si_period, 0.0))
+				si_amount = flt(period_data.get(si_period, 0.0)) or 0.0
 				row[scrub(si_period)] = si_amount
 
 			for m in self.months:
@@ -147,8 +153,6 @@ class Analytics(object):
 			self.data.append(row)
 
 		# self.data.append(self.no_forecast_data.copy())
-
-
 		# for r in self.no_forecast:
 		# 	self.data.append(r)
 
@@ -164,6 +168,9 @@ class Analytics(object):
 
 			if(row.customer):
 				conditions += " and so.customer = '{0}'".format(row.customer)
+
+			if(row.customer_name):
+				conditions += " and so.customer_name = '{0}'".format(row.customer_name)
 
 			# if(row.country):
 			# 	conditions += " and so.territory = '{0}'".format(row.country)
@@ -190,6 +197,7 @@ class Analytics(object):
 				sum(so.grand_total) as value_field, 
 				so.transaction_date,
 				'' as sales_person,
+				so.customer_name,
 				so.territory as country,
 				'' as item_group
 			from 
@@ -208,6 +216,7 @@ class Analytics(object):
 				sum(rt.total_amount) as value_field,
 				rt.date as transaction_date,
 				'' as sales_person,
+				rt.customer_name,
 				c.territory as country,
 				'' as item_group
 			from
@@ -236,6 +245,7 @@ class Analytics(object):
 		self.si_entries = frappe.db.sql("""
 			select
 				si.customer,
+				si.customer_name,
 				si.division as division,
 				sum(si.grand_total) as value_field,
 				si.posting_date,
@@ -253,6 +263,7 @@ class Analytics(object):
 		self.rental_inv = frappe.db.sql("""
 			select 
 				ri.customer,
+				ri.customer_name,
 				ri.division as division,
 				sum(ri.grand_total) as value_field,
 				ri.transaction_date as posting_date,
@@ -294,6 +305,7 @@ class Analytics(object):
 			period = self.get_period_so(so.get("transaction_date"))
 			self.so_periodic_data.setdefault((
 					so.get("customer"),
+					so.get("customer_name"),
 					so.get("country"),
 					so.get("sales_person"),
 					so.get("division"),
@@ -303,17 +315,19 @@ class Analytics(object):
 
 			self.so_periodic_data[(
 				so.get("customer"),
+				so.get("customer_name"),
 				so.get("country"),
 				so.get("sales_person"),
 				so.get("division"),
 				so.get("item_group"),
-			)][period] += flt(so.get("value_field"))
+			)][period] += flt(so.get("value_field"), 0.0) if so.get("value_field") else 0.0
 
 
 		for si in self.si_entries:
 			period = self.get_period_si(si.get("posting_date"))
 			self.si_periodic_data.setdefault((
 				si.get("customer"),
+				si.get("customer_name"),
 				si.get("country"),
 				si.get("sales_person"),
 				si.get("division"),
@@ -322,16 +336,18 @@ class Analytics(object):
 
 			self.si_periodic_data[(
 				si.get("customer"),
+				si.get("customer_name"),
 				si.get("country"),
 				si.get("sales_person"),
 				si.get("division"),
 				si.get("item_group"),
-			)][period] += flt(si.get("value_field"))
+			)][period] += flt(si.get("value_field"), 0.0) if si.get("value_field") else 0.0
 
 		for f in self.forecast_entries:
 			dic = frappe._dict()
 			for m in self.months:
 				dic['customer'] = f.customer
+				dic['customer_name'] = f.customer_name
 				dic['country'] = f.country
 				dic['sales_person'] = f.sales_person
 				dic['division'] = f.division
@@ -343,7 +359,7 @@ class Analytics(object):
 				dic[so_no_forecasted] = 0.00
 				dic[si_no_forecasted] = 0.00
 				dic.setdefault(m_no_forecasted, 0.0)
-				dic[m_no_forecasted] += flt(f[m_no_forecasted])
+				dic[m_no_forecasted] += flt(f[m_no_forecasted], 0.0) if f[m_no_forecasted] else 0.0
 
 			self.data.append(dic)
 
@@ -364,7 +380,7 @@ class Analytics(object):
 		if forecast_doc:
 			latest = forecast_doc[-1]['name']
 
-			self.forecast_entries = frappe.db.sql("""select tft.customer,tft.country, tft.sales_person,tft.division,tft.item_group,tft.january as jan_{0},tft.february as feb_{0},tft.march as mar_{0},
+			self.forecast_entries = frappe.db.sql("""select tft.customer, tft.customer_name, tft.customer_name, tft.country, tft.sales_person,tft.division,tft.item_group,tft.january as jan_{0},tft.february as feb_{0},tft.march as mar_{0},
 				tft.april as apr_{0},tft.may as may_{0},tft.june as jun_{0},tft.july as jul_{0},tft.august as aug_{0}
 				,tft.september as sep_{0},tft.october as oct_{0},tft.november as nov_{0},tft.december as dec_{0} from `tabForecast target` tft 
 				WHERE tft.parent='{1}' and tft.docstatus = 1""".format(self.filters.fiscal_year,latest),as_dict=1)
@@ -373,12 +389,12 @@ class Analytics(object):
 
 
 	def get_period_so(self, posting_date):
-		period = "Order" + " " + str(self.months[posting_date.month - 1]) + " " + str(posting_date.year)
+		period = "SO" + " " + str(self.months[posting_date.month - 1]) + " " + str(posting_date.year)
 
 		return period
 
 	def get_period_si(self, posting_date):
-		period = "Invoice" + " " + str(self.months[posting_date.month - 1]) + " " + str(posting_date.year)
+		period = "SI" + " " + str(self.months[posting_date.month - 1]) + " " + str(posting_date.year)
 		
 		return period
 
