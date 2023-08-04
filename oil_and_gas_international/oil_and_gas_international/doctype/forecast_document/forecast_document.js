@@ -16,3 +16,35 @@ frappe.ui.form.on('Forecast Document', {
 	// 	frm.set_value("version",frm.doc.version+1)
 	// }
 });
+
+frappe.ui.form.on('Forecast target', {
+	type: function(frm, cdt, cdn) {
+		let row = locals[cdt][cdn];
+		frappe.model.set_value(row.doctype, row.name, "customer", "")
+		frappe.model.set_value(row.doctype, row.name, "customer_name", "")
+		set_party(frm,row)
+	},
+	customer: function(frm, cdt, cdn) {
+		let row = locals[cdt][cdn];
+		set_party(frm,row)
+	}
+})
+
+var set_party = function(frm, row){
+	if (row.type == "Customer" && row.customer){
+		frappe.db.get_value(row.type, row.customer, 'customer_name')
+		.then(r => {
+			if(r.message.customer_name){
+				frappe.model.set_value(row.doctype, row.name, "customer_name", r.message.customer_name)
+			}
+		})
+	}
+	if (row.type == "Lead" && row.customer){
+		frappe.db.get_value("Lead", row.customer, 'lead_name')
+		.then(r => {
+			if(r.message.lead_name){
+				frappe.model.set_value(row.doctype, row.name, "customer_name", r.message.lead_name)
+			}
+		})
+	}
+}

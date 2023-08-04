@@ -109,7 +109,6 @@ class Analytics(object):
 		# 	},
 		# )
 
-
 		self.so_entries = frappe.db.sql(
 			"""
 			select s.customer as entity, sum(s.{value_field}) as value_field, s.transaction_date

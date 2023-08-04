@@ -189,6 +189,9 @@ class Analytics(object):
 
 		for f_row in self.forecast_data:
 			conditions = get_conditions(f_row)
+		cond, rt_cond, si_cond, ri_cond = "", "", "", ""
+		if self.filters.company:
+			cond += f" and so.company={frappe.db.escape(self.filters.company)}"
 
 		self.so_entries = frappe.db.sql("""
 			select 
@@ -203,12 +206,13 @@ class Analytics(object):
 			from 
 				`tabSales Order` so
 			where 
-				so.docstatus = 1 and so.transaction_date between '{0}' and '{1}'
+				so.docstatus = 1 and (so.transaction_date between '{0}' and '{1}') {2}
 			Group By 
 				so.customer, so.division, month(so.transaction_date)
-			""".format(frappe.defaults.get_user_default("year_start_date"), frappe.defaults.get_user_default("year_end_date")),as_dict=1)
+			""".format(frappe.defaults.get_user_default("year_start_date"), frappe.defaults.get_user_default("year_end_date"), cond),as_dict=1)
 		
-		
+		if self.filters.company:
+			rt_cond += f" and rt.company={frappe.db.escape(self.filters.company)}"
 		rental_entries = frappe.db.sql("""
 			select
 				rt.customer,
@@ -223,10 +227,10 @@ class Analytics(object):
 				`tabRental Timesheet` rt left join
 				`tabCustomer` as c on rt.customer = c.name
 			where
-				rt.docstatus = 1 and rt.date between '{0}' and '{1}'
+				rt.docstatus = 1 and rt.date between '{0}' and '{1}' {2}
 			Group By 
 				rt.customer, rt.division, month(rt.date)
-			""".format(frappe.defaults.get_user_default("year_start_date"), frappe.defaults.get_user_default("year_end_date")),as_dict=1)
+			""".format(frappe.defaults.get_user_default("year_start_date"), frappe.defaults.get_user_default("year_end_date"), rt_cond),as_dict=1)
 
 		so_entries = []
 		for s in self.so_entries:
@@ -234,7 +238,6 @@ class Analytics(object):
 				if s.get('customer') == r.get('customer') and s.get('division') == r.get('division') and s.get('transaction_date').month == r.get('transaction_date').month:
 					s["value_field"] = flt(s.get('value_field', 0)) + flt(r.get('value_field', 0))
 				else:
-				# elif (s.get('customer') == r.get('customer') and s.get('division') != r.get('division')) or (s.get('customer') != r.get('customer') and s.get('division') == r.get('division')):
 					r_in_so = [d for d in self.so_entries if d['customer'] == r.get('customer') and d['division'] == r.get('division') and d.get('transaction_date').month == r.get('transaction_date').month]
 					if len(r_in_so) == 0 and not r in so_entries:
 						so_entries.append(r)
@@ -242,6 +245,8 @@ class Analytics(object):
 		if len(so_entries):
 			self.so_entries.extend(so_entries)
 
+		if self.filters.company:
+			si_cond += f" and si.company={frappe.db.escape(self.filters.company)}"
 		self.si_entries = frappe.db.sql("""
 			select
 				si.customer,
@@ -255,11 +260,13 @@ class Analytics(object):
 			from
 				`tabSales Invoice` si
 			where
-				si.docstatus = 1 and si.against_rental_order = 0 and si.posting_date between '{0}' and '{1}'
+				si.docstatus = 1 and si.against_rental_order = 0 and si.posting_date between '{0}' and '{1}' {2}
 			Group By
 				si.customer, si.division
-			""".format(frappe.defaults.get_user_default("year_start_date"), frappe.defaults.get_user_default("year_end_date")),as_dict=1)
-		
+			""".format(frappe.defaults.get_user_default("year_start_date"), frappe.defaults.get_user_default("year_end_date"), si_cond),as_dict=1)
+
+		if self.filters.company:
+			ri_cond += f" and ri.company={frappe.db.escape(self.filters.company)}"
 		self.rental_inv = frappe.db.sql("""
 			select 
 				ri.customer,
@@ -274,10 +281,10 @@ class Analytics(object):
 				`tabRental Invoice` ri left join 
 				`tabCustomer` as c on ri.customer = c.name
 			where
-				ri.docstatus = 1 and ri.transaction_date between '{0}' and '{1}'
+				ri.docstatus = 1 and ri.transaction_date between '{0}' and '{1}' {2}
 			Group By
 				ri.customer, ri.division
-			""".format(frappe.defaults.get_user_default("year_start_date"), frappe.defaults.get_user_default("year_end_date")),as_dict=1)
+			""".format(frappe.defaults.get_user_default("year_start_date"), frappe.defaults.get_user_default("year_end_date"), ri_cond),as_dict=1)
 		
 		si_entries = []
 
