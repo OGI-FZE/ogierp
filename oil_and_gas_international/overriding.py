@@ -281,45 +281,45 @@ def check_rental_wo_qty(doc,handle=None):
 
 
 def get_pricing_rule(item_code=None):
-    pr_list = []
-    pricing_rules = frappe.db.sql("""select parent from `tabPricing Rule Item Code` where item_code = '%s'""" %(item_code))
-    for pr in pricing_rules:
-        pr_list.append(pr[0])
-    return pr_list
+	pr_list = []
+	pricing_rules = frappe.db.sql("""select parent from `tabPricing Rule Item Code` where item_code = '%s'""" %(item_code))
+	for pr in pricing_rules:
+		pr_list.append(pr[0])
+	return pr_list
 
 
 @frappe.whitelist()
 def get_rental_settings():
-    settings = frappe.get_doc("Rental Division Settings")
-    operationel = settings.operational_running
-    lih_dbr = settings.lih_dbr
-    straight = settings.straight
-    standby = settings.standby
-    redress = settings.redress
-    post_rental_inspection_charges = settings.post_rental_inspection_charges
-    return {"operationel":operationel,
-            "lih_dbr":lih_dbr,
-            "straight":straight,
-            "standby":standby,
-            "redress":redress,
-            "post_rental_inspection_charges":post_rental_inspection_charges}
+	settings = frappe.get_doc("Rental Division Settings")
+	operationel = settings.operational_running
+	lih_dbr = settings.lih_dbr
+	straight = settings.straight
+	standby = settings.standby
+	redress = settings.redress
+	post_rental_inspection_charges = settings.post_rental_inspection_charges
+	return {"operationel":operationel,
+			"lih_dbr":lih_dbr,
+			"straight":straight,
+			"standby":standby,
+			"redress":redress,
+			"post_rental_inspection_charges":post_rental_inspection_charges}
 
 
 @frappe.whitelist()
 def get_subrental_settings():
-    settings = frappe.get_doc("Rental Division Settings")
-    operationel = settings.rent_operational_running
-    lih_dbr = settings.rent_lih_dbr
-    straight = settings.rent_straight
-    standby = settings.rent_standby
-    redress = settings.rent_redress
-    post_rental_inspection_charges = settings.rent_post_rental_inspection_charges
-    return {"operationel":operationel,
-            "lihdbr":lih_dbr,
-            "straight":straight,
-            "standby":standby,
-            "redress":redress,
-            "post_rental_inspection_charges":post_rental_inspection_charges}
+	settings = frappe.get_doc("Rental Division Settings")
+	operationel = settings.rent_operational_running
+	lih_dbr = settings.rent_lih_dbr
+	straight = settings.rent_straight
+	standby = settings.rent_standby
+	redress = settings.rent_redress
+	post_rental_inspection_charges = settings.rent_post_rental_inspection_charges
+	return {"operationel":operationel,
+			"lihdbr":lih_dbr,
+			"straight":straight,
+			"standby":standby,
+			"redress":redress,
+			"post_rental_inspection_charges":post_rental_inspection_charges}
 
 
 
@@ -439,14 +439,16 @@ def get_item_description_from_so_items(doc,handler=None):
 										   from `tabSales Order Item`
 										   where parent = "%s" and item_code="%s" """ %(doc.sales_order,doc.production_item),
 										   as_dict=1)
-		doc.item_description = soi_desc[0]['description']
+		if soi_desc:
+			doc.item_description = soi_desc[0]['description']
 
 	elif doc.rental_order:
 		roi_desc = frappe.db.sql("""select description
 										   from `tabRental Order Item`
 										   where parent = "%s" and item_code="%s" """ %(doc.rental_order,doc.production_item),
 										   as_dict=1)
-		doc.item_description = roi_desc[0]['description']
+		if roi_desc:
+			doc.item_description = roi_desc[0]['description']
 
 
 	#for generating serial nos
