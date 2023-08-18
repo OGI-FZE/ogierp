@@ -10,6 +10,8 @@
   "customer_name",
   "rental_order",
   "project",
+  "territory",
+  "division",
   "column_break_4",
   "date",
   "company",
@@ -25,7 +27,8 @@
   "total_amount",
   "coltotal",
   "total_days",
-  "amended_from"
+  "amended_from",
+  "remarks"
  ],
  "fields": [
   {
@@ -56,9 +59,9 @@
    "fieldtype": "Column Break"
   },
   {
-    "fieldname": "sec",
-    "fieldtype": "Section Break"
-   },
+   "fieldname": "sec",
+   "fieldtype": "Section Break"
+  },
   {
    "default": "Today",
    "fieldname": "date",
@@ -128,7 +131,7 @@
    "fieldname": "conversion_rate",
    "fieldtype": "Float",
    "label": "Exchange Rate",
-   "read_only":1
+   "read_only": 1
   },
   {
    "fieldname": "section_break_15",
@@ -137,26 +140,38 @@
   {
    "fieldname": "total_amount",
    "fieldtype": "Float",
-   "options":"currency",
    "label": "Total Amount",
-   "read_only":1
+   "options": "currency",
+   "read_only": 1
   },
   {
-    "fieldname": "remarks",
-    "fieldtype": "Small Text",
-    "label": "Remarks",
-    "read_only": 0
-   },
+   "fieldname": "remarks",
+   "fieldtype": "Small Text",
+   "label": "Remarks"
+  },
   {
-    "fieldname": "coltotal",
-    "fieldtype": "Column Break"
-   },
-   {
-    "fieldname": "total_days",
-    "fieldtype": "Float",
-    "label": "No of Days",
-    "read_only": 1
-   }
+   "fieldname": "coltotal",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "total_days",
+   "fieldtype": "Float",
+   "label": "No of Days",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "customer.territory",
+   "fieldname": "territory",
+   "fieldtype": "Data",
+   "label": "Territory"
+  },
+  {
+   "fieldname": "division",
+   "fieldtype": "Select",
+   "label": "Division",
+   "options": "Machine Shop Sale\nMachine Shop Repair\nInspection\nTrading\nRental",
+   "translatable": 1
+  }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
@@ -166,7 +181,7 @@
    "link_fieldname": "rental_timesheet"
   }
  ],
- "modified": "2022-05-07 16:37:23.404499",
+ "modified": "2023-07-31 16:46:44.392896",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Rental Timesheet",

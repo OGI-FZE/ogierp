@@ -364,6 +364,8 @@ fixtures = [
                 "Sales Invoice-rental_timesheet_item",
                 "Sales Invoice-rental_order",
                 "Sales Invoice-departments",
+                'Sales Invoice-division',
+                
                 #Sales Invoie Item
                 'Sales Invoice Item-asset_item',
                 'Sales Invoice Item-rental_order_item',
@@ -375,6 +377,7 @@ fixtures = [
                 'Sales Invoice Item-child_category',
                 'Sales Invoice Item-days',
                 'Sales Invoice-aed_exchange_rate',
+                
 
                 # Stock Entry
                 "Stock Entry-against_asset_formation",
@@ -383,7 +386,7 @@ fixtures = [
                 'Sales Order Item-assets','Sales Order-rental_timesheet_item','Sales Order-rental_order_item',
                 'Sales Order-rental_timesheet','Sales Order-rental_order','Sales Order Item-rental_order',
                 'Sales Order Item-rental_order_item','Sales Order Item-references','Sales Order Item-asset_item',
-                'Sales Order-aed_exchange_rate',
+                'Sales Order-aed_exchange_rate',' Sales Order - Division'
 
                 # Project
                 'Project-rental_order','Project-sub_rental_order',

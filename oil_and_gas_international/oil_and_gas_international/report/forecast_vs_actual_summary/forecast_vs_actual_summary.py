@@ -6,6 +6,7 @@ from frappe import _, scrub
 from frappe.utils import add_days, add_to_date, flt, getdate
 from six import iteritems
 from functools import reduce
+import json
 
 from erpnext.accounts.utils import get_fiscal_year
 
@@ -37,6 +38,7 @@ class Analytics(object):
 	def run(self):
 		self.get_columns()
 		self.get_data()
+
 		# self.get_chart_data()
 
 		# Skipping total row for tree-view reports
@@ -92,93 +94,350 @@ class Analytics(object):
 
 
 	def get_sales_transactions_based_on_customers(self):
-		value_field = "base_net_total as value_field"
-		entity = "customer as entity"
+		value_field = "grand_total"
+		entity = "customer"
+		rental_amt = "total_amount"
+		rental_inv_amt = "grand_total"
 
-		self.so_entries = frappe.get_all(
-			"Sales Order",
-			fields=[entity, value_field, "transaction_date"],
-			filters={
-				"docstatus": 1,
-				"company": self.filters.company,
-				"transaction_date": ("between", [frappe.defaults.get_user_default("year_start_date"), frappe.defaults.get_user_default("year_end_date")]),
-			},
-		)
-
-		self.si_entries = frappe.get_all(
-			"Sales Invoice",
-			fields=[entity, value_field, "posting_date"],
-			filters={
-				"docstatus": 1,
-				"company": self.filters.company,
-				"posting_date": ("between", [frappe.defaults.get_user_default("year_start_date"), frappe.defaults.get_user_default("year_end_date")]),
-			},
-		)
-
-	def get_sales_transactions_based_on_division(self):
-		value_field = "base_net_total as value_field"
-
-		entity = "departments as entity"
-
-		self.so_entries = frappe.get_all(
-			"Sales Order",
-			fields=[entity, value_field, "transaction_date"],
-			filters={
-				"docstatus": 1,
-				"company": self.filters.company,
-				"departments":['!=',''],
-				"transaction_date": ("between", [frappe.defaults.get_user_default("year_start_date"), frappe.defaults.get_user_default("year_end_date")]),
-			},
-		)
-
-		self.si_entries = frappe.get_all(
-			"Sales Invoice",
-			fields=[entity, value_field, "posting_date"],
-			filters={
-				"docstatus": 1,
-				"company": self.filters.company,
-				"departments":['!=',''],
-				"posting_date": ("between", [frappe.defaults.get_user_default("year_start_date"), frappe.defaults.get_user_default("year_end_date")]),
-			},
-		)
-
-	def get_sales_transactions_based_on_country(self):
-		value_field = "base_net_total as value_field"
-
-		entity = "territory as entity"
-
-		self.so_entries = frappe.get_all(
-			"Sales Order",
-			fields=[entity, value_field, "transaction_date"],
-			filters={
-				"docstatus": 1,
-				"company": self.filters.company,
-				"departments":['!=',''],
-				"transaction_date": ("between", [frappe.defaults.get_user_default("year_start_date"), frappe.defaults.get_user_default("year_end_date")]),
-			},
-		)
-
-		self.si_entries = frappe.get_all(
-			"Sales Invoice",
-			fields=[entity, value_field, "posting_date"],
-			filters={
-				"docstatus": 1,
-				"company": self.filters.company,
-				"departments":['!=',''],
-				"posting_date": ("between", [frappe.defaults.get_user_default("year_start_date"), frappe.defaults.get_user_default("year_end_date")]),
-			},
-		)
-
-
-	def get_sales_transactions_based_on_item_group(self):
-		value_field = "base_amount"
+		# self.so_entries = frappe.get_all(
+		# 	"Sales Order",
+		# 	fields=[entity, value_field, "transaction_date"],
+		# 	filters={
+		# 		"docstatus": 1,
+		# 		"company": self.filters.company,
+		# 		"transaction_date": ("between", [frappe.defaults.get_user_default("year_start_date"), frappe.defaults.get_user_default("year_end_date")]),
+		# 	},
+		# )
 
 		self.so_entries = frappe.db.sql(
 			"""
-			select i.item_group as entity, i.{value_field} as value_field, s.transaction_date
+			select s.customer as entity, sum(s.{value_field}) as value_field, s.transaction_date
+			from `tabSales Order` as s
+			where s.docstatus = 1 and s.company = %s
+			and s.transaction_date between %s and %s
+			Group By s.customer, month(s.transaction_date)
+			""".format(
+				value_field = value_field,
+			),
+			(self.filters.company, frappe.defaults.get_user_default("year_start_date"), frappe.defaults.get_user_default("year_end_date")),
+			as_dict=1,
+		)
+
+		self.rental_entries = frappe.db.sql(
+			"""
+			select rt.customer as entity, sum(rt.{rental_amt}) as value_field, rt.date as transaction_date
+			from `tabRental Timesheet` as rt
+			where rt.docstatus = 1 and rt.company = %s
+			and rt.date between %s and %s
+			Group By rt.customer, month(rt.date)
+			""".format(
+				rental_amt = rental_amt
+			),
+			(self.filters.company, frappe.defaults.get_user_default("year_start_date"), frappe.defaults.get_user_default("year_end_date")),
+			as_dict=1,
+		)
+
+		so_entries = []
+		for so in self.so_entries:
+			for rt in self.rental_entries:
+				if so.get('entity') == rt.get('entity') and so.get('transaction_date').month == rt.get('transaction_date').month:
+					so['value_field'] = flt(so.get('value_field'), 0) + flt(rt.get('value_field'), 0)
+				else:
+					rt_in_so = [d for d in self.so_entries if d.get('entity') == rt.get('entity') and d.get('transaction_date').month == rt.get('transaction_date').month]
+					if len(rt_in_so) == 0 and not rt in so_entries:
+						so_entries.append(rt)
+		if len(so_entries):
+			self.so_entries.extend(so_entries)
+		# self.si_entries = frappe.get_all(
+		# 	"Sales Invoice",
+		# 	fields=[entity, value_field, "posting_date"],
+		# 	filters={
+		# 		"docstatus": 1,
+		# 		"company": self.filters.company,
+		# 		"posting_date": ("between", [frappe.defaults.get_user_default("year_start_date"), frappe.defaults.get_user_default("year_end_date")]),
+		# 	},
+		# )
+		self.si_entries = frappe.db.sql(
+			"""
+			select si.customer as entity, sum(si.{value_field}) as value_field, si.posting_date
+			from `tabSales Invoice` as si
+			where si.against_rental_order = 0 and si.docstatus = 1 and si.company = %s
+			and si.posting_date between %s and %s
+			Group By si.customer, month(si.posting_date)
+			""".format(
+				value_field = value_field,
+			),
+			(self.filters.company, frappe.defaults.get_user_default("year_start_date"), frappe.defaults.get_user_default("year_end_date")),
+			as_dict=1,
+		)
+
+		self.rental_invoice = frappe.db.sql(
+			"""
+			select ri.customer as entity, sum(ri.{rental_inv_amt}) as value_field, ri.transaction_date as posting_date
+			from `tabRental Invoice` as ri
+			where ri.docstatus = 1 and ri.company = %s
+			and ri.transaction_date between %s and %s
+			Group By ri.customer, month(ri.transaction_date)
+			""".format(
+				rental_inv_amt = rental_inv_amt
+			),
+			(self.filters.company, frappe.defaults.get_user_default("year_start_date"), frappe.defaults.get_user_default("year_end_date")),
+			as_dict=1,
+		)
+
+
+		si_entries = []
+		for si in self.si_entries:
+			for ri in self.rental_invoice:
+				if si.get('entity') == ri.get('entity') and si.get('posting_date').month == ri.get('posting_date').month:
+					si['value_field'] = flt(si.get('value_field'), 0) + flt(ri.get('value_field'), 0)
+				else:
+					ri_in_si = [d for d in self.si_entries if d.get('entity') == ri.get('entity') and d.get('posting_date').month == ri.get('posting_date').month]
+					if len(ri_in_si) == 0 and not ri in si_entries:
+						si_entries.append(ri)
+		if len(si_entries):
+			self.si_entries.extend(si_entries)
+
+	def get_sales_transactions_based_on_division(self):
+		value_field = "base_net_total"
+
+		entity = "departments as entity"
+
+		rental_amt = "total_amount"
+
+		rental_inv_amt = "grand_total"
+
+		# self.so_entries = frappe.get_all(
+		# 	"Sales Order",
+		# 	fields=[entity, value_field, "transaction_date"],
+		# 	filters={
+		# 		"docstatus": 1,
+		# 		"company": self.filters.company,
+		# 		"departments":['!=',''],
+		# 		"transaction_date": ("between", [frappe.defaults.get_user_default("year_start_date"), frappe.defaults.get_user_default("year_end_date")]),
+		# 	},
+		# )
+
+		self.so_entries = frappe.db.sql(
+			"""
+			select s.division as entity, sum(s.{value_field}) as value_field, s.transaction_date
+			from `tabSales Order` as s
+			where s.docstatus = 1 and s.division != "" and s.company = %s
+			and s.transaction_date between %s and %s
+			Group By s.division, month(s.transaction_date)
+			""".format(
+				value_field = value_field
+			),
+			(self.filters.company, frappe.defaults.get_user_default("year_start_date"), frappe.defaults.get_user_default("year_end_date")),
+			as_dict=1,
+		)
+
+		self.rental_entries = frappe.db.sql(
+			"""
+			select rt.division as entity, sum(rt.{rental_amt}) as value_field, rt.date as transaction_date
+			from `tabRental Timesheet` as rt
+			where rt.docstatus = 1 and rt.division != "" and rt.company = %s
+			and rt.date between %s and %s
+			Group By rt.division, month(rt.date)
+			""".format(
+				rental_amt = rental_amt
+			),
+			(self.filters.company, frappe.defaults.get_user_default("year_start_date"), frappe.defaults.get_user_default("year_end_date")),
+			as_dict=1,
+		)
+
+		so_entries = []
+		for so in self.so_entries:
+			for rt in self.rental_entries:
+				if so.get('entity') == rt.get('entity') and so.get('transaction_date').month == rt.get('transaction_date').month:
+					so['value_field'] = flt(so.get('value_field'), 0) + flt(rt.get('value_field'), 0)
+				# elif so.get('entity') == rt.get('entity') and so.get('transaction_date').month != rt.get('transaction_date').month or so.get('entity') != rt.get('entity') and so.get('transaction_date').month == rt.get('transaction_date').month:
+				else:
+					rt_in_so = [d for d in self.so_entries if d.get('entity') == rt.get('entity') and d.get('transaction_date').month == rt.get('transaction_date').month]
+					if len(rt_in_so) == 0 and not rt in so_entries:
+						so_entries.append(rt)
+		if len(so_entries):
+			self.so_entries.extend(so_entries)
+
+		# for so in self.so_entries:
+		# 	for rt in self.rental_entries:
+		# 		if so.get('entity') == rt.get('entity'):
+		# 			so['value_field'] = so.get('value_field') + rt.get('rental_amt')
+
+		# self.si_entries = frappe.get_all(
+		# 	"Sales Invoice",
+		# 	fields=[entity, value_field, "posting_date"],
+		# 	filters={
+		# 		"docstatus": 1,
+		# 		"company": self.filters.company,
+		# 		# "against_rental_order": 0,
+		# 		"departments":['!=',''],
+		# 		"posting_date": ("between", [frappe.defaults.get_user_default("year_start_date"), frappe.defaults.get_user_default("year_end_date")]),
+		# 	},
+		# )
+
+		self.si_entries = frappe.db.sql(
+			"""
+			select s.division as entity, sum(s.{value_field}) as value_field, s.posting_date
+			from `tabSales Invoice` as s
+			where s.docstatus = 1 and s.against_rental_order = 0 and s.division != "" and s.company = %s
+			and s.posting_date between %s and %s
+			Group By s.division, month(s.posting_date)
+			""".format(
+				value_field = value_field
+			),
+			(self.filters.company, frappe.defaults.get_user_default("year_start_date"), frappe.defaults.get_user_default("year_end_date")),
+			as_dict=1,
+		)
+
+
+		self.rental_invoice = frappe.db.sql(
+			"""
+			select ri.division as entity, sum(ri.{rental_inv_amt}) as value_field, ri.transaction_date as posting_date
+			from `tabRental Invoice` as ri
+			where ri.docstatus = 1 and ri.division != "" and ri.company = %s
+			and ri.transaction_date between %s and %s
+			Group By ri.division, month(ri.transaction_date)
+			""".format(
+				rental_inv_amt = rental_inv_amt
+			),
+			(self.filters.company, frappe.defaults.get_user_default("year_start_date"), frappe.defaults.get_user_default("year_end_date")),
+			as_dict=1,
+		)
+
+		si_entries = []
+		for si in self.si_entries:
+			for ri in self.rental_invoice:
+				if si.get('entity') == ri.get('entity') and si.get('posting_date').month == ri.get('posting_date').month:
+					si['value_field'] = flt(si.get('value_field'), 0) + flt(ri.get('value_field'), 0)
+				else:
+					ri_in_si = [d for d in self.si_entries if d.get('entity') == ri.get('entity') and d.get('posting_date').month == ri.get('posting_date').month]
+					if len(ri_in_si) == 0 and not ri in si_entries:
+						si_entries.append(ri)
+		if len(si_entries):
+			self.si_entries.extend(si_entries)
+
+	def get_sales_transactions_based_on_country(self):
+		value_field = "base_net_total"
+
+		entity = "territory"
+
+		rental_amt = "total_amount"
+
+		rental_inv_amt = "grand_total"
+
+		# self.so_entries = frappe.get_all(
+		# 	"Sales Order",
+		# 	fields=[entity, value_field, "transaction_date"],
+		# 	filters={
+		# 		"docstatus": 1,
+		# 		"company": self.filters.company,
+		# 		"departments":['!=',''],
+		# 		"transaction_date": ("between", [frappe.defaults.get_user_default("year_start_date"), frappe.defaults.get_user_default("year_end_date")]),
+		# 	},
+		# )
+		self.so_entries = frappe.db.sql(
+			"""
+			select so.territory as entity, sum(so.{value_field}) as value_field, so.transaction_date
+			from `tabSales Order` as so
+			where so.docstatus = 1 and so.division != "" and so.company = %s
+			and so.transaction_date between %s and %s
+			Group By so.territory, month(so.transaction_date)
+			""".format(
+				value_field = value_field
+			),
+			(self.filters.company, frappe.defaults.get_user_default("year_start_date"), frappe.defaults.get_user_default("year_end_date")),
+			as_dict=1,
+		)
+
+		self.rental_entries = frappe.db.sql(
+			"""
+			select rt.territory as entity, sum(rt.{rental_amt}) as value_field, rt.date as transaction_date
+			from `tabRental Timesheet` as rt
+			where rt.docstatus = 1 and rt.division != "" and rt.company = %s
+			and rt.date between %s and %s
+			Group By rt.territory, month(rt.date)
+			""".format(
+				rental_amt = rental_amt
+			),
+			(self.filters.company, frappe.defaults.get_user_default("year_start_date"), frappe.defaults.get_user_default("year_end_date")),
+			as_dict=1,
+		)
+
+		so_entries = []
+		for so in self.so_entries:
+			for rt in self.rental_entries:
+				if so.get('entity') == rt.get('entity') and so.get('transaction_date').month == rt.get('transaction_date').month:
+					so['value_field'] = flt(so.get('value_field'), 0) + flt(rt.get('value_field'), 0)
+				else:
+					rt_in_so = [d for d in self.so_entries if d.get('entity') == rt.get('entity') and d.get('transaction_date').month == rt.get('transaction_date').month]
+					if len(rt_in_so) == 0 and not rt in so_entries:
+						so_entries.append(rt)
+		if len(so_entries):
+			self.so_entries.extend(so_entries)
+		# self.si_entries = frappe.get_all(
+		# 	"Sales Invoice",
+		# 	fields=[entity, value_field, "posting_date"],
+		# 	filters={
+		# 		"docstatus": 1,
+		# 		"company": self.filters.company,
+		# 		"departments":['!=',''],
+		# 		"posting_date": ("between", [frappe.defaults.get_user_default("year_start_date"), frappe.defaults.get_user_default("year_end_date")]),
+		# 	},
+		# )
+
+
+		self.si_entries = frappe.db.sql(
+			"""
+			select si.territory as entity, sum(si.{value_field}) as value_field, si.posting_date
+			from `tabSales Invoice` as si
+			where si.docstatus = 1 and si.against_rental_order = 0 and si.division != "" or si.departments != NULL and si.company = %s
+			and si.posting_date between %s and %s
+			Group By si.territory, month(si.posting_date)
+			""".format(
+				value_field = value_field
+			),
+			(self.filters.company, frappe.defaults.get_user_default("year_start_date"), frappe.defaults.get_user_default("year_end_date")),
+			as_dict=1,
+		)
+
+		self.rental_invoice = frappe.db.sql(
+			"""
+			select ri.territory as entity, sum(ri.{rental_inv_amt}) as value_field, ri.transaction_date as posting_date
+			from `tabRental Invoice` as ri
+			where ri.docstatus = 1 and ri.division != "" and ri.company = %s
+			and ri.transaction_date between %s and %s
+			Group By ri.territory, month(ri.transaction_date)
+			""".format(
+				rental_inv_amt = rental_inv_amt
+			),
+			(self.filters.company, frappe.defaults.get_user_default("year_start_date"), frappe.defaults.get_user_default("year_end_date")),
+			as_dict=1,
+		)
+
+		si_entries = []
+		for si in self.si_entries:
+			for ri in self.rental_invoice:
+				if si.get('entity') == ri.get('entity') and si.get('posting_date').month == ri.get('posting_date').month:
+					si['value_field'] = flt(si.get('value_field'), 0) + flt(ri.get('value_field'), 0)
+				else:
+					ri_in_si = [d for d in self.si_entries if d.get('entity') == ri.get('entity') and d.get('posting_date').month == ri.get('posting_date').month]
+					if len(ri_in_si) == 0 and not ri in si_entries:
+						si_entries.append(ri)
+		if len(si_entries):
+			self.si_entries.extend(si_entries)
+
+	def get_sales_transactions_based_on_item_group(self):
+		value_field = "base_amount"
+		amount = "amount"
+
+		self.so_entries = frappe.db.sql(
+			"""
+			select i.item_group as entity, sum(i.{value_field}) as value_field, s.transaction_date
 			from `tabSales Order Item` i , `tabSales Order` s
 			where s.name = i.parent and s.docstatus = 1 and s.company = %s
 			and s.transaction_date between %s and %s
+			Group By i.item_group, month(s.transaction_date)
 		""".format(
 				value_field=value_field
 			),
@@ -186,28 +445,91 @@ class Analytics(object):
 			as_dict=1,
 		)
 
+		self.rental_entries = frappe.db.sql(
+			"""
+			select pit.item_group as entity, pit.item_code as item_code, sum(pit.{amount}) as value_field, rt.date as transaction_date
+			from `tabProforma Invoice Item` pit LEFT JOIN
+			`tabRental Timesheet` as rt ON pit.parent = rt.name
+			where rt.docstatus = 1 and rt.company = %s
+			and rt.date between %s and %s
+			Group By pit.item_group, month(rt.date)
+		""".format(
+				amount = amount
+			),
+			(self.filters.company, frappe.defaults.get_user_default("year_start_date"), frappe.defaults.get_user_default("year_end_date")),
+			as_dict=1,
+		)
+
+		so_entries = []
+		for so in self.so_entries:
+			for rt in self.rental_entries:
+				if so.get('entity') == rt.get('entity') and so.get('transaction_date').month == rt.get('transaction_date').month:
+					so['value_field'] = flt(so.get('value_field'), 0) + flt(rt.get('value_field'), 0)
+				# elif so.get('entity') == rt.get('entity') and so.get('transaction_date').month != rt.get('transaction_date').month or so.get('entity') != rt.get('entity') and so.get('transaction_date').month == rt.get('transaction_date').month:
+				else:
+					rt_in_so = [d for d in self.so_entries if d.get('entity') == rt.get('entity') and d.get('transaction_date').month == rt.get('transaction_date').month]
+					if len(rt_in_so) == 0 and not rt in so_entries:
+						so_entries.append(rt)
+		if len(so_entries):
+			self.so_entries.extend(so_entries)
+
 		self.si_entries = frappe.db.sql(
 			"""
-			select i.item_group as entity, i.{value_field} as value_field, s.posting_date
+			select i.item_group as entity, sum(i.{value_field}) as value_field, s.posting_date
 			from `tabSales Invoice Item` i , `tabSales Invoice` s
-			where s.name = i.parent and s.docstatus = 1 and s.company = %s
+			where s.name = i.parent and s.docstatus = 1 and against_rental_order = 0 and s.company = %s
 			and s.posting_date between %s and %s
+			Group By i.item_group, month(s.posting_date)
 		""".format(
 				value_field=value_field
 			),
 			(self.filters.company, frappe.defaults.get_user_default("year_start_date"), frappe.defaults.get_user_default("year_end_date")),
 			as_dict=1,
 		)
+
+		self.rental_invoice = frappe.db.sql(
+			"""
+			select pit.item_group as entity, ri.name as rent, pit.item_code as item_code, sum(pit.{amount}) as value_field, ri.transaction_date as posting_date
+			from `tabProforma Invoice Item` pit LEFT JOIN
+			`tabRental Invoice` as ri ON pit.parent = ri.name
+			where ri.docstatus = 1 and ri.company = %s
+			and ri.transaction_date between %s and %s
+			Group By pit.item_group, month(ri.transaction_date)
+			""".format(
+				amount = amount
+			),
+			(self.filters.company, frappe.defaults.get_user_default("year_start_date"), frappe.defaults.get_user_default("year_end_date")),
+			as_dict=1,
+		)
+
+		si_entries = []
+		for si in self.si_entries:
+			for ri in self.rental_invoice:
+				if si.get('entity') == ri.get('entity') and si.get('posting_date').month == ri.get('posting_date').month:
+					si['value_field'] = flt(si.get('value_field'), 0) + flt(ri.get('value_field'), 0)
+				else:
+					ri_in_si = [d for d in self.si_entries if d.get('entity') == ri.get('entity') and d.get('posting_date').month == ri.get('posting_date').month]
+					if len(ri_in_si) == 0 and not ri in si_entries:
+						si_entries.append(ri)
+		if len(si_entries):
+			self.si_entries.extend(si_entries)
 
 	def get_sales_transactions_based_on_sp(self):
 		value_field = "base_net_total"
 
+		rental_amt = "total_amount"
+
+		rental_inv_amt = "grand_total"
+
+		# entity = "sales_person"
+
 		self.so_entries = frappe.db.sql(
 			"""
-			select i.sales_person as entity, s.{value_field} as value_field, s.transaction_date
+			select i.sales_person as entity, sum(s.{value_field}) as value_field, s.transaction_date
 			from `tabSales Team` i , `tabSales Order` s
 			where s.name = i.parent and s.docstatus = 1 and s.company = %s and i.sales_person !=''
 			and s.transaction_date between %s and %s
+			Group By i.sales_person, month(s.transaction_date)
 		""".format(
 				value_field=value_field
 			),
@@ -215,18 +537,75 @@ class Analytics(object):
 			as_dict=1,
 		)
 
+		self.rental_entries = frappe.db.sql(
+		"""
+		select rt.customer as customer, st.sales_person as entity, sum(rt.{rental_amt}) as value_field, rt.date as transaction_date
+		from `tabRental Timesheet` as rt LEFT JOIN
+		`tabSales Team` as st ON st.parent = rt.customer
+		where rt.docstatus = 1 and st.sales_person != "" and rt.company = %s
+		and rt.date between %s and %s
+		Group By st.sales_person, month(rt.date)
+		""".format(
+			rental_amt = rental_amt
+		),
+		(self.filters.company, frappe.defaults.get_user_default("year_start_date"), frappe.defaults.get_user_default("year_end_date")),
+			as_dict=1,
+		)
+
+		so_entries = []
+		for so in self.so_entries:
+			for rt in self.rental_entries:
+				if so.get('entity') == rt.get('entity') and so.get('transaction_date').month == rt.get('transaction_date').month:
+					so['value_field'] = flt(so.get('value_field'), 0) + flt(rt.get('value_field'), 0)
+				# elif so.get('entity') == rt.get('entity') and so.get('transaction_date').month != rt.get('transaction_date').month or so.get('entity') != rt.get('entity') and so.get('transaction_date').month == rt.get('transaction_date').month:
+				else:
+					rt_in_so = [d for d in self.so_entries if d.get('entity') == rt.get('entity') and d.get('transaction_date').month == rt.get('transaction_date').month]
+					if len(rt_in_so) == 0 and not rt in so_entries:
+						so_entries.append(rt)
+		if len(so_entries):
+			self.so_entries.extend(so_entries)
+
 		self.si_entries = frappe.db.sql(
 			"""
-			select i.sales_person as entity, s.{value_field} as value_field, s.posting_date
+			select i.sales_person as entity, sum(s.{value_field}) as value_field, s.posting_date
 			from `tabSales Team` i , `tabSales Invoice` s
-			where s.name = i.parent and s.docstatus = 1 and s.company = %s and i.sales_person !=''
+			where s.name = i.parent and s.docstatus = 1 and s.against_rental_order = 0 and s.company = %s and i.sales_person !=''
 			and s.posting_date between %s and %s
+			Group By i.sales_person, month(s.posting_date)
 		""".format(
 				value_field=value_field
 			),
 			(self.filters.company, frappe.defaults.get_user_default("year_start_date"), frappe.defaults.get_user_default("year_end_date")),
 			as_dict=1,
 		)
+
+
+		self.rental_invoice = frappe.db.sql(
+		"""
+		select st.sales_person as entity, sum(ri.{rental_inv_amt}) as value_field, ri.transaction_date as posting_date
+		from `tabRental Invoice` as ri LEFT JOIN
+		`tabSales Team` as st ON st.parent = ri.customer
+		where ri.docstatus = 1 and st.sales_person != "" and ri.company = %s
+		and ri.transaction_date between %s and %s
+		Group By st.sales_person, month(ri.transaction_date)
+		""".format(
+			rental_inv_amt = rental_inv_amt
+		),
+		(self.filters.company, frappe.defaults.get_user_default("year_start_date"), frappe.defaults.get_user_default("year_end_date")),
+			as_dict=1,
+		)
+
+		si_entries = []
+		for si in self.si_entries:
+			for ri in self.rental_invoice:
+				if si.get('entity') == ri.get('entity') and si.get('posting_date').month == ri.get('posting_date').month:
+					si['value_field'] = flt(si.get('value_field'), 0) + flt(ri.get('value_field'), 0)
+				else:
+					ri_in_si = [d for d in self.si_entries if d.get('entity') == ri.get('entity') and d.get('posting_date').month == ri.get('posting_date').month]
+					if len(ri_in_si) == 0 and not ri in si_entries:
+						si_entries.append(ri)
+		if len(si_entries):
+			self.si_entries.extend(si_entries)
 
 	def get_rows(self):
 		self.data = []
@@ -249,16 +628,9 @@ class Analytics(object):
 
 		self.get_forecast_entries()
 
-		def combine_dict(d1, d2):
-		    return {
-		        k: list(d[k] for d in (d1, d2) if k in d)
-		        for k in set(d1.keys()) | set(d2.keys())
-		    }
-
 		self.entity_periodic_data = combine_dict(self.so_periodic_data,self.si_periodic_data)
 		for t in self.entity_periodic_data:
 			self.entity_periodic_data[t] = reduce(lambda a, b: dict(a, **b), self.entity_periodic_data[t])
-				
 		for entity, period_data in iteritems(self.entity_periodic_data):
 			row = {
 				"entity": entity,
@@ -300,10 +672,16 @@ class Analytics(object):
 			self.data.append(row)
 
 	def get_periodic_data(self):
-		# self.entity_periodic_data = frappe._dict()
 		self.so_periodic_data = frappe._dict()
 		self.si_periodic_data = frappe._dict()
-		
+		# self.rt_periodic_data = frappe._dict()
+		# self.so_rt = 0
+		# for rt in self.rt_entries:
+		# 	period = self.get_period_so(rt.get("date"))
+		# 	self.rt_periodic_data.setdefault(rt.entity, frappe._dict()).setdefault(period, 0.0)
+		# 	self.rt_periodic_data[rt.entity][period] += flt(rt.rental_amt)
+		# 	self.so_rt = self.rt_periodic_data[rt.entity][period]
+
 		for so in self.so_entries:
 			period = self.get_period_so(so.get("transaction_date"))
 			self.so_periodic_data.setdefault(so.entity, frappe._dict()).setdefault(period, 0.0)
@@ -413,3 +791,10 @@ class Analytics(object):
 			from_date = add_days(period_end_date, 1)
 			if period_end_date == to_date:
 				break
+
+
+def combine_dict(d1, d2):
+	return {
+		k: list(d[k] for d in (d1, d2) if k in d)
+		for k in set(d1.keys()) | set(d2.keys())
+	}

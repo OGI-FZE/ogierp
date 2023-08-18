@@ -139,7 +139,7 @@ def add_transfered_qty_ro_item(doc,handle=None):
 						frappe.db.commit()
 
 def reduce_transfered_qty(doc,handle=None):
-	if doc.rental_order and doc.stock_entry_type =="Material Transfer":
+	if doc.rental_order and doc.stock_entry_type =="Material Transfer for Rental":
 		ro = frappe.get_doc ("Rental Order", doc.rental_order)
 		for item in doc.items:
 			for i in ro.items:
@@ -463,7 +463,7 @@ def get_item_description_from_so_items(doc,handler=None):
 
 
 @frappe.whitelist()
-def set_rate(item="Oli Serial item",price_list="Standard Selling"):
+def set_rate(item=None,price_list=None):
 	rate = frappe.db.sql(
 			"""select price_list_rate from `tabItem Price` where item_code = %s and
 			   price_list = %s """,
@@ -472,4 +472,14 @@ def set_rate(item="Oli Serial item",price_list="Standard Selling"):
 		return rate[0]['price_list_rate']
 	else:
 		return 0
+
+
+
+def cancel_se():
+	se = frappe.get_doc("Stock Entry","OGI-OSE-0021")
+	se.cancel()
+	frappe.db.commit()
+
+def enqueue_long_job():
+	frappe.enqueue('oil_and_gas_international.overriding.cancel_se')
 
