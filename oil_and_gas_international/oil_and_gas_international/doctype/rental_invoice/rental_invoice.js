@@ -2,6 +2,16 @@
 // For license information, please see license.txt
 
 frappe.ui.form.on('Rental Invoice', {
+
+	setup(frm){
+		frm.set_query("taxes_and_charges", function() {
+			return {
+				filters: {
+                    "company":frm.doc.company
+				}
+			};
+		});
+	},
 	refresh(frm){
 		if(frm.doc.docstatus==1){
 			add_sales_invoice(frm)
@@ -14,6 +24,33 @@ frappe.ui.form.on('Rental Invoice', {
             "operational_running","lihdbr","post_rental_inspection_charges","standby","straight","redress"
         ], customer_currency, "items");
     },
+
+	payment_term(frm){
+		if (!frm.doc.payment_term){
+			frm.doc.taxes = []
+			frm.refresh_field('payment_term')
+		}
+		frappe.call({
+            method: 'oil_and_gas_international.overriding.get_payment',
+            args: {
+                p: frm.doc.payment_term,
+            },
+            callback: function(r) {
+				console.log(r.message)
+				frm.add_child("payment_schedule",{
+					"payment_term": r.message[0]['payment_term'],
+					"description": r.message[0]['description'],
+					"due_date": frm.doc.delivery_date,
+					"invoice_portion":r.message[0]['invoice_portion'],
+					"discount_type":r.message[0]['discount_type'],
+					"discount":r.message[0]['discount'],
+					"payment_amount": frm.doc.grand_total,
+				})
+				frm.refresh_field('payment_schedule')
+            }
+        })
+
+	},
 
 	taxes_and_charges(frm){
 		if (!frm.doc.taxes_and_charges){
@@ -35,6 +72,7 @@ frappe.ui.form.on('Rental Invoice', {
                 tx: frm.doc.taxes_and_charges,
             },
             callback: function(r) {
+				frm.clear_table("taxes")
 				frm.add_child("taxes",{
 					"charge_type": r.message[0]["charge_type"],
 					"account_head": r.message[0]["account_head"],
@@ -158,6 +196,9 @@ const add_sales_invoice = () => {
 				cur_doc.additional_discount_percentage = doc.additional_discount_percentage
 				cur_doc.discount_amount = doc.discount_amount
 				cur_doc.rental_timesheet = doc.rental_timesheet
+				cur_doc.customer_address = doc.customer_address
+				cur_doc.contact_person = doc.customer_contact
+
 				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "taxes_and_charges", doc.taxes_and_charges)
 				// cur_doc.ignore_pricing_rule = 1
 				cur_doc.items = []

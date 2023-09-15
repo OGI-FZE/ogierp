@@ -2,6 +2,16 @@
 // For license information, please see license.txt
 
 frappe.ui.form.on('Proforma Invoice', {
+
+	setup(frm){
+		frm.set_query("taxes_and_charges", function() {
+			return {
+				filters: {
+                    "company":frm.doc.company
+				}
+			};
+		});
+	},
 	refresh(frm){
 		if(frm.doc.docstatus==1){
 			add_sales_invoice(frm)
@@ -15,28 +25,101 @@ frappe.ui.form.on('Proforma Invoice', {
         ], customer_currency, "items");
     },
 
+	payment_term(frm){
+		if (!frm.doc.payment_term){
+			frm.doc.taxes = []
+			frm.refresh_field('payment_term')
+		}
+		frappe.call({
+            method: 'oil_and_gas_international.overriding.get_payment',
+            args: {
+                p: frm.doc.payment_term,
+            },
+            callback: function(r) {
+				console.log(r.message)
+				frm.add_child("payment_schedule",{
+					"payment_term": r.message[0]['payment_term'],
+					"description": r.message[0]['description'],
+					"due_date": frm.doc.delivery_date,
+					"invoice_portion":r.message[0]['invoice_portion'],
+					"discount_type":r.message[0]['discount_type'],
+					"discount":r.message[0]['discount'],
+					"payment_amount": frm.doc.grand_total,
+				})
+				frm.refresh_field('payment_schedule')
+            }
+        })
+
+	},
+
 	taxes_and_charges(frm){
+		if (!frm.doc.taxes_and_charges){
+			frm.doc.taxes = []
+			var discount = 0
+			if (!frm.doc.additional_discount_percentage){
+				var discount = frm.doc.total*0/100
+			}
+			else{
+				discount = frm.doc.total*frm.doc.additional_discount_percentage/100
+			}
+			frm.set_value("grand_total",frm.doc.total-discount)
+			frm.refresh_field('taxes')
+
+		}
 		frappe.call({
             method: 'oil_and_gas_international.overriding.getTax',
             args: {
                 tx: frm.doc.taxes_and_charges,
             },
             callback: function(r) {
+				frm.clear_table("taxes")
 				frm.add_child("taxes",{
 					"charge_type": r.message[0]["charge_type"],
 					"account_head": r.message[0]["account_head"],
 					"rate": r.message[0]["rate"],
 					"tax_amount": (frm.doc.total*r.message[0]['rate'])/100,
 					"total": (frm.doc.total + (frm.doc.total*r.message[0]['rate'])/100),
-					"description": r.message[0]["description"]
-					
-
-
+					"description": r.message[0]["description"]				
 				})
+				var gt = (frm.doc.total + (frm.doc.total*r.message[0]['rate'])/100)
+				var discount = 0
+				if (!frm.doc.additional_discount_percentage){
+					var discount = gt*0/100
+				}
+				else{
+					discount = gt*frm.doc.additional_discount_percentage/100
+				}
+				console.log(discount)
+				console.log(gt)
+				frm.set_value("grand_total",gt-discount)
 				frm.refresh_field('taxes')
                         }
         })
+		
      },
+
+	additional_discount_percentage(frm){
+		var discount = frm.doc.additional_discount_percentage*frm.doc.grand_total/100
+		frm.set_value('discount_amount',discount)
+		frm.set_value("grand_total",frm.doc.grand_total-discount)
+		if (frm.doc.additional_discount_percentage == 0){
+			if (frm.doc.taxes_and_charges){
+				frm.set_value('grand_total',frm.doc.taxes[0].total)
+			}
+			else {
+				frm.set_value('grand_total',frm.doc.total)
+			}
+		}
+	
+
+    },
+
+	// discount_amount(frm){
+	// 	var discount_per = (frm.doc.discount_amount/frm.doc.grand_total)*100
+	// 	console.log(discount_per)
+	// 	frm.set_value('additional_discount_percentage',discount_per)
+	// 	frm.set_value("grand_total",frm.doc.grand_total-frm.doc.discount_amount)
+    // },
 			
 
 	delivery_date(frm){
@@ -46,19 +129,31 @@ frappe.ui.form.on('Proforma Invoice', {
 	},
 
 	selling_price_list(frm){
+		let rate = 0
 		for (const row of frm.doc.items){
+			
+			if (frm.doc.selling_price_list == "Operational/Running"){
+				rate = row.operational_running
+			}
+			else if (frm.doc.selling_price_list == "Standby"){
+				rate = row.standby
+			}
+			else if (frm.doc.selling_price_list == "Post Rental Inspection charges"){
+				rate = row.post_rental_inspection_charges
+			}
+			else if  (frm.doc.selling_price_list == "LIH/DBR"){
+				rate = row.lihdbr
+			}
+			else if (frm.doc.selling_price_list == "Redress"){
+				rate = row.redress
+			}
+			else {
+				rate = row.straight
+			}
 			const cdt = row.doctype
 			const cdn = row.name
-			frappe.call({
-				method: "oil_and_gas_international.overriding.set_rate",
-				args:{"item":row.item_code,
-					  "price_list": frm.doc.selling_price_list},
-	
-				callback: function(r) {
-					frappe.model.set_value(cdt,cdn,"rate",r.message)	
-				}
-			});
-			
+			frappe.model.set_value(cdt,cdn,"rate", rate)
+
 		}
 
 				
@@ -69,18 +164,7 @@ frappe.ui.form.on('Proforma Invoice', {
 
 
 frappe.ui.form.on('Proforma Invoice Item', {
-	item_code(frm,cdt,cdn){
-		var child = locals[cdt][cdn];
-		frappe.call({
-			method: "oil_and_gas_international.overriding.set_rate",
-			args:{"item":child.item_code,
-				  "price_list": frm.doc.selling_price_list},
 
-			callback: function(r) {
-				frappe.model.set_value(cdt,cdn,"rate",r.message)	
-			}
-		});
-	},
 	rate(frm,cdt,cdn){
 		var child = locals[cdt][cdn];
 		frappe.model.set_value(cdt,cdn,"amount",child.rate*child.qty)	
@@ -109,7 +193,12 @@ const add_sales_invoice = () => {
 				cur_doc.against_rental_order = 1
 				cur_doc.department = doc.department
 				cur_doc.division = doc.division
+				cur_doc.additional_discount_percentage = doc.additional_discount_percentage
+				cur_doc.discount_amount = doc.discount_amount
 				cur_doc.rental_timesheet = doc.rental_timesheet
+				cur_doc.customer_address = doc.customer_address
+				cur_doc.contact_person = doc.customer_contact
+
 				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "taxes_and_charges", doc.taxes_and_charges)
 				// cur_doc.ignore_pricing_rule = 1
 				cur_doc.items = []

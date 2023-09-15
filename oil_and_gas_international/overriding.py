@@ -236,6 +236,14 @@ def getTax(tx=None):
 	return taxes
 
 
+@frappe.whitelist()
+def get_payment(p=None):
+	details = frappe.db.sql('''select payment_term,description,
+									invoice_portion,due_date_based_on,discount_type,discount
+									from `tabPayment Terms Template Detail` where parent = '%s' '''
+									%(p),as_dict=True)
+	return details
+
 def set_item_rent_days(doc,handle=None):
 	
 	doc.total_amount = 0

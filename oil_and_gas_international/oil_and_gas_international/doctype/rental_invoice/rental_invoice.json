@@ -22,7 +22,7 @@
   "delivery_date",
   "division",
   "project",
-  "Address and Contact",
+  "address_and_contact",
   "customer_address",
   "address",
   "colcol2",
@@ -60,7 +60,10 @@
   "colsec",
   "tax_amount",
   "grand_total",
-  "amended_from"
+  "amended_from",
+  "payments",
+  "payment_term",
+  "payment_schedule"
  ],
  "fields": [
   {
@@ -81,20 +84,42 @@
   {
     "fieldname": "address_and_contact",
     "fieldtype": "Section Break",
+    "label":"Address and Contact",
     "hide_days": 1,
-    "hide_seconds": 1
+    "hide_seconds": 1,
+    "options": "fa fa-user"
    }, 
+   {
+    "fieldname": "payments",
+    "fieldtype": "Section Break",
+    "label":"Payments"
+   }, 
+   {
+    "fieldname": "payment_term",
+    "fieldtype": "Link",
+    "label":"Payment Terms Templates",
+    "options": "Payment Terms Template"
+   }, 
+   {
+    "fieldname": "payment_schedule",
+    "fieldtype": "Table",
+    "label":"Payment Schedule",
+    "options": "Payment Schedule"
+   },
    {
     "fieldname": "customer_address",
     "fieldtype": "Link",
     "options":"Address",
+    "label":"Customer Address",
     "hide_days": 1,
     "hide_seconds": 1
    },  
    {
     "fieldname": "address",
+    "label":"Address Display",
     "fieldtype": "Small Text",
     "hide_days": 1,
+    "read_only":1,
     "hide_seconds": 1
    }, 
    {
@@ -105,6 +130,7 @@
    }, 
    {
     "fieldname": "customer_contact",
+    "label":"Customer Contact",
     "fieldtype": "Link",
     "options":"Contact",
     "hide_days": 1,
@@ -113,7 +139,9 @@
    {
     "fieldname": "contact",
     "fieldtype": "Small Text",
+    "label":"Contact",
     "hide_days": 1,
+    "read_only":1,
     "hide_seconds": 1
    }, 
   {
