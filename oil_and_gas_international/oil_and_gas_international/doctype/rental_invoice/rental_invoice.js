@@ -186,7 +186,6 @@ const add_sales_invoice = () => {
 				const cur_doc = cur_frm.doc
 				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "rental_order", doc.rental_order)
 				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "rental_invoice", doc.name)
-
 				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "currency", doc.currency)
 				cur_doc.customer = doc.customer
 				cur_doc.conversion_rate = doc.conversion_rate
@@ -198,11 +197,21 @@ const add_sales_invoice = () => {
 				cur_doc.rental_timesheet = doc.rental_timesheet
 				cur_doc.customer_address = doc.customer_address
 				cur_doc.contact_person = doc.customer_contact
-
+				cur_doc.payment_terms_template = doc.payment_term
 				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "taxes_and_charges", doc.taxes_and_charges)
 				// cur_doc.ignore_pricing_rule = 1
 				cur_doc.items = []
-
+				// for (const row of doc.payment_schedule){
+				// 	const new_row = cur_frm.add_child("payment_schedule",{
+				// 		"payment_term": row.payment_term,
+				// 		"description": row.description,
+				// 		"due_date": row.due_date,
+				// 		"invoice_portion":row.invoice_portion,
+				// 		"discount_type":row.discount_type,
+				// 		"discount":row.discount,
+				// 		"payment_amount": row.amount,
+				// 	})
+				// }
 				for (const row of doc.items) {
 					const new_row = cur_frm.add_child("items", {
 						item_code:row.item_code,
