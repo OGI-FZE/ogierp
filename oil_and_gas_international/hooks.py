@@ -160,6 +160,9 @@ doc_events = {
     },
     "Sub Rental Invoice":{
         "before_save": "oil_and_gas_international.overriding.set_item_rent_days",
+    },
+    "Job Applicant":{
+        "validate": "oil_and_gas_international.overriding.update_hired_people"
     }
 
 

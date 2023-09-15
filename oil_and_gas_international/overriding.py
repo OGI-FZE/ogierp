@@ -491,3 +491,11 @@ def cancel_se():
 def enqueue_long_job():
 	frappe.enqueue('oil_and_gas_international.overriding.cancel_se')
 
+
+def update_hired_people(doc,handle=None):
+	staffing_plan = frappe.get_doc('Staffing Plan',doc.staffing_plan)
+	for d in staffing_plan.staffing_details:
+		if d.designation == doc.designation and doc.status == 'Accepted':
+			d.already_hired += 1
+			staffing_plan.save()
+			frappe.db.commit()
