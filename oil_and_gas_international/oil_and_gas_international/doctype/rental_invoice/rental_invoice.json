@@ -22,16 +22,16 @@
   "delivery_date",
   "division",
   "project",
+  "Address and Contact",
+  "customer_address",
+  "address",
+  "colcol2",
+  "customer_contact",
+  "contact",
   "start_end",
   "from_date",
   "colcol",
   "to_date",
-  "contact_info",
-  "customer_address",
-  "address_display",
-  "colcol2",
-  "customer_contact",
-  "contact_display",
   "currency_and_price_list",
   "currency",
   "conversion_rate",
@@ -53,6 +53,10 @@
   "taxes_and_charges",
   "section_break_40",
   "taxes",
+  "additional_discount_section",
+  "additional_discount_percentage",
+  "column_break_voomq",
+  "discount_amount",
   "colsec",
   "tax_amount",
   "grand_total",
@@ -74,6 +78,44 @@
    "hide_seconds": 1,
    "options": "fa fa-user"
   },
+  {
+    "fieldname": "address_and_contact",
+    "fieldtype": "Section Break",
+    "hide_days": 1,
+    "hide_seconds": 1
+   }, 
+   {
+    "fieldname": "customer_address",
+    "fieldtype": "Link",
+    "options":"Address",
+    "hide_days": 1,
+    "hide_seconds": 1
+   },  
+   {
+    "fieldname": "address",
+    "fieldtype": "Small Text",
+    "hide_days": 1,
+    "hide_seconds": 1
+   }, 
+   {
+    "fieldname": "colcol2",
+    "fieldtype": "Column Break",
+    "hide_days": 1,
+    "hide_seconds": 1
+   }, 
+   {
+    "fieldname": "customer_contact",
+    "fieldtype": "Link",
+    "options":"Contact",
+    "hide_days": 1,
+    "hide_seconds": 1
+   },  
+   {
+    "fieldname": "contact",
+    "fieldtype": "Small Text",
+    "hide_days": 1,
+    "hide_seconds": 1
+   }, 
   {
    "fieldname": "colcol",
    "fieldtype": "Column Break",
@@ -205,50 +247,6 @@
    "reqd": 1,
    "search_index": 1,
    "width": "160px"
-  },
-  {
-   "collapsible": 1,
-   "depends_on": "customer",
-   "fieldname": "contact_info",
-   "fieldtype": "Section Break",
-   "hide_days": 1,
-   "hide_seconds": 1,
-   "label": "Address and Contact",
-   "options": "fa fa-bullhorn"
-  },
-  {
-   "collapsible": 1,
-   "fieldname": "customer_address",
-   "fieldtype": "Link",
-   "hide_days": 1,
-   "hide_seconds": 1,
-   "label": "Customer Address",
-   "options": "Address",
-   "read_only": 1
-  },
-  {
-   "collapsible": 1,
-   "fieldname": "address_display",
-   "fieldtype": "Small Text",
-   "hide_days": 1,
-   "read_only": 1
-  },
-  {
-   "fieldname": "colcol2",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "customer_contact",
-   "fieldtype": "Link",
-   "label": "Customer Contact",
-   "options": "Contact",
-   "read_only": 1
-  },
-  {
-   "collapsible": 1,
-   "fieldname": "contact_display",
-   "fieldtype": "Small Text",
-   "read_only": 1
   },
   {
    "collapsible": 1,
@@ -487,12 +485,33 @@
    "fieldtype": "Data",
    "label": "Territory",
    "read_only": 1
+  },
+  {
+   "fieldname": "additional_discount_section",
+   "fieldtype": "Section Break",
+   "label": "Additional Discount"
+  },
+  {
+   "default": "0",
+   "fieldname": "additional_discount_percentage",
+   "fieldtype": "Float",
+   "label": "Additional Discount Percentage"
+  },
+  {
+   "fieldname": "column_break_voomq",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "discount_amount",
+   "fieldtype": "Float",
+   "label": "Discount Amount",
+   "read_only": 1
   }
  ],
  "icon": "fa fa-file-text",
  "is_submittable": 1,
  "links": [],
- "modified": "2023-07-22 12:00:37.136583",
+ "modified": "2023-09-15 08:36:47.060107",
  "modified_by": "Administrator",
  "module": "Oil And Gas International",
  "name": "Rental Invoice",

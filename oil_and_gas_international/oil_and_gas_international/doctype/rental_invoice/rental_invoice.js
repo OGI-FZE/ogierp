@@ -16,6 +16,19 @@ frappe.ui.form.on('Rental Invoice', {
     },
 
 	taxes_and_charges(frm){
+		if (!frm.doc.taxes_and_charges){
+			frm.doc.taxes = []
+			var discount = 0
+			if (!frm.doc.additional_discount_percentage){
+				var discount = frm.doc.total*0/100
+			}
+			else{
+				discount = frm.doc.total*frm.doc.additional_discount_percentage/100
+			}
+			frm.set_value("grand_total",frm.doc.total-discount)
+			frm.refresh_field('taxes')
+
+		}
 		frappe.call({
             method: 'oil_and_gas_international.overriding.getTax',
             args: {
@@ -28,15 +41,47 @@ frappe.ui.form.on('Rental Invoice', {
 					"rate": r.message[0]["rate"],
 					"tax_amount": (frm.doc.total*r.message[0]['rate'])/100,
 					"total": (frm.doc.total + (frm.doc.total*r.message[0]['rate'])/100),
-					"description": r.message[0]["description"]
-					
-
-
+					"description": r.message[0]["description"]				
 				})
+				var gt = (frm.doc.total + (frm.doc.total*r.message[0]['rate'])/100)
+				var discount = 0
+				if (!frm.doc.additional_discount_percentage){
+					var discount = gt*0/100
+				}
+				else{
+					discount = gt*frm.doc.additional_discount_percentage/100
+				}
+				console.log(discount)
+				console.log(gt)
+				frm.set_value("grand_total",gt-discount)
 				frm.refresh_field('taxes')
                         }
         })
+		
      },
+
+	additional_discount_percentage(frm){
+		var discount = frm.doc.additional_discount_percentage*frm.doc.grand_total/100
+		frm.set_value('discount_amount',discount)
+		frm.set_value("grand_total",frm.doc.grand_total-discount)
+		if (frm.doc.additional_discount_percentage == 0){
+			if (frm.doc.taxes_and_charges){
+				frm.set_value('grand_total',frm.doc.taxes[0].total)
+			}
+			else {
+				frm.set_value('grand_total',frm.doc.total)
+			}
+		}
+	
+
+    },
+
+	// discount_amount(frm){
+	// 	var discount_per = (frm.doc.discount_amount/frm.doc.grand_total)*100
+	// 	console.log(discount_per)
+	// 	frm.set_value('additional_discount_percentage',discount_per)
+	// 	frm.set_value("grand_total",frm.doc.grand_total-frm.doc.discount_amount)
+    // },
 			
 
 	delivery_date(frm){
@@ -110,6 +155,8 @@ const add_sales_invoice = () => {
 				cur_doc.against_rental_order = 1
 				cur_doc.department = doc.department
 				cur_doc.division = doc.division
+				cur_doc.additional_discount_percentage = doc.additional_discount_percentage
+				cur_doc.discount_amount = doc.discount_amount
 				cur_doc.rental_timesheet = doc.rental_timesheet
 				frappe.model.set_value(cur_doc.doctype, cur_doc.name, "taxes_and_charges", doc.taxes_and_charges)
 				// cur_doc.ignore_pricing_rule = 1

@@ -18,12 +18,12 @@ class RentalInvoice(Document):
             row.income_account = get_income_expense_accounts(row.item_code,self.company)[0]
             row.expense_account = get_income_expense_accounts(row.item_code,self.company)[1]
 
-        if self.taxes_and_charges:
-            self.tax_amount = self.taxes[0].tax_amount
-            self.grand_total = self.tax_amount + self.total
-        else:
-            self.grand_total = self.total
-        self.total= total
+        # if self.taxes_and_charges:
+        #     self.tax_amount = self.taxes[0].tax_amount
+        #     self.grand_total = self.tax_amount + self.total
+        # else:
+            # self.grand_total = self.total
+        # self.total= total
 
 
 
