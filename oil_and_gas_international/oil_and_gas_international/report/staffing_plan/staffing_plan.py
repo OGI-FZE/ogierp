@@ -54,7 +54,7 @@ def get_data(filters, period_list):
                                     from `tabStaffing Plan Detail` spd
                                     left join (select name,department,docstatus,from_date,company from
                                     `tabStaffing Plan`) as sp on sp.name = spd.parent where sp.docstatus = 1 %s """ %(staf_conditions), as_dict=1)
-    print('\n \n')
+    print('\n \n') 
     for s in staffing_plan:
         s['employee_name'] = ""
         s['date'] = "/".join([str(s['month']),str(s['year'])])
