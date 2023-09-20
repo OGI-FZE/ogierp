@@ -120,9 +120,15 @@ def get_data(filters, period_list):
                             record[month_fiscal] = record['base']*record['count']
         if record['designation'] not in ['Sub Total','']:
             result_without_department.append(record)
+            
     import collections
+    print(result_without_department)
+
+    keys_to_delete = ['base','month','year','date']
     total_per_month = collections.Counter()
     for r in result_without_department:
+        for k in keys_to_delete:
+            del r[k]
         total_per_month.update(r)
     for k in dict(total_per_month).keys():
         if "_2" in k:
