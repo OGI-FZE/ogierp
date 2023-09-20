@@ -81,6 +81,7 @@ def get_data(filters):
 	if data:	
 		print(data)					
 		for d in data:
+			print(d)
 			if d:
 				group_row = {}
 				group_row['trunk'] = d or ''
