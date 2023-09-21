@@ -53,7 +53,7 @@ def get_data(filters, period_list):
                                      sp.department,spd.estimated_cost_per_position as base, EXTRACT(MONTH from sp.from_date) as month, EXTRACT(YEAR from sp.from_date) as year
                                     from `tabStaffing Plan Detail` spd
                                     left join (select name,department,docstatus,from_date,company from
-                                    `tabStaffing Plan`) as sp on sp.name = spd.parent where sp.docstatus = 1 %s """ %(staf_conditions), as_dict=1)
+                                    `tabStaffing Plan`) as sp on sp.name = spd.parent where sp.docstatus = 1 and sp.department is not null %s """ %(staf_conditions), as_dict=1)
     print('\n \n') 
     for s in staffing_plan:
         s['employee_name'] = ""
@@ -133,7 +133,6 @@ def get_data(filters, period_list):
     for k in dict(total_per_month).keys():
         if "_2" in k:
             total_row[k] = dict(total_per_month)[k]
-    print(total_row)
     total_row['designation'] = "Total"
     total_row['count'] = total
     total_row['bold'] = 1
