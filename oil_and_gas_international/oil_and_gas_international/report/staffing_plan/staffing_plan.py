@@ -1,5 +1,3 @@
-# Copyright (c) 2022, . and contributors
-# For license information, please see license.txt
 import frappe
 from frappe import _
 from erpnext.accounts.report.financial_statements import get_period_list
@@ -52,6 +50,7 @@ def get_data(filters, period_list):
                             EXTRACT(YEAR FROM ss.from_date) as year from `tabEmployee` e 
                             left join (select base,employee,from_date from `tabSalary Structure Assignment`) 
                             as ss on ss.employee = e.employee %s""" %(conditions), as_dict = 1)
+
     staffing_plan = frappe.db.sql("""select spd.designation,
                                      spd.number_of_positions - spd.already_hired as count,
                                      sp.department,spd.estimated_cost_per_position as base,
@@ -60,12 +59,10 @@ def get_data(filters, period_list):
                                      from `tabStaffing Plan Detail` spd
                                     left join (select name,department,docstatus,from_date,company from
                                     `tabStaffing Plan`) as sp on sp.name = spd.parent where sp.docstatus = 1 and sp.department is not null %s """ %(staf_conditions), as_dict=1)
-    print('\n \n') 
     for s in staffing_plan:
         s['employee_name'] = ""
         s['date'] = "/".join([str(s['month']),str(s['year'])])
         sql_data.append(s)
-
     data = {}
     for i in sql_data:
         employee_name = i['employee_name']
@@ -82,7 +79,6 @@ def get_data(filters, period_list):
     keys_to_delete = ['base','month','year','date']
     total = 0
     if data:	
-        
         for d in data:
             sub_total_per_month = collections.Counter()
             sub_total_row = {}
@@ -132,8 +128,10 @@ def get_data(filters, period_list):
                 sub_total_row['designation'] = "Sub Total"
                 sub_total_row['count'] = sub_total
                 sub_total_row['bold'] = 1
+                # result.append(sub_total_row)
             total += sub_total
             result.append(sub_total_row)
+            
     total_per_month = collections.Counter()
     for r in result_without_department:
         total_per_month.update(r)
