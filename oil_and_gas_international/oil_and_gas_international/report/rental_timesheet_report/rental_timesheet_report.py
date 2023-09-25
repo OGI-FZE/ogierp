@@ -40,7 +40,8 @@ def get_data(filters):
 				WHERE
 				rt.docstatus != 2 AND rt.rental_order = srt.rental_order AND
 				srt.docstatus != 2 AND rt.end_date = srt.end_date AND 
-				rt.project = srt.project AND pii.item_code = st.item_code
+				rt.project = srt.project AND pii.item_code = st.item_code AND
+				pii.start_date_ is not null
 				'''
 
 	data= frappe.db.sql(f"{query}", as_dict=True)
