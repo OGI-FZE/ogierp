@@ -111,28 +111,28 @@ def put_missed_sub_rental_timesheet_items():
 			end_date_str = frappe.db.get_value("Rental Timesheet",rt,"end_date")
 			if not frappe.db.exists("Supplier Rental Timesheet",{"rental_order":ro,"end_date":end_date_str}):
 				for item in rental_t.items:
-								
-					additionnal_data =  {
-									"project": rental_t.project,
-									"rental_timesheet": rental_t.name,
-									"start_date": rental_t.start_date,
-									"end_date": rental_t.end_date,
-									"customer":rental_t.customer,
-									"item_description": item.item_code,
-									"qty": item.qty,
-									"rental_start_date": item.start_date_,
-									"rental_end_date": " ",
-									"daily_rental_rate": item.rate,
-									"daily_rental_total": item.rate * item.qty,
-									"supplier": " ",
-									"sub_rental_rate": " ",
-									"sub_rental_total": " ",
-									"gp": item.rate*item.qty,
-									"rental_days": item.days,
-									"sub_rental_days": " ",
-									"rental_revenue": item.rate*item.qty*item.days
-					}
-					subrental_additional.append(additionnal_data)
+					if item.start_date_:
+						additionnal_data =  {
+										"project": rental_t.project,
+										"rental_timesheet": rental_t.name,
+										"start_date": rental_t.start_date,
+										"end_date": rental_t.end_date,
+										"customer":rental_t.customer,
+										"item_description": item.item_code,
+										"qty": item.qty,
+										"rental_start_date": item.start_date_,
+										"rental_end_date": " ",
+										"daily_rental_rate": item.rate,
+										"daily_rental_total": item.rate * item.qty,
+										"supplier": " ",
+										"sub_rental_rate": " ",
+										"sub_rental_total": " ",
+										"gp": item.rate*item.qty,
+										"rental_days": item.days,
+										"sub_rental_days": " ",
+										"rental_revenue": item.rate*item.qty*item.days
+						}
+						subrental_additional.append(additionnal_data)
 			else:
 				supplier_rt = frappe.get_doc("Supplier Rental Timesheet",{"rental_order":ro,"end_date":end_date_str})
 				for item in rental_t.items:
