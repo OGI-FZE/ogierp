@@ -80,6 +80,9 @@ class ProformaInvoice(Document):
         self.total = total
 
         if self.taxes_and_charges:
+            for row in self.items:
+                row.tax_rate = self.taxes[0].rate
+                row.tax_amount_ = (float(row.amount)*self.taxes[0].rate/100)
             self.tax_amount = self.taxes[0].tax_amount
             grand_total = self.tax_amount + self.total
             discount = self.additional_discount_percentage*float(grand_total)/100

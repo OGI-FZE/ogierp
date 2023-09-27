@@ -41,7 +41,7 @@ def get_data(filters):
 				rt.docstatus != 2 AND rt.rental_order = srt.rental_order AND
 				srt.docstatus != 2 AND rt.end_date = srt.end_date AND 
 				rt.project = srt.project AND pii.item_code = st.item_code AND
-				pii.start_date_ is not null 
+				pii.start_date_ is not null
 				'''
 
 	data= frappe.db.sql(f"{query}", as_dict=True)
@@ -138,30 +138,29 @@ def put_missed_sub_rental_timesheet_items():
 				for item in rental_t.items:
 					for sitem in supplier_rt.items:
 						if not sitem.item_code == item.item_code:
-							print(rental_t)
-							print(item.item_code)
-							additionnal_data =  {
-											"project": rental_t.project,
-											"rental_timesheet": rental_t.name,
-											"start_date": rental_t.start_date,
-											"start_date": rental_t.start_date,
-											"customer":rental_t.customer,
-											"item_description": item.item_code,
-											"qty": item.qty,
-											"rental_start_date": item.start_date_,
-											"rental_end_date": " ",
-											"daily_rental_rate": item.rate,
-											"daily_rental_total": item.rate * item.qty,
-											"supplier": " ",
-											"sub_rental_rate": " ",
-											"sub_rental_total": " ",
-											"gp": item.rate*item.qty,
-											"rental_days": item.days,
-											"sub_rental_days": " ",
-											"rental_revenue": item.rate*item.qty*item.days
+							if item.start_date_:
+								additionnal_data =  {
+												"project": rental_t.project,
+												"rental_timesheet": rental_t.name,
+												"start_date": rental_t.start_date,
+												"start_date": rental_t.start_date,
+												"customer":rental_t.customer,
+												"item_description": item.item_code,
+												"qty": item.qty,
+												"rental_start_date": item.start_date_,
+												"rental_end_date": " ",
+												"daily_rental_rate": item.rate,
+												"daily_rental_total": item.rate * item.qty,
+												"supplier": " ",
+												"sub_rental_rate": " ",
+												"sub_rental_total": " ",
+												"gp": item.rate*item.qty,
+												"rental_days": item.days,
+												"sub_rental_days": " ",
+												"rental_revenue": item.rate*item.qty*item.days
 
-							}
-							rental_timesheet_additional.append(additionnal_data)
+								}
+								rental_timesheet_additional.append(additionnal_data)
 
 
 	return {'subrental_additional':subrental_additional,'rental_timesheet_additional':rental_timesheet_additional}

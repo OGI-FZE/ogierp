@@ -31,6 +31,7 @@ const create_inspection = (frm) => {
 }
 
 frappe.ui.form.on('Stock Entry Detail', {
+
 	item_code(frm,cdt,cdn) {
         const item = locals[cdt][cdn]
         const args = {
