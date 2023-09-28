@@ -161,7 +161,7 @@ def create_rental_timesheet():
         ro_items = []
         rental_order = frappe.get_doc("Rental Order",r)
         timesheets = frappe.db.sql("""select name,start_date from `tabRental Timesheet`
-                                          where rental_order = '%s' 
+                                          where rental_order = '%s'
                                           order by start_date desc""" %(r),as_dict=1)
         if timesheets:
             last_ts = frappe.get_doc("Rental Timesheet",timesheets[0]['name'])
@@ -174,8 +174,11 @@ def create_rental_timesheet():
             new_ts.conversion_rate = last_ts.conversion_rate
             # new_ts.price_list = last_ts.price_list
             print(last_ts.name)
+            stop_rent = 0
             for row in last_ts.items:
-                if not row.stop_rent:
+                if row.stop_rent:
+                    stop_rent += 1
+                elif not row.stop_rent:
                     new_ts.append("items",{
                         "item_code": row.item_code,
                         "item_name": row.item_name,
@@ -197,8 +200,9 @@ def create_rental_timesheet():
                         "start_date_": last_ts.start_date + relativedelta.relativedelta(months=1, day=1),
                         "end_date": last_ts.end_date + relativedelta.relativedelta(months=1, day=32)
                     })
-            new_ts.save()
-            frappe.db.commit()
+            if not stop_rent == len(last_ts.items):
+                new_ts.save()
+                frappe.db.commit()
             
 
 def change_ro_status(doc,handle=None):
