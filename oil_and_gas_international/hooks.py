@@ -48,8 +48,8 @@ doctype_js = {
     "Work Order": "public/js/work_order.js",
     "Stock Entry": "public/js/stock_entry.js",
     "Request for Quotation": "public/js/request_for_quotation.js",
-    "Packing Slip": "public/js/packing_slip.js"
-
+    "Packing Slip": "public/js/packing_slip.js",
+    "Budget" : "public/js/budget.js"
 }
 # doctype_js = {"doctype" : "public/js/doctype.js"}
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
@@ -114,6 +114,9 @@ doc_events = {
     #     "on_submit": "oil_and_gas_international.events.asset.on_submit",
     #     "on_cancel": "oil_and_gas_international.events.asset.remove_from_tubular"
     # },
+    "Budget": {
+		"validate": "oil_and_gas_international.events.budget.validate"
+	},
     "Sales Invoice": {
         "on_submit": "oil_and_gas_international.events.sales_invoice.addbilledamount",
         "on_cancel": "oil_and_gas_international.events.sales_invoice.removebilledamount",
@@ -423,7 +426,10 @@ fixtures = [
 
                 #purchase receipt
                 'Purchase Receipt-reason_for_purchase',
-                'Quotation-estimation_sheet'
+                'Quotation-estimation_sheet',
+
+                #Budget
+                'Budget-custom_budget_details'
 
             ]]
         ]
