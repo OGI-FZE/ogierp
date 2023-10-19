@@ -267,6 +267,8 @@ def set_item_rent_days(doc,handle=None):
 
 def get_income_expense_accounts(item=None,company=None):
     item = frappe.get_doc("Item",item)
+    income_account = ""
+    expense_account = ""
     if item.item_defaults:
         income_account = item.item_defaults[0].income_account
         expense_account = item.item_defaults[0].expense_account
