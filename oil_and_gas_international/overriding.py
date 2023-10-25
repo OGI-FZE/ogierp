@@ -164,12 +164,14 @@ def create_rental_timesheet():
                                           where rental_order = '%s'
                                           order by start_date desc""" %(r),as_dict=1)
         if timesheets:
+
             last_ts = frappe.get_doc("Rental Timesheet",timesheets[0]['name'])
+            new_start_date = last_ts.start_date + relativedelta.relativedelta(months=1)
             new_ts = frappe.new_doc("Rental Timesheet")
             new_ts.customer = last_ts.customer
             new_ts.rental_order = last_ts.rental_order
-            new_ts.start_date = last_ts.start_date + relativedelta.relativedelta(months=1, day=1)
-            new_ts.end_date = last_ts.end_date + relativedelta.relativedelta(months=1, day=32)
+            new_ts.start_date = new_start_date
+            new_ts.end_date = new_start_date + relativedelta.relativedelta(months=0, day=40)
             new_ts.currency = last_ts.currency
             new_ts.conversion_rate = last_ts.conversion_rate
             # new_ts.price_list = last_ts.price_list
