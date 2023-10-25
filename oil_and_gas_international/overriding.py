@@ -174,7 +174,7 @@ def create_rental_timesheet():
             if 5 < new_start_date.day < 32:
                 new_ts.end_date = new_start_date + relativedelta.relativedelta(months=1)
             else:
-                new_ts.end_date = new_start_date + relativedelta.relativedelta(months=0,days=50)
+                new_ts.end_date = new_start_date + relativedelta.relativedelta(months=0,days= 30)
             new_ts.currency = last_ts.currency
             new_ts.conversion_rate = last_ts.conversion_rate
             # new_ts.price_list = last_ts.price_list
