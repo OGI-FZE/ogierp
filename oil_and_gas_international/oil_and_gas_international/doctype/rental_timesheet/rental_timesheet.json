@@ -114,7 +114,7 @@
   {
    "fieldname": "end_date",
    "fieldtype": "Date",
-   "read_only":1,
+   "reqd":1,
    "label": "End Date"
   },
   {
