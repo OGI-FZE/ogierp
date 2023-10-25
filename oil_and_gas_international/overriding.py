@@ -1,4 +1,4 @@
-import frappe,datetime
+import frappe,datetime,calendar
 from frappe import _
 from dateutil import relativedelta
 from frappe.model.document import Document
@@ -174,7 +174,7 @@ def create_rental_timesheet():
             if 5 < new_start_date.day < 32:
                 new_ts.end_date = new_start_date + relativedelta.relativedelta(months=1)
             else:
-                new_ts.end_date = new_start_date + relativedelta.relativedelta(months=0,days= 30)
+                new_ts.end_date = new_start_date + relativedelta.relativedelta(months=0,day= 34)
             new_ts.currency = last_ts.currency
             new_ts.conversion_rate = last_ts.conversion_rate
             # new_ts.price_list = last_ts.price_list
@@ -396,7 +396,8 @@ def change_subro_status(doc,handle=None):
 
 def create_sub_rental_timesheet():
     ro_list = []
-    ro = frappe.db.get_list('Supplier Rental Order',filters={'status': 'On Rent'},as_list=True)
+    ro = frappe.db.get_list('Supplier Rental Order',filters={'status': 'On Rent',
+                                                            'docstatus':['!=',2]},as_list=True)
     for i in range(len(ro)):
         ro_list.append(ro[i][0])
     for r in ro_list:
