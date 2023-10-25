@@ -171,7 +171,7 @@ def create_rental_timesheet():
             new_ts.customer = last_ts.customer
             new_ts.rental_order = last_ts.rental_order
             new_ts.start_date = new_start_date
-            new_ts.end_date = new_start_date + relativedelta.relativedelta(months=0, day=40)
+            new_ts.end_date = new_start_date + relativedelta.relativedelta(months=1)
             new_ts.currency = last_ts.currency
             new_ts.conversion_rate = last_ts.conversion_rate
             # new_ts.price_list = last_ts.price_list
