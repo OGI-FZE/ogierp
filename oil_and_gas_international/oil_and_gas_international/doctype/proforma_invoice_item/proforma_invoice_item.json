@@ -154,7 +154,6 @@
    "fieldtype": "Column Break"
   },
   {
-   "fetch_from": "item_code.stock_uom",
    "fieldname": "uom",
    "fieldtype": "Link",
    "label": "UOM",
