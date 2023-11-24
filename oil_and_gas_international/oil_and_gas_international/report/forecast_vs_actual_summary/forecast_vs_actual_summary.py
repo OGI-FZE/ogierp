@@ -230,7 +230,6 @@ class Analytics(object):
 			(self.filters.company, frappe.defaults.get_user_default("year_start_date"), frappe.defaults.get_user_default("year_end_date")),
 			as_dict=1,
 		)
-
 		self.rental_entries = frappe.db.sql(
 			"""
 			select rt.division as entity, sum(rt.{rental_amt}) as value_field, rt.date as transaction_date
@@ -288,7 +287,6 @@ class Analytics(object):
 			(self.filters.company, frappe.defaults.get_user_default("year_start_date"), frappe.defaults.get_user_default("year_end_date")),
 			as_dict=1,
 		)
-
 
 		self.rental_invoice = frappe.db.sql(
 			"""
@@ -632,9 +630,12 @@ class Analytics(object):
 		customer_list = []
 		if self.filters.tree_type == "Customer":
 			customer_list = frappe.db.get_all("Customer", filters={"disabled": 0}, pluck="name")
-		# customer_list = []
-		# if self.filters.tree_type == "Customer":
-		# 	customer_list = frappe.db.get_all("Customer", filters={"disabled": 0}, pluck="name")
+		division_list = []
+		if self.filters.tree_type == "Division":
+			division_list = frappe.db.get_list('Forecast target', filters={
+					'division': ['!=', ""],
+					'docstatus': ['=', 1]
+			}, pluck = "division")
 		entities = []
 		for entity, period_data in iteritems(self.entity_periodic_data):
 			row = {
@@ -727,7 +728,7 @@ class Analytics(object):
 				self.forecast_entries = frappe.db.sql("""select tft.{0} as entity,sum(tft.january) as jan_{1},sum(tft.february) as feb_{1},sum(tft.march) as mar_{1},
 					sum(tft.april) as apr_{1},sum(tft.may) as may_{1},sum(tft.june) as jun_{1},sum(tft.july) as jul_{1},sum(tft.august) as aug_{1}
 					,sum(tft.september) as sep_{1},sum(tft.october) as oct_{1},sum(tft.november) as nov_{1},sum(tft.december) as dec_{1} from `tabForecast target` tft 
-					WHERE tft.parent='{2}' and tft.{0}!='' and tft.docstatus = 1 and tft.type='{3}' group by tft.{0}""".format(entity,self.filters.fiscal_year,latest, self.filters.tree_type),as_dict=1)
+					WHERE tft.parent='{2}' and tft.{0}!='' and tft.docstatus = 1 group by tft.{0}""".format(entity,self.filters.fiscal_year,latest),as_dict=1)
 				if self.forecast_entries:
 					self.forecast_data = self.forecast_entries
 			
@@ -735,14 +736,14 @@ class Analytics(object):
 				self.forecast_entries = frappe.db.sql("""select tft.{0} as entity,sum(tft.january)+sum(tft.february)+sum(tft.march) as quarter_1_{1},
 					sum(tft.april)+sum(tft.may)+sum(tft.june) as quarter_2_{1},sum(tft.july)+sum(tft.august)+sum(tft.september) as quarter_3_{1},sum(tft.october)+sum(tft.november)+sum(tft.december) as quarter_4_{1} 
 					from `tabForecast target` tft 
-					WHERE tft.parent='{2}' and tft.{0}!='' and tft.docstatus = 1 and tft.type='{3}' group by tft.{0}""".format(entity,self.filters.fiscal_year,latest, self.filters.tree_type),as_dict=1)
+					WHERE tft.parent='{2}' and tft.{0}!='' and tft.docstatus = 1 group by tft.{0}""".format(entity,self.filters.fiscal_year,latest),as_dict=1)
 				if self.forecast_entries: 
 					self.forecast_data = self.forecast_entries
 
 			if self.filters.range == "Yearly":
 				self.forecast_entries = frappe.db.sql("""select tft.{0} as entity,sum(tft.january)+sum(tft.february)+sum(tft.march)+sum(tft.april)+sum(tft.may)+sum(tft.june)+sum(tft.july)+sum(tft.august)+sum(tft.september)+sum(tft.october)+sum(tft.november)+sum(tft.december) as '{1}' 
 					from `tabForecast target` tft 
-					WHERE tft.parent='{2}' and tft.{0}!='' and tft.docstatus = 1 and tft.type='{3}' group by tft.{0}""".format(entity,self.filters.fiscal_year,latest, self.filters.tree_type),as_dict=1)
+					WHERE tft.parent='{2}' and tft.{0}!='' and tft.docstatus = 1 group by tft.{0}""".format(entity,self.filters.fiscal_year,latest),as_dict=1)
 				if self.forecast_entries: 
 					self.forecast_data = self.forecast_entries
 
