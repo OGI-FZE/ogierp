@@ -416,7 +416,10 @@ def create_sub_rental_timesheet():
             new_ts.currency = last_ts.currency
             new_ts.conversion_rate = last_ts.conversion_rate
             print(last_ts.name)
+            stop_rent = 0
             for row in last_ts.items:
+                if row.stop_rent:
+                    stop_rent += 1
                 if not row.stop_rent:
                     new_ts.append("items",{
                         "item_code": row.item_code,
@@ -437,8 +440,9 @@ def create_sub_rental_timesheet():
                         "start_date_": last_ts.start_date + relativedelta.relativedelta(months=1, day=1),
                         "end_date": last_ts.end_date + relativedelta.relativedelta(months=1, day=32)
                     })
-            new_ts.save()
-            frappe.db.commit()
+            if not stop_rent == len(last_ts.items):
+                new_ts.save()
+                frappe.db.commit()
 
 @frappe.whitelist()
 def check_subrent_order_existence(rental_order=None):
@@ -560,3 +564,8 @@ def update_hired_people(doc,handle=None):
 #         for w in whs:
 #             warehouse.append(w['for_value'])
 #     return warehouse
+
+
+
+def get_today_date():
+    print(frappe.utils.today())
