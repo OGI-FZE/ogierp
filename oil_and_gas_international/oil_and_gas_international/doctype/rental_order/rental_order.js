@@ -415,6 +415,7 @@ const add_rental_timesheet = () => {
 			() => {
 				const cur_doc = cur_frm.doc
 				cur_doc.customer = doc.customer
+				cur_doc.company = doc.company
 				cur_doc.start_date = doc.start_date
 				if (doc.end_date){
 					cur_doc.end_date = doc.end_date

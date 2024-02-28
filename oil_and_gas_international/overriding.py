@@ -169,6 +169,7 @@ def create_rental_timesheet():
             new_start_date = last_ts.start_date + relativedelta.relativedelta(months=1)
             new_ts = frappe.new_doc("Rental Timesheet")
             new_ts.customer = last_ts.customer
+            new_ts.company = last_ts.company
             new_ts.rental_order = last_ts.rental_order
             new_ts.start_date = new_start_date
             if 5 < new_start_date.day < 32:
