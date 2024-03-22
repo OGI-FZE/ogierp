@@ -12,7 +12,8 @@ from frappe.utils import date_diff
 class CustomWorkOrder(WorkOrder):
 
     def validate_sales_order(self):
-        if self.sales_order: 
+    
+        if self.sales_order:
             self.check_sales_order_on_hold_or_close()
             so = frappe.db.sql(
                 """
